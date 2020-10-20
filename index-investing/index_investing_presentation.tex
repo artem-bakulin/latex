@@ -1,0 +1,1460 @@
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+
+\title{Индексное инвестирование}
+\author{Артём Бакулин}
+\date{\today}
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}{Содержание}
+\justifying
+
+\begin{itemize}
+\justifying
+\item Рациональные инвесторы и премия за риск.
+\item Портфельная оптимизация.
+\item Capital Asset Pricing Model (CAPM).
+\item Метрики для оценки инвестиций.
+\item Факторные модели и Arbitrage Pricing Theory (APT).
+\item Индексное инвестирование и биржевые фонды (ETFs).
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Рациональные инвесторы}
+\justify
+Обычно инвесторы любят доходность и не любят риск. Из двух
+инвестиций с одинаковым риском лучше та, которая даёт большую доходность. Из двух инвестиций с одинаковой доходностью лучше та, которая несёт меньший риск.
+
+\vspace{\baselineskip}
+Является ли избегание риска (risk aversion) нерациональным поведением слабых духом? Нет! Рациональный инвестор тоже может не любить риск.
+\end{frame}
+
+
+
+\begin{frame}{Функция полезности}
+\justify
+Рациональный homo economicus максимизирует функцию полезности (utility function). Из двух альтернатив он всегда выбирает ту, которая даёт большую полезность.
+
+\vspace{\baselineskip}
+Предположим, что функция полезности рационального инвестора --- десятичный логарифм количества долларов на счету. Чем больше миллиардов, тем лучше, но каждый следующий миллиард приносит меньше счастья, чем предыдущий. Реалистично? Более чем!
+\end{frame}
+
+
+
+\begin{frame}{Сложный выбор}
+\justify
+Инвестор имеет на счету \$100\,000, которые дают полезность $\lg 100\,000 = 5.0$. Он должен вложить их в один из двух инструментов: в безрисковые облигации или рискованные акции.
+
+\vspace{\baselineskip}
+\begin{tabular}{c|c|c|c|c|c}
+\multirow{2}{*}{Сценарий} & \multirow{2}{*}{Вер-ть} & \multicolumn{2}{c|}{Облигации} & \multicolumn{2}{c}{Акции} \\
+\cline{3-6}
+        &      & Капитал    & Полез-ть & Капитал      & Полез-ть \\ \hline
+Хороший & 50\% & \$105\,000 & 5.021    & \$125\,000 & 5.097 \\
+Плохой  & 50\% & \$105\,000 & 5.021    & \$85\,000  & 4.929 \\ \hline
+Среднее &      & \$105\,000 & \alert{5.021} & \$105\,000 & \alert{5.013}
+\end{tabular}
+
+\vspace{\baselineskip}
+Рациональный инвестор выберет менее рискованную альтернативу! Это верно не только для логарифма, но и для любой выпуклой вверх функции полезности (когда каждый следующий доллар радует меньше предыдущего).
+\end{frame}
+
+
+
+\begin{frame}{Премия за риск}
+\justify
+Что нужно сделать, чтобы рациональный инвестор выбрал рискованные акции или хотя бы воспринимал альтернативы безразлично? Например, пообещать более высокую доходность в хорошем сценарии и более высокое матожидание!
+
+\vspace{\baselineskip}
+\begin{tabular}{c|c|c|c|c|c}
+\multirow{2}{*}{Сценарий} & \multirow{2}{*}{Вер-ть} & \multicolumn{2}{c|}{Облигации} & \multicolumn{2}{c}{Акции} \\
+\cline{3-6}
+        &      & Капитал    & Полез-ть & Капитал      & Полез-ть \\ \hline
+Хороший & 50\% & \$105\,000 & 5.021    & \alert{\$129\,706} & \alert{5.113} \\
+Плохой  & 50\% & \$105\,000 & 5.021    & \$85\,000  & 4.929 \\ \hline
+Среднее &      & \$105\,000 & 5.021    & \alert{\$107\,353} & \alert{5.021}
+\end{tabular}
+
+\vspace{\baselineskip}
+Дополнительные \$2\,353 в мат. ожидании --- премия за риск (risk premium), которая компенсирует инвестору дискомфорт от возможных потерь в плохом сценарии.
+\end{frame}
+
+
+
+\begin{frame}{Полная доходность}
+\justify
+Пусть $P_t$ --- цена актива (акции, облигации, квартиры) в момент времени $t$, а $D_t$ --- денежная выплата (дивиденд , купон, аренда квартиры) в этот же момент времени. Нас интересует полная доходность --- рост цены (capital gain) плюс дивиденды. Считаем, что налогов нет.
+\begin{align*}
+R_{t+1} = \dfrac{P_{t+1} + D_{t+1}}{P_t} - 1
+\end{align*}
+Следствие: ниже цена сегодня --- выше будущая доходность, и наоборот. Например, если инвесторы требуют премию за риск, то она будет скорее отражаться в более низкой цене сегодня, чем в будущих выплатах (которые мы не всегда знаем).
+\end{frame}
+
+
+
+\begin{frame}{Теория вероятностей}
+\justify
+Пусть $X$ и $Y$ --- случайные величины, доходности двух активов.
+
+\vspace{\baselineskip}
+Мат. ожидание линейно:
+\begin{align*}
+\mathbb{E}(\alpha X + \beta Y) = \alpha\mathbb{E}X + \beta\mathbb{E}Y
+\end{align*}
+
+Дисперсия и стандартное отклонение:
+\begin{align*}
+Var(X) = \sigma_{X}^2 = \mathbb{E}\left[(X - \mathbb{E}X)^2\right]
+\end{align*}
+
+Ковариация и корреляция:
+\begin{align*}
+Cov(X, Y) = \mathbb{E}\left[(X - \mathbb{E}X)(Y - \mathbb{E}Y)\right] = \rho\sigma_X\sigma_Y
+\end{align*}
+
+
+Дисперсия линейной комбинации случайных величин:
+\begin{align*}
+Var(\alpha X + \beta Y) &= \alpha^2 Var(X) + \beta^2 Var(Y) + 2Cov(X, Y) = \\
+&= \alpha^2\sigma_X^2 + \beta^2 \sigma_Y^2 + 2\rho\sigma_X\sigma_Y
+\end{align*}\end{frame}
+
+
+
+\begin{frame}{О пользе корреляций - 1}
+\justify
+Две акции $X$ и $Y$ имеют одинаковые ожидаемые доходности и стандартные отклонения: $\mu = 5\%$ и $\sigma = 10\%$. Корреляция доходностей $\rho=0.4$. Инвестор может вложить долю $\alpha$ своего богатства в $X$ и долю $(1 - \alpha)$ в $Y$.
+
+\vspace{\baselineskip}
+Ожидаемая доходность не зависит от $\alpha$:
+\begin{align*}
+\mathbb{E}(\alpha X + (1 - \alpha)Y) &= \alpha\mathbb{E}X + (1-\alpha)\mathbb{E}Y \\ &= \alpha\mu + (1 - \alpha)\mu = \mu = 5\%
+\end{align*}
+
+Может ли выбор $\alpha$ уменьшить стандартное отклонение, т.е. риск?
+\end{frame}
+
+
+
+\begin{frame}{О пользе корреляций - 2}
+\center
+\begin{tikzpicture}
+\begin{axis}[
+  width = \textwidth * 0.7,
+  xlabel={$\alpha$ --- доля инвестиций в акцию $X$},
+  ylabel={Ст. откл. портфеля, \%},
+  xlabel near ticks,
+  ylabel near ticks,
+  xmin=0, xmax=1,
+  ymin=0, ymax=10
+]
+   \addplot[
+        color = blue,
+		  line width = 1pt,
+		  samples at = {0,0.05,...,1}
+	]
+	{10 * sqrt(x^2 + (1-x)^2 + 2*0.4*x*(1-x))};
+
+	\draw[
+		color=black,
+		dashed
+	]
+	(axis cs: 0.5, 0) -- (axis cs: 0.5, 8.366) -- (axis cs: 0, 8.366);
+
+	\node[
+		anchor=north west
+	]
+	at (axis cs: 0.5, 8.366)
+	{(0.5, 8.37\%)};
+
+    \node[
+        color=blue,
+        circle,
+        fill, 
+        inner sep=2pt
+    ]
+    at (axis cs: 0.5, 8.366) {};
+\end{axis}
+\end{tikzpicture}
+
+\justify
+Вывод: диверсификация уменьшает риск при той же доходности, если корреляция активов отлична от 1.
+\end{frame}
+
+
+
+\begin{frame}{Оптимизация портфеля по Марковицу - 1}
+\centering
+\begin{tabular}{l|r|r|r|r|r|r}
+ & \multicolumn{2}{c|}{Доходность} & \multicolumn{4}{c}{Корреляция} \\ \cline{2-7}
+Актив         & Сред.  & Ст.~откл. & Акц. & Обл. & Нед. & Зол. \\ \hline
+Акции         & 10.9\% & 15.2\%    & 1.00  & 0.00   & 0.59    & 0.04 \\
+Облигации     & 5.2\%  & 3.6\%     & 0.00  & 1.00   & 0.19    & 0.28 \\
+Недвижимость  & 10.8\% & 19.2\%    & 0.59  & 0.19   & 1.00    & 0.13 \\
+Золото        & 7.0\%  & 15.6\%    & 0.04  & 0.28   & 0.13    & 1.00
+\end{tabular}
+
+\justify
+\scriptsize
+Средние годовые доходности, стандартные отклонения и корреляции по данным сайта Portfolio Visualizer (1994-2020).
+\end{frame}
+
+
+
+\begin{frame}{Оптимизация портфеля по Марковицу - 2}
+\justify
+Пусть у нас есть $n$ активов с ожидаемыми доходностями $\mu_i$, стандартными отклонениями $\sigma_i$, корреляциями $\rho_{i,j}$. Инвестиционный портфель задан весами $x_i$. Какие веса активов в портфеле минимизируют риск при фиксированной ожидаемой доходности $r$?
+
+\begin{align*}
+x = \begin{bmatrix}
+x_1, \\
+x_2, \\
+\vdots \\
+x_n
+\end{bmatrix},
+\mu = \begin{bmatrix}
+\mu_1, \\
+\mu_2, \\
+\vdots \\
+\mu_n
+\end{bmatrix},
+S = \begin{bmatrix}
+\sigma_1^2 & \rho_{1,2}\sigma_1\sigma_2 & \cdots & \rho_{1,n}\sigma_1\sigma_n \\
+\rho_{2,1}\sigma_2\sigma_1 & \sigma_2^2 & \cdots & \rho_{2,n}\sigma_2\sigma_n \\
+\vdots & \vdots & \ddots & \vdots \\
+\rho_{n,1}\sigma_n\sigma_1 & \rho_{n,2}\sigma_n\sigma_2 & \cdots & \sigma_n^2
+\end{bmatrix}
+\end{align*}
+
+Задача квадратичного программирования (quadratic programming):
+\begin{align*}
+\begin{cases}
+x^TS x \to \min \\
+\mu^Tx = r \\
+\sum x_i = 1 \\
+x \ge 0
+\end{cases}
+\end{align*}
+\end{frame}
+
+
+
+\newcommand{\drawAssetNode}[3]{
+    \node[
+        circle,
+        fill,
+        inner sep=2pt
+    ] at (axis cs: #1, #2) {};
+    \node[
+        anchor=north
+    ]
+    at (axis cs: #1, #2)
+    {\scriptsize #3};
+}
+
+\newcommand{\drawPortfolioNode}[8]{
+    \node[
+        anchor=#8,
+        inner sep=1pt
+    ] at (axis cs: #1, #2) {
+    	  \setlength\tabcolsep{2pt}
+	     \scriptsize
+	     \begin{tabular}{|l|r|}
+		  \hline
+		  \multicolumn{2}{|c|}{#3} \\ \hline
+		  Акц. & #4\% \\
+		  Обл. & #5\% \\
+		  Нед. & #6\%  \\
+		  Зол. & #7\% \\
+		  \hline
+		  \end{tabular}
+    };
+	 
+	 \node[
+	     circle,
+	     fill,
+	     inner sep=2pt,
+	     color=blue
+    ] at (axis cs:#1, #2) {};
+}
+
+
+
+\begin{frame}{Граница эффективности - 1}
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=\textwidth,
+    height=\textheight - 1cm,
+    xlabel={\small Стандартное отклонение, \%},
+    ylabel={\small Ожидаемая доходность, \%},
+    xlabel near ticks,
+    ylabel near ticks,
+    xmin=0, xmax=21,
+    ymin=0, ymax=14
+]
+
+\addplot[
+    line width=1pt,
+    color=blue
+]
+table[
+    x=std_dev,
+    y=target_return,
+    col sep=comma
+]
+{data/efficient_frontier_plot_data.csv};
+
+\drawAssetNode{15.2}{10.9}{Акции}
+
+\drawAssetNode{3.6}{5.2}{Облигации}
+
+\drawAssetNode{19.2}{10.8}{Недвиж.}
+
+\drawAssetNode{15.6}{7.0}{Золото}
+
+\drawPortfolioNode{4.40}{6.5}{Портфель 1}{21.2}{74.6}{0.5}{3.7}{south east}
+
+\drawPortfolioNode{12.0}{9.95}{Портфель 2}{63.2}{3.5}{14.4}{18.9}{south east}
+
+\drawPortfolioNode{12.0}{6.5}{Портфель 3}{0.0}{30.0}{0.0}{70.0}{north east}
+
+\draw[dashed] (axis cs: 12.0, 9.95) -- (axis cs: 12.0, 0);
+\draw[dashed] (axis cs: 4.40, 6.5) -- (axis cs: 12.0, 6.5);
+\draw[dashed] (axis cs: 4.40, 0) -- (axis cs: 4.40, 6.5);
+
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Граница эффективности - 2}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textwidth/2,
+  xlabel={\small Стандартное отклонение, \%},
+  ylabel={\small Доля актива, \%},
+  xlabel near ticks,
+  ylabel near ticks,
+  xmin=3.5, xmax=15.2,
+  ymin=0, ymax=100,
+  stack plots=y
+]
+
+\node at (axis cs:9.3, 25) {\small Акции};
+\node at (axis cs:9.3, 63) {\small Облигации};
+\node at (axis cs:9.3, 82) {\small Недвиж.};
+\node at (axis cs:9.3, 93) {\small Золото};
+
+\addplot[fill=Pastel2-C] table[x=std_dev, y=stocks, col sep=comma] {data/efficient_frontier_plot_data.csv} \closedcycle;
+
+\addplot[fill=Pastel2-D] table[x=std_dev, y=bonds, col sep=comma] {data/efficient_frontier_plot_data.csv} \closedcycle;
+
+\addplot[fill=Pastel2-E] table[x=std_dev, y=reit, col sep=comma] {data/efficient_frontier_plot_data.csv} \closedcycle;
+
+\addplot[fill=Pastel2-F] table[x=std_dev, y=gold, col sep=comma] {data/efficient_frontier_plot_data.csv} \closedcycle;
+\end{axis}
+\end{tikzpicture}
+\justify
+Граница эффективности (efficient frontier) --- линия, на которой лежат портфели, имеющие минимальный риск при заданном уровне доходности. Обычно портфели на границе содержат комбинацию базовых активов, а не какой-то один из них.
+\end{frame}
+
+
+
+\begin{frame}{Оптимизация с безрисковым активом - 1}
+\justify
+Предположим, что на рынке есть безрисковый (risk-free) $F$, который имеет стандартное отклонение $0\%$. Пример: короткие Treasury Bills (ни единого разрыва за 230 лет).
+
+\justify
+Предположим также, что инвесторы могут занимать деньги под безрисковую процентную ставку.
+\end{frame}
+
+
+\renewcommand{\drawAssetNode}[4]{
+    \node[circle,fill,inner sep=2pt] at (axis cs: #1, #2) {};
+    \node[anchor=#4] at (axis cs: #1, #2) {\small #3};
+}
+
+\renewcommand{\drawPortfolioNode}[8]{\node[anchor=#8] at (axis cs: #1, #2) {
+		\scriptsize \begin{tabular}{|l|r|}
+		\hline
+		\multicolumn{2}{|c|}{#3} \\ \hline
+		Акц. & #4\% \\
+		Обл. & #5\% \\
+		Нед. & #6\%  \\
+		Зол. & #7\% \\
+		\hline
+		\end{tabular}
+	};
+	\node[circle, fill, inner sep=2pt, color=blue] at (axis cs:#1, #2) {};
+}
+
+\newcommand{\drawPortfolioNodeTwo}[6]{
+\node[anchor=#6] at (axis cs: #1, #2) {
+		\scriptsize 
+		\setlength\tabcolsep{2pt}
+		\begin{tabular}{|l|r|}
+		\hline
+		\multicolumn{2}{|c|}{#3} \\ \hline
+		Портф. T & #4\% \\
+		Безриск. & #5\% \\
+		\hline
+		\end{tabular}
+	};
+	\node[circle, fill, inner sep=2pt, color=blue] at (axis cs:#1, #2) {};
+}
+
+\begin{frame}{Оптимизация с безрисковым активом - 2}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=\textwidth,
+    height=\textheight-1cm,
+    xlabel={\small Стандартное отклонение, \%},
+    ylabel={\small Ожидаемая доходность, \%},
+    xlabel near ticks,
+    ylabel near ticks,
+    xmin=0, xmax=14,
+    ymin=0, ymax=10
+]
+
+\addplot[line width=1pt, color=blue, domain=0:21] {4 + x * (6.75 - 4) / 4.83};
+
+\drawPortfolioNodeTwo{1.45}{4.83}{Портфель А}{30}{70}{north west}
+
+\drawPortfolioNodeTwo{7.25}{8.12}{Портфель B}{200}{-100}{north west}
+
+\drawAssetNode{0.0}{4.0}{F}{north west}
+
+\drawPortfolioNode{4.83}{6.75}{Портфель T}{24.2}{69.5}{1.5}{4.8}{south east}
+
+\addplot[line width=1pt, color=blue, dashed] table[x=std_dev, y=target_return, col sep=comma] {data/efficient_frontier_plot_data.csv};
+
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Оптимизация с безрисковым активом - 3}
+\justify
+Теорема о двух фондах: любой портфель на новой границе эффективности можно представить как линейную комбинацию безрискового актива $F$ и касательного (tangent) портфеля рискованных активов $T$.
+
+\vspace{\baselineskip}
+В зависимости от предпочтительного баланса риска и доходности, все инвесторы будут держать разные количества $F$ и $T$. Однако никто не будет держать отличную от $T$ комбинацию рискованных активов, потому что такая комбинация будет заведомо хуже (меньше доход при том же риске или больший риск при той же доходности).
+
+\vspace{\baselineskip}
+Вывод: портфель $T$ --- это весь рынок рискованных активов (market portfolio)!
+\end{frame}
+
+
+
+\begin{frame}{На пути к CAPM}
+\justify
+Обозначим $R_{free}$ и $R_{mkt}$ доходности безрискового актива и рыночного портфеля, а $\sigma_{mkt}$ --- стандартное отклонение рыночного портфеля. Инвестор вложил долю $\beta$ своего богатства в рыночный портфель, а долю $1-\beta$ --- в безрисковый актив. Какую среднюю доходность $\mathbb{E}(R)$ он получит?
+
+\begin{align*}
+\mathbb{E}(R) &= \mathbb{E}\left[ \beta R_{mkt} + (1 - \beta)R_{free} \right] \Leftrightarrow \\
+\mathbb{E}(R) - R_{free} &= \beta (\mathbb{E}(R_{mkt}) - R_{free})
+\end{align*}
+
+Избыточная доходность (excess return) составного портфеля зависит от $\beta$ --- чувствительности к рыночному риску (market risk). Это верно для портфелей на границе эффективности. Но вдруг это верно для любого актива в экономике?
+\end{frame}
+
+
+
+\begin{frame}{Capital Asset Pricing Model}
+Можно доказать, что ожидаемая доходность $\mathbb{E}(R_{asset})$ любого актива на рынке равна
+\begin{align*}
+\mathbb{E}(R_{asset}) = R_{free} + \dfrac{Cov(R_{asset}, R_{mkt})}{Var(R_{mkt})} \left (\mathbb{E}(R_{mkt}) - R_{free} \right)
+\end{align*}
+Обозначим
+\begin{align*}
+\beta_{asset} = \dfrac{Cov(R_{asset}, R_{mkt})}{Var(R_{mkt})} = \rho_{asset,mkt}\dfrac{\sigma_{asset}}{\sigma_{mkt}}
+\end{align*}
+Тогда:
+\begin{align*}
+\mathbb{E}(R_{asset}) - R_{free} = \beta_{asset}(\underbrace{\mathbb{E}(R_{mkt}) - R_{free}}_{\text{премия за риск}})
+\end{align*}
+Это формулировка Capital Asset Pricing Model (CAPM).
+\end{frame}
+
+
+
+\begin{frame}{Систематический риск}
+\justify
+\begin{align*}
+&\mathbb{E}(R_{asset}) - R_{free} = \beta_{asset}(\mathbb{E}(R_{mkt}) - R_{free}) \\
+&\beta_{asset} = \dfrac{Cov(R_{asset}, R_{mkt})}{Var(R_{mkt})} = \rho_{asset,mkt}\dfrac{\sigma_{asset}}{\sigma_{mkt}}
+\end{align*}
+
+Доходность любого актива зависит от его <<беты>>. <<Бета>> 1.5 означает, что если рынок растёт (падает) на 1\%, то актив в среднем растёт (падает) на 1.5\%. Придумайте примеры акций с $\beta<1$ и $\beta>1$?
+
+\vspace{\baselineskip}
+Можно сказать, что <<бета>> отражает чувствительность актива к некому глобальному рыночному риску (market risk) или систематическому риску (systematic risk). Насколько актив растёт вместе с рынком в хорошие времена, и насколько он падает вместе с рынком в плохие.
+\end{frame}
+
+
+
+\begin{frame}{Идиосинкратический риск}
+\justify
+Каждый актив (каждая акция) несёт свой собственный специфический риск. Самолёт авиакомпании может упасть, завод корпорации может сгореть. Этот идиосинкратический (idiosyncratic) риск можно уменьшить до нуля диверсификацией (diversify away). Рациональный инвестор держит в портфеле тысячи активов, поэтому не страдает от этого риска.
+
+\vspace{\baselineskip}
+Вывод: идиосинкратический риск не входит в цену активов! Вы не зарабатываете дополнительную премию за риск, если держите в портфеле всего одну (пусть даже самую любимую) акцию. Все остальные инвесторы диверсифицировали этот риск и поэтому не требуют премию за риск (т.е. скидку в цене).
+
+\vspace{\baselineskip}
+Систематический риск нельзя диверсифицировать. Инвесторы должны с ним мириться, поэтому требуют и получают компенсацию.
+\end{frame}
+
+
+
+\begin{frame}{Роль ковариации с рынком}
+\justify
+Какую из двух акций выбрать?
+
+\vspace{\baselineskip}
+\centering
+\begin{tabular}{l|r|r|r}
+Состояние мира & Вероятность & Акция 1  & Акция 2 \\ \hline
+\only<1>{Состояние 1}\only<2->{Потеря работы}    & 50\%        & \$1\,000 & \$500 \\
+\only<1>{Состояние 2}\only<2->{Премия \$10\,000}    & 50\%        & \$500    & \$1\,000 \\ \hline
+Мат. ожидание  &             & \$750    & \$750
+\end{tabular}
+
+\only<3>{
+\justify
+Инвестор с выпуклой вверх функцией полезности ценит активы, которые приносят доход в плохие времена, когда остальные активы падают. Такой актив сглаживает удар по потреблению и поэтому стоит дорого.
+
+\justify
+Если актив приносит доход в хорошие времена, когда каждый дополнительный доллар не так ценен, то инвестор требует премию за риск.
+}
+\end{frame}
+
+
+
+\begin{frame}{Прокси рыночного портфеля}
+\justify
+В рамках CAPM в рыночный портфель входят не только акции, а вообще все активы в экономике, включая недвижимость, самолёты и пароходы. Далеко не все эти активы являются торгуемыми. Для практического применения CAPM нужно выбрать <<прокси>> --- портфель торгуемых активов. Обычно это фондовый индекс.
+
+\vspace{\baselineskip}
+\begin{itemize}
+\justifying
+\item Standard and Poor's 500 --- 500 крупнейших компаний США.
+\item Russel 2000 --- 2000 крупнейших компаний США.
+\item STOXX 600 --- 600 крупнейших компаний Европы.
+\item ММВБ (рубли) и РТС (доллары) --- 42 крупнейшие компании России.
+\item MSCI World --- 1600 крупнейших компаний мира.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Фондовый индекс}
+\justify
+Фондовый индекс --- индикатор состояния рынка, отражающий изменение цены заданной корзины ценных бумаг. Самый распространённый тип индекса --- индекс, взвешенный по капитализации (cap-weighted).
+
+\begin{align*}
+Index = \dfrac{\sum P_iQ_i}{D}
+\end{align*}
+Здесь $P_i$ --- цена бумаги $i$, $Q_i$ --- число бумаг $i$ в свободном обращении (free-float).
+
+\vspace{\baselineskip}
+Делитель $D$ обычно подбирают так, чтобы в момент самого первого расчёта индекс был круглым числом (например, 100). Впоследствии его подправляют при изменении состава индекса, разделении акций, и т.п.
+\end{frame}
+
+
+
+\begin{frame}{Рыночная премия за риск - 1}
+\begin{align*}
+\mathbb{E}(R_{asset}) - R_{free} = \beta_{asset}(\mathbb{E}(R_{mkt}) - R_{free})
+\end{align*}
+\justify
+Ожидаемая избыточная доходность инвестиций пропорциональна мере систематического риска $\beta_{asset}$ и рыночной премии за риск (market risk premium) $\mathbb{E}(R_{mkt}) - R_{free}$. О какого порядка премии мы говорим?
+\end{frame}
+
+
+
+\begin{frame}{Рыночная премия за риск - 2}
+\centering
+
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=1926-06-30,
+  xtick={1940-01-01,1960-01-01,1980-01-01,2000-01-01,2020-01-01},
+  minor xtick={1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+  xticklabel=\year,
+  grid=both,
+  xmin=1926-06-30,
+  xmax=2025-01-01,
+  ymode=log,
+  log ticks with fixed point,
+  ylabel={\small{Рост \$1 сверх безрисковой ставки}},
+  xlabel near ticks,
+  ylabel near ticks
+]
+\addplot[color=blue, mark=none, thick] table[x=date, y=mkt_rf, col sep=comma]{data/fama_french_cumulative_growth_data.csv};
+
+\draw[red] (axis cs: 1929-08-31, 2.27) -- (axis cs: 1945-02-28, 2.27) node[pos=0.5,anchor=south]{\scriptsize{1929-45}};
+\draw[red] (axis cs: 1968-11-30, 28.28) -- (axis cs: 1983-04-30, 28.28) node[pos=0.5,anchor=south]{\scriptsize{1968-83}};
+\draw[red] (axis cs: 2000-03-31, 148.33) -- (axis cs: 2013-01-31, 148.33) node[pos=0.5,anchor=south]{\scriptsize{2000-13}};
+
+\draw[red] (axis cs: 1929-08-31, 2.27) -- (axis cs: 1932-06-30, 0.348) node[anchor=west]{\scriptsize{-85\%}};
+\draw[red] (axis cs: 1968-11-30, 28.28) -- (axis cs: 1974-09-30, 12.5) node[anchor=west]{\scriptsize{-56\%}};
+\draw[red] (axis cs: 2000-03-31, 148.33) -- (axis cs: 2009-02-28, 67.7) node[anchor=west]{\scriptsize{-54\%}};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize{Данные: Kenneth French Data Library.}
+\end{frame}
+
+
+
+\begin{frame}{Рыночная премия за риск - 3}
+\centering
+\begin{tabular}{l|r|r|r|c}
+Период & Сред.\,{\scriptsize (ст.\,откл.)} & $t$-тест & $p$-знач. & 99\%\,дов.\,инт. \\
+\hline
+1927--1959 & 11.2\% {\scriptsize (24.9\%)} & 2.61 & 1.3\%  & [2.5\%, 20.1\%] \\
+1960--1989 & 5.2\%  {\scriptsize (16.9\%)} & 1.69 & 10.3\% & [-1.1\%, 11.5\%] \\
+1990--2020 & 9.0\%  {\scriptsize (17.7\%)} & 2.81 & 0.9\%  & [2.5\%, 15.5\%] \\
+1960--2020 & 7.1\%  {\scriptsize (17.3\%)} & 3.21 & 0.2\%  & [2.7\%, 11.5\%] \\ \hline
+1927--2020 & 8.6\%  {\scriptsize (20.2\%)} & 4.11 & <0.1\% & [4.4\%, 12.7\%] \\
+\end{tabular}
+{\scriptsize Годовые доходности сверх безрисковой процентной ставки.
+
+Данные: Kenneth French Data Library. \par }
+
+\justify
+Внимание! Есть точка зрения, что историческая доходность рынка США слишком высока и является загадкой (equity risk premium puzzle). Инвесторы должны очень-очень не любить риск, чтобы спрос и предложение уравновесились на такой премии за риск. Не имеем ли мы дело с эффектом выжившего (survivorship bias)?
+\end{frame}
+
+
+
+\begin{frame}{Избегание риска - 1}
+\justify
+Вы должны вложить весь свой капитал на срок 15 лет. Какой актив выбрать: A или B?
+
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+    group style = {group size = 2 by 1},
+    width = \textwidth / 2,
+	 ybar,
+	 ymin = -50, ymax = 50,
+	 xmin = 0.5, xmax = 50.5,
+	 xlabel={\small Номер сценария},
+	 ylabel={\small Годовая доходность, \%},
+	 xlabel near ticks,
+	 ylabel near ticks,
+	 xtick={1, 10,20,30,40,50}
+]
+    
+    \nextgroupplot[title = {Актив A}]
+    \addplot[bar width=1pt, fill, color=blue] table[x=mkt_1y_rank, y=sample_mkt_1y, col sep=comma] {data/simulated_market_annual_returns.csv};
+    
+    \nextgroupplot[title = {Актив B}, ylabel={}]
+    \addplot[bar width=1pt, fill, color=blue] table[x=rf_1y_rank, y=sample_rf_1y, col sep=comma] {data/simulated_market_annual_returns.csv};
+    
+\end{groupplot}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Избегание риска - 2}
+\justify
+Вы должны вложить весь свой капитал на срок 15 лет. Какой актив выбрать: C или D?
+
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+    group style = {group size = 2 by 1},
+    width = \textwidth / 2,
+	 ybar,
+	 ymin = 0, ymax = 25,
+	 xmin = 0.5, xmax = 50.5,
+	 xlabel={\small Номер сценария},
+	 ylabel={\small Годовая доходность, \%},
+	 xlabel near ticks,
+	 ylabel near ticks,
+	 xtick={1, 10,20,30,40,50}
+]
+    
+    \nextgroupplot[title = {Актив C}]
+    \addplot[bar width=1pt, fill, color=blue] table[x=mkt_15y_rank, y=sample_mkt_15y, col sep=comma] {data/simulated_market_annual_returns.csv};
+    
+    \nextgroupplot[title = {Актив D}, ylabel={}]
+    \addplot[bar width=1pt, fill, color=blue] table[x=rf_15y_rank, y=sample_rf_15y, col sep=comma] {data/simulated_market_annual_returns.csv};
+    
+\end{groupplot}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Избегание риска - 3}
+\justify
+Активы A и C --- рынок акций США. Активы B и D --- безрисковые облигации. Графики A и B показывают доходность за один наудачу выбранный год. Графики С и D показывают доходность за наудачу выбранные 15 лет подряд.
+
+\justify
+Ричард Талер считает, что существует эффект <<близорукого избегания риска>>. Мы не можем сложить в уме 15 случайных годовых доходностей и оценить распределение суммы. Инвесторы интуитивно умножают годовые колебания на 15 и переоценивают риск. На деле шанс получить отрицательную доходность на горизонте 15 лет не так велик, потому что центральная предельная теорема усредняет краткосрочные колебания.
+
+\justify
+Следствие. Чем реже вы проверяете состояние счёта, тем более рискованный (и более доходный) портфель вы можете себе позволить.
+\end{frame}
+
+
+
+\begin{frame}{Отношение Шарпа}
+\justify
+Отношение Шарпа (Sharpe ratio) --- отношение средней избыточной доходности к её стандартному отклонению.
+\begin{align*}
+\overline{R_{excess}} &= \dfrac{1}{n}\sum\limits_{t=1}^{n}(R_{portfolio,t} - R_{free,t})\\
+Sharpe &= \dfrac{\overline{R_{excess}}}{\sqrt{\dfrac{1}{n-1}\sum\limits_{t=1}^{n}(R_{portfolio,t} - R_{free,t} - \overline{R_{excess}})^2}}
+\end{align*}
+
+Хозяйке на заметку: касательный (tangent) портфель имеет максимальное отношение Шарпа среди всех портфелей, составленных из рискованных активов.
+\end{frame}
+
+
+
+\begin{frame}{Отношение Сортино}
+\justify
+Отношение Сортино (Sortino information ratio) --- отношение доходности сверх минимально допустимой $R_{min}$ (minimum acceptable return) к волатильности <<вниз>>.
+\begin{align*}
+\overline{R_{excess}} &= \dfrac{1}{n}\sum\limits_{t=1}^{n}(R_{portfolio,t} - R_{min,t}) \\
+Sortino &= \dfrac{\overline{R_{excess}}}{\sqrt{\dfrac{1}{n-1}\sum\limits_{t=1}^{n}\left(\min[0, R_{portfolio,t} - R_{min, t}]\right)^2}}
+\end{align*}
+В качестве минимально допустимой доходности можно использовать как константу (например, 0), так и переменную величину (например, безрисковую доходность).
+\end{frame}
+
+
+
+\begin{frame}{Геометрическое среднее}
+\justify
+Арифметическое среднее доходностей --- лучшая оценка того, что случится с вашими инвестициями в следующий период (месяц, год). Если вы оцениваете инвестиции на несколько периодов, то используйте геометрическое среднее.
+\begin{align*}
+Geom Mean = \left(\prod\limits_{t=1}^{n}(1 + R_{portfolio,t} - R_{free,t}) \right)^{\dfrac{1}{n}} - 1
+\end{align*}
+
+\centering
+\begin{tabular}{l|r|r|r|r}
+\multirow{2}{*}{Период} & Арифм.\,сред. & Геом. & Отнош. & Отнош. \\
+& {\scriptsize (ст.\,откл.)} & сред. & Шарпа & Сортино \\ 
+\hline
+1927--1959 & 11.2\% {\scriptsize (24.9\%)} & 8.3\% & 0.45 & 1.00 \\
+1960--1989 & 5.2\%  {\scriptsize (16.9\%)} & 3.8\% & 0.31 & 0.58 \\
+1990--2020 & 9.0\%  {\scriptsize (17.7\%)} & 7.4\% & 0.51 & 1.02 \\
+1960--2020 & 7.1\%  {\scriptsize (17.3\%)} & 5.6\% & 0.41 & 0.80 \\ \hline
+1927--2020 & 8.6\%  {\scriptsize (20.2\%)} & 6.5\% & 0.42 & 0.88 \\
+\end{tabular}
+
+{\scriptsize Годовые доходности сверх безрисковой процентной ставки.
+
+Данные: Kenneth French Data Library. \par }
+\end{frame}
+
+
+
+\begin{frame}{Прогнозирование рыночной премии за риск}
+\justify
+Можно ли предсказать, какой будет equity risk premium в следующем году, чтобы если она будет отрицательной, то пересидеть год в безрисковом активе? Скорее нет, чем да.
+
+\justify
+Welch, Goyal (2008): отношения P/E (цена акции к прибыли), D/P (дивиденды к цене акции) и другие не предсказывают рыночную доходность out of sample. То есть они не лучше предсказания <<в следующем году доходность будет равна средней доходности в прошлом>>.
+
+\justify
+В 2015--2019 годах многие аналитики строили графики дробей <<что-то на что-то>> и предсказывали обвал рынка. Пришёл март 2020 г. и обвал на 35\% случился. Случился ли он из-за <<перегретости рынка>> или из-за пандемии?
+\end{frame}
+
+
+
+\begin{frame}{Оценка успеха управляющих - 1}
+\justify
+Лектор составил портфель акций на Московской бирже в ноябре 2015 г. За 5 лет он заработал 100\%. Три паевых фонда, красный, жёлтый и зелёный, заработали 104\%, 85\% и 84\%. Молодцы ли лектор и управляющие фондами?
+
+\vspace{\baselineskip}
+\only<2->{Безрисковая процентная ставка (ключевая ставка ЦБ) за тот же период дала бы $50\%$. Индекс ММВБ полной доходности (включая дивиденды минус налоги) вырос на $117\%$.
+
+\vspace{\baselineskip}
+Какой риск взяли на себя лектор и управляющие, и получили ли они компенсацию за этот риск?}
+\end{frame}
+
+
+
+\begin{frame}{Оценка успеха управляющих - 2}
+\center
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=2015-10-31,
+  xtick={2016-01-01,2017-01-01,2018-01-01,2019-01-01,2020-01-01, 2021-01-01},
+  xticklabel=\year,
+  xmin=2015-10-31,
+  xmax=2021-01-01,
+  grid=major,
+  ylabel={\small{Рост 1 р. начальных инвестиций}},
+  xlabel near ticks,
+  ylabel near ticks,
+  legend entries = {
+      Индекс ММВБ,
+      Ставка ЦБ,
+      Лектор,
+      Красный,
+      Жёлтый,
+      Зелёный
+  },
+  legend pos=north west,
+  legend style={font=\tiny},
+  legend cell align={left}
+]
+\addplot[color=black, mark=none, thick] table[x=date, y=benchmark_growth, col sep=comma]{data/fund_growth.csv};
+\addplot[color=black, mark=none, dashed, thick] table[x=date, y=risk_free_growth, col sep=comma]{data/fund_growth.csv};
+\addplot[color=blue, mark=none, thick] table[x=date, y=personal_growth, col sep=comma]{data/fund_growth.csv};
+\addplot[color=red, mark=none, thick] table[x=date, y=red_growth, col sep=comma]{data/fund_growth.csv};
+\addplot[color=orange, mark=none, thick] table[x=date, y=yellow_growth, col sep=comma]{data/fund_growth.csv};
+\addplot[color=green, mark=none, thick] table[x=date, y=green_growth, col sep=comma]{data/fund_growth.csv};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Регрессия для оценки результатов - 1}
+\justify
+CAPM говорит, что избыточная доходность портфеля прямо пропорциональна рыночному риску:
+\begin{align*}
+\mathbb{E}(R_{fund}) - R_{free} = \beta_{portfolio}(\mathbb{E}(R_{mkt}) - R_{free})
+\end{align*}
+
+\justify
+Посчитаем ежемесячные доходности рынка, портфеля и безрискового актива, а затем оценим линейную регрессию:
+\begin{align*}
+R_{fund,t} - R_{free,t} = \alpha + \beta(R_{mkt,t} - R_{free,t}) + \epsilon_t, \epsilon_t \sim \mathcal{N}(0, \sigma_{\epsilon}^2)
+\end{align*}
+По CAPM, $\alpha=0$. Если управляющий имеет положительную <<альфу>>, то он зарабатывает больше, чем можно было бы ожидать при данном уровне систематического риска.
+\end{frame}
+
+
+
+\begin{frame}{Регрессия для оценки результатов - 2}
+\center
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1.5cm,
+  legend entries = {
+    Лектор,
+    Красный фонд,
+    $y = 0.12 + 0.60x$,
+    $y = -0.05 + 0.92x$
+  },
+  legend pos=north west,
+  legend style={font=\tiny},
+  legend cell align={left},
+  xlabel={\small{Месячная избыточная доходность индекса}},
+  ylabel={\small{Месячная избыточная доходность фонда}},
+  xlabel near ticks,
+  ylabel near ticks,
+  %xtick={-0.1, -0.05, 0, 0.05, 0.1},
+  %ytick={-0.1, -0.05, 0, 0.05, 0.1},
+  grid=major,
+  xmin=-11,xmax=11,
+  ymin=-11,ymax=11
+]
+
+\addplot[color=blue, only marks] table[x=benchmark_excess_return, y=personal_excess_return, col sep=comma]{data/fund_excess_return.csv};
+
+\addplot[color=red, only marks] table[x=benchmark_excess_return, y=red_excess_return, col sep=comma]{data/fund_excess_return.csv};
+
+\addplot[color=blue, domain=-12:12] {0.1163 + 0.599451*x};
+
+\addplot[color=red, domain=-12:12] {-0.04577 + 0.9202177*x};
+
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Регрессия для оценки результатов - 3}
+\center
+\begin{tabular}{l|c|c|c|c|c}
+\multirow{2}{*}{Фонд}    & $\hat{\alpha}$ & $\hat{\beta}$ & \multirow{2}{*}{$R^2$} & Отнош. & Отнош. \\
+& \scriptsize{(ст. откл.)} & \scriptsize{(ст. откл.)} & & Шарпа & Сортино \\ \hline
+Лектор  &  0.12\% \scriptsize{(0.29\%)} & 0.60 \scriptsize{(0.07)}   &  0.54 & 0.60 & 1.08 \\
+Красный & -0.05\% \scriptsize{(0.18\%)} & 0.92 \scriptsize{(0.05)}   &  0.87 & 0.55 & 0.90 \\
+Жёлтый  & -0.20\% \scriptsize{(0.26\%)} & 0.91 \scriptsize{(0.07)}   &  0.75 & 0.38 & 0.62 \\
+Зелёный & -0.28\% \scriptsize{(0.16\%)} & 1.00 \scriptsize{(0.04)}   &  0.91 & 0.37 & 0.58 \\ \hline
+Индекс  & 0.00\% \scriptsize{(0.00\%)}  & 1.00 \scriptsize{(0.00)}   &  1.00 & 0.64 & 1.02
+\end{tabular}
+\justify
+{\scriptsize(59 месячных доходностей 11.2015--09.2020. Значения $\hat{\alpha}$ и $\hat{\beta}$ для месячных доходностей. Отношения Шарпа и Сортино сконвертированы в годовое выражение умножением на $\sqrt{12}$.)}
+
+\vspace{\baselineskip}
+Вывод: инвесторы фондов зарабатывают меньше, чем могли бы при том же уровне систематического риска.
+
+\vspace{\baselineskip}
+Кстати, лучшее отношение Шарпа --- у индекса. Совпадение?
+\end{frame}
+
+
+
+\begin{frame}{Дополнительные факторы риска}
+\justify
+Согласно CAPM, единственный риск, за который можно заработать премию --- это систематический рыночный риск. Так ли это на самом деле? Вдруг лектор с положительной <<альфой>> (забудем на минуту, что она не статистически значимая) на самом деле заработал на другом риске?
+
+\vspace{\baselineskip}
+Несколько наблюдений об американском рынке акций:
+\begin{itemize}
+\justifying
+\item Эффект размера (size effect). Акции небольших компаний растут лучше, чем акции крупных.
+\item Эффект стоимости (value effect). Акции компаний с высоким отношением бухгалтерского капитала (book value) к рыночной капитализации (market cap) растут лучше, чем акции компаний с низким отношением.
+\item Инерция (momentum). Акции, которые выросли в прошлом году, растут лучше, чем акции, упавшие в прошлом году.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Факторные портфели}
+\justify
+Составим синтетические портфели, которые будут зарабатывать деньги за счёт эффектов размера, стоимости и инерции.
+
+\begin{itemize}
+\justifying
+\item SMB (Small Minus Big): покупаем 50\% самых маленьких акций, продаём 50\% самых больших.
+\item HML (High book/market Minus Low book/market): покупаем 33\% акций с высоким отношением book/market, продаём 33\% акций с низким отношением.
+\item MOM (MOMentum): покупаем 30\% лучших акций прошлого года, продаём 30\% худших.
+\end{itemize}
+Оказывается, что все три портфеля имеют положительную историческую доходность. При этом сами стратегии довольно простые, скорее даже механические!
+\end{frame}
+
+
+
+\begin{frame}{Доходности факторных портфелей - 1}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=1926-06-30,
+  xtick={1940-01-01,1960-01-01,1980-01-01,2000-01-01,2020-01-01},
+  minor xtick={1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+  xticklabel=\year,
+  grid=both,
+  xmin=1926-06-30,
+  xmax=2025-01-01,
+  ymode=log,
+  log ticks with fixed point,
+  ylabel={\small{Рост \$1 начальных инвестиций}},
+  xlabel near ticks,
+  ylabel near ticks,
+  legend entries={
+    SMB (Small Minus Big),
+    HML (High Minus Low),
+    MOM (Momentum)
+  },
+  legend pos=north west,
+  legend style={font=\tiny},
+  legend cell align={left}
+]
+\addplot[color=blue, mark=none, thick] table[x=date, y=smb, col sep=comma]{data/fama_french_cumulative_growth_data.csv};
+\addplot[color=red, mark=none, thick] table[x=date, y=hml, col sep=comma]{data/fama_french_cumulative_growth_data.csv};
+\addplot[color=orange, mark=none, thick] table[x=date, y=mom, col sep=comma]{data/fama_french_cumulative_growth_data.csv};
+
+\end{axis}
+\end{tikzpicture}
+{\scriptsize Данные: Kenneth French Data Library.}
+\end{frame}
+
+
+
+\begin{frame}{Доходности факторных портфелей - 2}
+\centering
+\begin{tabular}{l|l|r|r|r|c}
+Фактор & Период & Сред.\,{\scriptsize (cт.\,откл.)} & $t$ & $p$ & 99\%\,дов.\,инт.\\ \hline
+SMB & 1927--59 & 3.4\% {\scriptsize (13.6\%)}  & 1.41 & 16.7\% & [-1.5\%, 8.2\%] \\
+    & 1960--89 & 3.3\% {\scriptsize (13.9\%)}  & 1.29 & 20.9\% & [-1.9\%, 8.4\%] \\
+    & 1990--20 & 0.8\% {\scriptsize (9.2\%)}   & 0.49 & 62.7\% & [-2.6\%, 4.2\%] \\
+    & 1960--20 & 2.0\% {\scriptsize (11.7\%)}  & 1.34 & 18.4\% & [-1.0\%, 5.0\%] \\
+    & 1927--20 & 2.5\% {\scriptsize (12.4\%)}  & 1.95 & 5.4\%  & [-0.0\%, 5.0\%] \\
+\hline
+HML & 1927--59 & 5.1\% {\scriptsize (14.1\%)}  & 2.07 & 4.7\%  & [0.1\%, 10.0\%] \\
+    & 1960--89 & 6.1\% {\scriptsize (11.1\%)}  & 3.03 & 0.5\%  & [2.0\%, 10.3\%] \\
+    & 1990--20 & 1.2\% {\scriptsize (15.3\%)}  & 0.42 & 67.7\% & [-4.5\%, 6.8\%] \\
+    & 1960--20 & 3.6\% {\scriptsize (13.5\%)}  & 2.08 & 4.1\%  & [0.1\%, 7.1\%] \\
+    & 1927--20 & 4.1\% {\scriptsize (13.7\%)}  & 2.92 & 0.4\%  & [1.3\%, 6.9\%] \\
+\hline
+MOM & 1927--59 & 7.4\% {\scriptsize (17.8\%)}  & 2.40 & 2.3\%  & [1.1\%, 13.7\%] \\
+    & 1960--89 & 10.5\% {\scriptsize (12.8\%)} & 4.49 & 0.0\%  & [5.7\%, 15.2\%] \\
+    & 1990--20 & 6.6\% {\scriptsize (16.4\%)}  & 2.24 & 3.3\%  & [0.6\%, 12.6\%] \\
+    & 1960--20 & 8.5\% {\scriptsize (14.7\%)}  & 4.50 & <0.1\%  & [4.7\%, 12.3\%] \\
+    & 1927--20 & 8.1\% {\scriptsize (15.8\%)}  & 4.98 & <0.1\%  & [4.9\%, 11.4\%] \\
+\hline
+\end{tabular}
+{\scriptsize Годовые доходности 1927--2020. Данные: Kenneth French Data Library}
+\end{frame}
+
+
+
+\begin{frame}{Модель Фамы-Френча-Кархарта}
+\justify
+Вернёмся к анализу успеха управляющих и дополним регрессию новыми факторами.
+\begin{align*}
+R_{fund,t} - R_{free,t} &= \alpha + \beta_{mkt}(R_{mkt,t} - R_{free,t}) + \\ &+ \beta_{smb}R_{smb,t} + \beta_{hml}R_{hml,t} + \beta_{mom}R_{mom,t} + \epsilon_t
+\end{align*}
+Если регрессия покажет, что $\beta_{smb} > 0$, то это означает, что управляющий сделал ставку на эффект размера и заработал (или не заработал) премию за риск.
+
+\vspace{\baselineskip}
+Fama and French (2010): средняя четырёхфакторная <<альфа>> ПИФов акций на рынке США -1.1\% в год с учётом комиссий.
+\end{frame}
+
+
+
+\begin{frame}{Другие факторы риска}
+\justify
+Факторный анализ позволяет понять, на какой риск делает ставку ваш управляющий (или вы сами). <<Нет альфы, есть только скрытые беты>>.
+
+\vspace{\baselineskip}
+Примеры объясняющих факторов, не связанных с акциями:
+\begin{itemize}
+\justifying
+\item Форма кривой процентных ставок (доходность 10Y облигаций минус доходность 1Y облигаций).
+\item Кредитный спред (доходность облигаций с рейтингом BBB минус доходность Treasury).
+\item Валютный кэрри-трейд (валюты с высокими процентными ставками минус валюты с низкими процентными ставками).
+\item Проданные опционы (доходность стрэддла или пут-опциона на индекс).
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Факторы риска на рынке России - 1}
+\justify
+На сайте ИПЭИ РАНХиГС ({\small \url{https://ipei.ranepa.ru/ru/capm-ru}}) собраны временные ряды факторных портфелей, составленных из российский акций.
+\begin{itemize}
+\justifying
+\item MKT-RF: рынок минус безрисковая ставка (как в CAPM).
+\item SMB: как у Фамы-Френча-Кархарта.
+\item HML: как у Фамы-Френча-Кархарта.
+\item MOM: как у Фамы-Френча-Кархарта.
+\item LIQ (LIQuidity): неликвидные акции минус ликвидные.
+\item DP (Dividend/Price): акции с высокой дивидендной доходностью (низким отношением дивиденд/цена) минус акции с низкой дивидендной доходностью.
+\item SOE (State-Owned Enterprise): частные компании минус компании с гос. участием.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Факторы риска на рынке России - 2}
+\center
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=2004-12-31,
+  xtick={2005-01-01,2008-01-01,2011-01-01,2014-01-01,2017-01-01,2020-01-01},
+  xticklabel=\year,
+  xmin=2005-01-01,
+  xmax=2021-01-01,
+  ymin=0,
+  ytick={1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+  grid=major,
+  ylabel={\small{Рост 1 р. начальных инвестиций}},
+  xlabel near ticks,
+  ylabel near ticks,
+  legend entries = {
+      MKT-RF,
+      SMB,
+      HML,
+      LIQ,
+      DP,
+      SOE
+  },
+  legend pos=north west,
+  legend style={font=\tiny},
+  legend cell align={left}
+]
+\addplot[color=black, mark=none, thick] table[x=month, y=rmrf_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\addplot[color=red, mark=none, thick] table[x=month, y=smb_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\addplot[color=orange, mark=none, thick] table[x=month, y=hml_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\addplot[color=green, mark=none, thick] table[x=month, y=liq_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\addplot[color=violet, mark=none, thick] table[x=month, y=dy_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\addplot[color=blue, mark=none, thick] table[x=month, y=soe_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\end{axis}
+\end{tikzpicture}
+
+{\scriptsize Данные: ИПЭИ РАНХиГС.}
+\end{frame}
+
+
+
+\begin{frame}{Факторы риска на рынке России - 3}
+\center
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=2004-12-31,
+  xtick={2015-01-01,2016-01-01,2017-01-01,2018-01-01,2019-01-01,2020-01-01},
+  xticklabel=\year,
+  xmin=2015-01-01,
+  xmax=2020-06-30,
+  ymin=0.5, ymax=2.5,
+  grid=major,
+  ylabel={\small{Рост 1 р. начальных инвестиций}},
+  xlabel near ticks,
+  ylabel near ticks,
+  legend entries = {
+      MKT-RF,
+      SMB,
+      HML,
+      LIQ,
+      DP,
+      SOE
+  },
+  legend pos=north west,
+  legend style={font=\tiny},
+  legend cell align={left}
+]
+\addplot[color=black, mark=none, thick] table[x=month, y=rmrf_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\addplot[color=red, mark=none, thick] table[x=month, y=smb_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\addplot[color=orange, mark=none, thick] table[x=month, y=hml_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\addplot[color=green, mark=none, thick] table[x=month, y=liq_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\addplot[color=violet, mark=none, thick] table[x=month, y=dy_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\addplot[color=blue, mark=none, thick] table[x=month, y=soe_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\end{axis}
+\end{tikzpicture}
+
+{\scriptsize Данные: ИПЭИ РАНХиГС.}
+\end{frame}
+
+
+
+\begin{frame}{Факторы риска на рынке России - 4}
+\centering
+\begin{tabular}{l|r|r|r|c}
+Фактор & Сред.\,{\scriptsize (ст.\,откл.)} & $t$ & $p$ & 99\%\,дов.\,инт. \\
+\hline
+MKT-RF & 0.93\% {\scriptsize (6.6\%)} & 1.90 & 5.9\% & [-0.0\%, 1.9\%] \\
+SMB    & 1.30\% {\scriptsize (4.9\%)} & 3.58 & <0.1\% & [0.6\%, 2.0\%] \\
+HML    & 0.53\% {\scriptsize (6.8\%)} & 1.05 & 29.4\% & [-0.5\%, 1.5\%] \\
+LIQ    & 0.06\% {\scriptsize (4.4\%)} & 0.20 & 84.5\% & [-0.6\%, 0.7\%] \\
+DP     & 0.07\% {\scriptsize (5.7\%)} & 0.16 & 87.3\% & [-0.8\%, 0.9\%] \\
+SOE    & 0.58\% {\scriptsize (3.6\%)} & 2.00 & 4.8\% & [0.0\%, 1.1\%] \\ \hline
+\end{tabular}
+
+{\scriptsize Месячные доходности 01.2005--04.2020. SOE: 01.2007--12.2019.}
+
+{\scriptsize Данные: ИПЭИ РАНХиГС.}
+
+\justify
+Статистически значимый фактор --- размер (SMB). С натяжкой --- весь рынок (MKT-RF) и частные компании против государственных (SOE). Стоимость (HML), дивидендная доходность (DP) и неликвидность (LIQ), похоже, не дают статистически значимой дополнительной доходности.
+\end{frame}
+
+
+
+\begin{frame}{Факторный анализ доходностей}
+\justify
+Вернёмся к вопросу положительной <<альфы>> лектора. Что будет, если мы добавим в регрессию дополнительные факторы? Сравним две регрессии:
+\begin{align*}
+R_{fund,t} - R_{free,t} &= \alpha + \beta_{mkt}(R_{mkt,t} - R_{free,t}) + \epsilon_t
+\\
+R_{fund,t} - R_{free,t} &= \alpha + \beta_{mkt}(R_{mkt,t} - R_{free,t}) + \beta_{soe}R_{soe,t} + \epsilon_t
+\end{align*}
+
+\centering
+\begin{tabular}{l|l|l}
+Параметр            & Регрессия 1                   & Регрессия 2 \\ \hline
+$\hat{\alpha}$      & 0.12\% {\scriptsize (0.32\%)} & 0.04\% {\scriptsize (0.30\%)} \\
+$\hat{\beta}_{mkt}$ & 0.58 {\scriptsize (0.096)}    & 0.68 {\scriptsize (0.098)} \\
+$\hat{\beta}_{soe}$ & ---                           & 0.28 {\scriptsize (0.10)} \\
+$R^2$               & 0.42                          & 0.49 \\ \hline
+\end{tabular}
+
+{\scriptsize (50 месячных наблюдений 11.2015--12.2019)}
+
+\justify
+<<Альфа>> уменьшилась в 3 раза. Неужели лектор просто не любит госкомпании? Остальные факторы не улучшают регрессию.
+
+
+\end{frame}
+
+
+
+\begin{frame}{Arbitrage Pricing Theory - 1}
+\justify
+Предположим, что есть $k$ торгуемых факторов систематического риска с доходностями $R_i$. Тогда ожидаемая избыточная доходность любого актива должна быть равна
+\begin{align*}
+\mathbb{E}(R_{asset}) - R_{free} = \beta_1\mathbb{E}(R_1) + ... + \beta_k\mathbb{E}(R_k)
+\end{align*}
+
+Пусть это не так, и есть актив с положительной $\alpha$ в регрессии
+\begin{align*}
+R_{asset,t} - R_{free,t} = \alpha + \beta_1R_{1,t} + ... + \beta_kR_{k,t} + \epsilon_t, \epsilon_t \sim \mathcal{N}(0, \sigma_{\epsilon}^2)
+\end{align*}
+
+Инвестор, который стремится совершить арбитраж (заработать деньги из воздуха), купит актив и продаст все факторы в соответствии с весами $\beta_i$:
+\begin{align*}
+R_{asset} - \beta_1 R_{1} - ... - \beta_k R_k = R_{free} + \alpha + \epsilon
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Arbitrage Pricing Theory - 2}
+\justify
+\begin{align*}
+R_{asset} - \beta_1 R_{1} - ... - \beta_k R_k = R_{free} + \alpha + \epsilon
+\end{align*}
+Правая часть -- случайная величина со средним $R_{free} + \alpha$ и стандартным отклонением $\sigma_{\epsilon}$. Таким образом, отношение Шарпа равно $\alpha / \sigma_{\epsilon}$.
+
+\vspace{\baselineskip}
+Если регрессия, из которой мы вычленили $\alpha$ и $\beta_i$, хорошо объясняет доходность актива (имеет высокий $R^2$), то стандартное отклонение ошибки регрессии $\sigma_\epsilon$ будет достаточно малым.
+
+\vspace{\baselineskip}
+Чем лучше факторы объясняют актив, тем выше отношение Шарпа, которое заработает арбитражёр, и тем быстрее арбитражёры исправят ошибку рынка.
+\end{frame}
+
+
+
+\begin{frame}{Индексное инвестирование}
+\justify
+Активное управление портфелем, выбор акций --- игра с нулевой суммой. Чтобы кто-то имел положительную <<альфу>> относительно индекса, кто-то должен иметь отрицательную <<альфу>>. Немногие управляющие бьют индекс, а успех в прошлом чаще всего не означает успех в будущем.
+
+\vspace{\baselineskip}
+Возможно, средний инвестор получит лучший результат (более высокую доходность при том же уровне риска), если купит все акции из индекса и будет зарабатывать рыночную премию за риск. Однако, купить каждую из 500 акций индекса самостоятельно --- довольно проблематично.
+
+\vspace{\baselineskip}
+Индексный паевой фонд (index mutual fund) принимает деньги инвесторов и покупает на них акции, составляющие индекс, в той же пропорции, что и в индексе.
+\end{frame}
+
+
+
+\begin{frame}{Индексное инвестирование}
+\justify
+Задача индексного фонда --- дать возможность инвестору купить <<бету>> с минимальными накладными расходами. Меньше расходы на управление (не нужна армия аналитиков) --- лучше результат инвестора.
+
+\vspace{\baselineskip}
+Задача инвестора --- не искать управляющего, который обеспечит <<альфу>>, и не пытаться создать <<альфу>> самостоятельно, а выбрать <<бету>> (или <<беты>>) и смириться со средней рыночной премией за риск.
+
+
+\vspace{\baselineskip}
+Типичная комиссия за управление индексным фондом в США (не в России) --- единицы или десятки базисных пунктов (1 б.п. = 0.01\%) в год. Например, самый крупный фонд на индекс S\&P\,500 от Vanguard стоит 0.03\% (3 сотых процента) в год.
+\end{frame}
+
+
+
+\begin{frame}{Биржевые фонды}
+\justify
+Биржевые фонды (exchange traded funds) --- паевые фонды, паи (акции) которых торгуются на бирже. Задача ETF такая же, как у обычного индексного фонда --- дать инвестору возможность купить индекс с минимальными расходами.
+
+\justify
+Цена на пай ETF определяется спросом и предложением на рынке. Гипотетически, на идеальном рынке цена (market price) пая ETF всегда в точности равна цене акций, которыми владеет ETF (net asset value, NAV).
+
+\justify
+Чтобы помочь невидимой руке рынка уравнять цену пая с ценой акций из индекса, фонд назначает авторизованных участников (authorized participants). Эти участники имеют право получать и гасить паи фонда в обмен на корзины акций из индекса.
+\end{frame}
+
+
+
+\begin{frame}{Роль авторизованных участников - 1}
+\justify
+Ситуация 1: пай фонда стоит дороже корзины акций. Авторизованный участник покупает акции с рынка, меняет их на пай фонда, продаёт пай на рынке.
+
+\vspace{\baselineskip}
+\centering
+\begin{tikzpicture}
+\draw (0, 1.2) node{Ромашка ETF};
+\draw[rounded corners] (-1.3, 1.6) rectangle (1.3, -1);
+\draw (0, 0.6) node[rectangle,rounded corners,draw,minimum width=2.2cm]{GOOG};
+\draw (0, 0) node[rectangle,rounded corners,draw,minimum width=2.2cm]{DBK.DE};
+\draw (0, -0.6) node[rectangle,rounded corners,draw,minimum width=2.2cm]{AAPL};
+
+\draw (4.1, 0.3) node[rectangle,rounded corners,draw,minimum width=2.2cm,minimum height=2.6cm]{\begin{tabular}{c}Автори-\\зованный\\участник\end{tabular}};
+
+\draw[->,>=triangle 90] (1.3, 1.2) -- (3, 1.2) node[pos=0.5,anchor=south]{пай};
+
+\draw[->,>=triangle 90] (3, -0.6) -- (1.3, -0.6) node[pos=0.5,anchor=north]{\scriptsize \begin{tabular}{c}
+GOOG \\ DBK.DE \\ AAPL
+\end{tabular}};
+
+\draw[->,>=triangle 90] (5.2, 1.2) -- (6.9, 1.2) node[pos=0.5,anchor=south]{пай};
+
+\draw[->,>=triangle 90] (6.9, -0.6) -- (5.2, -0.6) node[pos=0.5,anchor=north]{\scriptsize \begin{tabular}{c}
+GOOG \\ DBK.DE \\ AAPL
+\end{tabular}};
+
+\draw (8, 0.3) node[rectangle,rounded corners,draw,minimum width=2.2cm,minimum height=2.6cm]{Рынок};
+
+\end{tikzpicture}
+
+\justify
+Цена корзины акций растёт, цена пая фонда снижается.
+
+\end{frame}
+
+
+
+\begin{frame}{Роль авторизованных участников - 2}
+\justify
+Ситуация 2: пай фонда стоит дешевле корзины акций. Авторизованный участник покупает пай фонда на рынке, меняет его на корзину акций, продаёт акции на рынке.
+
+\vspace{\baselineskip}
+\centering
+\begin{tikzpicture}
+\draw (0, 1.2) node{Ромашка ETF};
+\draw[rounded corners] (-1.3, 1.6) rectangle (1.3, -1);
+\draw (0, 0.6) node[rectangle,rounded corners,draw,minimum width=2.2cm]{GOOG};
+\draw (0, 0) node[rectangle,rounded corners,draw,minimum width=2.2cm]{DBK.DE};
+\draw (0, -0.6) node[rectangle,rounded corners,draw,minimum width=2.2cm]{AAPL};
+
+\draw (4.1, 0.3) node[rectangle,rounded corners,draw,minimum width=2.2cm,minimum height=2.6cm]{\begin{tabular}{c}Автори-\\зованный\\участник\end{tabular}};
+
+\draw[<-,>=triangle 90] (1.3, 1.2) -- (3, 1.2) node[pos=0.5,anchor=south]{пай};
+
+\draw[<-,>=triangle 90] (3, -0.6) -- (1.3, -0.6) node[pos=0.5,anchor=north]{\scriptsize \begin{tabular}{c}
+GOOG \\ DBK.DE \\ AAPL
+\end{tabular}};
+
+\draw[<-,>=triangle 90] (5.2, 1.2) -- (6.9, 1.2) node[pos=0.5,anchor=south]{пай};
+
+\draw[<-,>=triangle 90] (6.9, -0.6) -- (5.2, -0.6) node[pos=0.5,anchor=north]{\scriptsize \begin{tabular}{c}
+GOOG \\ DBK.DE \\ AAPL
+\end{tabular}};
+
+\draw (8, 0.3) node[rectangle,rounded corners,draw,minimum width=2.2cm,minimum height=2.6cm]{Рынок};
+
+\end{tikzpicture}
+
+\justify
+Цена корзины акций снижается, цена пая фонда растёт.
+
+\end{frame}
+
+
+
+\begin{frame}{Специфические риски биржевых фондов}
+\justify
+Механизм авторизованных участников может дать сбой в кризис. Лектор имеет радость владеть ETF-ом облигаций, который просел относительно net asset value на 6\% в марте 2020 г. Если бы в этот момент лектору срочно понадобились деньги, было бы очень обидно.
+
+\justify
+Чтобы заработать что-то большее, чем минимальная комиссия за управление, многие фонды одалживают ценные бумаги желающим продать их в короткую (margin lending). Гипотетически, возможен сценарий, когда фонду не вернут бумаги и он понесёт убытки.
+
+\justify
+Некоторые фонды (особенно фонды золота и биржевых товаров) являются <<синтетическими>>. Внутри --- не корзина товаров, а дериватив, total return swap с крупным банком. У инвестора фонда возникает кредитный риск на банк.
+\end{frame}
+
+
+
+\begin{frame}{Роль активного управления}
+\justify
+Могут ли все-все-все инвесторы инвестировать только в индекс? Вряд ли. Кто же будет оценивать отдельные акции относительно друг друга, покупать хорошие компании и продавать плохие?
+
+\justify
+На рынке есть неэффективности (inefficiencies) и несовершенства (imperfections). У вас будет шанс заработать премию за риск, который не могут или не хотят взять другие, если на вас не распространяются некоторые регуляторные ограничения, если у вас другая чувствительность к риску, или есть конкурентное преимущество в технологиях.
+
+\justify
+Впрочем, затраты на поиск и эксплуатацию несовершенств рынка могут превысить ожидаемую премию за риск.
+
+\justify
+Подробнее в Pedersen <<Efficiently Inefficient>> (2015).
+\end{frame}
+
+
+
+\begin{frame}{Выводы и рекомендации}
+\begin{itemize}
+\justifying
+\item Диверсифицируйтесь! По классам активов, по валютам, по брокерам и банкам, по странам.
+\item Не вкладывайте всю сумму разом. Регулярные небольшие взносы уменьшают риск просидеть без доходности 15 лет.
+\item Всегда оценивайте, какой риск вы (или ваш управляющий) берёте на себя, вознаграждается ли этот риск рынком, и почему вы готовы его держать, а продавец актива --- нет.
+\item Если вы не торгуете 8/5, то задумайтесь об индексном инвестировании через дешёвый ПИФ или ETF.
+\item Выберите такой уровень риска (например, соотношение акции/облигации), при котором вы, с вашей личной чувствительностью к риску, сможете крепко спать по ночам.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Личный опыт}
+\justify
+Портфель <<Сам себе пенсионный фонд>>: Vanguard VT (FTSE Global All Cap), FinEx FXUS (MSCI USA), FXCN (MSCI China), FXDE (MSCI Germany). Автоматическое пополнение на 10\% от зарплаты и премий (когда они есть).
+
+\justify
+Портфель <<Когда нет индексного фонда>>: акции на Московской бирже. AFLT, AKRN, GCHE, GMKN, LKOH, MOEX, MTSS, TATNP, UPRO.
+
+\justify
+Портфель <<Облигации>>: инфляционные ОФЗ-ИН 52001.
+
+\justify
+Портфель <<Отток капитала>>: iShares IVV (S\&P\,500), iShares IGSB (1-3Y Corp Bonds), Xtrackers DX2X (STOXX 600), Xtrackers D5BG (EUR Corp Bonds).
+
+\justify
+Акции/облигации: 35/65. Рубли/доллары/евро: 33/33/33.
+\end{frame}
+
+
+
+\begin{frame}{Дальнейшее чтение}
+\begin{itemize}
+\justifying
+
+
+\item Горяев, Чумаченко. <<Финансовая грамота>> (2012).
+\item Pedersen. <<Efficiently Inefficient>> (2015).
+\item Cochrane. <<Asset Pricing: Revised Edition>> (2005).
+\item Welch. <<Investments>> (2009).
+\item Bali, Engle, Murray. <<Empirical Asset Pricing>> (2016).
+\end{itemize}
+\end{frame}
+
+\end{document}
+
+

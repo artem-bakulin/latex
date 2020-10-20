@@ -9,3 +9,7 @@
 *.run.xml
 *.synctex.gz
 *.tmp
+*.nav
+*.snm
+*.toc
+
