@@ -1,0 +1,7 @@
+* text=auto
+*.R text
+*.tex text
+*.csv text
+*.bib text
+*.txt text
+
