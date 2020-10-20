@@ -1,0 +1,61 @@
+\documentclass[a4paper,14pt]{extarticle}
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf			
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage[english, russian]{babel}
+
+\usepackage[hyphens]{url}
+\urlstyle{same}
+\usepackage{hyperref}
+
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+
+%\def\ishtml{1}
+\ifdefined\ishtml
+  % HTML mode
+  \newcommand{\urlnote}[2]{\href{#2}{#1}} % Make cool link 
+  \newcommand{\smallsep}{thinspace} % to be replaced with unicode 8239 later
+\else
+  % PDF mode
+   \usepackage{libertine}
+   \usepackage{libertinust1math}
+   \newcommand{\urlnote}[2]{#1\endnote{\url{#2}}}  % Put URLs to endnotes
+   \newcommand{\smallsep}{\kern 0.1em}
+\fi
+
+% Move footnotes to end of document
+\usepackage[backref=true]{enotez}
+\DeclareTranslation{russian}{enotez-title}{Примечания}
+
+\usepackage[
+	output-decimal-marker={,},
+	group-separator={\smallsep},
+	group-minimum-digits=3
+]{siunitx}
+
+% Shoot me if I know a better way to make decimal groups of two
+\newcommand{\rateone}[1]{\num{#1}}
+\newcommand{\ratetwo}[2]{\num{#1}\smallsep#2}
+\newcommand{\ratethree}[3]{\num{#1}\smallsep#2\smallsep#3}
+
+\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
+\newcommand{\ruen}[2]{#1 (\en{#2})}
+
+\usepackage[style=alphabetic, backend=biber]{biblatex}
+\addbibresource{index.bib}
+\renewcommand*{\bibfont}{\small}
+\setcounter{biburllcpenalty}{9000}
+\setcounter{biburlucpenalty}{9500}
+
+\author{Артём Бакулин}
+\date{\today}
