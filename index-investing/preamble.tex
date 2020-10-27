@@ -16,6 +16,16 @@
 \usepackage{mathtools}
 \usepackage[normalem]{ulem}
 
+\usepackage[titles]{tocloft}
+\setlength{\cftbeforesecskip}{2pt} % Remove spacing in table of contents
+
+\numberwithin{equation}{section} % Use section number in equation numbers
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\usepackage{titlesec}
+\newcommand{\sectionbreak}{\clearpage} % Start new page with each section
+
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usetikzlibrary{arrows}
