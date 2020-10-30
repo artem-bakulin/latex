@@ -16,15 +16,15 @@
 \usepackage{mathtools}
 \usepackage[normalem]{ulem}
 
-\usepackage[titles]{tocloft}
-\setlength{\cftbeforesecskip}{2pt} % Remove spacing in table of contents
+%\usepackage[titles]{tocloft}
+%\setlength{\cftbeforesecskip}{0pt} % Remove spacing in table of contents
 
 \numberwithin{equation}{section} % Use section number in equation numbers
 \numberwithin{figure}{section}
 \numberwithin{table}{section}
 
-\usepackage{titlesec}
-\newcommand{\sectionbreak}{\clearpage} % Start new page with each section
+%\usepackage{titlesec}
+%\newcommand{\sectionbreak}{\clearpage} % Start new page with each section
 
 \usepackage{tikz}
 \usepackage{pgfplots}
@@ -45,7 +45,7 @@
 \fi
 
 % Move footnotes to end of document
-\usepackage[backref=true]{enotez}
+\usepackage[backref=true, totoc=section]{enotez}
 \DeclareTranslation{russian}{enotez-title}{Примечания}
 
 \usepackage[
