@@ -85,8 +85,8 @@ ru_factors_normalized %>%
     return_std = sd(return),
     t_stat = t.test(return, mu=0)[["statistic"]],
     p_value = t.test(return, mu=0)[["p.value"]],
-    ci99_L = t.test(return, conf.int=0.99)[["conf.int"]][[1]],
-    ci99_R = t.test(return, conf.int=0.99)[["conf.int"]][[2]],
+    ci99_L = t.test(return, conf.level=0.99)[["conf.int"]][[1]],
+    ci99_R = t.test(return, conf.level=0.99)[["conf.int"]][[2]],
     n_obs = n(),
     from = min(month),
     to = max(month)
@@ -94,7 +94,7 @@ ru_factors_normalized %>%
   transmute(
     latex_format = paste(
       toupper(factor),
-      sprintf("%.1f\\%%", return_mean*100),
+      sprintf("%.2f\\%%", return_mean*100),
       sprintf("%.1f\\%%", return_std*100),
       sprintf("%.2f", t_stat), 
       if_else(p_value >= 0.001, sprintf("%.1f\\%%", p_value*100), "<0.1\\%"),

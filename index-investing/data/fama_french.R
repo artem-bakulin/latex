@@ -112,8 +112,8 @@ summarize_annual_returns <- function (data) {
       return_std = sd(return),
       t_stat = t.test(return)[["statistic"]],
       p_value = t.test(return)[["p.value"]],
-      ci99_L = t.test(return, conf.int=0.99)[["conf.int"]][[1]],
-      ci99_R = t.test(return, conf.int=0.99)[["conf.int"]][[2]],
+      ci99_L = t.test(return, conf.level=0.99)[["conf.int"]][[1]],
+      ci99_R = t.test(return, conf.level=0.99)[["conf.int"]][[2]],
       sharpe_ratio = return_mean / return_std,
       sortino_ratio = sortino_ratio(return),
       return_geom_mean = prod(1 + return) ^ (1/n()) - 1
