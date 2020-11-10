@@ -1,0 +1,11 @@
+settings.tex4ht_sty_par = "simple, NoFonts, -css, charset=utf-8, mathjax"
+settings.tex4ht_par = " -cunihtf -utf8"
+settings.latex_par = "-interaction=nonstopmode"
+
+local filter  = require "make4ht-filter"
+local change_braces = function(s) return s:gsub("%s%)",")") end
+local change_spaces = function(s) return s:gsub("thinspace","&#8239;") end
+local process = filter{"cleanspan", "fixligatures", change_braces, change_spaces}
+
+Make:htlatex()
+Make:match("html$", process)
