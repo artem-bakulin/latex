@@ -1,7 +1,7 @@
 \documentclass[a4paper,14pt]{extarticle}
 \usepackage{cmap}				% To be able to copy-paste russian text from pdf			
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\usepackage[T2A]{fontenc}
 \usepackage[margin=1in]{geometry}
 \usepackage[english, russian]{babel}
 
@@ -26,6 +26,7 @@
 
 \usepackage{tikz}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
 \usetikzlibrary{arrows}
 \usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
 
@@ -62,11 +63,15 @@
 \newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
 \newcommand{\ruen}[2]{#1 (\en{#2})}
 
+\usepackage{csquotes}
 \usepackage[style=alphabetic, backend=biber]{biblatex}
 \addbibresource{index.bib}
 \renewcommand*{\bibfont}{\small}
 \setcounter{biburllcpenalty}{9000}
 \setcounter{biburlucpenalty}{9500}
+
+\clubpenalty 10000
+\widowpenalty 10000
 
 \author{Артём Бакулин}
 \date{\today}
