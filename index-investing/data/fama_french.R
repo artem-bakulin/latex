@@ -67,7 +67,7 @@ if (!file.exists("fama_french_four_factors_data.csv")) {
 fama_french_four_factors_data <- read_csv("fama_french_four_factors_data.csv")
 
 curl_download(
-  "https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=1168&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=CPIAUCNS&scale=left&cosd=1913-01-01&coed=2020-09-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Monthly&fam=avg&fgst=lin&fgsnd=2020-02-01&line_index=1&transformation=lin&vintage_date=2020-10-20&revision_date=2020-10-20&nd=1913-01-01",
+  "https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=1168&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=CPIAUCNS&scale=left&cosd=1913-01-01&coed=2020-12-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Monthly&fam=avg&fgst=lin&fgsnd=2020-02-01&line_index=1&transformation=lin&vintage_date=2021-02-09&revision_date=2021-02-09&nd=1913-01-01",
   "CPIAUCNS.csv"
 )
 
@@ -164,6 +164,20 @@ annual_returns_summary %>%
     )
   )
 
+annual_returns_summary %>% 
+  filter(factor == "mkt_rf") %>% 
+  transmute(
+    latex_format = paste(
+      period,
+      sprintf("%.1f\\%%", return_mean*100),
+      sprintf("%.1f\\%%", return_std*100),
+      sprintf("%.1f\\%%", return_geom_mean*100),
+      sprintf("%.2f", sharpe_ratio),
+      sprintf("%.2f", sortino_ratio),
+      sep = " & "
+    )
+  )
+
 cumulative_growth_data <- fama_french_four_factors_data %>% 
   bind_rows(
     tibble(
@@ -191,6 +205,7 @@ cumulative_growth_data <- fama_french_four_factors_data %>%
 cumulative_growth_data %>% 
   write_csv("fama_french_cumulative_growth_data.csv")
 
+set.seed(1)
 sample_annualized_returns <- function(x, periods_per_year=12, years=1, n=50) {
   
   replicate(

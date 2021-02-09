@@ -670,36 +670,92 @@ Index = \dfrac{\sum P_iQ_i}{D}
 
 
 
+    \newcommand{\addGrowthPlot}[4]{
+        \addplot[
+            color = #2,
+            line width = 1pt, 
+            mark = #3,
+            mark repeat = 120,
+            mark phase = 396,
+            mark options = {scale=2},
+            style = #4
+        ]
+        table[
+            x = date,
+            y = #1,
+            col sep = comma
+        ]
+        {data/fama_french_cumulative_growth_data.csv};
+    }
+    
+    \newcommand{\addFlatLine}[5] {
+        \draw[
+            red,
+            thick
+        ]
+        (axis cs: #1, #3) -- (axis cs: #2, #3)
+        node[
+            pos=#5,
+            anchor=south
+        ]
+        {\scriptsize #4};
+    }
+    
+    \newcommand{\addLossLine}[5] {
+        \draw[
+            red,
+            thick
+        ]
+        (axis cs: #1, #3) -- (axis cs: #2, #4)
+        node[
+            anchor=west
+        ]
+        {\scriptsize #5\%};
+    }
+
 \begin{frame}{Рыночная премия за риск - 2}
 \centering
 
 \begin{tikzpicture}
 \begin{axis}[
-  width=\textwidth,
-  height=\textheight - 1cm,
-  date coordinates in=x,
-  date ZERO=1926-06-30,
-  xtick={1940-01-01,1960-01-01,1980-01-01,2000-01-01,2020-01-01},
-  minor xtick={1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
-  xticklabel=\year,
-  grid=both,
-  xmin=1926-06-30,
-  xmax=2025-01-01,
-  ymode=log,
-  log ticks with fixed point,
-  ylabel={\small{Рост \$1 сверх безрисковой ставки}},
-  xlabel near ticks,
-  ylabel near ticks
+    width=\textwidth,
+    height=\textheight - 1cm,
+    date coordinates in=x,
+    date ZERO=1926-06-30,
+    xtick={1930-01-01,1940-01-01,1950-01-01,1960-01-01,1970-01-01,1980-01-01,1990-01-01,2000-01-01,2010-01-01,2020-01-01},
+    minor xtick={1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+    xticklabel=\year,
+    grid=both,
+    xmin=1926-12-31,
+    xmax=2025-01-01,
+    ymode=log,
+    ymax=10000,
+    log ticks with fixed point,
+    ylabel={\small Рост \$1 начальных инвестиций},
+    ylabel shift = -10pt,
+    legend entries={
+        Рынок акций,
+        Акции минус облигации,
+        Безрисковые облигации,
+        Инфляция (CPI-U)
+    },
+    legend pos=north west,
+    legend style={font=\scriptsize},
+    legend cell align={left}
 ]
-\addplot[color=blue, mark=none, thick] table[x=date, y=mkt_rf, col sep=comma]{data/fama_french_cumulative_growth_data.csv};
+    
+    \addGrowthPlot{mkt}{Set1-B}{none}{solid}
+    \addGrowthPlot{mkt_rf}{Set1-C}{none}{solid}
+    \addGrowthPlot{rf}{Set1-D}{none}{solid}
+    \addGrowthPlot{cpi}{Set1-E}{none}{dashed}
 
-\draw[red] (axis cs: 1929-08-31, 2.27) -- (axis cs: 1945-02-28, 2.27) node[pos=0.5,anchor=south]{\scriptsize{1929-45}};
-\draw[red] (axis cs: 1968-11-30, 28.28) -- (axis cs: 1983-04-30, 28.28) node[pos=0.5,anchor=south]{\scriptsize{1968-83}};
-\draw[red] (axis cs: 2000-03-31, 148.33) -- (axis cs: 2013-01-31, 148.33) node[pos=0.5,anchor=south]{\scriptsize{2000-13}};
+    \addFlatLine{1929-08-31}{1945-02-28}{2.10}{1929--45}{0.5}
+    \addFlatLine{1968-11-30}{1983-04-30}{26.2}{1968--83}{0.9}
+    \addFlatLine{2000-03-31}{2013-01-31}{137}{2000--13}{0.5}
 
-\draw[red] (axis cs: 1929-08-31, 2.27) -- (axis cs: 1932-06-30, 0.348) node[anchor=west]{\scriptsize{-85\%}};
-\draw[red] (axis cs: 1968-11-30, 28.28) -- (axis cs: 1974-09-30, 12.5) node[anchor=west]{\scriptsize{-56\%}};
-\draw[red] (axis cs: 2000-03-31, 148.33) -- (axis cs: 2009-02-28, 67.7) node[anchor=west]{\scriptsize{-54\%}};
+    \addLossLine{1929-08-31}{1932-06-30}{2.10}{0.322}{-85}
+    \addLossLine{1968-11-30}{1974-09-30}{26.2}{11.6}{-56}
+    \addLossLine{2000-03-31}{2009-02-28}{137}{62.7}{-54}
 \end{axis}
 \end{tikzpicture}
 
@@ -710,14 +766,14 @@ Index = \dfrac{\sum P_iQ_i}{D}
 
 \begin{frame}{Рыночная премия за риск - 3}
 \centering
-\begin{tabular}{l|r|r|r|c}
+\begin{tabular}{l|r|r|r|r}
 Период & Сред. (ст. откл.) & $t$-тест & $p$-знач. & 99\% дов. инт. \\
 \hline
 1927--1959 & 11.3\% (24.9\%) & 2.61 &  1.4\% & [-0.6\%, 23.2\%] \\
 1960--1989 &  5.2\% (16.9\%) & 1.69 & 10.3\% & [-3.3\%, 13.7\%] \\
-1990--2020 &  9.0\% (17.7\%) & 2.81 &  0.9\% & [ 0.2\%, 17.7\%] \\
-1960--2020 &  7.1\% (17.3\%) & 3.21 &  0.2\% & [ 1.2\%, 13.0\%] \\ \hline
-1927--2020 &  8.6\% (20.2\%) & 4.11 & <0.1\% & [ 3.1\%, 14.1\%]
+1990--2020 &  9.4\% (17.9\%) & 2.90 &  0.7\% & [ 0.5\%, 18.2\%] \\
+1960--2020 &  7.3\% (17.4\%) & 3.28 &  0.2\% & [ 1.4\%, 13.2\%] \\ \hline
+1927--2020 &  8.7\% (20.3\%) & 4.16 & <0.1\% & [ 3.2\%, 14.2\%] 
 \end{tabular}
 {\scriptsize Годовые доходности сверх безрисковой процентной ставки.
 
@@ -739,7 +795,7 @@ Index = \dfrac{\sum P_iQ_i}{D}
     group style = {group size = 2 by 1},
     width = \textwidth / 2,
 	 ybar,
-	 ymin = -50, ymax = 50,
+	 ymin = -30, ymax = 50,
 	 xmin = 0.5, xmax = 50.5,
 	 xlabel={\small Номер сценария},
 	 ylabel={\small Годовая доходность, \%},
@@ -749,10 +805,10 @@ Index = \dfrac{\sum P_iQ_i}{D}
 ]
     
     \nextgroupplot[title = {Актив A}]
-    \addplot[bar width=1pt, fill, color=blue] table[x=mkt_1y_rank, y=sample_mkt_1y, col sep=comma] {data/simulated_market_annual_returns.csv};
+    \addplot[bar width=1pt, fill, color=Set1-B] table[x=mkt_1y_rank, y=sample_mkt_1y, col sep=comma] {data/simulated_market_annual_returns.csv};
     
     \nextgroupplot[title = {Актив B}, ylabel={}]
-    \addplot[bar width=1pt, fill, color=blue] table[x=rf_1y_rank, y=sample_rf_1y, col sep=comma] {data/simulated_market_annual_returns.csv};
+    \addplot[bar width=1pt, fill, color=Set1-B] table[x=rf_1y_rank, y=sample_rf_1y, col sep=comma] {data/simulated_market_annual_returns.csv};
     
 \end{groupplot}
 \end{tikzpicture}
@@ -770,7 +826,7 @@ Index = \dfrac{\sum P_iQ_i}{D}
     group style = {group size = 2 by 1},
     width = \textwidth / 2,
 	 ybar,
-	 ymin = 0, ymax = 25,
+	 ymin = 0, ymax = 20,
 	 xmin = 0.5, xmax = 50.5,
 	 xlabel={\small Номер сценария},
 	 ylabel={\small Годовая доходность, \%},
@@ -780,10 +836,10 @@ Index = \dfrac{\sum P_iQ_i}{D}
 ]
     
     \nextgroupplot[title = {Актив C}]
-    \addplot[bar width=1pt, fill, color=blue] table[x=mkt_15y_rank, y=sample_mkt_15y, col sep=comma] {data/simulated_market_annual_returns.csv};
+    \addplot[bar width=1pt, fill, color=Set1-B] table[x=mkt_15y_rank, y=sample_mkt_15y, col sep=comma] {data/simulated_market_annual_returns.csv};
     
     \nextgroupplot[title = {Актив D}, ylabel={}]
-    \addplot[bar width=1pt, fill, color=blue] table[x=rf_15y_rank, y=sample_rf_15y, col sep=comma] {data/simulated_market_annual_returns.csv};
+    \addplot[bar width=1pt, fill, color=Set1-B] table[x=rf_15y_rank, y=sample_rf_15y, col sep=comma] {data/simulated_market_annual_returns.csv};
     
 \end{groupplot}
 \end{tikzpicture}
@@ -846,11 +902,11 @@ Geom Mean = \left(\prod\limits_{t=1}^{n}(1 + R_{portfolio,t} - R_{free,t}) \righ
 Отнош. \\
 & сред. & & сред. & Шарпа & Сортино \\ 
 \hline
-1927--1959 & 11.2\% & 24.9\% & 8.3\% & 0.45 & 1.00 \\
+1927--1959 & 11.3\% & 24.9\% & 8.3\% & 0.45 & 1.00 \\
 1960--1989 &  5.2\% & 16.9\% & 3.8\% & 0.31 & 0.58 \\
-1990--2020 &  9.0\% & 17.7\% & 7.4\% & 0.51 & 1.02 \\
-1960--2020 &  7.1\% & 17.3\% & 5.6\% & 0.41 & 0.80 \\ \hline
-1927--2020 &  8.6\% & 20.2\% & 6.5\% & 0.42 & 0.88 \\
+1990--2020 &  9.4\% & 17.9\% & 7.8\% & 0.52 & 1.06 \\
+1960--2020 &  7.3\% & 17.4\% & 5.8\% & 0.42 & 0.82 \\ \hline
+1927--2020 &  8.7\% & 20.3\% & 6.7\% & 0.43 & 0.89
 \end{tabular}
 
 {\scriptsize Годовые доходности сверх безрисковой процентной ставки.
@@ -1036,41 +1092,61 @@ R_{fund,t} - R_{free,t} = \alpha + \beta(R_{mkt,t} - R_{free,t}) + \epsilon_t, \
 \end{frame}
 
 
-
+    \newcommand{\addFactorPlot}[3]{
+        \addplot[
+            color=#2,
+            mark=#3,
+            line width=1pt,
+            mark repeat=120,
+            mark phase=36,
+            mark options={scale=2}
+        ]
+        table [
+            x = date,
+            y = #1,
+            col sep=comma
+        ]
+        {data/fama_french_cumulative_growth_data.csv};
+    }
+    
 \begin{frame}{Доходности факторных портфелей - 1}
 \centering
-\begin{tikzpicture}
-\begin{axis}[
-  width=\textwidth,
-  height=\textheight - 1cm,
-  date coordinates in=x,
-  date ZERO=1926-06-30,
-  xtick={1940-01-01,1960-01-01,1980-01-01,2000-01-01,2020-01-01},
-  minor xtick={1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
-  xticklabel=\year,
-  grid=both,
-  xmin=1926-06-30,
-  xmax=2025-01-01,
-  ymode=log,
-  log ticks with fixed point,
-  ylabel={\small{Рост \$1 начальных инвестиций}},
-  xlabel near ticks,
-  ylabel near ticks,
-  legend entries={
-    SMB (Small Minus Big),
-    HML (High Minus Low),
-    MOM (Momentum)
-  },
-  legend pos=north west,
-  legend style={font=\tiny},
-  legend cell align={left}
-]
-\addplot[color=blue, mark=none, thick] table[x=date, y=smb, col sep=comma]{data/fama_french_cumulative_growth_data.csv};
-\addplot[color=red, mark=none, thick] table[x=date, y=hml, col sep=comma]{data/fama_french_cumulative_growth_data.csv};
-\addplot[color=orange, mark=none, thick] table[x=date, y=mom, col sep=comma]{data/fama_french_cumulative_growth_data.csv};
+    \begin{tikzpicture}
+    \begin{axis}[
+        width=\textwidth,
+        height=\textheight - 1cm,
+        date coordinates in=x,
+        date ZERO=1926-06-30,
+        xtick={1930-01-01,1940-01-01,1950-01-01,1960-01-01,1970-01-01,1980-01-01,1990-01-01,2000-01-01,2010-01-01,2020-01-01},
+        minor xtick={1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+        xticklabel=\year,
+        grid=both,
+        xmin=1926-12-31,
+        xmax=2025-01-01,
+        ymode=log,
+        ymax=1000,
+        log ticks with fixed point,
+        ylabel={\small Рост \$1 начальных инвестиций},
+        ylabel shift = -10pt,
+        legend entries={
+            MOM (MOMentum),
+            HML (High B/M Minus Low B/M),
+            SMB (Small Minus Big)
+        },
+        legend pos=north west,
+        legend style={font=\scriptsize},
+        legend cell align={left}
+    ]
 
-\end{axis}
-\end{tikzpicture}
+
+    \addFactorPlot{mom}{Set1-A}{none}
+
+    \addFactorPlot{hml}{Set1-B}{none}
+    
+    \addFactorPlot{smb}{Set1-C}{none}
+
+    \end{axis}
+    \end{tikzpicture}
 {\scriptsize Данные: Kenneth French Data Library.}
 \end{frame}
 
@@ -1078,27 +1154,29 @@ R_{fund,t} - R_{free,t} = \alpha + \beta(R_{mkt,t} - R_{free,t}) + \epsilon_t, \
 
 \begin{frame}{Доходности факторных портфелей - 2}
 \centering
+\small
 \begin{tabular}{l|l|r|r|r|c}
-Фактор & Период & Сред.\,{\scriptsize (cт.\,откл.)} & $t$ & $p$ & 99\%\,дов.\,инт.\\ \hline
-SMB & 1927--59 & 3.4\% {\scriptsize (13.6\%)}  & 1.41 & 16.7\% & [-1.5\%, 8.2\%] \\
-    & 1960--89 & 3.3\% {\scriptsize (13.9\%)}  & 1.29 & 20.9\% & [-1.9\%, 8.4\%] \\
-    & 1990--20 & 0.8\% {\scriptsize (9.2\%)}   & 0.49 & 62.7\% & [-2.6\%, 4.2\%] \\
-    & 1960--20 & 2.0\% {\scriptsize (11.7\%)}  & 1.34 & 18.4\% & [-1.0\%, 5.0\%] \\
-    & 1927--20 & 2.5\% {\scriptsize (12.4\%)}  & 1.95 & 5.4\%  & [-0.0\%, 5.0\%] \\
+Фактор & Период & Сред.\,(ст.\,откл.) & $t$-тест & $p$-знач. & 99\%\,дов.\,инт.\\ \hline
+SMB & 1927--59 &  3.4\% (13.6\%) & 1.43 & 16.4\% & [-3.1\%,  9.9\%] \\    
+    & 1960--89 &  3.2\% (13.8\%) & 1.28 & 21.2\% & [-3.7\%, 10.2\%] \\
+    & 1990--20 &  1.3\% ( 9.5\%) & 0.79 & 43.6\% & [-3.3\%,  6.0\%] \\    
+    & 1960--20 &  2.3\% (11.8\%) & 1.51 & 13.7\% & [-1.7\%,  6.3\%] \\ 
+    & 1927--20 &  2.7\% (12.4\%) & 2.08 &  4.0\% & [-0.7\%,  6.0\%] \\    
 \hline
-HML & 1927--59 & 5.1\% {\scriptsize (14.1\%)}  & 2.07 & 4.7\%  & [0.1\%, 10.0\%] \\
-    & 1960--89 & 6.1\% {\scriptsize (11.1\%)}  & 3.03 & 0.5\%  & [2.0\%, 10.3\%] \\
-    & 1990--20 & 1.2\% {\scriptsize (15.3\%)}  & 0.42 & 67.7\% & [-4.5\%, 6.8\%] \\
-    & 1960--20 & 3.6\% {\scriptsize (13.5\%)}  & 2.08 & 4.1\%  & [0.1\%, 7.1\%] \\
-    & 1927--20 & 4.1\% {\scriptsize (13.7\%)}  & 2.92 & 0.4\%  & [1.3\%, 6.9\%] \\
+HML & 1927--59 &  5.0\% (14.1\%) & 2.05 &  4.8\% & [-1.7\%, 11.7\%] \\    
+    & 1960--89 &  6.1\% (11.0\%) & 3.04 &  0.5\% & [ 0.6\%, 11.6\%] \\     
+    & 1990--20 &  1.1\% (15.1\%) & 0.41 & 68.2\% & [-6.4\%,  8.6\%] \\    
+    & 1960--20 &  3.6\% (13.4\%) & 2.08 &  4.2\% & [-1.0\%,  8.1\%] \\     
+    & 1927--20 &  4.1\% (13.6\%) & 2.91 &  0.4\% & [ 0.4\%,  7.8\%] \\      
 \hline
-MOM & 1927--59 & 7.4\% {\scriptsize (17.8\%)}  & 2.40 & 2.3\%  & [1.1\%, 13.7\%] \\
-    & 1960--89 & 10.5\% {\scriptsize (12.8\%)} & 4.49 & 0.0\%  & [5.7\%, 15.2\%] \\
-    & 1990--20 & 6.6\% {\scriptsize (16.4\%)}  & 2.24 & 3.3\%  & [0.6\%, 12.6\%] \\
-    & 1960--20 & 8.5\% {\scriptsize (14.7\%)}  & 4.50 & <0.1\%  & [4.7\%, 12.3\%] \\
-    & 1927--20 & 8.1\% {\scriptsize (15.8\%)}  & 4.98 & <0.1\%  & [4.9\%, 11.4\%] \\
+MOM & 1927--59 &  7.4\% (17.8\%) & 2.40 &  2.3\% & [-1.1\%, 15.9\%] \\    
+    & 1960--89 & 10.5\% (12.8\%) & 4.49 & <0.1\% & [ 4.0\%, 16.9\%] \\ 
+    & 1990--20 &  6.0\% (16.3\%) & 2.06 &  4.8\% & [-2.0\%, 14.1\%] \\  
+    & 1960--20 &  8.2\% (14.7\%) & 4.35 & <0.1\% & [ 3.2\%, 13.2\%] \\  
+    & 1927--20 &  7.9\% (15.8\%) & 4.87 & <0.1\% & [ 3.7\%, 12.2\%] \\  
 \hline
 \end{tabular}
+
 {\scriptsize Годовые доходности 1927--2020. Данные: Kenneth French Data Library}
 \end{frame}
 
