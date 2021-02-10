@@ -929,6 +929,69 @@ Welch, Goyal (2008): отношения P/E (цена акции к прибыл
 
 
 
+
+\begin{frame}{Пример: cyclically adjusted price-earnings (CAPE)}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=\textwidth,
+    height=\textheight - 1cm,
+    date coordinates in=x,
+    date ZERO=1880-01-01,
+    xtick={1880-01-01,1900-01-01,1920-01-01,1940-01-01,1960-01-01,1980-01-01,2000-01-01,2020-01-01},
+    minor xtick={1890-01-01,1910-01-01,1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+    xticklabel=\year,
+    grid=both,
+    xmin=1880-01-01,
+    xmax=2025-01-01,
+    ylabel={\small Cyclically adjusted P/E},
+    %ylabel shift = -10pt,
+    %legend entries={
+    %    Рынок акций,
+    %    Акции минус облигации,
+    %    Безрисковые облигации,
+    %    Инфляция (CPI-U)
+    %},
+    %legend pos=north west,
+    %legend style={font=\scriptsize},
+    %legend cell align={left}
+]
+    
+        \addplot[
+            color = Set1-B,
+            line width = 1pt
+        ]
+        table[
+            x = month,
+            y = shiller_cape,
+            col sep = comma
+        ]
+        {data/shiller_cape.csv};
+\end{axis}
+\end{tikzpicture}
+{\scriptsize Данные: Robert Shiller.}
+\end{frame}
+
+
+
+\begin{frame}{Цена к прибыли и другие соотношения}
+\justify
+Пусть компания выплачивает дивиденды $D$ раз в год и тратит на дивиденды долю $f$ чистой прибыли $E$ (earnings). Дивиденды и прибыль растут на $g$ процентов в год. Ставка дисконтирования $r$. Тогда цена акции $P$ равна:
+\begin{align*}
+P = \frac{D}{r -g} = \frac{fE}{r-g} \Rightarrow \frac{P}{E} = \frac{f}{r -g}
+\end{align*}
+Ставку дисконтирования $r$ можно оценить по CAPM:
+\begin{align*}
+r = r_f + \beta\pi,
+\end{align*}
+где $r_f$ --- безрисковая ставка, $\pi$ --- рыночная премия за риск.
+
+\justify
+Вывод: ниже процентные ставки --- выше отношение P/E акций при той же прибыли, дивидендах и ожиданиях роста. Высокие отношения P/E --- зеркальное отражение самых низких в истории процентных ставок.
+\end{frame}
+
+
+
 \begin{frame}{Оценка успеха управляющих - 1}
 \justify
 Лектор составил портфель акций на Московской бирже в ноябре 2015 г. За 5 лет он заработал 100\%. Три паевых фонда, красный, жёлтый и зелёный, заработали 104\%, 85\% и 84\%. Молодцы ли лектор и управляющие фондами?
