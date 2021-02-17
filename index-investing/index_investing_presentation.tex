@@ -974,22 +974,97 @@ Welch, Goyal (2008): отношения P/E (цена акции к прибыл
 
 
 
-\begin{frame}{Цена к прибыли и другие соотношения}
-\justify
-Пусть компания выплачивает дивиденды $D$ раз в год и тратит на дивиденды долю $f$ чистой прибыли $E$ (earnings). Дивиденды и прибыль растут на $g$ процентов в год. Ставка дисконтирования $r$. Тогда цена акции $P$ равна:
-\begin{align*}
-P = \frac{D}{r -g} = \frac{fE}{r-g} \Rightarrow \frac{P}{E} = \frac{f}{r -g}
-\end{align*}
-Ставку дисконтирования $r$ можно оценить по CAPM:
-\begin{align*}
-r = r_f + \beta\pi,
-\end{align*}
-где $r_f$ --- безрисковая ставка, $\pi$ --- рыночная премия за риск.
-
-\justify
-Вывод: ниже процентные ставки --- выше отношение P/E акций при той же прибыли, дивидендах и ожиданиях роста. Высокие отношения P/E --- зеркальное отражение самых низких в истории процентных ставок.
+\begin{frame}{Реальные процентные ставки}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=\textwidth,
+    height=\textheight - 1cm,
+    date coordinates in=x,
+    date ZERO=2000-01-01,
+    xtick={2000-01-01,2005-01-01,2010-01-01,2015-01-01,2020-01-01},
+    minor xtick={1890-01-01,1910-01-01,1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+    xticklabel=\year,
+    grid=both,
+    xmin=2000-01-01,
+    xmax=2021-06-01,
+    ylabel={\small \begin{tabular}{c}Treasury Inflation-Indexed \\ Long-Term Average Yield , \%\end{tabular}},
+    ylabel shift = -10pt,
+    %legend entries={
+    %    Рынок акций,
+    %    Акции минус облигации,
+    %    Безрисковые облигации,
+    %    Инфляция (CPI-U)
+    %},
+    %legend pos=north west,
+    %legend style={font=\scriptsize},
+    %legend cell align={left}
+]
+    
+        \addplot[
+            color = Set1-B,
+            line width = 1pt
+        ]
+        table[
+            x = DATE,
+            y = DLTIIT,
+            col sep = comma
+        ]
+        {data/DLTIIT.csv};
+\end{axis}
+\end{tikzpicture}
+{\scriptsize Данные: St. Louis Fed (LTIIT)}.
 \end{frame}
 
+
+
+\begin{frame}{Цена к прибыли - 1}
+\justify
+Инвесторы готовы инвестировать доллары под ставку <<инфляция МИНУС 0.4\% годовых>>. Что это значит для P/E и CAPE?
+
+\justify
+Пусть акция приносит дивиденды $D$. Первая выплата случится через год. Начиная со второго года выплаты растут на $g$ процентов в год. Ставка дисконтирования будущих платежей $r$. Чему равна цена такой компании?
+\begin{align*}
+P = \frac{D}{1+r} + \frac{D(1+g)}{(1+r)^2} + \frac{D(1+g)^2}{(1+r)^3} + ... = \frac{D}{r - g}
+\end{align*}
+
+Эта формула известна как модель Гордона (Gordon growth model).
+\end{frame}
+
+
+
+\begin{frame}{Цена к прибыли - 2}
+\justify
+Предположим, что дивиденды $D$ равны чистой прибыли $E$. Ставку дисконтирования $r$ распишем как в CAPM через безрисковую ставку $r_f$ и премию за риск $\pi$:
+\begin{align*}
+r = r_f + \pi
+\end{align*}
+Перейдём к реальной ставке $r_f^*$ и реальной скорости роста дивидендов $g^*$ сверх инфляции $i$:
+\begin{align*}
+r_f = r_f^* + i, \quad g = g^* + i
+\end{align*}
+Тогда:
+\begin{align*}
+P = \frac{D}{r - g} = \frac{E}{r_f^* + i + \pi - (g^* + i)} \quad\Rightarrow\quad \frac{P}{E} = \frac{1}{r_f^* + \pi - g^*}
+\end{align*}
+Вывод: ниже реальная ставка $r_f^*$ --- выше отношение P/E при той же премии за риск $\pi$ и темпе роста дивидендов $g^*$.
+\end{frame}
+
+
+
+\begin{frame}{Цена к прибыли - 3}
+\justify
+Предположим, что $g^* = 0$, то есть дивиденды и прибыль компаний растут на инфляцию.
+\begin{align*}
+P = \frac{E}{r_f^* + \pi} \quad\Rightarrow\quad \pi = \frac{E}{P} - r_f^*
+\end{align*}
+
+\justify
+Отношение E/P называется earnings yield. Разность earnings yield и безрисковой реальной ставки, которая называется excess earnings yield, может подсказать (а может и не подсказать) будущую премию за риск $\pi$.
+
+\justify
+Верно ли, что из высокого (относительно истории) отношения $P/E$ следует низкий excess earnings yield и низкая премия за риск? Не обязательно.
+\end{frame}
 
 
 \begin{frame}{Оценка успеха управляющих - 1}
