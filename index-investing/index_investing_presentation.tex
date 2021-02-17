@@ -930,7 +930,7 @@ Welch, Goyal (2008): отношения P/E (цена акции к прибыл
 
 
 
-\begin{frame}{Пример: cyclically adjusted price-earnings (CAPE)}
+\begin{frame}{Пример: cyclically adjusted price/earnings (CAPE)}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -985,10 +985,13 @@ Welch, Goyal (2008): отношения P/E (цена акции к прибыл
     xtick={2000-01-01,2005-01-01,2010-01-01,2015-01-01,2020-01-01},
     minor xtick={1890-01-01,1910-01-01,1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
     xticklabel=\year,
+    yticklabel={\pgfmathprintnumber{\tick}\%},
     grid=both,
     xmin=2000-01-01,
     xmax=2021-06-01,
-    ylabel={\small \begin{tabular}{c}Treasury Inflation-Indexed \\ Long-Term Average Yield , \%\end{tabular}},
+    ymin=-1,
+    ymax=5,
+    ylabel={\small \begin{tabular}{c}Treasury Inflation-Indexed \\ Long-Term Average Yield\end{tabular}},
     ylabel shift = -10pt,
     %legend entries={
     %    Рынок акций,
@@ -1011,6 +1014,7 @@ Welch, Goyal (2008): отношения P/E (цена акции к прибыл
             col sep = comma
         ]
         {data/DLTIIT.csv};
+        
 \end{axis}
 \end{tikzpicture}
 {\scriptsize Данные: St. Louis Fed (LTIIT)}.
@@ -1065,6 +1069,72 @@ P = \frac{E}{r_f^* + \pi} \quad\Rightarrow\quad \pi = \frac{E}{P} - r_f^*
 \justify
 Верно ли, что из высокого (относительно истории) отношения $P/E$ следует низкий excess earnings yield и низкая премия за риск? Не обязательно.
 \end{frame}
+
+
+
+\begin{frame}{CAPE Excess Yield}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=\textwidth,
+    height=\textheight - 1cm,
+    date coordinates in=x,
+    date ZERO=1880-01-01,
+    xtick={1880-01-01,1900-01-01,1920-01-01,1940-01-01,1960-01-01,1980-01-01,2000-01-01,2020-01-01},
+    minor xtick={1890-01-01,1910-01-01,1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+    xticklabel=\year,
+    grid=both,
+    xmin=1880-01-01,
+    xmax=2025-01-01,
+    ymin = -0.05,
+    ymax = 0.25,
+    ylabel={\small CAPE Excess Yield},
+    yticklabel={\pgfmathparse{100*\tick}\pgfmathprintnumber{\pgfmathresult}\%}
+    %ylabel shift = -10pt,
+    %legend entries={
+    %    Рынок акций,
+    %    Акции минус облигации,
+    %    Безрисковые облигации,
+    %    Инфляция (CPI-U)
+    %},
+    %legend pos=north west,
+    %legend style={font=\scriptsize},
+    %legend cell align={left}
+]
+    
+        \addplot[
+            color = Set1-B,
+            line width = 1pt
+        ]
+        table[
+            x = month,
+            y = cape_excess_yield,
+            col sep = comma
+        ]
+        {data/shiller_cape_excess_yield.csv};
+\end{axis}
+\end{tikzpicture}
+{\scriptsize Данные: Robert Shiller.}
+\end{frame}
+
+
+\begin{frame}{CAPE Excess Yield}
+\centering
+\begin{tabular}{l|r|r|r|r|r}
+Квантиль          & 5\%     & 25\%   & 50\%   & 75\%   & 95\% \\ \hline
+Excess CAPE Yield & -0.30\% & 1.55\% & 3.50\% & 6.69\% & 13.26\%
+\end{tabular}
+
+\centering
+{\scriptsize Распределение CAPE Excess Yield, 01.1881--02.2021. Данные: Robert Shiller.}
+
+\justify
+Текущее значение 3.43\% (февраль 2021 г.) чуть ниже исторической медианы. Акции стоят дорого в терминах P/E, но не так дорого по сравнению с облигациями.
+
+\justify
+Значит, можно не опасаться обвала рынка в ближайшие лет 5? Нет, не значит. Акции --- по-прежнему рискованный инструмент. Возьмите столько риска, сколько комфортно лично вам.
+\end{frame}
+
 
 
 \begin{frame}{Оценка успеха управляющих - 1}
