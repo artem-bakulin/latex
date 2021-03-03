@@ -1172,10 +1172,10 @@ UK        & 5.5\% & 7.3\% & 19.6\% & 0.37 \\
 
 \begin{frame}{Оценка успеха управляющих - 1}
 \justify
-Лектор составил портфель акций на Московской бирже в ноябре 2015 г. За 5 лет он заработал 100\%. Три паевых фонда, красный, жёлтый и зелёный, заработали 104\%, 85\% и 84\%. Молодцы ли лектор и управляющие фондами?
+Лектор составил портфель акций на Московской бирже в ноябре 2015 г. За 5 лет он заработал 114\%. Три паевых фонда, красный, жёлтый и зелёный, заработали 136\%, 114\% и 107\%. Молодцы ли лектор и управляющие фондами?
 
 \vspace{\baselineskip}
-\only<2->{Безрисковая процентная ставка (ключевая ставка ЦБ) за тот же период дала бы $50\%$. Индекс ММВБ полной доходности (включая дивиденды минус налоги) вырос на $117\%$.
+\only<2->{Безрисковая процентная ставка (ключевая ставка ЦБ) за тот же период дала бы $51\%$. Индекс ММВБ полной доходности (включая дивиденды минус налоги) вырос на $150\%$.
 
 \vspace{\baselineskip}
 Какой риск взяли на себя лектор и управляющие, и получили ли они компенсацию за этот риск?}
@@ -1194,7 +1194,7 @@ UK        & 5.5\% & 7.3\% & 19.6\% & 0.37 \\
   xtick={2016-01-01,2017-01-01,2018-01-01,2019-01-01,2020-01-01, 2021-01-01},
   xticklabel=\year,
   xmin=2015-10-31,
-  xmax=2021-01-01,
+  xmax=2021-02-01,
   grid=major,
   ylabel={\small{Рост 1 р. начальных инвестиций}},
   xlabel near ticks,
@@ -1211,12 +1211,12 @@ UK        & 5.5\% & 7.3\% & 19.6\% & 0.37 \\
   legend style={font=\tiny},
   legend cell align={left}
 ]
-\addplot[color=black, mark=none, thick] table[x=date, y=benchmark_growth, col sep=comma]{data/fund_growth.csv};
-\addplot[color=black, mark=none, dashed, thick] table[x=date, y=risk_free_growth, col sep=comma]{data/fund_growth.csv};
-\addplot[color=blue, mark=none, thick] table[x=date, y=personal_growth, col sep=comma]{data/fund_growth.csv};
-\addplot[color=red, mark=none, thick] table[x=date, y=red_growth, col sep=comma]{data/fund_growth.csv};
-\addplot[color=orange, mark=none, thick] table[x=date, y=yellow_growth, col sep=comma]{data/fund_growth.csv};
-\addplot[color=green, mark=none, thick] table[x=date, y=green_growth, col sep=comma]{data/fund_growth.csv};
+\addplot[color=Set1-D, mark=none, thick] table[x=date, y=benchmark_growth, col sep=comma]{data/fund_growth.csv};
+\addplot[color=Set1-D, mark=none, dashed, thick] table[x=date, y=risk_free_growth, col sep=comma]{data/fund_growth.csv};
+\addplot[color=Set1-B, mark=none, thick] table[x=date, y=personal_growth, col sep=comma]{data/fund_growth.csv};
+\addplot[color=Set1-A, mark=none, thick] table[x=date, y=red_growth, col sep=comma]{data/fund_growth.csv};
+\addplot[color=Set1-E, mark=none, thick] table[x=date, y=yellow_growth, col sep=comma]{data/fund_growth.csv};
+\addplot[color=Set1-C, mark=none, thick] table[x=date, y=green_growth, col sep=comma]{data/fund_growth.csv};
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -1245,18 +1245,18 @@ R_{fund,t} - R_{free,t} = \alpha + \beta(R_{mkt,t} - R_{free,t}) + \epsilon_t, \
 \begin{tikzpicture}
 \begin{axis}[
   width=\textwidth,
-  height=\textheight - 1.5cm,
+  height=\textheight - 1cm,
   legend entries = {
     Лектор,
     Красный фонд,
-    $y = 0.12 + 0.60x$,
-    $y = -0.05 + 0.92x$
+    $y = +0.07 + 0.61x$,
+    $y = -0.01 + 0.89x$
   },
   legend pos=north west,
   legend style={font=\tiny},
   legend cell align={left},
-  xlabel={\small{Месячная избыточная доходность индекса}},
-  ylabel={\small{Месячная избыточная доходность фонда}},
+  xlabel={\small{Месячная избыточная доходность индекса, \%}},
+  ylabel={\small{Месячная изб. дох. фонда, \%}},
   xlabel near ticks,
   ylabel near ticks,
   %xtick={-0.1, -0.05, 0, 0.05, 0.1},
@@ -1266,13 +1266,13 @@ R_{fund,t} - R_{free,t} = \alpha + \beta(R_{mkt,t} - R_{free,t}) + \epsilon_t, \
   ymin=-11,ymax=11
 ]
 
-\addplot[color=blue, only marks] table[x=benchmark_excess_return, y=personal_excess_return, col sep=comma]{data/fund_excess_return.csv};
+\addplot[color=Set1-B, only marks] table[x=benchmark_excess_return, y=personal_excess_return, col sep=comma]{data/fund_excess_return.csv};
 
-\addplot[color=red, only marks] table[x=benchmark_excess_return, y=red_excess_return, col sep=comma]{data/fund_excess_return.csv};
+\addplot[color=Set1-A, only marks] table[x=benchmark_excess_return, y=red_excess_return, col sep=comma]{data/fund_excess_return.csv};
 
-\addplot[color=blue, domain=-12:12] {0.1163 + 0.599451*x};
+\addplot[color=Set1-B, domain=-12:12] {0.07 + 0.61*x};
 
-\addplot[color=red, domain=-12:12] {-0.04577 + 0.9202177*x};
+\addplot[color=Set1-A, domain=-12:12] {-0.01 + 0.89*x};
 
 \end{axis}
 \end{tikzpicture}
@@ -1282,23 +1282,20 @@ R_{fund,t} - R_{free,t} = \alpha + \beta(R_{mkt,t} - R_{free,t}) + \epsilon_t, \
 
 \begin{frame}{Регрессия для оценки результатов - 3}
 \center
-\begin{tabular}{l|c|c|c|c|c}
+\begin{tabular}{l|r|r|r|r|r}
 \multirow{2}{*}{Фонд}    & $\hat{\alpha}$ & $\hat{\beta}$ & \multirow{2}{*}{$R^2$} & Отнош. & Отнош. \\
 & \scriptsize{(ст. откл.)} & \scriptsize{(ст. откл.)} & & Шарпа & Сортино \\ \hline
-Лектор  &  0.12\% \scriptsize{(0.29\%)} & 0.60 \scriptsize{(0.07)}   &  0.54 & 0.60 & 1.08 \\
-Красный & -0.05\% \scriptsize{(0.18\%)} & 0.92 \scriptsize{(0.05)}   &  0.87 & 0.55 & 0.90 \\
-Жёлтый  & -0.20\% \scriptsize{(0.26\%)} & 0.91 \scriptsize{(0.07)}   &  0.75 & 0.38 & 0.62 \\
-Зелёный & -0.28\% \scriptsize{(0.16\%)} & 1.00 \scriptsize{(0.04)}   &  0.91 & 0.37 & 0.58 \\ \hline
-Индекс  & 0.00\% \scriptsize{(0.00\%)}  & 1.00 \scriptsize{(0.00)}   &  1.00 & 0.64 & 1.02
+Лектор  &  0.07\% \scriptsize{(0.27\%)} & 0.61 \scriptsize{(0.06)}   &  0.61 & 0.65 & 1.20 \\
+Красный & -0.01\% \scriptsize{(0.18\%)} & 0.89 \scriptsize{(0.04)}   &  0.89 & 0.68 & 1.20 \\
+Жёлтый  & -0.17\% \scriptsize{(0.25\%)} & 0.91 \scriptsize{(0.06)}   &  0.80 & 0.52 & 0.93 \\
+Зелёный & -0.28\% \scriptsize{(0.16\%)} & 0.98 \scriptsize{(0.04)}   &  0.92 & 0.48 & 0.81 \\ \hline
+Индекс  & 0.00\% \scriptsize{(0.00\%)}  & 1.00 \scriptsize{(0.00)}   &  1.00 & 0.73 & 1.29
 \end{tabular}
 \justify
-{\scriptsize(59 месячных доходностей 11.2015--09.2020. Значения $\hat{\alpha}$ и $\hat{\beta}$ для месячных доходностей. Отношения Шарпа и Сортино сконвертированы в годовое выражение умножением на $\sqrt{12}$.)}
+{\scriptsize(62 месячных доходностей 11.2015--12.2020. Значения $\hat{\alpha}$ и $\hat{\beta}$ для месячных доходностей. Отношения Шарпа и Сортино сконвертированы в годовое выражение умножением на $\sqrt{12}$.)}
 
 \vspace{\baselineskip}
-Вывод: инвесторы фондов зарабатывают меньше, чем могли бы при том же уровне систематического риска.
-
-\vspace{\baselineskip}
-Кстати, лучшее отношение Шарпа --- у индекса. Совпадение?
+Если купить фонд лектора с <<плечом>> $1/0.61 = 1.64$, то можно получить <<бету>> 1.0, как в индексе, но получать дополнительную доходность $0.07\% \cdot 1.64 \cdot 12 = 1.37\%$ в год при том же систематическом риске. Слишком хорошо, чтобы быть правдой.
 \end{frame}
 
 
@@ -1459,11 +1456,11 @@ Fama and French (2010): средняя четырёхфакторная <<аль
 На сайте ИПЭИ РАНХиГС ({\small \url{https://ipei.ranepa.ru/ru/capm-ru}}) собраны временные ряды факторных портфелей, составленных из российский акций.
 \begin{itemize}
 \justifying
-\item MKT-RF: рынок минус безрисковая ставка (как в CAPM).
 \item SMB: как у Фамы-Френча-Кархарта.
 \item HML: как у Фамы-Френча-Кархарта.
 \item MOM: как у Фамы-Френча-Кархарта.
 \item LIQ (LIQuidity): неликвидные акции минус ликвидные.
+\item PE (Price/Earnings): акции с низким отношением P/E (цена к прибыли) минус акции с высоким отношением P/E.
 \item DP (Dividend/Price): акции с высокой дивидендной доходностью (низким отношением дивиденд/цена) минус акции с низкой дивидендной доходностью.
 \item SOE (State-Owned Enterprise): частные компании минус компании с гос. участием.
 \end{itemize}
@@ -1482,10 +1479,12 @@ Fama and French (2010): средняя четырёхфакторная <<аль
   xtick={2005-01-01,2008-01-01,2011-01-01,2014-01-01,2017-01-01,2020-01-01},
   xticklabel=\year,
   xmin=2005-01-01,
-  xmax=2021-01-01,
-  ymin=0,
-  ytick={1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
-  grid=major,
+  xmax=2022-01-01,
+  ymode=log,
+  log ticks with fixed point,
+  extra y ticks = {0.5, 2, 3, 4, 5},
+  extra y tick labels = {0.5, 2, 3, 4, 5},
+  grid=both,
   ylabel={\small{Рост 1 р. начальных инвестиций}},
   xlabel near ticks,
   ylabel near ticks,
@@ -1501,7 +1500,7 @@ Fama and French (2010): средняя четырёхфакторная <<аль
   legend style={font=\tiny},
   legend cell align={left}
 ]
-\addplot[color=black, mark=none, thick] table[x=month, y=rmrf_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\addplot[color=black, mark=none, thick] table[x=month, y=rmrf_ru_fixed, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
 \addplot[color=red, mark=none, thick] table[x=month, y=smb_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
 \addplot[color=orange, mark=none, thick] table[x=month, y=hml_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
 \addplot[color=green, mark=none, thick] table[x=month, y=liq_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
@@ -1510,7 +1509,7 @@ Fama and French (2010): средняя четырёхфакторная <<аль
 \end{axis}
 \end{tikzpicture}
 
-{\scriptsize Данные: ИПЭИ РАНХиГС.}
+{\scriptsize Данные: МосБиржа и ЦБ РФ (MKT-RF), ИПЭИ РАНХиГС (остальные факторы).}
 \end{frame}
 
 
@@ -1526,9 +1525,12 @@ Fama and French (2010): средняя четырёхфакторная <<аль
   xtick={2015-01-01,2016-01-01,2017-01-01,2018-01-01,2019-01-01,2020-01-01},
   xticklabel=\year,
   xmin=2015-01-01,
-  xmax=2020-06-30,
-  ymin=0.5, ymax=2.5,
+  xmax=2021-02-01,
+  %ymode=log,
   grid=major,
+  %log ticks with fixed point,
+  %extra y ticks = {0.5, 2, 3, 4, 5},
+  %extra y tick labels = {0.5, 2, 3, 4, 5},
   ylabel={\small{Рост 1 р. начальных инвестиций}},
   xlabel near ticks,
   ylabel near ticks,
@@ -1544,7 +1546,7 @@ Fama and French (2010): средняя четырёхфакторная <<аль
   legend style={font=\tiny},
   legend cell align={left}
 ]
-\addplot[color=black, mark=none, thick] table[x=month, y=rmrf_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\addplot[color=black, mark=none, thick] table[x=month, y=rmrf_ru_fixed, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
 \addplot[color=red, mark=none, thick] table[x=month, y=smb_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
 \addplot[color=orange, mark=none, thick] table[x=month, y=hml_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
 \addplot[color=green, mark=none, thick] table[x=month, y=liq_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
@@ -1563,21 +1565,21 @@ Fama and French (2010): средняя четырёхфакторная <<аль
 \begin{tabular}{l|r|r|r|r|c}
 Фактор & Сред. & Ст.\,откл. & $t$-тест & $p$-знач. & 99\%\,дов.\,инт. \\
 \hline
-MKT-RF &  1.50\% & 6.2\% &  3.35 & <0.1\% & [ 0.3\%, 2.7\%] \\
-SMB    &  1.29\% & 4.9\% &  3.62 & <0.1\% & [ 0.4\%, 2.2\%] \\ 
-SOE    &  0.64\% & 3.7\% &  2.25 &  2.6\% & [-0.1\%, 1.4\%] \\
-HML    &  0.44\% & 6.8\% &  0.90 & 36.9\% & [-0.8\%, 1.7\%] \\
-MOM    &  0.38\% & 6.4\% &  0.82 & 41.2\% & [-0.8\%, 1.6\%] \\  
-PE     &  0.23\% & 4.2\% &  0.75 & 45.3\% & [-0.6\%, 1.0\%] \\
-DY     &  0.10\% & 5.6\% &  0.25 & 80.0\% & [-0.9\%, 1.2\%] \\
-LIQ    & -0.07\% & 4.4\% & -0.22 & 82.3\% & [-0.9\%, 0.8\%] \\ \hline
+MKT-RF  &  0.72\% & 7.0\% &  1.43 & 15.5\% & [-0.6\%, 2.0\%] \\
+SMB     &  1.29\% & 4.9\% &  3.62 & <0.1\% & [ 0.4\%, 2.2\%] \\ 
+SOE     &  0.64\% & 3.7\% &  2.25 &  2.6\% & [-0.1\%, 1.4\%] \\
+HML     &  0.44\% & 6.8\% &  0.90 & 36.9\% & [-0.8\%, 1.7\%] \\
+MOM     &  0.38\% & 6.4\% &  0.82 & 41.2\% & [-0.8\%, 1.6\%] \\  
+PE      &  0.23\% & 4.2\% &  0.75 & 45.3\% & [-0.6\%, 1.0\%] \\
+DP      &  0.10\% & 5.6\% &  0.25 & 80.0\% & [-0.9\%, 1.2\%] \\
+LIQ     & -0.07\% & 4.4\% & -0.22 & 82.3\% & [-0.9\%, 0.8\%] \\ \hline
 \end{tabular}
 
-\centering
-{\scriptsize Месячные доходности 2005--2020. SOE: 2007--2020. Данные: ИПЭИ РАНХиГС.}
+\justify
+{\scriptsize Месячные доходности 2005--2020. SOE: 2007--2020. Данные: МосБиржа и ЦБ РФ (MKT-RF), ИПЭИ РАНХиГС (остальные факторы).}
 
 \justify
-Статистически значимые факторы --- весь рынок (MKT-RF) и размер (SMB). С натяжкой ---  частные компании против государственных (SOE). Стоимость (HML), инерция (MOM), дивидендная доходность (DP), неликвидность (LIQ), мультипликатор P/E (PE), похоже, не дают статистически значимой дополнительной доходности.
+Статистически значимый фактор --- размер (SMB). С натяжкой ---  частные компании против государственных (SOE). Стоимость (HML), инерция (MOM), дивидендная доходность (DP), неликвидность (LIQ), мультипликатор P/E (PE), похоже, не дают статистически значимой дополнительной доходности.
 \end{frame}
 
 

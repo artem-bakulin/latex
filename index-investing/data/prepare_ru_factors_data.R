@@ -4,6 +4,20 @@ library(dplyr)
 library(tidyr)
 library(lubridate)
 
+# MKT-RF in IPEI data is  way too high, so we construct it ourselves
+rmrf_ru_fixed_data <- read_csv("total_return_gross_index.csv") %>% 
+  as_of_join(read_tsv("cbr_key_rate.txt")) %>% 
+  mutate(
+    mkt_return = total_return_gross_index / lag(total_return_gross_index) - 1,
+    rf_return = lag(cbr_rate) * (as.numeric(date - lag(date), "days")) / 365
+  ) %>% 
+  transmute(
+    month = first_day_of_month(date),
+    factor = "rmrf_ru_fixed",
+    return = mkt_return - rf_return
+  ) %>% 
+  filter(!is.na(return))
+
 parse_ru_month_year <- function(x) {
   
   months <- c(
@@ -30,7 +44,7 @@ parse_ru_month_year <- function(x) {
 
 download_ru_factor_file <- function(file_name, factor_name) {
  
-  BASE_URL <- "https://ipei.ranepa.ru/images/2019/CAPMRU/factors/"
+  BASE_URL <- "https://ipei.ranepa.ru/images/2019/CAPMRU/jan2021/"
   url <- paste0(BASE_URL, file_name)
   
   curl_download(url, file_name)
@@ -57,20 +71,26 @@ download_ru_factor_file <- function(file_name, factor_name) {
 }
 
 if (!file.exists("ru_factors_data.csv")) {
-  rmrf_ru <- download_ru_factor_file("RMRF_TR_may2020.csv", "rmrf_ru")
-  smb_ru  <- download_ru_factor_file("SMB_TR_may2020.csv", "smb_ru")
-  hml_ru  <- download_ru_factor_file("HML_TR_may2020.csv", "hml_ru")
-  liq_ru  <- download_ru_factor_file("LIQ_TR_may2020.csv", "liq_ru")
-  dy_ru   <- download_ru_factor_file("DY_TR_may2020.csv", "dy_ru")
-  soe_ru  <- download_ru_factor_file("SOE_TR_may2020.csv", "soe_ru")
+  rmrf_ru <- download_ru_factor_file("RMRF_TR_jan2021.csv", "rmrf_ru")
+  smb_ru  <- download_ru_factor_file("SMB_TR_jan2021.csv",  "smb_ru")
+  hml_ru  <- download_ru_factor_file("HML_TR_jan2021.csv",  "hml_ru")
+  mom_ru  <- download_ru_factor_file("MOM_TR_jan2021.csv",  "mom_ru")
+  liq_ru  <- download_ru_factor_file("LIQ_TR_jan2021.csv",  "liq_ru")
+  dy_ru   <- download_ru_factor_file("DY_TR_jan2021.csv",   "dy_ru")
+  soe_ru  <- download_ru_factor_file("SOE_TR_jan2021.csv",  "soe_ru")
+  pe_ru  <- download_ru_factor_file("PE_TR_jan2021.csv",  "pe_ru")
   
   ru_factors_normalized <- bind_rows(
     rmrf_ru,
     smb_ru,
     hml_ru,
+    mom_ru,
     liq_ru,
     dy_ru,
-    soe_ru
+    soe_ru,
+    pe_ru,
+    
+    rmrf_ru_fixed_data
   )
   
   ru_factors_normalized %>% write_csv("ru_factors_data.csv")

@@ -42,7 +42,8 @@ sortino_ratio <- function(excess_returns, min_acceptable_return = 0) {
   mean_return_above_threshold / downside_deviation
 }
 
-benchmark <- read_tsv("total_return_net_index.txt")
+moex_index <- read_csv("moex_index.csv")
+total_return_gross_index <- read_csv("total_return_gross_index.csv")
 
 risk_free <- read_tsv("cbr_key_rate.txt")
 
@@ -81,15 +82,24 @@ personal_returns <- personal %>%
   select(-personal_share_price) %>% 
   filter(!is.na(personal_return))
 
-benchmark_returns <- benchmark %>% 
+benchmark_returns <- total_return_gross_index %>%
   as_of_join(risk_free) %>% 
+  mutate(
+    risk_free_return = lag(cbr_rate) * (as.numeric(date - lag(date), "days")) / 365
+  ) %>% 
   mutate(month = first_day_of_month(date)) %>% 
-  filter(
-    month != lead(month, default=first(month))
+  select(-date) %>% 
+  inner_join(
+    moex_index %>% 
+      mutate(month = first_day_of_month(date)) %>% 
+      select(-date),
   ) %>% 
   mutate(
-    benchmark_return = total_return_net_index / lag(total_return_net_index) - 1,
-    risk_free_return = lag(cbr_key_rate) * (as.numeric(date - lag(date), "days")) / 365
+    moex_return = moex_index / lag(moex_index) - 1,
+    total_gross_return = total_return_gross_index / lag(total_return_gross_index) - 1,
+    div_yield = total_gross_return - moex_return,
+    div_yield_less_tax = (1 - 0.13) * div_yield,
+    benchmark_return = moex_return + div_yield_less_tax
   ) %>% 
   select(month, benchmark_return, risk_free_return) %>% 
   filter(!is.na(benchmark_return), !is.na(risk_free_return))
