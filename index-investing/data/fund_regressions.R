@@ -207,3 +207,11 @@ all_returns %>%
     yellow_growth = cumprod(1 + yellow_return),
     red_growth = cumprod(1 + red_return)
   ) %>% tail()
+
+ru_factor_returns <- read_csv("ru_factors_data.csv") %>% 
+  pivot_wider(names_from="factor", values_from="return")
+
+all_returns %>% 
+  inner_join(ru_factor_returns, by="month") %>% 
+  lm(personal_excess_return ~ benchmark_excess_return + soe_ru, data=.) %>% 
+  summary()

@@ -1456,12 +1456,13 @@ Fama and French (2010): средняя четырёхфакторная <<аль
 На сайте ИПЭИ РАНХиГС ({\small \url{https://ipei.ranepa.ru/ru/capm-ru}}) собраны временные ряды факторных портфелей, составленных из российский акций.
 \begin{itemize}
 \justifying
+\item MKT-RF: рынок минус безрисковая ставка.
 \item SMB: как у Фамы-Френча-Кархарта.
 \item HML: как у Фамы-Френча-Кархарта.
 \item MOM: как у Фамы-Френча-Кархарта.
 \item LIQ (LIQuidity): неликвидные акции минус ликвидные.
 \item PE (Price/Earnings): акции с низким отношением P/E (цена к прибыли) минус акции с высоким отношением P/E.
-\item DP (Dividend/Price): акции с высокой дивидендной доходностью (низким отношением дивиденд/цена) минус акции с низкой дивидендной доходностью.
+\item DP (Dividend/Price): акции с высокой дивидендной доходностью минус акции с низкой дивидендной доходностью.
 \item SOE (State-Owned Enterprise): частные компании минус компании с гос. участием.
 \end{itemize}
 \end{frame}
@@ -1492,20 +1493,18 @@ Fama and French (2010): средняя четырёхфакторная <<аль
       MKT-RF,
       SMB,
       HML,
-      LIQ,
-      DP,
+      MOM,
       SOE
   },
   legend pos=north west,
-  legend style={font=\tiny},
+  legend style={font=\tiny, row sep=0pt},
   legend cell align={left}
 ]
-\addplot[color=black, mark=none, thick] table[x=month, y=rmrf_ru_fixed, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
-\addplot[color=red, mark=none, thick] table[x=month, y=smb_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
-\addplot[color=orange, mark=none, thick] table[x=month, y=hml_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
-\addplot[color=green, mark=none, thick] table[x=month, y=liq_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
-\addplot[color=violet, mark=none, thick] table[x=month, y=dy_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
-\addplot[color=blue, mark=none, thick] table[x=month, y=soe_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\addplot[color=Set1-A, mark=none, thick] table[x=month, y=rmrf_ru_fixed, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\addplot[color=Set1-B, mark=none, thick] table[x=month, y=smb_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\addplot[color=Set1-C, mark=none, thick] table[x=month, y=hml_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\addplot[color=Set1-D, mark=none, thick] table[x=month, y=mom_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
+\addplot[color=Set1-E, mark=none, thick] table[x=month, y=soe_ru, col sep=comma]{data/ru_factors_cumulative_growth_data.csv};
 \end{axis}
 \end{tikzpicture}
 
@@ -1538,20 +1537,18 @@ Fama and French (2010): средняя четырёхфакторная <<аль
       MKT-RF,
       SMB,
       HML,
-      LIQ,
-      DP,
+      MOM,
       SOE
   },
   legend pos=north west,
   legend style={font=\tiny},
   legend cell align={left}
 ]
-\addplot[color=black, mark=none, thick] table[x=month, y=rmrf_ru_fixed, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
-\addplot[color=red, mark=none, thick] table[x=month, y=smb_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
-\addplot[color=orange, mark=none, thick] table[x=month, y=hml_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
-\addplot[color=green, mark=none, thick] table[x=month, y=liq_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
-\addplot[color=violet, mark=none, thick] table[x=month, y=dy_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
-\addplot[color=blue, mark=none, thick] table[x=month, y=soe_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\addplot[color=Set1-A, mark=none, thick] table[x=month, y=rmrf_ru_fixed, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\addplot[color=Set1-B, mark=none, thick] table[x=month, y=smb_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\addplot[color=Set1-C, mark=none, thick] table[x=month, y=hml_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\addplot[color=Set1-D, mark=none, thick] table[x=month, y=mom_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
+\addplot[color=Set1-E, mark=none, thick] table[x=month, y=soe_ru, col sep=comma]{data/ru_factors_cumulative_growth_data_2015.csv};
 \end{axis}
 \end{tikzpicture}
 
@@ -1596,16 +1593,16 @@ R_{fund,t} - R_{free,t} &= \alpha + \beta_{mkt}(R_{mkt,t} - R_{free,t}) + \beta_
 \centering
 \begin{tabular}{l|l|l}
 Параметр            & Регрессия 1                   & Регрессия 2 \\ \hline
-$\hat{\alpha}$      & 0.12\% {\scriptsize (0.32\%)} & 0.04\% {\scriptsize (0.30\%)} \\
-$\hat{\beta}_{mkt}$ & 0.58 {\scriptsize (0.096)}    & 0.68 {\scriptsize (0.098)} \\
-$\hat{\beta}_{soe}$ & ---                           & 0.28 {\scriptsize (0.10)} \\
-$R^2$               & 0.42                          & 0.49 \\ \hline
+$\hat{\alpha}$      & 0.07\% {\scriptsize (0.27\%)} & -0.04\% {\scriptsize (0.27\%)} \\
+$\hat{\beta}_{mkt}$ & 0.61 {\scriptsize (0.06)}     & 0.68 {\scriptsize (0.07)} \\
+$\hat{\beta}_{soe}$ & ---                           & 0.18 {\scriptsize (0.09)} \\
+$R^2$               & 0.61                          & 0.63 \\ \hline
 \end{tabular}
 
-{\scriptsize (50 месячных наблюдений 11.2015--12.2019)}
+{\scriptsize (62 месячных наблюдения 11.2015--12.2020)}
 
 \justify
-<<Альфа>> уменьшилась в 3 раза. Неужели лектор просто не любит госкомпании? Остальные факторы не улучшают регрессию.
+<<Альфа>> исчезла. Неужели лектор просто не любит госкомпании? Остальные факторы не улучшают регрессию.
 
 
 \end{frame}
