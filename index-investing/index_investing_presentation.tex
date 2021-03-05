@@ -46,11 +46,24 @@
 \begin{itemize}
 \justifying
 \item Рациональные инвесторы и премия за риск.
-\item Портфельная оптимизация.
+\item Диверсификация и портфельная оптимизация.
 \item Capital Asset Pricing Model (CAPM).
 \item Метрики для оценки инвестиций.
 \item Факторные модели и Arbitrage Pricing Theory (APT).
 \item Индексное инвестирование и биржевые фонды (ETFs).
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Чего не будет в этой лекции}
+\begin{itemize}
+\justifying
+\item Как выбрать самые перспективные акции.
+\item Как предугадать крах рынка акций.
+\item Как торговать внутри дня и зарабатывать 1\% в день.
+\item Как писать торговых роботов.
+\item Как разбогатеть быстро и без риска.
 \end{itemize}
 \end{frame}
 
@@ -856,6 +869,87 @@ Index = \dfrac{\sum P_iQ_i}{D}
 
 \justify
 Следствие. Чем реже вы проверяете состояние счёта, тем более рискованный (и более доходный) портфель вы можете себе позволить.
+\end{frame}
+
+
+
+\begin{frame}{Долгосрочные инвестиции - 1}
+\centering
+\small
+\begin{tabular}{l|r|r|r|r|r|r|r}
+Годы & Мин.    &     5\% &   25\% &   50\% &   75\% &   95\% & Макс. \\ \hline
+1    & -62.1\% & -25.4\% & -3.2\% & 10.0\% & 21.3\% & 39.9\% & 175.7\% \\
+2    & -48.7\% & -18.0\% &  0.4\% &  8.1\% & 16.6\% & 28.2\% &  58.1\% \\
+3    & -38.5\% & -11.9\% &  0.7\% &  8.1\% & 13.3\% & 23.6\% &  40.4\% \\ 
+5    & -15.5\% &  -7.2\% &  1.3\% &  8.0\% & 12.1\% & 19.0\% &  33.8\% \\
+10   &  -5.0\% &  -2.6\% &  3.5\% &  7.2\% & 10.6\% & 14.3\% &  18.1\% \\
+15   &  -1.9\% &   0.3\% &  3.6\% &  7.0\% & 10.0\% & 13.4\% &  14.9\% \\
+20   &   0.3\% &   2.0\% &  4.1\% &  7.0\% &  9.4\% & 12.0\% &  13.6\% \\
+30   &   4.4\% &   4.7\% &  5.9\% &  7.0\% &  8.1\% &  9.7\% &  11.5\% 
+\end{tabular}
+
+\justify
+Квантили исторических доходностей рынка акций США сверх инфляции в зависимости от срока владения (проценты годовых), 1927--2020. Данные: Kenneth French Data Library, St. Louis  Fed.
+\end{frame}
+
+
+
+\newcommand{\addQuantilePlot}[3] {
+    \addplot[
+        color=#2,
+        style=#3,
+        thick
+    ] 
+    table [
+        x=holding_period,
+        y=#1,
+        col sep=comma
+    ]
+    {data/us_mkt_holding_periods.csv};
+}
+
+
+
+\begin{frame}{Долгосрочные инвестиции - 2}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width = \textwidth,
+    height = \textheight - 1.5cm,
+    xmin=1,
+    xmax=30,
+    xtick={1, 5, 10, ..., 30},
+    xlabel={\scriptsize Период владения, годы},
+    ymin = -20,
+    ymax = 40,
+    ytick = {-20, -10, 0, 10, 20, 30, 40},
+	 minor y tick num = 1,
+    ylabel={\scriptsize Годовая доходность сверх инфляции},
+    ylabel shift = -5pt,
+    yticklabel={\pgfmathprintnumber{\tick}\%},
+    grid=both,
+    legend entries={
+        Мин. / Макс.,
+        Квантили 5\% / 95\%,
+        Квантили 25\% / 75\%,
+        Медиана
+    },
+    legend pos=north east,
+    legend style={font=\scriptsize},
+    legend cell align={left},
+    ticklabel style = {font=\scriptsize}
+]
+
+    \addQuantilePlot{0}   {Set1-A} {solid}
+    \addQuantilePlot{5}   {Set1-A} {dashed}
+    \addQuantilePlot{25}  {Set1-B} {dashed}
+    \addQuantilePlot{50}  {Set1-B} {solid}
+    \addQuantilePlot{75}  {Set1-B} {dashed}
+    \addQuantilePlot{95}  {Set1-A} {dashed}
+    \addQuantilePlot{100} {Set1-A} {solid}
+\end{axis}
+\end{tikzpicture}
+{\scriptsize Данные: Kenneth French Data Library, St. Louis Fed.}
 \end{frame}
 
 

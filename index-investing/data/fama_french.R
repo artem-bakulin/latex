@@ -228,3 +228,35 @@ simulated_annual_returns <- fama_french_four_factors_data %>%
 
 simulated_annual_returns %>% 
   write_csv("simulated_market_annual_returns.csv")
+
+holding_years <- 1:30
+holding_quantiles <- c(0, 0.01, 0.05, 0.25, 0.5, 0.75, 0.95, 0.99, 1)
+
+returns_by_holding_period <- lapply(holding_years, function(years_in) {
+  
+  cumulative_growth_data %>% 
+    transmute(
+      holding_period = years_in,
+      return = mkt / lag(mkt, 12*years_in) * lag(cpi, 12*years_in) / cpi - 1,
+    ) %>% 
+    filter(!is.na(return))
+}) %>% bind_rows()
+
+returns_by_holding_period %>% 
+  group_by(holding_period) %>% 
+  summarise(
+    return_pct = sprintf("%d%%", 100*holding_quantiles),
+    return = sprintf("%.1f%%", 100*quantile((1 + return)^(1/holding_period)-1, holding_quantiles))
+  ) %>% 
+  ungroup() %>% 
+  pivot_wider(names_from = "return_pct", values_from="return")
+
+returns_by_holding_period %>% 
+  group_by(holding_period) %>% 
+  summarise(
+    return_pct = 100*holding_quantiles,
+    return = 100*quantile((1 + return)^(1/holding_period)-1, holding_quantiles)
+  ) %>% 
+  ungroup() %>% 
+  pivot_wider(names_from = "return_pct", values_from="return") %>% 
+  write_csv("us_mkt_holding_periods.csv")
