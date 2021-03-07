@@ -954,6 +954,69 @@ Index = \dfrac{\sum P_iQ_i}{D}
 
 
 
+\newcommand{\addQuantilePlotRegular}[3] {
+    \addplot[
+        color=#2,
+        style=#3,
+        thick
+    ] 
+    table [
+        x=holding_period,
+        y=#1,
+        col sep=comma
+    ]
+    {data/us_mkt_regular_investment.csv};
+}
+
+\begin{frame}{Регулярные инвестиции}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width = \textwidth,
+    height = \textheight - 1.5cm,
+    xmin=1,
+    xmax=30,
+    xtick={1, 5, 10, ..., 30},
+    xlabel={\scriptsize Период инвестиций, годы},
+    %ymin = -20,
+    %ymax = 40,
+    ytick = {0, 1, 2, 3, 4, 5, 6, 7, 8},
+	 %minor y tick num = 1,
+    ylabel={\scriptsize Рост сверх инфляции},
+    %ylabel shift = -5pt,
+    grid=both,
+    %ymode=log,
+    ymin=0,
+    ymax=8,
+    log ticks with fixed point,
+    legend entries={
+        Мин. / Макс.,
+        Квантили 5\% / 95\%,
+        Квантили 25\% / 75\%,
+        Медиана
+    },
+    legend pos=north west,
+    legend style={font=\tiny},
+    legend cell align={left},
+    ticklabel style = {font=\scriptsize}
+]
+
+    \addQuantilePlotRegular{0}   {Set1-A} {solid}
+    \addQuantilePlotRegular{5}   {Set1-A} {dashed}
+    \addQuantilePlotRegular{25}  {Set1-B} {dashed}
+    \addQuantilePlotRegular{50}  {Set1-B} {solid}
+    \addQuantilePlotRegular{75}  {Set1-B} {dashed}
+    \addQuantilePlotRegular{95}  {Set1-A} {dashed}
+    \addQuantilePlotRegular{100} {Set1-A} {solid}
+    
+    \draw[thick, color=black] (axis cs: 1, 1) -- (axis cs: 30, 1);
+\end{axis}
+\end{tikzpicture}
+{\scriptsize Данные: Kenneth French Data Library, St. Louis Fed.}
+\end{frame}
+
+
+
 \begin{frame}{Отношение Шарпа}
 \justify
 Отношение Шарпа (Sharpe ratio) --- отношение средней избыточной доходности к её стандартному отклонению.
@@ -1260,6 +1323,40 @@ UK        & 5.5\% & 7.3\% & 19.6\% & 0.37 \\
 
 \justify
 Вывод: диверсифицируйтесь не только по компаниям и отраслям, но и по странам.
+\end{frame}
+
+
+
+\begin{frame}{Так сколько риска взять?}
+\justify
+Прежде чем инвестировать в акции, обеспечьте себе финансовую подушку на 3--6 месяцев без работы.
+
+\justify
+Возьмите столько систематического риска, сколько комфортно лично вам, с вашей личной 
+чувствительностью к риску. Учтите, что в истории были прецеденты, когда акции теряли по 80\%. Если 
+вы можете без последствий для душевного здоровья пережить просадку портфеля на 40\%, купите акций 
+на $40\% / 80\% = 50\%$. Не переоценивайте свою терпимость к риску.
+
+\justify
+Популярное правило большого пальца: доля облигаций в портфеле равна возрасту. В 25 лет --- 25\% в 
+облигациях, 75\% в акциях. В 40 лет --- 40\% в облигациях, 60\% в акциях. Чем вы моложе, тем выше 
+шанс после обвала дождаться роста. (см. оговорку на следующем слайде).
+\end{frame}
+
+
+
+\begin{frame}{Человеческий капитал}
+\justify
+Человеческий капитал --- сумма дисконтированных будущих доходов человека. Для многих людей, особенно молодых, человеческий капитал намного больше финансового капитала.
+
+\justify
+Кто вы: акция или облигация? Как ваш человеческий капитал связан с рынком акций?
+\begin{itemize}
+\justifying
+\item Вы --- исследователь или профессор на постоянной ставке. Вы преподаёте и в кризис, и во время роста. Ваш доход не сильно связан с финансовым рынком. Вы --- облигация.
+\item Вы --- инвестбанкир. <<Бета>> акций вашего работодателя 1.5, как и <<беты>> других потенциальных работодателей. В кризис вы запросто останетесь без работы. Вы --- акция.
+\end{itemize}
+Выбирая пропорцию акции/облигации в финансовом капитале, не забывайте о человеческом капитале. Если вы --- акция, то сместите финансовый капитал в сторону облигаций.
 \end{frame}
 
 
@@ -1946,7 +2043,6 @@ GOOG \\ DBK.DE \\ AAPL
 \begin{itemize}
 \justifying
 \item Диверсифицируйтесь! По классам активов, по валютам, по брокерам и банкам, по странам.
-\item Не вкладывайте всю сумму разом. Регулярные небольшие взносы уменьшают риск просидеть без доходности 15 лет.
 \item Всегда оценивайте, какой риск вы (или ваш управляющий) берёте на себя, вознаграждается ли этот риск рынком, и почему вы готовы его держать, а продавец актива --- нет.
 \item Если вы не торгуете 8/5, то задумайтесь об индексном инвестировании через дешёвый ПИФ или ETF.
 \item Выберите такой уровень риска (например, соотношение акции/облигации), при котором вы, с вашей личной чувствительностью к риску, сможете крепко спать по ночам.
@@ -1966,7 +2062,7 @@ GOOG \\ DBK.DE \\ AAPL
 Портфель <<Облигации>>: инфляционные ОФЗ-ИН 52001.
 
 \justify
-Портфель <<Отток капитала>>: iShares IVV (S\&P\,500), iShares IGSB (1-3Y Corp Bonds), Xtrackers DX2X (STOXX 600), Xtrackers D5BG (EUR Corp Bonds).
+Портфель <<Отток капитала>>: iShares IVV (S\&P\,500), iShares IGSB (1-5Y Corp Bonds), Xtrackers DX2X (STOXX 600), Xtrackers D5BG (EUR Corp Bonds).
 
 \justify
 Акции/облигации: 35/65. Рубли/доллары/евро: 33/33/33.
@@ -1975,18 +2071,24 @@ GOOG \\ DBK.DE \\ AAPL
 
 
 \begin{frame}{Дальнейшее чтение}
+На русском:
 \begin{itemize}
 \justifying
-
-
 \item Горяев, Чумаченко. <<Финансовая грамота>> (2012).
-\item Pedersen. <<Efficiently Inefficient>> (2015).
-\item Cochrane. <<Asset Pricing: Revised Edition>> (2005).
-\item Welch. <<Investments>> (2009).
-\item Bali, Engle, Murray. <<Empirical Asset Pricing>> (2016).
+\item Бернстайн. <<Манифест инвестора>> (2017).
+\item Фарбер. <<Глобальное распределение активов>> (2021).
 \item Статьи лектора на Хабре:
 
 \url{https://habr.com/ru/users/abak/posts/}
+\end{itemize}
+На английском:
+\begin{itemize}
+\item Pedersen. Efficiently Inefficient (2015).
+\item Ang. Asset Management (2014).
+\item Welch. Investments (2009).
+\item Bali, Engle, Murray. Empirical Asset Pricing (2016).
+\item Cochrane. Asset Pricing: Revised Edition (2005).
+
 \end{itemize}
 \end{frame}
 

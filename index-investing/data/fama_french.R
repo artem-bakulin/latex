@@ -4,6 +4,7 @@ library(ggplot2)
 library(tidyr)
 library(lubridate)
 library(curl)
+library(RcppRoll)
 
 download_fama_french_factors_data <- function() {
   
@@ -260,3 +261,24 @@ returns_by_holding_period %>%
   ungroup() %>% 
   pivot_wider(names_from = "return_pct", values_from="return") %>% 
   write_csv("us_mkt_holding_periods.csv")
+
+investment_outcome_by_period <- lapply(holding_years, function(years_in) {
+  
+  cumulative_growth_data %>% 
+    mutate(
+      mkt_real_growth = mkt / cpi,
+      growth = mkt_real_growth * roll_sumr(1 / mkt_real_growth, years_in*12) / (years_in*12)
+    ) %>% 
+    filter(!is.na(growth)) %>% 
+    summarise(
+      holding_period = years_in,
+      growth_pct = 100*holding_quantiles,
+      growth = quantile(growth, holding_quantiles)
+    )
+}) %>% bind_rows()
+
+investment_outcome_by_period %>% 
+  pivot_wider(names_from="growth_pct", values_from="growth") %>% 
+  tail()
+  write_csv("us_mkt_regular_investment.csv")
+
