@@ -1,10 +1,12 @@
 library(dplyr)
 library(readr)
 library(tidyr)
+library(lubridate)
+library(ggplot2)
 
 SAMPLE_QUANTILES <- c(0.05, 0.25, 0.5, 0.75, 0.95)
 
-cape_yield_data <- read_csv("shiller_cape_excess_yield.csv")
+cape_yield_data <- read_csv("shiller_cape.csv")
 
 summarize_cape_yield <- function(cape_yield_data) {
   cape_yield_data %>% 
@@ -15,6 +17,7 @@ summarize_cape_yield <- function(cape_yield_data) {
 }
 
 cape_yield_data %>% 
+  filter(!is.na(cape_excess_yield)) %>% 
   group_by(
     period = case_when(
       month >= '1986-01-01' & month <= '2020-12-01' ~ "1986--2020",
@@ -35,3 +38,7 @@ cape_yield_data %>%
   pivot_wider(names_from="pct", values_from="cape_yield") %>% 
   filter(!period == "Other")
 
+cape_yield_data %>% 
+  filter(month(month) == 1) %>% 
+  ggplot(aes(x = cape_excess_yield, y = subsequent_stock_return_10y)) +
+  geom_point()
