@@ -4,7 +4,7 @@ library(tidyr)
 library(lubridate)
 library(ggplot2)
 
-SAMPLE_QUANTILES <- c(0.05, 0.25, 0.5, 0.75, 0.95)
+SAMPLE_QUANTILES <- c(0, 0.05, 0.25, 0.5, 0.75, 0.95, 1)
 
 cape_yield_data <- read_csv("shiller_cape.csv")
 
@@ -39,6 +39,15 @@ cape_yield_data %>%
   filter(!period == "Other")
 
 cape_yield_data %>% 
-  filter(month(month) == 1) %>% 
   ggplot(aes(x = cape_excess_yield, y = subsequent_stock_return_10y)) +
   geom_point()
+
+
+cape_yield_data %>% 
+  summarise(
+    cape_excess_yield = median(cape_excess_yield, na.rm=TRUE),
+    subsequent_stock_return_10y = median(subsequent_stock_return_10y, na.rm=TRUE)
+  )
+
+cape_yield_data %>% 
+  filter(year(month) == 1987)
