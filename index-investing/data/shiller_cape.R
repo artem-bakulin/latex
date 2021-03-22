@@ -49,5 +49,22 @@ cape_yield_data %>%
     subsequent_stock_return_10y = median(subsequent_stock_return_10y, na.rm=TRUE)
   )
 
+CAPE_QUANTILES <- c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
+
 cape_yield_data %>% 
-  filter(year(month) == 1987)
+  filter(
+    year(month) >= 1926,
+    month(month) == 1,
+    !is.na(cape_excess_yield),
+    !is.na(subsequent_stock_return_10y)
+  ) %>% 
+  group_by(
+    cape_excess_yield_group = findInterval(cape_excess_yield, quantile(cape_excess_yield, CAPE_QUANTILES))
+  ) %>% 
+  summarise(
+    cape_yield_min  = sprintf("%.1f%%", min(cape_excess_yield)*100),
+    cape_yield_max  = sprintf("%.1f%%", max(cape_excess_yield)*100),
+    mean_10y_return = sprintf("%.1f%%", mean(subsequent_stock_return_10y) * 100),
+    min_10y_return  = sprintf("%.1f%%", min(subsequent_stock_return_10y) * 100),
+    max_10y_return  = sprintf("%.1f%%", max(subsequent_stock_return_10y) * 100)
+  )
