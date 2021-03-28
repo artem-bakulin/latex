@@ -3,7 +3,7 @@ library(readr)
 library(tidyr)
 library(lubridate)
 library(ggplot2)
-library(roll)
+library(zoo)
 
 last_day_of_month <- function(x) {
   make_date(year(x), month(x), days_in_month(x))
