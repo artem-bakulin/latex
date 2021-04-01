@@ -40,8 +40,9 @@
 \fi
 
 % Move footnotes to end of document
-%\usepackage[backref=true, totoc=section]{enotez}
-%\DeclareTranslation{russian}{enotez-title}{Примечания}
+\usepackage{enotez}
+\setenotez{backref=true}
+\DeclareTranslation{russian}{enotez-title}{Примечания}
 
 \usepackage[
 	output-decimal-marker={.},
