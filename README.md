@@ -12,3 +12,5 @@ LaTeX sources for Habrahabr posts, presentations, and other stuff
 [Снегоходы, пиво и деривативы на погоду](https://artem-bakulin.github.io/latex/papers/weather-derivatives/)
 
 [Индексное инвестирование (4 части)](https://artem-bakulin.github.io/latex/papers/index-investing/)
+
+[Соотношение "цена-прибыль" Шиллера и пузыри на рынке акций](https://artem-bakulin.github.io/latex/papers/shiller-cape/)
