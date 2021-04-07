@@ -1784,9 +1784,8 @@ Sortino &= \frac
 которое учитывает капитализацию процентов. Формула будет выглядеть так:
 \begin{equation*}
 GeomMean = \left(
-    \prod\limits_{t=1}^{n}(1 + R_t) -
-    \prod\limits_{t=1}^{n}(1 + R_{free,t})
-\right) ^ {\dfrac{1}{n}} - 1
+\prod\limits_{t=1}^{n}(1 + R_{t} - R_{free,t})
+\right)^{\dfrac{1}{n}} - 1
 \end{equation*}
 
 В таблице  \ref{us_market_sharpe_ratio} я посчитал отношение Шарпа, отношение 
