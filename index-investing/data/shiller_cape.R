@@ -17,7 +17,7 @@ summarize_cape_yield <- function(cape_yield_data) {
   cape_yield_data %>% 
     summarise(
       pct = sprintf("%d%%", 100*SAMPLE_QUANTILES),
-      cape_yield = sprintf("%.2f%%", 100*quantile(cape_excess_yield, SAMPLE_QUANTILES))
+      cape_yield = sprintf("%.1f%%", 100*quantile(cape_excess_yield, SAMPLE_QUANTILES))
     )
 }
 
