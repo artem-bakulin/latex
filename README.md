@@ -14,3 +14,7 @@ LaTeX sources for Habrahabr posts, presentations, and other stuff
 [Индексное инвестирование (4 части)](https://artem-bakulin.github.io/latex/papers/index-investing/)
 
 [Соотношение "цена-прибыль" Шиллера и пузыри на рынке акций](https://artem-bakulin.github.io/latex/papers/shiller-cape/)
+
+## Presentations
+
+[Индексное инвестирование (ВМК МГУ, весна 2021)](https://artem-bakulin.github.io/latex/papers/index-investing-presentation-spring-2021/)
