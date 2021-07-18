@@ -27,16 +27,114 @@
 \title{Индексное инвестирование}
 \author{Артём Бакулин}
 \date{\today}
-\usetheme{Warsaw}
-\usecolortheme{beaver}
+
+%\def\usebankstyle{1}
+
+\ifdefined\usebankstyle
+
+	% Remove navigation bar from the bottom-right corner
+	\beamertemplatenavigationsymbolsempty
+	
+	% Use black dash rather than blue triangle for each \item
+	\setbeamertemplate{itemize item}{\color{black}\textemdash}
+	
+	\definecolor{bank-light-blue}{HTML}{00A3E0}
+	\definecolor{bank-dark-blue}{RGB}{0, 24, 168}
+	
+	\setbeamercolor{frametitle}{fg=bank-light-blue}
+	
+	\setbeamertemplate{frametitle}{
+	    \begin{beamercolorbox}[ht=0.9cm]{frametitle}
+	    \strut \insertframetitle \strut
+	    \end{beamercolorbox}
+	}
+	
+	\addtobeamertemplate{frametitle}{}{%
+	\begin{textblock*}{50mm}(\textwidth-0.68cm,-0.68cm)
+	\includegraphics[height=0.68cm,width=0.68cm]{img/1280px_bank_logo.png}
+	\end{textblock*}}
+	
+	\setbeamertemplate{footline}{
+	    \begin{beamercolorbox}[leftskip=1cm, rightskip=1cm]{footline}
+	    		\vspace{0.2cm}
+			\begin{minipage}[t]{\textwidth-2cm}
+				\hrule
+				\vspace{1pt}			
+				{\color{bank-dark-blue} Deutsche Bank}
+				\hfill
+				\insertauthor, \insertdate
+				\hfill
+				\insertpagenumber
+				\newline
+				{\color{bank-light-blue} Technology Center}
+			\end{minipage}
+	    \end{beamercolorbox}
+	}
+
+	\newcommand{\inserttitleframe}{
+		% Background image is defined inside these curcly braces
+		{
+			\usebackgroundtemplate{\includegraphics[width=\paperwidth]{img/bank_background.jpg}}
+			\begin{frame}[plain]
+				\vspace{3.5cm}
+				
+				\hspace{-0.4cm} {\footnotesize Математические модели в инвестиционных банках}
+				
+				\vspace{0.5cm}
+				
+				\hspace{-0.4cm} {\huge \inserttitle}
+				
+				\vspace{0.2cm}
+				
+				\hspace{-0.4cm} {\scriptsize \color{bank-light-blue} \#PositiveImpact}
+				
+				\vspace{0.2cm}
+				
+				\hspace{-0.4cm} {\footnotesize \insertauthor, \insertdate}
+			\end{frame}
+		}
+	}
+	
+	\newcommand{\insertdisclaimerframe}{
+		\begin{frame}{Disclaimer}
+			\small
+			\justify
+			Данный материал не является предложением или предоставлением какой-либо услуги.
+			Данный материал предназначен исключительно для информационных и иллюстративных
+			целей и не предназначен для распространения в рекламных целях. Любой анализ третьих
+			сторон не предполагает какого-либо одобрения или рекомендации. Мнения, выраженные в
+			данном материале, являются актуальными на текущий момент, появляются только в этом
+			материале и могут быть изменены без предварительного уведомления. Эта информация
+			предоставляется с пониманием того, что в отношении материала, предоставленного
+			здесь, вы будете принимать самостоятельное решение в отношении любых действий в
+			связи с настоящим материалом, и это решение является основанным на вашем
+			собственном суждении, и что вы способны понять и оценить последствия этих действий.
+			ООО «ТехЦентр Дойче Банка» не несет никакой ответственности за любые убытки любого
+			рода, относящихся к этому материалу.
+		\end{frame}
+	}
+
+\else
+	\usetheme{Warsaw}
+	\usecolortheme{beaver}
+
+	\newcommand{\inserttitleframe}{
+		\begin{frame}
+		\titlepage
+		\end{frame}
+	}
+	
+	\newcommand{\insertdisclaimerframe}{
+	}
+\fi
+
+
 
 \begin{document}
 
 
 
-\begin{frame}
-\titlepage
-\end{frame}
+\inserttitleframe
 
 
 
@@ -1086,7 +1184,7 @@ Welch, Goyal (2008): отношения P/E (цена акции к прибыл
 
 
 
-\begin{frame}{Пример: P/E Шиллерf (CAPE)}
+\begin{frame}{Пример: P/E Шиллера (CAPE)}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -2150,6 +2248,10 @@ Bessembinder (2018): 4\% лучших акций обеспечили весь �
 
 \end{itemize}
 \end{frame}
+
+
+
+\insertdisclaimerframe
 
 \end{document}
 
