@@ -1,0 +1,183 @@
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+
+
+\title{Индексное инвестирование}
+\author{Артём Бакулин}
+\date{\today}
+
+\begin{document}
+
+
+\begin{frame}{Домашнее задание (Python)}
+\justify
+Срок сдачи 10.04.2021 (суббота) 23:59 MSK.
+
+\justify
+Постройте границу эффективности для портфелей, составленных из классов активов (asset classes), используя исторические ожидаемые доходности, дисперсии и корреляции.
+
+\justify
+Выберите 5--6 классов активов на свой вкус на сайте Portfolio Visualizer (там же можно перепроверить свои ответы):
+
+{\scriptsize \url{https://www.portfoliovisualizer.com/efficient-frontier}}
+
+\justify
+Для решения задачи квадратичного программирования (QP) используйте пакет cvxopt:
+
+{\scriptsize \url{https://cvxopt.org/userguide/coneprog.html\#quadratic-programming}}
+
+\justify
+Описание математической задачи в статье автора (раздел 1.6):
+{\scriptsize \url{https://artem-bakulin.github.io/latex/papers/index-investing/}}
+\end{frame}
+
+
+
+\begin{frame}{Исходные данные}
+\justify
+Пример исходных данных с сайта Portfolio Visualizer (можете использовать их, можете взять другие):
+
+\centering
+\vspace{\baselineskip}
+\scriptsize
+\begin{tabular}{l|r|r|r|r|r|r|r}
+
+ & \multicolumn{2}{c|}{Доходность} & \multicolumn{5}{c}{Корреляция} \\ 
+\cline{2-8}
+Актив                   & Сред.  & Откл.  & Lar.  & Sm.   & ex-US   & US B.    & G.B. \\ \hline
+US Large Cap            & 11.3\% & 15.9\% & 1.00  & 0.84  & 0.83    & 0.02  & 0.26\\
+US Small Cap            & 12.5\% & 19.3\% & 0.84  & 1.00  & 0.79    & -0.05 & 0.22\\
+Global ex-US Stock      & 6.9\%  & 16.8\% & 0.83  & 0.79  & 1.00    & 0.01 & 0.42\\
+Total US Bond Market       & 5.1\%  & 3.6\%  & 0.02  & -0.05 & 0.01    & 1.00 & 0.60\\
+Global Bonds (unhedged) & 5.9\%  & 6.8\%  & 0.26  & 0.22  & 0.42    & 0.60 & 1.00
+\end{tabular}
+\end{frame}
+
+
+\begin{frame}{Квадратичное программирование в cvxopt}
+\justify
+Метод cvxopt.solvers.qp решает задачу оптимизации следующего вида:
+\begin{align*}
+\begin{cases}
+\dfrac{1}{2}x^TPx + q^Tx \to \min \\
+Ax = b \\
+Gx \le h 
+\end{cases}
+\end{align*}
+
+\justify
+Здесь $x$ --- искомый вектор весов активов в портфеле (в нашем примере он имеет длину 5). Матрицы $P$, $q$, $G$, $h$, $A$, $b$ задаются условиями задачи. Наша цель --- правильно составить эти матрицы.
+\end{frame}
+
+
+
+\begin{frame}{Шаг 1. Матрица ковариации $P$}
+\justify
+\begin{align*}
+P = \begin{bmatrix}
+\sigma_1^2 & \rho_{1,2}\sigma_1\sigma_2 & \cdots & \rho_{1,n}\sigma_1\sigma_n \\
+\rho_{2,1}\sigma_2\sigma_1 & \sigma_2^2 & \cdots & \rho_{2,n}\sigma_2\sigma_n \\
+\vdots & \vdots & \ddots & \vdots \\
+\rho_{n,1}\sigma_n\sigma_1 & \rho_{n,2}\sigma_n\sigma_2 & \cdots & \sigma_n^2
+\end{bmatrix},
+\quad
+q = 0
+\end{align*}
+
+Здесь $\sigma_i$ --- стандартное отклонение доходности актива $i$, $\rho_{i,j}$ --- корреляция активов $i$ и $j$. 
+
+\justify
+С такими матрицами $P$ и $q$ солвер будет искать решение (вектор $x$ весов активов в портфеле), которое минимизирует дисперсию портфеля.
+\end{frame}
+
+
+
+\begin{frame}{Шаг 2. Ограничения с равенствами $A$ и $b$}
+\justify
+Во-первых, мы хотим, чтобы в сумме все веса в векторе $x$ были равны 1. Тогда мы инвестируем в активы весь капитал, но не больше.
+\begin{align*}
+A_1 = \begin{bmatrix}
+1 & 1 \dots 1
+\end{bmatrix},
+\quad
+b_1 = \begin{bmatrix}1\end{bmatrix}
+\end{align*}
+\justify
+Во-вторых, мы хотим, чтобы ожидаемая доходность портфеля равнялась $r$ (этот параметр мы будем задавать извне):
+\begin{align*}
+A_2 = \begin{bmatrix}
+\mu_1 & \mu_2 \dots \mu_n
+\end{bmatrix},
+\quad
+b_2 = \begin{bmatrix}r\end{bmatrix}
+\end{align*}
+Здесь $\mu_i$ --- ожидаемая доходность актива $i$.
+
+\justify
+В солвер нужно отдать блочную матрицу ограничений. Тогда он будет искать портфели, которые инвестирую весь капитал и дают нужную доходность $r$:
+\begin{align*}
+A = \begin{bmatrix}A_1 \\ A_2\end{bmatrix}, \quad b = \begin{bmatrix}b_1 \\ b_2\end{bmatrix}
+\end{align*} 
+\end{frame}
+
+
+\begin{frame}{Шаг 3. Ограничения с неравенствами $G$ и $h$}
+\justify
+Потребуем, чтобы веса активов в портфеле были неотрицательными (нельзя продавать активы в короткую). Для этого нужны матрицы ограничений-неравенств:
+\begin{align*}
+G =
+\begin{bmatrix}
+    -1 &      0 & \cdots & 0 \\
+     0 &     -1 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+     0 &      0 & \cdots & -1
+\end{bmatrix},
+\quad
+h = \begin{bmatrix}0 \\ 0 \\ \vdots \\ 0\end{bmatrix}
+\end{align*}
+
+\justify
+Условие $Gx \le h$ говорит солверу искать решения $x$, в которых все элементы неотрицательные.
+\end{frame}
+
+
+\begin{frame}{Шаг 4. Оптимальные портфели}
+\justify
+Теперь для каждого значения целевой доходности $r$ вы можете составить задачу оптимизации, которая ищет вектор $x$ весов портфеля, который а) имеет требуемую доходность и б) имеет минимально возможную дисперсию.
+
+\justify
+Для некоторых значений $r$ (скажем, от 2\% до 12\% с шагом 2\%) распечатайте табличку: доходность, стандартное отклонение, веса активов в портфеле. 
+
+\justify
+Изменяя $r$ с небольшим шагом (например, 0.05\%), постройте график границы эффективности, как на слайдах. На оси $x$ стандартное отклонение оптимального портфеля, на оси $y$ его доходность.
+
+\justify
+Повторите упражнение с дополнительным ограничением: вес каждого актива не может быть меньше 5\%, вес никакого актива не должен превышать 50\%.
+\end{frame}
+
+\end{document}
+
+
