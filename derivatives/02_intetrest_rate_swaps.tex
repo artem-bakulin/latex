@@ -1,0 +1,300 @@
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+
+\usepackage{enumitem}
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+\title{Лекция 2. Процентные свопы}
+\author{Артём Бакулин}
+\date{14 октября 2021 г.}
+
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
+\newcommand{\ruen}[2]{#1 (\en{#2})}
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: текущая стоимость}
+\justify
+\alert{Текущая стоимость} (\en{present value}) выплаты в $N$ рублей через $T$ лет --- сумма, 
+которую участники рынка готовы заплатить сегодня за право получить эту выплату.
+
+\justify
+Сколько рублей вы готовы заплатить сегодня (\en{PV}) за право получить 1\,060\,000 (\en{future value, FV}) рублей через год? Предположим, что на рынке есть идеальный безрисковый депозит под 6\% с простой капитализацией.
+
+\begin{align*}
+PV = \frac{FV}{1+rT} = \frac{1\,060\,000}{1 + 6\%} = 1\,000\,000
+\end{align*}
+
+\justify
+Никто не захочет платить больше, чем 1\,000\,000 сегодняшних рублей за 1\,060\,000 будущих рублей, потому что выгоднее будет вложить 1\,000\,000 под 6\% на год. Никто не захочет продавать 1\,060\,000 будущих рублей дешевле, чем за 1\,000\,000 сегодняшних, потому что выгоднее будет взять в кредит 1\,000\,000 под 6\% и погасить его через год.
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: коэффициент дисконтирования}
+\justify
+\alert{Коэффициент дисконтирования} (\en{discount factor}) для будущей даты $T$ --- текущая стоимость права получить 1 единицу валюты в день $T$. Другая формулировка: сколько рублей нужно иметь сегодня, чтобы сделать из них 1 рубль к моменту $T$?
+
+\justify
+Ответ зависит от того, какая безрисковая ставка $r$ нам доступна:
+\begin{align*}
+\delta_T &= \frac{1}{1 + rT} \quad \text{(простые проценты)} \\
+\delta_T &= \frac{1}{e^{r^*T}} = e^{-r^*T} \quad \text{(непрерывные проценты)}
+\end{align*}
+
+\justify
+Например, если безрисковая процентная ставка равна 6\%, то коэффициент дисконтирования на 1 год равен
+\begin{align*}
+\delta_1 = \frac{1}{1.06} \approx 0.9434
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: форвардная ставка}
+\centering
+\begin{tikzpicture}
+		\draw [->,>=triangle 90] (0, 0) -- (8.5, 0);
+
+		\draw [->,>=triangle 45] (1,0) node[anchor=north east, inner sep=1pt]{\setlength\tabcolsep{1pt}\begin{tabular}{r} 0 \\ $\delta_0=1.0$\end{tabular}} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north, inner sep=1pt]{\begin{tabular}{c}$T_1=1$ \\ $\delta_1 = 0.9254$\end{tabular}} node[pos=0.5,anchor=south]{$r_1=5\%$};
+
+		\draw [->,>=triangle 45] (4,0) .. controls (4.5, 1) and (6.5, 1) .. (7,0) node[anchor=north west, inner sep=1pt]{\setlength\tabcolsep{1pt}\begin{tabular}{l}$T_2=2$ \\ $\delta_2 = 0.8772$\end{tabular}} node[pos=0.5,anchor=south]{$x=8.57\%$};
+
+		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1.75) and (6.5, -1.75) .. (7,0) node[pos=0.5,anchor=north]{$r_2=7\%$};
+	\end{tikzpicture}
+	
+\justify
+Следующие параметры описывают одну и ту же наблюдаемую действительность:
+
+1) Ставка на период от сегодня до 1 года --- 5\%, ставка от сегодня до 2 лет --- 7\%.
+
+2) Ставка на период от сегодня до 1 года --- 5\%, (<<форвардная>>) ставка от 1 года до 2 лет --- 8.57\%.
+
+3) Коэффициент дисконтирования на сегодня --- 1.0, на 1 год --- 0.9254, на 2 года --- 0.8772. 
+\end{frame}
+
+
+
+\begin{frame}{European Interbak Offered Rate}
+\justify
+\alert{EURIBOR} --- индикативная процентная ставка (\en{interest rate benchmark}) по беззалоговым кредитам в евро среди банков Еврозоны. Публикуется \en{European Money Market Institute (EMMI)}.
+
+\justify
+По какой ставке сферический крупный банк может занять евро у другого банка или финансовой организации на открытом рынке? 
+
+\justify
+\centering
+\begin{tabular}{l|r}
+Срок (tenor)     & EURIBOR 08.10.2021 \\ \hline
+1W (1 неделя)    & -0.568\% \\
+1M (1 месяц)     & -0.561\% \\
+3M (3 месяца)    & -0.548\% \\
+6M (6 месяцев)   & -0.518\% \\
+12M (12 месяцев) & -0.482\% 
+\end{tabular}
+
+\justify
+*EURIBOR --- ставка без капитализации в конвенции ACT/360.
+\end{frame}
+
+
+
+\begin{frame}{Вычисление EURIBOR}
+\justify
+В вычислении EURIBOR участвуют 18 крупных банков Еврозоны и UK. Каждый банк ежедневно отправляет свою ставку по каждому из пяти сроков (от недели до года). Банки обязаны следовать методологии, которая определяет 3 <<уровня>>:
+
+\justify 
+1) Cредневзвешенная ставка реальных сделок банка в этот день и на этот срок. Каждая сделка должна быть не меньше 20 млн.
+
+\justify
+2) Интерполяция ставок реальных сделок на соседние сроки (например, вычисление 6M из 3M и 12M), либо экстраполяция сделок предыдущих дней на данный срок.
+
+\justify
+3) Ставки сделок по похожим инструментам, сделки менее 20 миллионов, котировки деривативов, сделки с нефинансовыми организациями, экспертное суждение. 
+
+\justify
+15\% самых больших и 15\% самых маленьких котировок отбрасываются. Арифметическое среднее оставшихся 70\%, округлённое до третьего знака --- EURIBOR.
+\end{frame}
+
+
+
+\begin{frame}{Вычисление EURIBOR}
+\centering
+\begin{tikzpicture}
+		\draw [->,>=triangle 90] (0, 0) -- (9.5, 0);
+
+		\draw [dashed] (0.5,0) node[anchor=north]{$T-1$} .. controls (1.0, 0.5) and (2.5, 0.5) .. (3,0) node[anchor=north]{$T+1$} node[pos=0.5,anchor=south]{spot lag};
+
+		\draw [->,>=triangle 45] (3,0) .. controls (4, 1) and (7, 1) .. (8,0) node[anchor=north]{$T+1+3M$} node[pos=0.5,anchor=south]{$EURIBOR_{T}$};
+
+		\node[anchor=north] at (1.75, 0) {$T$};
+		
+		\node[circle, fill, inner sep=1.5pt] at (0.5, 0) {};
+		\node[circle, fill, inner sep=1.5pt] at (1.75, 0) {};
+		\node[circle, fill, inner sep=1.5pt] at (3.0, 0) {};
+		\node[circle, fill, inner sep=1.5pt] at (8.0, 0) {};
+	\end{tikzpicture}
+	
+\justify
+T-1 (вчера):  банки заключали сделки и собирали статистику.
+
+T (сегодня): в 11:00 опубликовано среднее арифметическое вчерашних сделок --- EURIBOR на три месяца за дату T.
+
+T+1 (завтра): кредиты, о которых договорились вчера, вступят в силу (банки-заёмщики получат евро).
+
+T+1+3M (через три месяца): кредиты истекут (банки-заёмщики вернут деньги).
+
+\justify
+EURIBOR публикуется в дни, когда работает платёжная система Европейского Центробанка TARGET2. Три месяца прибавляются по конвенции \en{modified following business day}.
+\end{frame}
+
+
+
+\begin{frame}{Конвенция о переносе дней}
+\justify
+Кредит на три месяца начался в пятницу 29 октября 2021 года. Когда он закончится, если 29 января 2022 года --- суббота?
+
+\justify
+Конвенция \en{modified following / business month end}:
+
+\justify
+1) Если дата начала --- последний рабочий день текущего месяца, то дата окончания --- тоже последний рабочий день месяца. Пример: 30.09.2021 (чт) --- 31.12.2021 (пт).
+
+\justify
+2) Если дата окончания выпала на выходной, то она сдвигается вперёд на ближайший рабочий день, если только ближайший рабочий день --- не в следующем месяце. Пример: 01.10.2021 (пт) --- 03.01.2022 (пн).
+
+\justify
+3) В противном случае дата окончания сдвигается назад. Пример: 29.11.2021 (пн) --- 28.02.2022 (пн).
+\end{frame}
+
+
+
+\begin{frame}{Euro short-term rate}
+\justify
+\alert{ESTER} --- индикативная ставка по беззалоговым кредитам сроком на один день (\en{overnight}) среди банков Еврозоны. Публикуется Европейским центральным банком (ЕЦБ).
+
+\justify
+\centering
+\begin{tabular}{l|r}
+Срок   & ESTER 07.10.2021 \\ \hline
+1 день & -0.568\%
+\end{tabular}
+
+\justify
+В определении ESTER участвует панель из 48 банков. Каждый банк в течение дня сообщает ЕЦБ обо всех своих сделках (когда банк берёт кредит на 1 день). ЕЦБ отбрасывает 25\% самых маленьких и 25\% самых больших ставок и вычисляет среднее арифметическое.
+\end{frame}
+
+
+
+\begin{frame}{Вычисление ESTER}
+\justify
+\centering
+\begin{tikzpicture}
+		\draw [->,>=triangle 90] (0, 0) -- (4.0, 0);
+
+		\draw [->, >= triangle 45] (0.5,0) node[anchor=north]{$T$} .. controls (1.0, 0.75) and (2.5, 0.75) .. (3,0) node[anchor=north]{$T+1$} node[pos=0.5,anchor=south]{$ESTER_T$};
+\end{tikzpicture}
+
+\justify
+T (сегодня): банки берут кредиты (получают евро) и сообщают о сделках в ЕЦБ.
+
+T+1 (завтра): ЕЦБ опубликует среднюю ставку вчерашних сделок --- ESTER за вчера. Кредиты банков истекают (банки отдают евро).
+
+\justify
+Как и EURIBOR, ESTER определяется в те дни, когда работает платёжная система TARGET2.
+\end{frame}
+
+
+
+\newcommand{\plotBenchmarkRate}[2] {
+	
+	\addplot[
+		color = #2,
+		mark = none,
+		thick
+	]
+	table[
+		x=date,
+		y=#1,
+		col sep=comma
+	]
+	{euro_benchmark.csv};
+}
+
+\begin{frame}{ESTER и EURIBOR}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=2012-01-01,
+  xtick={2012-01-01, 2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01},
+  minor xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01},
+  ytick={-0.5, 0, 0.5, 1.0, 1.5},
+  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
+  xticklabel={\year},
+  xmin=2012-01-01,
+  xmax=2022-01-01,
+  ymin=-0.75,
+  ymax=1.5,
+  grid=both,
+  yticklabel={\pgfmathprintnumber{\tick}\%},
+%  ylabel={\small{Курс USDRUB}},
+  xlabel near ticks,
+  ylabel near ticks,
+  legend entries = {
+      EURIBOR 3M,
+      ESTER
+  },
+  legend cell align={left}
+]
+
+	\plotBenchmarkRate{3m}{Set1-A}
+	\plotBenchmarkRate{ester}{Set1-B}
+	
+	\draw[thick, color=black] (axis cs: 2012-01-01, 0) -- (axis cs: 2022-01-01, 0);
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: ECB, EMMI.
+\end{frame}
+
+\end{document}

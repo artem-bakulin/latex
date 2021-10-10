@@ -241,7 +241,7 @@ N_0{\underbrace{\left(\lim_{x \to +\infty} \left( 1 + \frac{1}{x} \right) ^ x\ri
 \begin{enumerate}[label=\Alph*]
 \item $31/365 \approx 0.08493$ \only<2>{(ACT/365)}
 \item $31/360 \approx 0.08611$ \only<2>{(ACT/360)}
-\item $30/360 \approx 0.83333$ \only<2>{(30/360)}
+\item $30/360 \approx 0.08333$ \only<2>{(30/360)}
 \item $20/252 \approx 0.07937$ \only<2>{(BUS/252 по календарю Нью-Йорка)}
 \end{enumerate}
 
@@ -423,10 +423,10 @@ r_2^* &= \frac{\ln(1+r_2T_2)}{T_2} = \frac{\ln 1.14}{2} \approx 6.551\%
 \justifying
 Не должно быть разницы между цепочкой из <<непрерывных>> годовых депозитов и двухгодовым депозитом:
 \begin{align*}
-e^{r_1^*T_1}e^{x^*(T_2-T_1)} = e^{r_2T_2}
+e^{r_1^*T_1}e^{x^*(T_2-T_1)} = e^{r_2^*T_2}
 \end{align*}
 \begin{align*}
-x^* = \frac{r_2T_2-r_1T_1}{T_2-T_1} = \frac{6.551\%\cdot2 - 4.879\%}{2 - 1} \approx 8.223\%
+x^* = \frac{r_2^*T_2-r_1^*T_1}{T_2-T_1} = \frac{6.551\%\cdot2 - 4.879\%}{2 - 1} \approx 8.223\%
 \end{align*}
 
 Пересчитаем <<непрерывные>> обратно в простые:
@@ -965,8 +965,8 @@ F_{xxxyyy} &= S_{xxxyyy} \frac{\delta_{xxx}(T)}{\delta_{yyy}(T)}
 \centering
 \begin{tabular}{l|l}
 	Тип контракта 		   & Non-deliverable forward		\\
-	Deutsche продаёт		& 1\,000\,000 долларов (USD)	\\
-	Deutsche покупает	   & 6\,500\,000 юаней (CNY)		\\
+	Deutsche <<продаёт>>  & 1\,000\,000 долларов (USD)	\\
+	Deutsche <<покупает>> & 6\,500\,000 юаней (CNY)		\\
 	Курс		 		      & 6.50 						\\
 	Дата поставки		   & 12 ноября 2021 г. (пт) \\
 	Референсный курс	   & Курс Народного банка Китая	\\
