@@ -258,6 +258,8 @@ T+1 (завтра): ЕЦБ опубликует среднюю ставку вч
 	{euro_benchmark.csv};
 }
 
+
+
 \begin{frame}{ESTER и EURIBOR}
 \centering
 \begin{tikzpicture}
@@ -281,20 +283,96 @@ T+1 (завтра): ЕЦБ опубликует среднюю ставку вч
   xlabel near ticks,
   ylabel near ticks,
   legend entries = {
+  	   EURIBOR 6M,
       EURIBOR 3M,
       ESTER
   },
   legend cell align={left}
 ]
 
-	\plotBenchmarkRate{3m}{Set1-A}
-	\plotBenchmarkRate{ester}{Set1-B}
+	\plotBenchmarkRate{6m}{Set1-A}
+	\plotBenchmarkRate{3m}{Set1-B}
+	\plotBenchmarkRate{ester}{Set1-C}
 	
 	\draw[thick, color=black] (axis cs: 2012-01-01, 0) -- (axis cs: 2022-01-01, 0);
 \end{axis}
 \end{tikzpicture}
 
 \scriptsize Данные: ECB, EMMI.
+\end{frame}
+
+
+
+\begin{frame}{Фьючерсы на EURIBOR}
+\justify
+Биржа \en{ICE Futures Europe}\ (бывшая LIFFE) предлагает фьючерсы на трёхмесячный EURIBOR. Например, \alert{FEIZ1} --- фьючерс на декабрь 2021 года*.
+
+\justify
+\centering
+\begin{tabular}{r|r}
+Покупка & Продажа \\ \hline
+100.535 & 100.540
+\end{tabular}
+
+\justify
+Если мы купим 10 фьючерсов по 100.540, то:
+\begin{itemize}
+\justifying
+\item Прямо сейчас мы ничего не платим.
+\item 13 декабря 2021 года** биржа установит финальную цену фьючерса $F = 100 - X$, где $X$ --- трёхмесячный EURIBOR, опубликованный в этот день.
+\item Мы заработаем $10 \cdot (F - 100.540) \cdot 2\,500$ евро, где 2\,500 --- константа из спецификации фьючерса.
+\end{itemize}
+
+\justify
+*FEI --- код контракта. Z --- код месяца (H --- март, M --- июнь, U --- сентябрь, Z --- декабрь). 1 --- последняя цифра года.
+
+\justify
+**Третья среда месяца минус два рабочих дня.
+\end{frame}
+
+
+
+\begin{frame}{Фьючерсы на EURIBOR}
+\justify
+Допустим, в декабре я разбогатею на 1\,000\,000 евро. Я планирую положить деньги на депозит в надёжном банке примерно под EURIBOR, чтобы в марте поехать в отпуск. У меня есть \alert{процентный риск} (\en{interest rate risk}): я не знаю, сколько денег у меня будет к марту.
+
+\justify
+Решение: купить один фьючерс на EURIBOR по 100.54.
+
+\justify
+Допустим, к 13 декабря EURIBOR снизится до -0.70\%.
+\begin{itemize}
+\justifying
+\item Биржа установит финальную цену $100 - (-0.70) = 100.70$.
+\item Прибыль по фьючерсу $(100.70-100.54)\cdot2\,500 = 400$ евро.
+\item Депозит под EURIBOR -0.70\% на три месяца принесёт $1\,000\,000 \cdot (-0.0070) / 4 = -1\,750$ евро.
+\item Итого мы заработаем $400 - 1\,750 = -1\,350$ евро.
+\end{itemize} 
+
+\justify
+Мы заработали бы столько же, если бы EURIBOR был -0.54\%: $1\,000\,000 \cdot (-0.0054)/4 =-1\,350$.
+\end{frame}
+
+
+
+\begin{frame}{Фьючерсы на EURIBOR}
+\justify
+Комбинация депозита по EURIBOR на 1 миллион и покупки фьючерса по 100.54:
+
+\justify
+\centering
+\begin{tabular}{r|r|r|r|r}
+EURIBOR & Цена фьючерса & Фьючерс & Депозит & Итого \\ \hline
+-0.30\% & 100.30        & -600    & -750    & -1\,350 \\
+-0.40\% & 100.40        & -350    & -1\,000 & -1\,350 \\
+-0.50\% & 100.50        & -100    & -1\,250 & -1\,350 \\
+-0.54\% & 100.54        & 0       & -1\,350 & -1\,350 \\
+-0.60\% & 100.60        & +150    & -1\,500 & -1\,350 \\
+-0.70\% & 100.70        & +400    & -1\,750 & -1\,350
+\end{tabular}
+
+\justify
+Покупая фьючерс по цене $100-X$, мы фиксируем ставку будущего депозита на 1\,000\,000 евро под EURIBOR. Если мы продаём фьючерс по цене $100-X$, то мы фиксируем будущую выплату по кредиту под плавающую ставку EURIBOR.
 \end{frame}
 
 \end{document}
