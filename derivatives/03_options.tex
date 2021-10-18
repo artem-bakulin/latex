@@ -1,0 +1,245 @@
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+
+\usepackage{enumitem}
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+% remove navigation bar
+\setbeamertemplate{navigation symbols}{} 
+
+\usepackage{eurosym}
+\renewcommand{\EUR}[1]{\textup{\euro}#1}
+
+\title{Лекция 3. Опционы}
+\author{Артём Бакулин}
+\date{21 октября 2021 г.}
+
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
+\newcommand{\ruen}[2]{#1 (\en{#2})}
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}{Ванильные опционы}
+\justifying
+\alert{Опцион колл (пут)} --- это контракт, который даёт владельцу \textit{право}, но не обязанность, купить (продать) базовый актив по заранее оговоренной цене в заранее определённую дату. 
+
+\justify
+Пример: колл-опцион, который даёт право (но не обязанность) купить 1\,000 долларов за 72\,000 рублей рублей в дату 15.12.2021. Сегодня за такой опцион нужно заплатить 500 рублей.
+
+\justify
+Такие опционы колл и пут называют <<ванильными>> (\en{plain vanilla}), потому что самое простое мороженое без ничего --- простое ванильное.
+\end{frame}
+
+
+
+\begin{frame}{Ванильные опционы}
+\justify
+<<Первый канал>> об убытках банка \en{Societe General}, 25.08.2008:
+
+\justify
+<<Источник агентства Reuters в самом банке на условиях анонимности сообщил, что в последнее время трейдер, о котором идет речь, покупал и продавал контракты на поставку обычной ванили. \alert{Той самой, которую используют в кулинарии}. Правда, ванили на 7 миллиардов долларов, в год не производят и во всем мире. Фактически речь идет о торговле воздухом. Хотя это вполне законно и используется повсеместно.>>
+
+\justify
+\url{https://www.newsru.com/russia/25Jan2008/vanilla.html}
+
+\end{frame}
+
+
+
+\begin{frame}{Ванильные опционы}
+\justifying
+\begin{itemize}
+\item Колл (call) --- право купить актив, пут (put) --- право продать.
+\item Страйк (strike) --- фиксированная цена, по которой можно будет купить или продать базовый актив.
+\item Премия (premium) --- количество денег, которые нужно заплатить сегодня, чтобы получить опцион.
+\item Выписать опцион (write an option) --- то же самое, что продать опцион.
+\item Дата экспирации (expiration date) --- дата, в которую опцион прекращает действовать, если владелец его не использовал.
+\item Европейский опцион --- воспользоваться правом можно только в дату экспирации.
+\item Американский опцион --- воспользоваться правом можно в любой момент до экспирации
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Пример: колл-опцион}
+\justifying
+Колл-опцион на покупку долларов за рубли со страйком 72.
+
+\justifying
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			domain=64:80,
+			%axis lines=middle,
+			xtick={64,66,...,80},
+			ytick={0,1,2,...,8},
+			xmin=64, xmax=80,
+			ymin=-1, ymax=8,
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Выплата (payoff)},
+		]
+  \addplot[Set1-A, very thick] {(\x > 72)*(\x - 72)};
+  
+  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Пример: покупаем колл-опцион}
+\justifying
+Покупка колл-опциона со страйком 72 за премию 0.5 руб.
+
+\justifying
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			domain=64:80,
+			%axis lines=middle,
+			xtick={64,66,...,80},
+			ytick={0,1,2,...,8},
+			xmin=64, xmax=80,
+			ymin=-1, ymax=8,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Прибыль (profit'n'loss)},
+			%scaled x ticks=false
+		]
+  \addplot[Set1-A, very thick] {(\x > 72)*(\x - 72) - 0.5};
+  
+  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Пример: покупаем пут-опцион}
+\justifying
+Покупка пут-опциона со страйком 72 за премию 0.5 руб.
+
+\justifying
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			domain=64:80,
+			%axis lines=middle,
+			xtick={64,66,...,80},
+			ytick={0,1,2,...,8},
+			xmin=64, xmax=80,
+			ymin=-1, ymax=8,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Прибыль (profit'n'loss)},
+			%scaled x ticks=false
+		]
+  \addplot[Set1-A, very thick] {(\x < 72)*(72 - \x) - 0.5};
+  
+  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Пример: продаём колл-опцион}
+\justifying
+Продажа колл-опциона со страйком 72 за премию 0.5 руб.
+
+\justifying
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			domain=64:80,
+			%axis lines=middle,
+			xtick={64,66,...,80},
+			ytick={-8,-7,...,0,1},
+			xmin=64, xmax=80,
+			ymin=-8, ymax=1,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Прибыль (profit'n'loss)},
+			%scaled x ticks=false
+		]
+  \addplot[Set1-A, very thick] {(\x > 72)*(72 - \x) + 0.5};
+  
+  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Пример: продаём пут-опцион}
+\justifying
+Продажа пут-опциона со страйком 72 за премию 0.5 руб.
+
+\justifying
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			domain=64:80,
+			%axis lines=middle,
+			xtick={64,66,...,80},
+			ytick={-8,-7,...,0,1},
+			xmin=64, xmax=80,
+			ymin=-8, ymax=1,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Прибыль (profit'n'loss)},
+			%scaled x ticks=false
+		]
+  \addplot[Set1-A, very thick] {(\x < 72)*(\x - 72) + 0.5};
+  
+  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+\end{document}
