@@ -335,6 +335,23 @@
 
 
 
+\begin{frame}{Денежность опционов}
+\justify
+Несколько стандартных терминов для <<денежности>> (\en{moneyness}) колл-опционов:
+
+\begin{itemize}
+\justifying
+\item В деньгах (\en{in the money, ITM}) --- текущая цена базового актива выше страйка (опцион было бы выгодно исполнить прямо сейчас).
+\item На деньгах (\en{at the money, ATM}) --- текущая цена базового актива равна страйку.
+\item Вне денег (\en{out of the money, OTM}) --- текущая цена базового актива ниже страйка (было бы не выгодно исполнять опцион прямо сейчас).
+\end{itemize}
+
+\justify
+Для пут-опционов терминология симметричная.
+\end{frame}
+
+
+
 \begin{frame}{Комбинации: коллар}
 \justifying
 Коллар (\en{collar}) --- проданный пут с меньшим страйком и купленный колл с большим страйком.
@@ -504,17 +521,468 @@
 \begin{itemize}
 \justifying
 \item Купленный колл со страйком $K$ и проданный пут со страйком $K$.
-\item Базовый актив ценой $S(T)$ и $K$ денег на счету.
+\item Базовый актив ценой $S(T)$ и долг в $K$ денег.
 \end{itemize}
 
 \justify
 Следовательно, в любой день $t$ до даты экспирации ($t<T$) они тоже должны стоить одинаковых денег с учётом ставки дисконтирования $r$:
 \begin{align*}
-C_K(t) - P_K(t) = S(t) + Ke^{-r(T-t)}
+C_K(t) - P_K(t) = S(t) - Ke^{-r(T-t)}
 \end{align*}
 
 \justify
 Это свойство называется \alert{паритет опционов колл и пут} (\en{call-put parity}). Оно позволяет выразить цену колла через пут или наоборот.
+\end{frame}
+
+
+
+\begin{frame}{Кто продаёт опционы?}
+\justify
+Опционы --- удобный инструмент и для хэджирования, и для спекуляции. Возможные потери ограничены снизу размером премии, а возможный выигрыш --- нет (для колл-опциона). Кто же тогда продаёт опционы, то есть соглашается на ограниченную прибыль в обмен на неограниченные убытки?
+\end{frame}
+
+
+
+\begin{frame}{Кто продаёт опционы?}
+\justify
+Несколько стратегий в среднем на дистанции давали положительную доходность.
+
+\justify
+\begin{itemize}
+\justifying
+\item Covered call: длинная позиция в индексе акций и проданный колл-опцион с высоким страйком.
+\item Short straddle: проданный стрэддл с динамическим дельта-хэджированием (об этом позже).
+\item Short OTM put: продажа опционов пут на индекс акций с низким страйком --- страховок от падения рынка.
+\end{itemize}
+
+\justify
+Все три стратегии <<продают волатильность>> --- делают ставку на то, что в будущем рынок будет колебаться не так сильно, как ожидают покупатели опционов. Опционы похожи на страховку и стоят достаточно дорого, чтобы на дистанции продавцы страховок в среднем зарабатывали деньги.
+\end{frame}
+
+
+
+\begin{frame}{Биномиальная модель}
+\centering
+\begin{tikzpicture}
+	\node(s) at (0 ,0) {\$100};
+	\node(su) at (3, 1) [anchor=west] {\$120, Payoff=\$20};
+	\node(sd) at (3, -1) [anchor=west] {\$80, Payoff=\$0};
+
+	\draw (s) [->] -- (su) node[above,midway] {90\%} ;
+	\draw (s) [->] -- (sd) node[below,midway] {10\%};
+	\draw (s) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
+\end{tikzpicture}
+
+\justify
+Текущая цена акции $\$100$. Завтра она может стоить либо $\$120$ с вероятностью $90\%$, либо $\$80$ с вероятностью $10\%$. Безрисковая процентная ставка $r=0\%$.
+
+\justify
+Сколько стоит европейский колл-опцион со страйком $K=\$100$, истекающий завтра?
+
+\justify
+Математическое ожидание:
+$$\mathbb{E}(Payoff) = 0.9\cdot \$20 + 0.1\cdot \$0 = \$18 $$
+\end{frame}
+
+
+
+\begin{frame}{Биномиальная модель}
+\centering
+\begin{tikzpicture}
+	\node(s) at (0 ,0) {\$100};
+	\node(su) at (3, 1) [anchor=west] {\$120, Payoff=\$20};
+	\node(sd) at (3, -1) [anchor=west] {\$80, Payoff=\$0};
+
+	\draw (s) [->] -- (su) node[above,midway] {90\%} ;
+	\draw (s) [->] -- (sd) node[below,midway] {10\%};
+	\draw (s) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
+\end{tikzpicture}
+
+\justify
+Рассмотрим портфель $\Pi$, который состоит из $0.5$ акции и долга в $\$40$, который нужно отдать завтра.
+
+\justify
+Если акция будет стоить \$120, то портфель будет стоить
+\begin{align*}\Pi = 0.5\cdot\$120 - \$40 = \$20\end{align*}
+
+\justify
+Если акция будет стоить \$80, то портфель будет стоить
+$$\Pi = 0.5 \cdot \$80 - \$40 = \$0$$
+
+\justify
+Портфель $\Pi$ \alert{реплицирует} опцион!
+\end{frame}
+
+
+
+\begin{frame}{Биномиальная модель}
+\centering
+\begin{tikzpicture}
+	\node(s) at (0 ,0) {\$100};
+	\node(su) at (3, 1) [anchor=west] {\$120, Payoff=\$20};
+	\node(sd) at (3, -1) [anchor=west] {\$80, Payoff=\$0};
+
+	\draw (s) [->] -- (su) node[above,midway] {90\%};
+	\draw (s) [->] -- (sd) node[below,midway] {10\%};
+	\draw (s) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
+\end{tikzpicture}
+
+\justify
+Если портфель из долга и $0.5$ акции \alert{завтра} принесёт столько же денег, сколько и колл-опцион, то \alert{сегодня} они должны стоить одинаково.
+\begin{align*}
+C_{K=100} = \Pi_0 = 0.5 \cdot \$100 - \$40 = \$10
+\end{align*}
+
+Ответ не зависит от вероятностей 90\% и 10\%! Мы устранили всю неопределённость, связанную с будущей ценой акции.
+\end{frame}
+
+
+
+\begin{frame}{Биномиальная модель}
+\centering
+\begin{tikzpicture}
+	\node(s) at (0 ,0) {\$100};
+	\node(su) at (3, 1) [anchor=west] {\$120, Payoff=\$20};
+	\node(sd) at (3, -1) [anchor=west] {\$80, Payoff=\$0};
+
+	\draw (s) [->] -- (su) node[above,midway] {90\%};
+	\draw (s) [->] -- (sd) node[below,midway] {10\%};
+	\draw (s) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
+\end{tikzpicture}
+
+\justify
+Если опцион стоит \$18, то возможен арбитраж:
+\begin{itemize}
+\item Продать (выписать) опцион за \$18.
+\item Взять в долг \$32.
+\item Купить 0.5 акции за \$50.
+\item Подождать до завтра.
+\item Если акция стоит \$80, то продать 0.5 акции за \$40, выплатить долг \$32. Прибыль \$8.
+\item Если акция стоит \$120, то купить еще 0.5 акции за \$60, продать держателю опциона за \$100, выплатить долг \$32. Прибыль \$8.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Биномиальная модель}
+\centering
+\begin{tikzpicture}
+	\node(s) at (0 ,0) {$S_0$};
+	\node(su) at (3, 1) [anchor=west] {$S_0u$, Payoff=$V_u$};
+	\node(sd) at (3, -1) [anchor=west] {$S_0d$, Payoff=$V_d$};
+
+	\draw (s) [->] -- (su);
+	\draw (s) [->] -- (sd);
+\end{tikzpicture}
+
+\justify
+\begin{itemize}
+\item Текущая цена акции $S_0$.
+\item Цена акции может либо вырасти до $S_0\cdot u$ (u>1) либо снизиться до $S_0 \cdot d$ (d<1).
+\item Длина одного периода $\tau$ лет, безрисковая  процентная ставка $r$, причём $d < 1+r\tau < u$.
+\item В случае роста или падения акции опцион принесет (будет иметь value) либо $V_u$, либо $V_d$.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Биномиальная модель}
+\centering
+\begin{tikzpicture}
+	\node(s) at (0 ,0) {$S_0$};
+	\node(su) at (3, 1) [anchor=west] {$S_0u$, Payoff=$V_u$};
+	\node(sd) at (3, -1) [anchor=west] {$S_0d$, Payoff=$V_d$};
+
+	\draw (s) [->] -- (su);
+	\draw (s) [->] -- (sd);
+\end{tikzpicture}
+
+\justify
+Рассмотрим портфель, состоящий из $\Delta$ акций и долга $L$. 
+\begin{equation*}
+\begin{cases}
+L(1+r\tau) + \Delta S_0 u = V_u \\
+L(1+r\tau) + \Delta S_0 d = V_d
+\end{cases}
+\end{equation*}
+
+\begin{equation*}
+\begin{cases}
+\Delta = \dfrac{V_u - V_d}{S(u-d)} \\
+L = \dfrac{V_du - V_ud}{(1+r\tau)(u-d)}
+\end{cases}
+\end{equation*}
+\end{frame}
+
+
+
+\begin{frame}{Биномиальная модель}
+\centering
+\begin{tikzpicture}
+	\node(s) at (0 ,0) {$S_0$};
+	\node(su) at (3, 1) [anchor=west] {$S_0u$, Payoff=$V_u$};
+	\node(sd) at (3, -1) [anchor=west] {$S_0d$, Payoff=$V_d$};
+
+	\draw (s) [->] -- (su);
+	\draw (s) [->] -- (sd);
+\end{tikzpicture}
+
+\justify
+Цена опциона равна цене реплицирующего портфеля:
+\begin{align*}
+C &= \Delta S_0 +L = \\
+ &= \dfrac{V_u-V_d}{u-d}S_0 + \dfrac{V_du -V_ud}{(1+r\tau)(u-d)} = \\
+ &= \dfrac{qV_u +(1-q)V_d}{1+r\tau},
+\end{align*}
+где
+\begin{equation*}
+q = \dfrac{1+r\tau - d}{u-d} \text{ --- <<риск-нейтральная вероятность>>}
+\end{equation*}
+\end{frame}
+
+
+
+\begin{frame}{Биномиальная модель}
+\centering
+\begin{tikzpicture}
+	\node(s) at (0 ,0) {\only<1-2>{\$100} \only<9->{\$14.8}};
+	\node(su) at (2, 0.5) [anchor=west] {\only<1-2>{\$120} \only<7->{\$25.8}};
+	\node(sd) at (2, -0.5) [anchor=west] {\only<1-2>{\$80} \only<8->{\$3.8}};
+	\node(suu) at (4, 1) [anchor=west] {\only<1-2>{\$144} \only<4->{\$44}};
+	\node(sud) at (4, 0) [anchor=west] {\only<1-2>{\$96} \only<5->{\$7.6}};
+	\node(sdd) at (4, -1) [anchor=west] {\only<1-2>{\$64} \only<6->{\$0}};
+	\node(suuu) at (6, 1.5) [anchor=west] {\only<1-2>{\$172.8}  \only<3->{\$72.8}};
+	\node(suud) at (6, 0.5) [anchor=west] {\only<1-2>{\$115.2}  \only<3->{\$15.2}};
+	\node(sudd) at (6, -0.5) [anchor=west] {\only<1-2>{\$76.8}  \only<3->{\$0}};
+	\node(sddd) at (6, -1.5) [anchor=west] {\only<1-2>{\$51.2} \only<3->{\$0}};
+
+	\draw (s) [->] -- (su);
+	\draw (s) [->] -- (sd);
+
+	\draw (su) [->] -- (suu);
+	\draw (su) [->] -- (sud);
+	\draw (sd) [->] -- (sud);
+	\draw (sd) [->] -- (sdd);
+
+	\draw (suu) [->] -- (suuu);
+	\draw (suu) [->] -- (suud);
+	\draw (sud) [->] -- (suud);
+	\draw (sud) [->] -- (sudd);
+	\draw (sdd) [->] -- (sudd);
+	\draw (sdd) [->] -- (sddd);
+\end{tikzpicture}
+
+\justify
+Предположим, что $u=1.2$, $d=0.8$, $S_0=\$100$, $r=0\%$. Сколько стоит колл со страйком $K=100$?
+
+\justify
+<<Риск-нейтральная вероятность>>:
+\begin{align*}
+q = \dfrac{1+r\tau - d}{u - d} = \dfrac{1 - 0.8}{1.2 - 0.8} = 0.5
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Биномиальная модель}
+Важно: параметр $\Delta$ меняется в каждом узле.
+
+\centering
+\begin{tikzpicture}
+	\node(s) at (0 ,0) {0.58};
+	\node(su) at (2, 0.5) [anchor=west] {0.76};
+	\node(sd) at (2, -0.5) [anchor=west] {0.24};
+	\node(suu) at (4, 1) [anchor=west] {1.00};
+	\node(sud) at (4, 0) [anchor=west] {0.40};
+	\node(sdd) at (4, -1) [anchor=west] {0.00};
+	\node(suuu) at (6, 1.5) [anchor=west] {\$72.8};
+	\node(suud) at (6, 0.5) [anchor=west] {\$20};
+	\node(sudd) at (6, -0.5) [anchor=west] {\$0};
+	\node(sddd) at (6, -1.5) [anchor=west] {\$0};
+
+	\draw (s) [->] -- (su);
+	\draw (s) [->] -- (sd);
+
+	\draw (su) [->] -- (suu);
+	\draw (su) [->] -- (sud);
+	\draw (sd) [->] -- (sud);
+	\draw (sd) [->] -- (sdd);
+
+	\draw (suu) [->] -- (suuu);
+	\draw (suu) [->] -- (suud);
+	\draw (sud) [->] -- (suud);
+	\draw (sud) [->] -- (sudd);
+	\draw (sdd) [->] -- (sudd);
+	\draw (sdd) [->] -- (sddd);
+\end{tikzpicture}
+
+\justify
+Справедливая безарбитражная цена опциона не зависит от вероятностей изменения цены вверх и вниз. Если мы можем \alert{динамически} ребалансировать портфель, состоящий из акций и долга, то мы можем реплицировать любой опцион.
+\end{frame}
+
+
+
+\begin{frame}{Биномиальная модель}
+\begin{tikzpicture}
+	\node(s) at (0 ,0) {$S_0$};
+	\node(su) at (1, 0.5) [anchor=west] {$S_0u$};
+	\node(sd) at (1, -0.5) [anchor=west] {$S_0d$};
+	\node(suu) at (3, 1) [anchor=west] {$S_0u^2$};
+	\node(sud) at (3, 0) [anchor=west] {$S_0ud$};
+	\node(sdd) at (3, -1) [anchor=west] {$S_0d^2$};
+	\node(suuu) at (5, 1.5) [anchor=west] {$S_0u^3$, Payoff = $V_3=V(S_0u^3)$};
+	\node(suud) at (5, 0.5) [anchor=west] {$S_0u^2d$, Payoff = $V_2=V(S_0u^2d)$};
+	\node(sudd) at (5, -0.5) [anchor=west] {$S_0ud^2$, Payoff = $V_1=V(S_0ud^2)$};
+	\node(sddd) at (5, -1.5) [anchor=west] {$S_0d^3$, Payoff = $V_0=V(S_0d^3)$};
+
+	\draw (s) [->] -- (su);
+	\draw (s) [->] -- (sd);
+
+	\draw (su) [->] -- (suu);
+	\draw (su) [->] -- (sud);
+	\draw (sd) [->] -- (sud);
+	\draw (sd) [->] -- (sdd);
+
+	\draw (suu) [->] -- (suuu);
+	\draw (suu) [->] -- (suud);
+	\draw (sud) [->] -- (suud);
+	\draw (sud) [->] -- (sudd);
+	\draw (sdd) [->] -- (sudd);
+	\draw (sdd) [->] -- (sddd);
+\end{tikzpicture}
+
+\justify
+<<Риск-нейтральная вероятность>>: $q=\dfrac{1+r\tau-d}{u-d}$
+
+Цена опциона сейчас:
+\begin{align*}
+C =  \dfrac{q^3V_3 + 3q^2(1-q)V_2 + 3q(1-q)^2V_1 + (1-q)^3V_0}{(1+r\tau)^3} 
+\end{align*}
+
+Если представить, что $q$ --- вероятность движения цены вверх, то выше записано математическое ожидание.
+\end{frame}
+
+
+
+\begin{frame}{Модель Блэка-Шоулза}
+Для дерева, состоящего из $n$ шагов:
+\begin{align*}
+C &= \dfrac{\sum\limits_{k=0}^{n} C^k_nq^k(1-q)^{n-k}V(S_0u^kd^{n-k})}{(1+r\tau)^n} \\
+C^k_n &= \dfrac{n!}{k!(n-k)!}
+\end{align*}
+
+\justify
+Что будет, если вместо произвольной функции $V(S)$ взять функцию $max(S-K,0)$, как в колл-опционе, и устремить $n$ к бесконечности? Получится формула Блэка-Шоулза.
+
+\vspace{\baselineskip}
+Строгое доказательство (28 страниц) здесь:
+
+\url{http://www.math.cmu.edu/~handron/21_370/BS.pdf}
+\end{frame}
+
+
+
+\begin{frame}{Модель Блэка-Шоулза}
+\justify
+Рассмотрим следующую модель:
+\begin{itemize}
+\item Базовый актив не платит дивидендов, его цена $S_0$
+\item Европейский колл-опцион со сроком экспирации $T$ лет и страйком $K$
+\item Безрисковая процентная ставка $r$ постоянна
+\item Если биномиальное дерево состоит из $N$ шагов, то на каждом шаге цена акции умножается либо на $u=e^{\mu T/N +  \sigma\sqrt{T/N}}$ либо на $d=e^{\mu T/N -\sigma\sqrt{T/N}}$, то есть цена следует геометрическому броуновскому движению. Здесь $\sigma=const$ --- волатильность, $\mu$ --- тренд.
+\item Идеальный ликвидный рынок без транзакционных издержек и без возможностей для арбитража.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Модель Блэка-Шоулза}
+Цена европейского колл-опциона задается формулой:
+\begin{align*}
+C_{BS} &= S_0N(d_1) - Ke^{-rT}N(d_2)
+\end{align*}
+где
+\begin{align*}
+d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r + \dfrac{\sigma^2}{2}\right)T\right) \\
+d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r - \dfrac{\sigma^2}{2}\right)T\right) \\
+N(x) &= \dfrac{1}{\sqrt{2\pi}}\int\limits_{-\infty}^x e^{-\frac{t^2}{2}}dt
+\end{align*}
+
+\justify
+Цена не зависит от дрифта $\mu$!
+\end{frame}
+
+
+
+\begin{frame}{Модель Блэка-Шоулза}
+Если базовый актив имеет дивидендную доходность $q$  и дивиденды выплачиваются непрерывно (валюта, индекс акций, нефть в хранилище):
+\begin{align*}
+C_{BS} &= S_0e^{-qT}N(d_1) - Ke^{-rT}N(d_2)
+\end{align*}
+где
+\begin{align*}
+d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q + \dfrac{\sigma^2}{2}\right)T\right) \\
+d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q- \dfrac{\sigma^2}{2}\right)T\right)
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Приближённое вычисление: ATMF-колл}
+\justify
+Рассмотрим \en{at-the-money-forward (ATMF)}\ колл-опцион со страйком $K = F = S_0e^{(r-q)T}$.
+
+\begin{align*}
+d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{S_0e^{(r-q)T}}\right) + \left(r -q + \dfrac{\sigma^2}{2}\right)T\right) = \frac{\sigma \sqrt{T}}{2} \\
+d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{S_0e^{(r-q)T}}\right) + \left(r -q- \dfrac{\sigma^2}{2}\right)T\right) = -\frac{\sigma \sqrt{T}}{2}
+\end{align*}
+
+Тогда:
+\begin{align*}
+C_{atmf} &= S_0e^{-qT}N(d_1) - S_0e^{(r-q)T}e^{-rT}N(d_2) = \\
+&= S_0e^{-qT}\left[
+N\left(\frac{\sigma \sqrt{T}}{2}\right) - N\left(-\frac{\sigma \sqrt{T}}{2}\right)
+\right]
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Приближённое вычисление: ATMF-колл}
+\justify
+Разложим $N(x)$ в ряд Тейлора:
+\begin{align*}
+N(x) \approx \frac{x}{\sqrt{2\pi}} \quad \Rightarrow
+N(x) - N(-x) \approx \frac{2x}{\sqrt{2\pi}}
+\end{align*}
+
+Тогда:
+\begin{align*}
+N\left(\frac{\sigma \sqrt{T}}{2}\right) - N\left(-\frac{\sigma \sqrt{T}}{2}\right)
+\approx
+\frac{\sigma\sqrt{T}}{\sqrt{2\pi}}
+\approx
+0.4\sigma\sqrt{T}
+\end{align*}
+
+Если также предположить, что $q\approx 0\%$ и $e^{-qT} \approx 1$, то
+\begin{align*}
+C_{atmf} \approx 0.4 S_0 \sigma \sqrt{T}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Приближённое вычисление: ATMF-колл}
+\justify
+Пример: спот-курс EURRUB равен $S=80$. Форвард на три месяца стоит $F=81$. Волатильность равна $\sigma=10\%$. Сколько стоит ATMF-колл со страйком $K=81$?
+
+\begin{align*}
+C_{atmf} \approx 0.4 \cdot S_0 \cdot \sigma \cdot \sqrt{T} = \\
+0.4 \cdot 80 \cdot 0.1 \cdot \sqrt{\dfrac{1}{4}} \approx 1.6
+\end{align*}
+
+Единицы измерения --- рубли за право купить 1 евро.
 \end{frame}
 
 \end{document}
