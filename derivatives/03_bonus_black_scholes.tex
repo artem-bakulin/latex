@@ -1,0 +1,286 @@
+\documentclass[pdf,12pt]{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{graphicx}
+\usepackage{ragged2e} 
+\usepackage{amssymb}
+%\usepackage{amsmath, amsfonts}
+\usepackage{ulem}
+%\usepackage{indentfirst}
+%\usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepackage{animate}
+
+\title{Вывод формулы Блэка-Шоулза}
+\author{Артём Бакулин}
+\date{\today}
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+\justify
+Рассмотрим биномиальное дерево из $N$ шагов, которое начинается с цены акции $S_0$. Европейский ПУТ имеет длину $T$ лет и страйк $K$. Безрисковая процентная ставка $r$.
+
+\vspace{\baselineskip}
+На каждом шаге цена может измениться в $u$ или в $d$ раз:
+\begin{align*}
+S_{i+1} &= \begin{cases}
+S_iu\text{, где } u = 1 + \mu \dfrac{T}{N} + \sigma\sqrt{\dfrac{T}{N}} \\
+S_id\text{, где } d = 1 + \mu \dfrac{T}{N} - \sigma\sqrt{\dfrac{T}{N}}\end{cases}
+\end{align*}
+Здесь $\mu$ --- тренд, $\sigma \ge 0$ -- волатильность.
+\vspace{\baselineskip}
+
+Потребуем дополнительно чтобы
+\begin{align*}
+d < 1+rT/N < u
+\end{align*}
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+<<Риск-нейтральная вероятность>>:
+\begin{align*}
+p &= \dfrac{1+r\dfrac{T}{N} - d}{u - d} = \dfrac{\left(r-\mu\right)\dfrac{T}{N} + \sigma\sqrt{\dfrac{T}{N}}}{2\sigma\sqrt{\dfrac{T}{N}}} 
+= \dfrac{1}{2} + \dfrac{r -\mu}{2\sigma}\sqrt{\dfrac{T}{N}} \\
+1-p &= \dfrac{1}{2} - \frac{r -\mu}{2\sigma}\sqrt{\dfrac{T}{N}}
+\end{align*}
+Цена опциона в дереве из $N$ шагов:
+\begin{equation*}
+P = \dfrac{\sum\limits_{k=0}^{N} C^k_Np^k(1-p)^{N-k}\max(K - S_0u^kd^{N-k},0)}{\left(1+rT/N \right)^N}
+\end{equation*}
+
+\justify
+Найти предел при $N \to \infty$ поможет теория вероятности, даже несмотря на то, что $p$ и $1-p$ не являются вероятностями.
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+Перейдем к дереву из логарифмов:
+
+\centering
+\begin{tikzpicture}
+	\node(s) at (0 ,0) {$\ln S_i$};
+	\node(su) at (3, 1) [anchor=west] {$\ln S_iu = \ln S_i + \ln u$};
+	\node(sd) at (3, -1) [anchor=west] {$\ln S_id = \ln S_i + \ln d$};
+
+	\draw (s) [->] -- (su) node[above,midway] {$p$} ;
+	\draw (s) [->] -- (sd) node[below,midway] {$1-p$};
+\end{tikzpicture}
+
+\justify
+Если интерпретировать $p$ как вероятность, то логарифм конечной цены акции $\ln S_N$ --- случайная величина:
+\begin{equation*}
+\ln S_N = \ln S_0 + \sum\limits_{i=0}^{N}X_i \text{,}
+\end{equation*}
+где все $X_i$ --- н.о.р.с.в. и имеют распределение
+\begin{equation*}
+X_i = \begin{cases}
+\ln u \text{ с вероятностью } $p$ \\
+\ln d \text{ с вероятностью } $1-p$
+\end{cases}
+\end{equation*}
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+Payoff опциона зависит от логарифма конечной цены:
+\begin{equation*}
+V(S_N) = \max(K - S_N ,0) \Rightarrow V(\ln S_N) = \max(K - e^{\ln S_N}, 0)
+\end{equation*}
+
+\justify
+Тогда формулу цены опциона можно записать как математическое ожидание функции от случайной величины $\ln S_N$:
+\begin{equation*}
+P = \dfrac{\mathbb{E}\left(\max(K - e^{\ln S_N},0)\right)}{(1+rT/N)^N}
+\end{equation*}
+Хорошие новости: закон больших чисел и центральная предельная теорема позволяют вычислить предел числителя. Предел знаменателя --- просто $e^{rT}$.
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+Найдем математическое ожидание и дисперсию $X_i$:
+\begin{equation*}
+X_i = \begin{cases}
+\ln u \text{ с вероятностью } $p$ \\
+\ln d \text{ с вероятностью } $1-p$
+\end{cases}
+\end{equation*}
+
+\justify
+Разложим $\ln u$ и $\ln d$ по формуле Тейлора:
+\begin{equation*}
+\ln(1+x) = x - \dfrac{x^2}{2} + O(x^3)
+\end{equation*}
+Нас будут интересовать только слагаемые порядка $\dfrac{1}{N}$ и $\dfrac{1}{\sqrt{N}}$.
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+\begin{align*}
+\ln u &= \ln \left(1 + \mu \dfrac{T}{N} + \sigma\sqrt{\dfrac{T}{N}} \right) = \\ 
+&=
+\mu \dfrac{T}{N} + \sigma\sqrt{\dfrac{T}{N}} - \dfrac{\mu^2T^2}{2N^2} - \dfrac{\sigma^2T}{2N} - \mu\sigma\left(\dfrac{T}{N}\right)^{1.5} + O\left(\frac{1}{N^{1.5}}\right) = \\
+&=  \left(\mu - \dfrac{\sigma^2}{2}\right)\dfrac{T}{N} + \sigma\sqrt{\dfrac{T}{N}} + O\left(\frac{1}{N^{1.5}}\right)
+\end{align*}
+Аналогично,
+\begin{align*}
+\ln d &= \ln \left(1 + \mu \dfrac{T}{N} - \sigma\sqrt{\dfrac{T}{N}} \right) = \left(\mu -\dfrac{\sigma^2}{2}\right)\dfrac{T}{N} -\sigma\sqrt{\dfrac{T}{N}} + O\left(\frac{1}{N^{1.5}}\right)
+\end{align*}
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+Математическое ожидание:
+\begin{align*}
+\mathbb{E}X_i &= p\ln u + (1-p)\ln d = \\
+&= \left( \dfrac{1}{2} + \dfrac{r -\mu}{2\sigma}\sqrt{\dfrac{T}{N}} \right)
+\left(\left(\mu - \dfrac{\sigma^2}{2}\right)\dfrac{T}{N} + \sigma\sqrt{\dfrac{T}{N}} + O\left(\frac{1}{N^{1.5}}\right) \right) + \\
+&+ \left( \dfrac{1}{2} - \dfrac{r -\mu}{2\sigma}\sqrt{\dfrac{T}{N}} \right)
+\left(\left(\mu - \dfrac{\sigma^2}{2}\right)\dfrac{T}{N} -\sigma\sqrt{\dfrac{T}{N}} + O\left(\frac{1}{N^{1.5}}\right) \right) =\\
+&= \left(r - \dfrac{\sigma^2}{2}\right)\dfrac{T}{N} + O\left(\frac{1}{N^{1.5}}\right)
+\end{align*}
+Ожидание ожидаемо сходится к $0$ при $N \to \infty$.
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+Дисперсия:
+\begin{align*}
+Var(X_i) &= \mathbb{E}(X_i^2) - (\mathbb{E}X_i)^2 =  p\ln^2u + (1-p)\ln^2d - (\mathbb{E}X_i)^2
+\end{align*}
+Заметим, что
+\begin{equation*}
+(\mathbb{E}X_i)^2 = \left(\left(r - \dfrac{\sigma^2}{2}\right)\dfrac{T}{N} + O\left(\frac{1}{N^{1.5}}\right)\right)^2 = O\left(\frac{1}{N^2}\right)
+\end{equation*}
+Кроме того, 
+\begin{align*}
+\ln^2 u &=  \left((\mu - \dfrac{\sigma^2}{2})\dfrac{T}{N} + \sigma\sqrt{\dfrac{T}{N}} + O\left(\frac{1}{N^{1.5}}\right)\right)^2 = \sigma^2\dfrac{T}{N} + O\left(\frac{1}{N^{1.5}}\right) \\
+\ln^2 d &=  \left((\mu - \dfrac{\sigma^2}{2})\dfrac{T}{N} - \sigma\sqrt{\dfrac{T}{N}} + O\left(\frac{1}{N^{1.5}}\right)\right)^2 = \sigma^2\dfrac{T}{N} + O\left(\frac{1}{N^{1.5}}\right)
+\end{align*}
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+Тогда:
+\begin{align*}
+Var(X_i) &= p\ln^2u + (1-p)\ln^2d + O\left(\dfrac{1}{N^2}\right) = \\
+&= p\left(\sigma^2\dfrac{T}{N} + O\left(\frac{1}{N^{1.5}}\right)\right) + \\ 
+&+ (1-p)\left(\sigma^2\dfrac{T}{N} + O\left(\frac{1}{N^{1.5}}\right)\right)
++  O\left(\dfrac{1}{N^2}\right) = \\
+& = \left(\sigma^2\dfrac{T}{N} + O\left(\frac{1}{N^{1.5}}\right)\right)
+\left( p + 1 - p\right) + O\left(\dfrac{1}{N^2}\right) = \\
+&= \sigma^2\dfrac{T}{N} + O\left(\frac{1}{N^{1.5}}\right)
+\end{align*}
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+Вернемся к случайной величине $\ln S_N$:
+\begin{align*}
+\ln S_N &= \ln S_0 + \sum X_i 
+= \ln S_0 + N \cdot \left( \dfrac{1}{N}\sum X_i \right) = \\
+&= \ln S_0 + N \cdot \left( \dfrac{1}{N}\sum X_i - \left(r - \dfrac{\sigma^2}{2}\right)\dfrac{T}{N} + \left(r - \dfrac{\sigma^2}{2}\right)\dfrac{T}{N}\right) = \\
+&= \ln S_0 +  \left(r - \dfrac{\sigma^2}{2}\right)T
++\sigma\sqrt{T} \cdot \sqrt{N}\dfrac{\dfrac{1}{N}\sum X_i - \left(r - \dfrac{\sigma^2}{2}\right)\dfrac{T}{N}}{\sigma\sqrt{T/N}} = \\
+&= \ln S_0 +  \left(r - \dfrac{\sigma^2}{2}\right)T + \sigma\sqrt{T}Z
+\end{align*}
+\justify
+где $Z\sim N(0,1)$ при $N \to \infty$ согласно центральной предельной теореме.
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+\justify
+Зная распределение $\ln S_N$, мы можем записать математическое ожидание любой непрерывной и ограниченной функции $f(x)$ от $\ln S_N$:
+\begin{equation*}
+\mathbb{E}f(\ln S_N) = \int\limits_{-\infty}^{+\infty}f\left(\ln S_0 + \left(r-\dfrac{\sigma^2}{2}\right)T + \sigma\sqrt{T}x\right)\phi(x)dx \text{,}
+\end{equation*}
+где
+\begin{equation*}
+\phi(x) = \dfrac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
+\end{equation*}
+--- плотность стандартного нормального распределения.
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+\justify
+Функция выплаты пут-опциона
+\begin{equation*}
+f(\ln S_N) = \max(K - e^{\ln S_N},0)
+\end{equation*}
+является ограниченной, поэтому мы можем записать цену опциона пут:
+\begin{align*}
+P &= e^{-rT}\mathbb{E}(\max(K - e^{\ln S_N},0))+ =\\
+&= e^{-rT}\int\limits_{-\infty}^{+\infty}\max(K - e^{\ln S_0 + \left(r-\frac{\sigma^2}{2}\right)T + \sigma\sqrt{T}x},0) \phi(x)dx
+\end{align*}
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+\justify
+Теперь нужно найти те значения $x$, при которых функция под интегралом отлична от нуля.
+\begin{align*}
+&K - e^{\ln S_0 + \left(r-\frac{\sigma^2}{2}\right)T + \sigma\sqrt{T}x} > 0 \\
+&\ln S_0 + \left(r-\frac{\sigma^2}{2}\right)T + \sigma\sqrt{T}x < \ln K \\
+&x < \dfrac{\ln\frac{K}{S_0} -  \left(r-\frac{\sigma^2}{2}\right)T}{\sigma\sqrt{T}}
+\end{align*}
+Обозначим
+\begin{equation*}
+d_2 = \dfrac{1}{\sigma\sqrt{T}}\left(\ln\frac{S_0}{K} + \left(r - \frac{\sigma^2}{2}\right)T \right)
+\end{equation*}
+Тогда
+\begin{equation*}
+x < -d_2
+\end{equation*}
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+\justify
+При $x \ge -d_2$ функция под интегралом равна нулю, поэтому можно интегрировать только до $-d_2$:
+\begin{align*}
+P &= e^{-rT}\int\limits_{-\infty}^{-d_2}(K - e^{\ln S_0 + \left(r-\frac{\sigma^2}{2}\right)T + \sigma\sqrt{T}x}) \phi(x)dx = \\
+&= Ke^{-rT}\int\limits_{-\infty}^{-d_2}\phi(x)dx + \\
+&+ \dfrac{S_0}{\sqrt{2\pi}} \int\limits_{-\infty}^{-d_2}e^{-\frac{\sigma^2}{2}T + \sigma\sqrt{T}x} \cdot e^{\frac{-x^2}{2}}dx
+\end{align*}
+Первое слагаемое -- это просто $Ke^{-rT}N(-d_2)$, где $N(x)$ --- функция распределения стандартного нормального распределения.
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+Последнее усилие --- рассмотреть второе слагаемое:
+\begin{align*}
+\dfrac{S_0}{\sqrt{2\pi}} \int\limits_{-\infty}^{-d_2}e^{-\frac{\sigma^2}{2}T + \sigma\sqrt{T}x -\frac{x^2}{2}}dx
+=
+\dfrac{S_0}{\sqrt{2\pi}} \int\limits_{-\infty}^{-d_2}e^{-\frac{1}{2}(x - \sigma\sqrt{T})^2}dx
+\end{align*}
+Сделаем замену $y = x - \sigma\sqrt{T}$, тогда при $x=-d_2$
+\begin{align*}
+y &= x - \sigma\sqrt{T} = -d_2 - \sigma\sqrt{T} = \\
+&= -\dfrac{1}{\sigma\sqrt{T}}\left(\ln\frac{S_0}{K} + \left(r - \frac{\sigma^2}{2}\right)T \right) - \sigma\sqrt{T} = \\
+&= -\dfrac{1}{\sigma\sqrt{T}}\left(\ln\frac{S_0}{K} + \left(r + \frac{\sigma^2}{2}\right)T \right) = -d_1
+\end{align*}
+\end{frame}
+
+\begin{frame}{Бонус: вывод формулы Блэка-Шоулза}
+С учетом подстановки получаем:
+\begin{align*}
+\dfrac{S_0}{\sqrt{2\pi}} \int\limits_{-\infty}^{-d_2}e^{-\frac{1}{2}(x - \sigma\sqrt{T})^2}dx
+=
+\dfrac{S_0}{\sqrt{2\pi}} \int\limits_{-\infty}^{-d_1}e^{-\frac{y^2}{2}}dy
+=
+S_0N(-d_1)
+\end{align*}
+Окончательно цена опциона пут равна
+\begin{align*}
+P = Ke^{-rT}N(-d_2) + S_0N(-d_1)
+\end{align*}
+где
+\begin{align*}
+d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left(\ln\frac{S_0}{K} + \left(r + \frac{\sigma^2}{2}\right)T \right) \\
+d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left(\ln\frac{S_0}{K} + \left(r - \frac{\sigma^2}{2}\right)T \right)
+\end{align*}
+\end{frame}
+\end{document}
