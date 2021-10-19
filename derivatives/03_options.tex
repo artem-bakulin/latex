@@ -864,7 +864,7 @@ C =  \dfrac{q^3V_3 + 3q^2(1-q)V_2 + 3q(1-q)^2V_1 + (1-q)^3V_0}{(1+r\tau)^3}
 
 
 
-\begin{frame}{Модель Блэка-Шоулза}
+\begin{frame}{Биномиальная модель}
 Для дерева, состоящего из $n$ шагов:
 \begin{align*}
 C &= \dfrac{\sum\limits_{k=0}^{n} C^k_nq^k(1-q)^{n-k}V(S_0u^kd^{n-k})}{(1+r\tau)^n} \\
@@ -882,14 +882,90 @@ C^k_n &= \dfrac{n!}{k!(n-k)!}
 
 
 
+\begin{frame}{Геометрическое броуновское движение}
+\justify
+Предположим, что до экспирации опциона осталось $T$ лет, и мы построили биномиальное дерево из $N$ шагов. Длина каждого шага $\Delta t = T/N$ лет.
+
+\justify
+На каждом самом маленьком шаге цена акции растёт на $\mu$ процентов годовых в среднем, а также колеблется вокруг этого среднего со стандартным отклонением (волатильностью) $\sigma$.
+\begin{align*}
+\frac{S_{i+1} - S_i}{S_i} = \mu \Delta t + \sigma \sqrt{\Delta t} \quad \epsilon_i \sim \mathcal{N}(0, 1)
+\end{align*}
+
+\justify
+Это геометрическое броуновское движение. Такой процесс можно получить, если в биномиальном дереве положить
+\begin{align*}
+u &= 1 + \mu \Delta t + \sigma\sqrt{\Delta t} \\
+d &= 1 + \mu \Delta t - \sigma\sqrt{\Delta t}
+\end{align*}
+\end{frame}
+
+
+
+\newcommand{\plotBrownianMotion}[2] {
+	
+	\addplot[
+		color = #2,
+		mark = none,
+		thick
+	]
+	table[
+		x=t,
+		y=s,
+		col sep=comma
+	]
+	{#1};
+	
+	\addplot[
+		color = #2,
+		mark = none,
+		thick,
+		dashed,
+		forget plot
+	]
+	table[
+		x=t,
+		y=trend,
+		col sep=comma
+	]
+	{#1};
+}
+
+
+
+\begin{frame}{Геометрическое броуновское движение}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  xlabel near ticks,
+  ylabel near ticks,
+  xmin=0, xmax=1,
+  legend entries = {
+  	   {$\mu=5\%, \sigma=10\%, N=100$},
+      {$\mu=10\%, \sigma=40\%, N=500$}
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.03)},anchor=south east}
+]
+
+	\plotBrownianMotion{gbm_sample_100.csv}{Set1-A}
+	\plotBrownianMotion{gbm_sample_500.csv}{Set1-B}
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
 \begin{frame}{Модель Блэка-Шоулза}
 \justify
 Рассмотрим следующую модель:
 \begin{itemize}
-\item Базовый актив не платит дивидендов, его цена $S_0$
-\item Европейский колл-опцион со сроком экспирации $T$ лет и страйком $K$
-\item Безрисковая процентная ставка $r$ постоянна
-\item Если биномиальное дерево состоит из $N$ шагов, то на каждом шаге цена акции умножается либо на $u=e^{\mu T/N +  \sigma\sqrt{T/N}}$ либо на $d=e^{\mu T/N -\sigma\sqrt{T/N}}$, то есть цена следует геометрическому броуновскому движению. Здесь $\sigma=const$ --- волатильность, $\mu$ --- тренд.
+\item Базовый актив не платит дивидендов, его цена $S_0$.
+\item Европейский колл-опцион со сроком экспирации $T$ лет и страйком $K$.
+\item Безрисковая процентная ставка $r$ постоянна.
+\item Если биномиальное дерево состоит из $N$ шагов, то на каждом шаге цена акции умножается либо на $u = \mu T/N + \sigma\sqrt{T/N}$ либо на $d=\mu T/N - \sigma\sqrt{T/N}$, то есть цена следует геометрическому броуновскому движению. Здесь $\sigma=const$ --- волатильность, $\mu$ --- тренд.
 \item Идеальный ликвидный рынок без транзакционных издержек и без возможностей для арбитража.
 \end{itemize}
 \end{frame}
@@ -909,7 +985,7 @@ N(x) &= \dfrac{1}{\sqrt{2\pi}}\int\limits_{-\infty}^x e^{-\frac{t^2}{2}}dt
 \end{align*}
 
 \justify
-Цена не зависит от дрифта $\mu$!
+Цена не зависит от тренда $\mu$!
 \end{frame}
 
 
