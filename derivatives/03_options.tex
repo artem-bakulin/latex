@@ -58,7 +58,7 @@
 
 \begin{frame}{Ванильные опционы}
 \justifying
-\alert{Опцион колл (пут)} --- это контракт, который даёт владельцу \textit{право}, но не обязанность, купить (продать) базовый актив по заранее оговоренной цене в заранее определённую дату. 
+\alert{Опцион колл (пут)} --- это контракт, который даёт владельцу право, но не обязанность, купить (продать) базовый актив по заранее оговоренной цене в заранее определённую дату. 
 
 \justify
 Пример: колл-опцион, который даёт право (но не обязанность) купить 1\,000 долларов за 72\,000 рублей рублей через 3 месяца. Сегодня за такой опцион нужно заплатить 500 рублей.
@@ -958,6 +958,25 @@ d &= 1 + \mu \Delta t - \sigma\sqrt{\Delta t}
 
 
 
+\begin{frame}{Геометрическое броуновское движение}
+\justify
+Если геометрическое броуновское движение начинается с цены базового актива $S_0$ с трендом $\mu$ и волатильностью $\sigma$, то цена базового актива через время $T$ $S_T$ есть случайная величина:
+\begin{align*}
+S_T = S_0\cdot \exp\left((\mu - \sigma^2/2)T + \sigma\sqrt{T}\varepsilon\right) \quad \varepsilon \sim \mathcal{N}(0, 1)
+\end{align*} 
+
+\justify
+Логарифм изменения цены (грубо: процентный прирост) есть случайная величина, которая следует нормальному распределению:
+\begin{align*}
+\ln\left(\frac{S_T}{S_0}\right) = \left(\mu - \frac{\sigma^2}{2}\right)T + \sigma\sqrt{T}\varepsilon \quad \varepsilon \sim \mathcal{N}(0, 1)
+\end{align*}
+
+\justify
+Поэтому говорят, что цена базового актива следует лог-нормальному распределению.
+\end{frame}
+
+
+
 \begin{frame}{Модель Блэка-Шоулза}
 \justify
 Рассмотрим следующую модель:
@@ -991,6 +1010,7 @@ N(x) &= \dfrac{1}{\sqrt{2\pi}}\int\limits_{-\infty}^x e^{-\frac{t^2}{2}}dt
 
 
 \begin{frame}{Модель Блэка-Шоулза}
+\justify
 Если базовый актив имеет дивидендную доходность $q$  и дивиденды выплачиваются непрерывно (валюта, индекс акций, нефть в хранилище):
 \begin{align*}
 C_{BS} &= S_0e^{-qT}N(d_1) - Ke^{-rT}N(d_2)
@@ -1000,6 +1020,85 @@ C_{BS} &= S_0e^{-qT}N(d_1) - Ke^{-rT}N(d_2)
 d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q + \dfrac{\sigma^2}{2}\right)T\right) \\
 d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q- \dfrac{\sigma^2}{2}\right)T\right)
 \end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Модель Блэка-Шоулза}
+\justify
+Пример: колл-опцион со страйком $K=72$, сроком $T=0.25$ лет, $r=6\%$, $q=0\%$.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			domain=64:80,
+			xtick={64,66,...,80},
+			ytick={0,1,2,...,10},
+			xmin=64, xmax=80,
+			ymin=0, ymax=10,
+			grid = major,
+			xlabel={Курс сегодня ($S_0$)},
+			ylabel={Цена опциона},
+  legend entries = {
+  	   $\sigma=25\%$,
+  	   $\sigma=10\%$,
+  	   $\sigma=5\%$,
+  	   $\sigma=0\%$
+  },
+  legend cell align={left},
+  legend style={at={(0.03,0.97)},anchor=north west}
+]
+
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=S,
+		y=C_25,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=S,
+		y=C_10,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	\addplot[color = Set1-C, mark = none, thick]
+	table[
+		x=S,
+		y=C_5,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Модель Блэка-Шоулза}
+\justify
+Величину $\max(S - K, 0)$ называют внутренней стоимостью колл-опциона (\en{intrinsic value}). Столько денег мы бы заработали на опционе, если бы могли исполнить его прямо сейчас.
+
+\justify
+Если $C$ --- цена колл-опциона, то величина $C - \max(S - K, 0)$ называется временной стоимостью (\en{time value}). Она показывает, насколько опцион дороже, чем простая внутренняя стоимость. Чем выше волатильность, и чем больше времени осталось до экспирации, тем выше временная стоимость.
+\end{frame}
+
+
+\begin{frame}{Модель Блэка-Щоулза}
+\begin{align*}
+C_{BS} &= S_0N(d_1) - Ke^{-rT}N(d_2)
+\end{align*}
+
+\justify
+$S_0N(d_1)$ --- цена опциона <<актив или ничего>> (\en{asset-or-nothing call}). Этот опцион выплачивает 1 единицу базового актива, если цена выше страйка.
+
+\justify
+$e^{-rT}N(d_2)$ --- цена опциона <<деньги или ничего>> (\en{cash-or-nothing call}). Этот опцион выплачивает 1 единицу денег, если цена актива выше страйка.
 \end{frame}
 
 

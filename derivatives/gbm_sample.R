@@ -22,3 +22,21 @@ sample_gbm(100, 0.05, 0.1, 1, 100) %>%
 
 sample_gbm(100, 0.1, 0.4, 1, 500) %>% 
   write_csv("gbm_sample_500.csv")
+
+black_scholes_price <- function(S, K, T, sigma, r, q) {
+  
+  d1 <- 1 / (sigma*sqrt(T)) * (log(S/K) + (r - q + sigma*sigma/2)*T)
+  d2 <- 1 / (sigma*sqrt(T)) * (log(S/K) + (r - q - sigma*sigma/2)*T)
+  
+  S*exp(-q*T)*pnorm(d1) - K*exp(-r*T)*pnorm(d2)
+}
+
+tibble(
+  S = seq(64, 80, 0.05)
+) %>% 
+  mutate(
+    C_5 = black_scholes_price(S, 72, 0.05,  0.25, 0.06, 0),
+    C_10 = black_scholes_price(S, 72, 0.1,  0.25, 0.06, 0),
+    C_25 = black_scholes_price(S, 72, 0.25, 0.25, 0.06, 0)
+  ) %>% 
+  write_csv("call_price.csv")
