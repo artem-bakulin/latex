@@ -1,0 +1,390 @@
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+
+\usepackage{enumitem}
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+% remove navigation bar
+\setbeamertemplate{navigation symbols}{} 
+
+\usepackage{eurosym}
+\renewcommand{\EUR}[1]{\textup{\euro}#1}
+
+\title{Лекция 4. Улыбка волатильности. Греки}
+\author{Артём Бакулин}
+\date{28 октября 2021 г.}
+
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
+\newcommand{\ruen}[2]{#1 (\en{#2})}
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: модель Блэка-Шоулза}
+\justify
+В модели Блэка-Шоулза процентное изменение цены $dS/S$ за каждый малый период $dt$ имеет нормальное распределение с трендом $\mu$ и волатильностью $\sigma$:
+\begin{align*}
+\frac{dS}{S} = \mu dt + \sigma\varepsilon\sqrt{dt}, \quad \varepsilon \sim \mathcal{N}(0, 1)
+\end{align*}
+
+\justify
+Если сложить все малые колебания за интервал длиной $T$, то цена базового актива имеет лог-нормальное распределение:
+\begin{align*}
+S(T) &= S_0 \exp\left[\left(r - \dfrac{\sigma^2}{2}\right)T + \sigma\varepsilon\sqrt{T}\right], \quad \varepsilon \sim \mathcal{N}(0, 1) \\
+\ln\left(S(T)\right) &= \ln\left(S_0\right) + \left(r - \dfrac{\sigma^2}{2}\right)T + \sigma\varepsilon\sqrt{T}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: модель Блэка-Шоулза}
+\justify
+Цена колл-опциона со страйком $K$ и сроком погашения $T$ зависит от текущей цены базового актива $S_0$, его волатильности $\sigma$ и безрисковой процентной ставки $r$:
+\begin{align*}
+C &= S_0N(d_1) - Ke^{-rT}N(d_2)
+\end{align*}
+где
+\begin{align*}
+d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r + \dfrac{\sigma^2}{2}\right)T\right) \\
+d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r - \dfrac{\sigma^2}{2}\right)T\right) \\
+N(x) &= \dfrac{1}{\sqrt{2\pi}}\int\limits_{-\infty}^x e^{-\dfrac{t^2}{2}}dt
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Историческая волатильность}
+\justify
+Если мы живём в мире Блэка-Шоулза, то нам достаточно знать волатильность базового актива, чтобы посчитать справедливую цену любого опциона. Почему бы не посмотреть на историю?
+
+\justify
+Рассмотрим временной ряд исторических цен базового актива $S_0,S_1,...,S_n$, взятых с фиксированным шагом $\Delta t$. Например, если у нас есть дневные данные, то $\Delta t = 1/250$ (по количеству рабочих дней в году). 
+
+\justify
+Посчитаем логарифмические доходности (\en{log returns}), которые близки к простым процентным доходностям:
+\begin{align*}
+r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
+\ln \left(\dfrac{S_{i}}{S_{i-1}} \right) &= \ln \left[1 + \left(\dfrac{S_{i}}{S_{i-1}} - 1 \right) \right] \approx \dfrac{S_{i}}{S_{i-1}} - 1
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Историческая волатильность}
+\justify
+В модели Блэка-Шоулза все лог-доходности $r_i$ --- н.о.р.с.в. Их выборочное стандартное отклонение --- историческая (\en{historical}) или реализованная (\en{realized}) волатильность.
+
+\begin{align*}
+\hat{r} &= \frac{1}{n}\sum\limits_{i=1}^{n}r_i \\
+\hat{\sigma} &= \sqrt{\frac{1}{n-1}\sum\limits_{i=1}^{n}(r_i - \hat{r})^2}
+\end{align*}
+
+\justify
+Чтобы перевести <<дневную>> волатильность в проценты годовых, нужно разделить её на $\sqrt{\Delta t}$.
+\end{frame}
+
+
+
+\begin{frame}{Историческая волатильность}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=2012-01-01,
+  xtick={2012-01-01, 2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01},
+  minor xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01},
+  ytick={30, 40, ..., 90},
+%  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
+  xticklabel={\year},
+  xmin=2012-01-01,
+  xmax=2022-01-01,
+  ymin=20,
+  ymax=90,
+  grid=both,
+  %yticklabel={\pgfmathprintnumber{\tick}\%},
+  ylabel={\small{Курс USDRUB}},
+  xlabel near ticks,
+  ylabel near ticks
+]
+
+\addplot[color = Set1-B, mark = none, very thick]
+	table[
+		x=date,
+		y=fx_rate,
+		col sep=comma
+	]
+	{cbr.USD.2012.2021.csv};
+
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: ЦБ РФ.
+\end{frame}
+
+
+
+\begin{frame}{Историческая волатильность}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=2012-01-01,
+  xtick={2012-01-01, 2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01},
+  minor xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01},
+  ytick={0.1, 0.2, ..., 1},
+%  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
+  xticklabel={\year},
+  xmin=2012-01-01,
+  xmax=2022-01-01,
+  ymin=0,
+  ymax=0.9,
+  grid=both,
+  yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+  ylabel={\small{Реализованная волатильность}},
+  xlabel near ticks,
+  ylabel near ticks
+]
+
+\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=mid_month,
+		y=realized_vol,
+		col sep=comma
+	]
+	{USDRUB_realized_vol.csv};
+
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: ЦБ РФ.
+\end{frame}
+
+
+
+\begin{frame}{Историческая волатильность}
+\justify
+Историческая волатильность --- не константа, что противоречит модели Блэка-Шоулза. В прошлом мы видели большой разброс в реализованной волатильности. Сложно выбрать репрезентативный период, который хорошо подходил бы тому опциону (скажем, на 3 месяца), который мы пытаемся оценить.
+
+\justify
+Прошлое не предсказывает будущее!
+\end{frame}
+
+
+
+\begin{frame}{Ожидаемая волатильность}
+\justify
+В модели Блэка-Шоулза цена опциона зависит от волатильности:
+\begin{align*}
+C_K = F(S_0, T, K, \sigma, r)
+\end{align*}
+
+\justify
+Мы можем посмотреть на рыночные цены опционов и решить задачу в обратном направлении. 
+
+\justify
+Если участники рынка пользуются моделью Блэка-Шоулза, то какую волатильность они подставляют в формулу, чтобы получить те премии, которые мы наблюдаем?
+\begin{align*}
+\sigma = F^{-1}(S_0, T, K, r, C_K)
+\end{align*}
+
+\justify
+Решение этой обратной задачи --- ожидаемая (\en{implied}) волатильность.
+\end{frame}
+
+
+
+\begin{frame}{Ожидаемая волатильность}
+\justify
+Опционы на USDRUB с экспирацией 16.12.2021.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			domain=60:80,
+			xtick={60,62,...,80},
+			ytick={1,2,...,12},
+			xmin=60, xmax=80,
+			ymin=0, ymax=12,
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Цена опциона, руб.}
+]
+
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=strike,
+		y=call,
+		col sep=comma
+	]
+	{usdrub_implied_vol.csv};
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=put,
+		col sep=comma
+	]
+	{usdrub_implied_vol.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: Московская биржа.
+\end{frame}
+
+
+
+\begin{frame}{Ожидаемая волатильность}
+\justify
+Опционы на USDRUB с экспирацией 16.12.2021.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			domain=60:80,
+			xtick={60,62,...,80},
+			ytick={0.02,0.04,...,0.20},
+			xmin=60, xmax=80,
+			ymin=0, ymax=0.2,
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)}
+]
+
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=iv,
+		col sep=comma
+	]
+	{usdrub_implied_vol.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: Московская биржа.
+\end{frame}
+
+
+
+\begin{frame}{Ожидаемая волатильность}
+\justify
+Опционы на S\&P\,500 с экспирацией 17.12.2021.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			domain=4000:5000,
+			xtick={4000,4100,...,5000},
+			ytick={50,100,...,600},
+			xmin=4000, xmax=5000,
+			ymin=0, ymax=600,
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Цена опциона, \$},
+			xticklabel={\pgfmathprintnumber[precision=0, 1000 sep={}]{\tick}}
+]
+
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=strike,
+		y=call,
+		col sep=comma
+	]
+	{sp500_implied_vol.csv};
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=put,
+		col sep=comma
+	]
+	{sp500_implied_vol.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: barchart.com.
+\end{frame}
+
+
+
+\begin{frame}{Ожидаемая волатильность}
+\justify
+Опционы на S\&P\,500 с экспирацией 17.12.2021.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			domain=4000:5000,
+			xtick={4000,4100,...,5000},
+			ytick={0.05,0.10,...,0.25},
+			xmin=4000, xmax=5000,
+			ymin=0, ymax=0.25,
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)},
+			xticklabel={\pgfmathprintnumber[precision=0, 1000 sep={}]{\tick}},
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+]
+
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=iv,
+		col sep=comma
+	]
+	{sp500_implied_vol.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: barchart.com.
+\end{frame}
+
+\end{document}
