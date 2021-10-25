@@ -58,13 +58,13 @@
 
 \begin{frame}{Напоминание: модель Блэка-Шоулза}
 \justify
-В модели Блэка-Шоулза процентное изменение цены $dS/S$ за каждый малый период $dt$ имеет нормальное распределение с трендом $\mu$ и волатильностью $\sigma$:
+В модели Блэка-Шоулза процентное изменение цены $dS_t/S_t$ за каждый малый период $dt$ имеет нормальное распределение с трендом $\mu$ и волатильностью $\sigma$:
 \begin{align*}
-\frac{dS}{S} = \mu dt + \sigma\varepsilon\sqrt{dt}, \quad \varepsilon \sim \mathcal{N}(0, 1)
+\frac{dS_t}{S_t} = \mu dt + \sigma\varepsilon\sqrt{dt}, \quad \varepsilon \sim \mathcal{N}(0, 1)
 \end{align*}
 
 \justify
-Если сложить все малые колебания за интервал длиной $T$, то цена базового актива имеет лог-нормальное распределение:
+Если сложить все малые колебания за интервал длиной $T$, то цена базового актива имеет логнормальное распределение:
 \begin{align*}
 S(T) &= S_0 \exp\left[\left(r - \dfrac{\sigma^2}{2}\right)T + \sigma\varepsilon\sqrt{T}\right], \quad \varepsilon \sim \mathcal{N}(0, 1) \\
 \ln\left(S(T)\right) &= \ln\left(S_0\right) + \left(r - \dfrac{\sigma^2}{2}\right)T + \sigma\varepsilon\sqrt{T}
@@ -242,11 +242,11 @@ C_K = F(S_0, T, K, \sigma, r)
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			domain=60:80,
-			xtick={60,62,...,80},
-			ytick={1,2,...,12},
-			xmin=60, xmax=80,
-			ymin=0, ymax=12,
+			domain=60:84,
+			xtick={60,62,...,84},
+			ytick={1,2,...,13},
+			xmin=60, xmax=84,
+			ymin=0, ymax=13,
 			grid = major,
 			xlabel={Страйк ($K$)},
 			ylabel={Цена опциона, руб.}
@@ -284,11 +284,11 @@ C_K = F(S_0, T, K, \sigma, r)
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			domain=60:80,
-			xtick={60,62,...,80},
-			ytick={0.02,0.04,...,0.20},
-			xmin=60, xmax=80,
-			ymin=0, ymax=0.2,
+			domain=60:84,
+			xtick={60,62,...,84},
+			ytick={0.02,0.04,...,0.24},
+			xmin=60, xmax=84,
+			ymin=0, ymax=0.24,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
 			grid = major,
 			xlabel={Страйк ($K$)},
@@ -385,6 +385,284 @@ C_K = F(S_0, T, K, \sigma, r)
 \end{tikzpicture}
 
 \scriptsize Данные: barchart.com.
+\end{frame}
+
+
+
+\begin{frame}{Улыбка волатильности}
+\justify
+Почти на всех рынках наблюдается зависимость ожидаемой (\en{implied}) волатильности от страйка опциона. Дальние \en{out of the money}\ опционы стоят дороже (в терминах волатильности), чем можно было бы ожидать.
+\begin{itemize}
+\item Улыбка (\en{smile}). Например, на рынке FX.
+\item Ухмылка (\en{skew, smirk}). Например, на рынке акций.
+\end{itemize}
+
+\justify
+Может ли быть так, что базовый актив ведёт себя по-разному в зависимости от того, какой опцион (с каким страйком) сейчас оценивают участники рынка? Нет!
+
+\justify
+Либо все участники опционного рынка сошли с ума, либо модель Блэка-Шоулза не до конца описывает реальность. Предположение о постоянной волатильности и логнормальном распределении будущей цены базового актива выглядит слишком строгим.
+\end{frame}
+
+
+
+\begin{frame}{Опционная бабочка}
+\justify
+Попробуем оценить, какое распределение, если не лог-нормальное, ожидают участники рынка.
+
+\justify
+Рассмотрим комбинацию опционов <<бабочка>> (\en{butterfly, fly}):
+\begin{itemize}
+\item Купленный колл со страйком $K - \delta$.
+\item Два проданных колла со страйком $K$.
+\item Купленный колл со страйком $K + \delta$.
+\end{itemize}
+
+\justify
+Купленные опционы --- <<крылья>> (\en{wings}), а проданные --- <<тельце>> (\en{belly}).
+\end{frame}
+
+
+
+\begin{frame}{Опционная бабочка}
+\justify
+Пример: бабочка со страйками 70, 72 и 74.
+
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			domain=64:80,
+			%axis lines=middle,
+			xtick={64,66,...,80},
+			ytick={-6,-5,...,6},
+			xmin=64, xmax=80,
+			ymin=-6, ymax=6,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Выплата (payoff)},
+			%scaled x ticks=false
+		]
+		
+	\addplot[Set1-B, very thick, dashed] {(\x > 74)*(\x - 74) + 0.15};
+  	\addplot[Set1-C, very thick, dashed] {(\x > 70)*(\x - 70) + 0.15};
+  	\addplot[Set1-D, very thick, dashed] {2*(\x > 72)*(72 - \x) - 0.15};
+ 
+ 	\addplot[Set1-A, very thick] {(\x > 74)*(\x - 74) + (\x > 70)*(\x - 70) + 2*(\x > 72)*(72 - \x)};
+ 
+   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Опционная бабочка}
+\justify
+Пример: бабочка со стайками 71, 72 и 73.
+
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			width = \textheight,
+			height = \textheight*0.5,
+			domain=64:80,
+			%axis lines=middle,
+			xtick={64,66,...,80},
+			ytick={0,...,6},
+			xmin=64, xmax=80,
+			ymin=-1, ymax=3,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Выплата (payoff)},
+			%scaled x ticks=false
+		]
+		
+ 	\addplot[Set1-A, very thick, samples at={64,64.1,...,80}] {(\x > 71)*(\x - 71) + (\x > 73)*(\x - 73) + 2*(\x > 72)*(72 - \x) + 0.05};
+ 
+   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+\end{axis}
+\end{tikzpicture}
+
+\justify
+По мере того, как разность между <<крыльями>> уменьшается, бабочка превращается в ставку на то, что цена базового актива остановится вблизи центрального страйка.
+\end{frame}
+
+
+
+\begin{frame}{Опционная бабочка}
+\justify
+Бабочки со страйками $K-1$, $K$ и $K+1$. Экспирация 16.12.2021.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			domain=60:84,
+			xtick={60,62,...,84},
+			ytick={0.02,0.04,...,0.18},
+			xmin=60, xmax=84,
+			ymin=0, ymax=0.18,
+			yticklabel={\pgfmathprintnumber[fixed, fixed zerofill, precision=2]{\tick}},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Цена бабочки, руб.}
+]
+
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=fly,
+		col sep=comma
+	]
+	{usdrub_fly.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: Московская биржа.
+\end{frame}
+
+
+
+\begin{frame}{Ожидаемое распределение}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			domain=60:84,
+			xtick={60,62,...,84},
+			ytick={0.02,0.04,...,0.18},
+			xmin=60, xmax=84,
+			ymin=0, ymax=0.18,
+			yticklabel={\pgfmathprintnumber[fixed, fixed zerofill, precision=2]{\tick}},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Плотность распределения},
+			legend entries = {
+				\small Ожидаемое,
+				\small Логнормальное
+			},
+  			legend cell align={left},
+ 		 	legend style={at={(0.97,0.97)},anchor=north east}
+]
+
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=implied_density,
+		col sep=comma
+	]
+	{usdrub_implied_density.csv};
+	
+	\addplot[color = Set1-A, mark = none, dashed, thick]
+	table[
+		x=strike,
+		y=lognormal_density,
+		col sep=comma
+	]
+	{usdrub_implied_density.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: Московская биржа.
+\end{frame}
+
+
+
+\begin{frame}{Ожидаемое распределение}
+\justify
+Обычно цены опционов подразумевают распределение, отличное от логнормального. Часто можно видеть толстые хвосты и скошенность влево или вправо.
+
+\justify
+Мы не знаем, как в точности объясняется этот эффект:
+\begin{itemize}
+\item Участники рынка верно оценивают истинную вероятность экстремальных исходов (больших изменений цены базового актив).
+\item Участникам рынка настолько больно от экстремальных исходов, что они готовы переплатить за страховку. Это стремление застраховаться и избежать риска увеличивает рыночную цену опционов относительно <<фундаментально обоснованной>>.
+\end{itemize}
+
+\justify
+Как обычно, если мы можем использовать ликвидные опционы для хэджирования риска и репликации более сложных экзотических продуктов, то нам не важно, какое объяснение верное.
+\end{frame}
+
+
+
+\begin{frame}{Модели волатильности}
+\justify
+Существование улыбки волатильности опровергает гипотезу о геометрическом броуновском движении с постоянной волатильностью. Как можно изменить модель движения базового актива, чтобы новая модель объясняла улыбку волатильности (давала те же премии, которые мы видим на рынке).
+
+\justify
+\begin{itemize}
+\item Локальная волатильность.
+\item Стохастическая волатильность.
+\item Стохастическая локальная волатильность.
+\item Стохастическая локальная волатильность с прыжками.
+\item ...
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Локальная волатильность}
+\justify
+Геометрическое броуновское движение:
+\begin{align*}
+\frac{dS_t}{S_t} = \mu dt + \sigma\varepsilon\sqrt{dt}, \quad \varepsilon \sim \mathcal{N}(0, 1), \sigma = const
+\end{align*}
+
+\justify
+Локальная волатильность:
+\begin{align*}
+\frac{dS_t}{S_t} = \mu dt + \sigma(S_t, t)\varepsilon\sqrt{dt}, \quad \varepsilon \sim \mathcal{N}(0, 1)
+\end{align*}
+
+\justify
+$\sigma(S_t, t)$ --- зависимость волатильности от цены базового актива и времени. Например, предположим, что если пара доллар-рубль значительно отклонится от текущего уровня (прыгнет до 80), то на рынке начнётся паника и волатильность будет выше, чем в спокойные времена при курсе 70.
+\end{frame}
+
+
+
+\begin{frame}{Стохастическая волатильность}
+\justify
+Геометрическое броуновское движение:
+\begin{align*}
+\frac{dS_t}{S_t} = \mu dt + \sigma\varepsilon\sqrt{dt}, \quad \varepsilon \sim \mathcal{N}(0, 1), \sigma = const
+\end{align*}
+
+\justify
+Модель SABR (\en{Stochastic Alpha-Beta-Rho}):
+\begin{align*}
+dF_t &= \sigma_t(F_t)^\beta \sqrt{dt}\varepsilon, \quad \varepsilon \sim \mathcal{N}(0, 1) \\
+d\sigma_t &= \alpha\sigma_t\sqrt{dt}\psi, \quad \psi \sim \mathcal{N}(0, 1) \\
+Cov(\varepsilon, \psi) &= \rho
+\end{align*}
+
+\justify
+$\alpha$ --- волатильность волатильности.
+
+$\beta$ --- коэффициент скошенности.
+
+$\rho$ --- корреляция между волатильностью и базовым активом.
+\end{frame}
+
+
+
+\begin{frame}{Калибрация моделей}
+\justify
+Все модели волатильности подгоняются (\en{fitted}) или калибруются (\en{calibrated}) к рынку. Мы подбираем такие значения внутренних параметров модели (например, $\alpha$, $\beta$ и $\rho$ в SABR), чтобы модель <<лучше всего>> воспроизводила наблюдаемые цены ликвидных ванильных опционов. После этого модель можно использовать для оценки более сложных экзотических продуктов.
+
+\begin{align*}
+&\text{Рыночные цены} \Rightarrow \\
+&\text{Внутренние параметры} \Rightarrow \\
+&\text{Цены произвольных опционов}
+\end{align*}
+
+\justify
+Объективная реальность, данная нам в ощущении --- рыночные цены ликвидных ванильных опционов. Модели и параметры --- наши предположения, которые позволяют <<интерполировать>> цены неликвидных деривативов.
 \end{frame}
 
 \end{document}

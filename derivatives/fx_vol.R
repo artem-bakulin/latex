@@ -70,3 +70,46 @@ get_central_bank_fx_rate("USD", 2012, 2021) %>%
   group_by(mid_month = make_date(year(date), month(date), 15)) %>% 
   summarise(realized_vol = sd(log_return) * sqrt(250)) %>% 
   write_csv("USDRUB_realized_vol.csv")
+
+
+
+fly_spreads <- read_csv("usdrub_implied_vol.csv") %>% 
+  mutate(
+    fly =  lag(call) + lead(call) - 2*call,
+  ) %>% 
+  filter(
+    !is.na(fly)
+  ) %>% 
+  mutate(
+    fly = if_else(fly < 0, 0, fly)
+  ) %>% 
+  mutate(
+    density_weight = fly / sum(fly)
+  )
+
+fly_spreads %>% 
+  write_csv("usdrub_fly.csv")
+
+kernel_density <- density(
+  fly_spreads$strike,
+  weights = fly_spreads$density_weight,
+  kernel = "gaussian",
+  bw = 0.55
+)
+
+density_fun <- approxfun(kernel_density$x, kernel_density$y, yleft=0, yright=0)
+
+implied_mean <- integrate(function(x) {x*density_fun(x)}, lower=55, upper=95)[["value"]]
+
+implied_std <- sqrt(integrate(function(x) {density_fun(x) * (x - implied_mean)^2}, lower=55, upper=95)[["value"]])
+
+# https://en.wikipedia.org/wiki/Log-normal_distribution
+mu <- log(implied_mean^2 / sqrt(implied_mean^2 + implied_std^2))
+sigma <- sqrt(log(1 + implied_std^2 / implied_mean^2))
+
+tibble(strike = seq(60, 86, 0.05)) %>% 
+  mutate(
+    implied_density = density_fun(strike),
+    lognormal_density = dlnorm(strike, mu, sigma)
+  ) %>% 
+  write_csv("usdrub_implied_density.csv")
