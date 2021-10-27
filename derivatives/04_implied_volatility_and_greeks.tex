@@ -1316,6 +1316,9 @@ V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sig
 
 \justify
 Обычные единицы измерения --- доллары или евро на процентный пункт изменения волатильности.
+
+\justify
+Вега положительная и для колла, и для пута. <<Опционы любят волатильность>>.
 \end{frame}
 
 
@@ -1440,6 +1443,185 @@ V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sig
 \end{axis}
 \end{tikzpicture}
 \end{frame}
+
+
+
+\begin{frame}{Гамма}
+\justify
+Гамма --- чувствительность дельты к изменению цены базового актива. Другое определение --- вторая производная PV по цене базового актива.
+\begin{align*}
+\Gamma = \frac{\partial V^2}{\partial^2 S} = \frac{\partial \Delta}{\partial S}
+\end{align*}
+
+\justify
+Чем больше по модулю гамма, тем хуже дериватив приближается линейной комбинацией базового актива и долга, и тем чаще нужно ребалансировать реплицирующий портфель.
+
+\justify
+В модели Блэка-Шоулза гамма колла равна гамме пута:
+\begin{align*}
+\Gamma = \frac{\partial C^2}{\partial^2 S} = \frac{\partial C^2}{\partial^2 S} =
+\frac{N'(d_1)}{S\sigma\sqrt{T}} 
+\end{align*} 
+\end{frame}
+
+
+
+\begin{frame}{Гамма и дельта-хеджирование}
+\justify
+Гамма отражает степень вогнутости функции. Чем более вогнута функция, тем больше потери на неточном хеджировании.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			domain=64:80,
+			xtick={64,66,...,80},
+			ytick={0,1,2,...,10},
+			xmin=64, xmax=76,
+			ymin=0, ymax=6,
+			grid = major,
+			xlabel={Курс сегодня ($S$)},
+			ylabel={Цена опциона}
+]
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=S,
+		y=C_10,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	%\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
+	
+	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 70, 0.9898) {};
+	
+	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 74, 3.472) {};
+	
+	\addplot[color=Set1-A, dashed, thick] {0.4058 * \x - 27.4147};
+	
+	\node[anchor=south west] at (axis cs: 68.5, 0) {$\Delta = 0.41$};
+	
+	\draw[<->, >= triangle 45, thick] (74, 3.472) -- (74, 2.615);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Гамма опциона}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			xtick={0.5},
+			xticklabels={$K$},
+			ytick={0},
+			scaled y ticks = false,
+			xmin=0, xmax=1,
+			ymin=0,
+			grid = none,
+			xlabel={Цена базового актива ($S$)},
+			ylabel={Гамма опциона}
+]
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=S,
+		y=gamma,
+		col sep=comma
+	]
+	{black_scholes_gamma.csv};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Гамма опциона}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			xtick={\empty},
+			ytick={0},
+			xmin=0, xmax=1,
+			ymin=0, ymax=15,
+			grid = major,
+			xlabel={Срок экспирации ($T$)},
+			ylabel={Гамма опциона},
+			legend entries = {
+		At-the-money,
+  	   Out-of-the-money,
+  	   In-the-money
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.97)},anchor=north east}
+]
+	
+	\addplot[color = Set1-C, mark = none, thick]
+	table[
+		x=T,
+		y=gamma_atm,
+		col sep=comma
+	]
+	{black_scholes_gamma_by_money.csv};
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=T,
+		y=gamma_otm,
+		col sep=comma
+	]
+	{black_scholes_gamma_by_money.csv};
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=T,
+		y=gamma_itm,
+		col sep=comma
+	]
+	{black_scholes_gamma_by_money.csv};
+
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Гамма и тета}
+\justify
+Рассмотрим портфель из базового актива и опциона. В модели Блэка-Шоулза выполняется условие на цену $V$ этого портфеля:
+\begin{align*}
+\frac{\partial V}{\partial t} + rS\frac{\partial V}{\partial S} + \frac{1}{2}\sigma^2S^2\frac{\partial^2 V}{\partial S^2} = rV
+\end{align*}
+\begin{align*}
+-\Theta + rS\Delta + \frac{1}{2}\sigma^2S^2\Gamma = rV
+\end{align*}
+
+Если мы регулярно дельта-хеджируем портфель, то $\Delta=0$.
+\begin{align*}
+-\Theta + \frac{1}{2}\sigma^2S^2\Gamma = rV
+\end{align*}
+
+\justify
+Большим значениям $\Gamma$ обычно соответствуют большие значения $\Theta$. Если мы купили опцион ($\Gamma > 0$), то мы зарабатываем на больших движениях базового актива, но теряем тету с течением времени (time value опциона уменьшается). Если мы продали опцион ($\Gamma < 0$), то мы теряем деньги из-за неточности хеджирования, но зарабатываем тету.
+\end{frame}
+
+
+
+\begin{frame}{Гамма и вега}
+\justify
+В модели Блэка-Шоулза гамма и вега отличаются на константный множитель.
+\begin{align*}
+\Gamma &= \frac{N'(d_1)}{S\sigma\sqrt{T}} \\
+\mathcal{V} &= SN'(d_1)\sqrt{T}
+\end{align*}
+
+\justify
+В некотором смысле обе производные показывают нашу зависимость от разброса будущих значений $S$.
+
+\justify
+Гамма --- главный риск для коротких опционов ($\sqrt{T}$ в знаменателе), вега --- для длинных ($\sqrt{T}$ в числителе). 
+\end{frame}
+
 \end{document}
 
 

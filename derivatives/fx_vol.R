@@ -145,6 +145,13 @@ black_scholes_theta <- function(S, K, T, sigma, r, q) {
   -S * dnorm(d1) * sigma / (2*sqrt(T)) - r*K*exp(-r*T)*pnorm(d2)
 }
 
+black_scholes_gamma <- function(S, K, T, sigma, r, q) {
+  
+  d1 <- black_scholes_d1(S, K, T, sigma, r, q)
+  
+  dnorm(d1) / (S * sigma * sqrt(T))
+}
+
 tibble(S = seq(0, 1, 0.01)) %>% 
   mutate(
     call_delta = black_scholes_delta(S, 0.5, 1, 0.25, 0, 0),
@@ -171,7 +178,17 @@ tibble(T = seq(0.01, 1, 0.01)) %>%
     theta_otm = black_scholes_theta(S=0.45, K=0.5, T, sigma=0.3, r=0, q=0)
   ) %>% 
   write_csv("black_scholes_theta_by_money.csv")
-#  ggplot(aes(x=T)) +
-#  geom_line(aes(y=theta_itm), color="red") +
-#  geom_line(aes(y=theta_atm), color="blue") +
-#  geom_line(aes(y=theta_otm))
+
+tibble(S = seq(0, 1, 0.01)) %>% 
+  mutate(
+    gamma = black_scholes_gamma(S, 0.5, 1, 0.2, 0, 0)
+  ) %>% 
+  write_csv("black_scholes_gamma.csv")
+
+tibble(T = seq(0.01, 1, 0.01)) %>% 
+  mutate(
+    gamma_itm = black_scholes_gamma(S=0.55, K=0.5, T, sigma=0.3, r=0, q=0),
+    gamma_atm = black_scholes_gamma(S=0.50, K=0.5, T, sigma=0.3, r=0, q=0),
+    gamma_otm = black_scholes_gamma(S=0.45, K=0.5, T, sigma=0.3, r=0, q=0)
+  ) %>% 
+  write_csv("black_scholes_gamma_by_money.csv")
