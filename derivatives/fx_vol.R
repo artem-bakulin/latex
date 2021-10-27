@@ -4,6 +4,7 @@ library(lubridate)
 library(xlsx)
 library(curl)
 library(ggplot2)
+library(tidyr)
 
 printf <- function(pattern, ...) {
   text <- sprintf(pattern, ...)
@@ -107,9 +108,24 @@ implied_std <- sqrt(integrate(function(x) {density_fun(x) * (x - implied_mean)^2
 mu <- log(implied_mean^2 / sqrt(implied_mean^2 + implied_std^2))
 sigma <- sqrt(log(1 + implied_std^2 / implied_mean^2))
 
-tibble(strike = seq(60, 86, 0.05)) %>% 
+tibble(strike = seq(55, 95, 0.1)) %>% 
   mutate(
     implied_density = density_fun(strike),
     lognormal_density = dlnorm(strike, mu, sigma)
   ) %>% 
   write_csv("usdrub_implied_density.csv")
+
+
+
+black_scholes_delta <- function(S, K, T, sigma, r, q) {
+  
+  d1 <- 1 / (sigma*sqrt(T)) * (log(S/K) + (r - q + sigma*sigma/2)*T)
+  pnorm(d1)
+}
+
+tibble(S = seq(0, 1, 0.01)) %>% 
+  mutate(
+    call_delta = black_scholes_delta(S, 0.5, 1, 0.25, 0, 0),
+    put_delta = call_delta - 1
+  ) %>% 
+  write_csv("black_scholed_delta.csv")
