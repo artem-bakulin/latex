@@ -1260,6 +1260,90 @@ dV \approx \Delta \cdot dS = \frac{N}{S_0}dS = \frac{\EUR{1\,000\,000}}{82}\cdot
 \end{tikzpicture}
 \end{frame}
 
+
+
+\begin{frame}{Поверхность волатильности}
+\justify
+Рыночная поверхность волатильности --- котировки DN, RR и FLY для разных сроков экспирации.
+
+\justify
+\centering
+\begin{tabular}{l|r|r|r|r|r}
+Срок & DN     & RR25   & RR10   & FLY25  & FLY10  \\ \hline
+1M   & 6.00\% & 0.50\% & 0.90\% & 0.25\% & 0.70\% \\
+2M   & 6.40\% & 0.60\% & 1.10\% & 0.30\% & 0.70\% \\
+3M   & 6.50\% & 0.65\% & 1.15\% & 0.30\% & 0.75\% 
+\end{tabular}
+
+\justify
+Это --- наблюдаемая действительность. Дальше мы должны откалибровать модель, например SABR, то есть подобрать внутренние параметры, при которых модель будет выдавать такие же цены на DN, RR и FLY.
+
+\justify
+Если нам это удалось, то можно надеяться, что модель будет выдавать разумные цены не только на ликвидные ванильные опционы, но и на более сложные и менее ликвидные продукты, цены которых мы не видим.
+\end{frame}
+
+
+
+\begin{frame}{Вега}
+\justify
+Предположим, что мы умеем магическим образом подбирать вектор параметров SABR функцией $f$:
+\begin{align*}
+(\alpha, \beta, \rho) = f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sigma_{3M,FLY10})
+\end{align*}
+
+\justify
+Также у нас есть численный метод, который умеет при помощи SABR оценивать PV нашего портфеля $V$ --- функция $g$.
+\begin{align*}
+V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sigma_{3M,FLY10})\Big)
+\end{align*}
+
+\justify
+Резонно задать вопрос: что будет с портфелем, если рыночные котировки изменятся? На этот вопрос отвечает производная PV портфеля по волатильности --- <<вега>>.
+\begin{align*}
+\mathcal{V}_{1M,RR25} &= \frac{\partial V}{\partial \sigma_{1M,RR25}} \approx \\
+&\approx \frac{g\Big(f(...,\sigma_{1M,RR25}+\delta,...)\Big) - g\Big(f(...,\sigma_{1M,RR25},...)\Big)}{\delta}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Вега опциона}
+\justify
+В модели Блэка-Шоулза волатильность $\sigma$ --- константа, поэтому странно считать производную. Тем не менее, и для колл-опциона, и для пут-опциона вега равна
+\begin{align*}
+\mathcal{V} = \frac{\partial C}{\partial \sigma} = \frac{\partial P}{\partial \sigma} = SN'(d_1)\sqrt{T}
+\end{align*}
+
+\justify
+Обычные единицы измерения --- доллары или евро на процентный пункт изменения волатильности.
+\end{frame}
+
+
+
+\begin{frame}{Вега опциона}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			xtick={0.5},
+			xticklabel={$K$},
+			ytick={\empty},
+			xmin=0, xmax=1,
+			ymin=0, ymax=0.25,
+			grid = none,
+			xlabel={Цена базового актива ($S$)},
+			ylabel={Вега опциона}
+]
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=S,
+		y=vega,
+		col sep=comma
+	]
+	{black_scholes_vega.csv};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
 \end{document}
 
 

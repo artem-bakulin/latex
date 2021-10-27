@@ -123,9 +123,23 @@ black_scholes_delta <- function(S, K, T, sigma, r, q) {
   pnorm(d1)
 }
 
+
+black_scholes_vega <- function(S, K, T, sigma, r, q) {
+  
+  d1 <- 1 / (sigma*sqrt(T)) * (log(S/K) + (r - q + sigma*sigma/2)*T)
+  S * dnorm(d1) * sqrt(T)
+}
+
+
 tibble(S = seq(0, 1, 0.01)) %>% 
   mutate(
     call_delta = black_scholes_delta(S, 0.5, 1, 0.25, 0, 0),
     put_delta = call_delta - 1
   ) %>% 
-  write_csv("black_scholed_delta.csv")
+  write_csv("black_scholes_delta.csv")
+
+tibble(S = seq(0, 1, 0.01)) %>% 
+  mutate(
+    vega = black_scholes_vega(S, 0.5, 1, 0.2, 0, 0)
+  ) %>% 
+  write_csv("black_scholes_vega.csv")
