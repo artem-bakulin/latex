@@ -1062,6 +1062,18 @@ dV \approx \Delta \cdot dS = \frac{N}{S_0}dS = \frac{\EUR{1\,000\,000}}{82}\cdot
 
 
 
+\newcommand{\drawVolNode}[4] {
+
+	\node[
+		circle,
+		color=Set1-B,
+		fill,
+		inner sep=2pt
+	] at (#1, #2) {};
+	
+	\node[anchor=#4] at (#1, #2) {$\sigma_{#3}$};
+}
+
 \begin{frame}{Дельта и страйки}
 \centering
 \begin{tikzpicture}
@@ -1070,7 +1082,7 @@ dV \approx \Delta \cdot dS = \frac{N}{S_0}dS = \frac{\EUR{1\,000\,000}}{82}\cdot
 			height = \textheight - 2cm,
 			xtick={0.10, 0.25, 0.5, 0.75, 0.90},
 			xticklabels={10P, 25P, DN, 25C, 10C},
-			ytick={0.02,0.04,...,0.24},
+			ytick={0,0.02,0.04,...,0.24},
 			xmin=0, xmax=1,
 			ymin=0, ymax=0.24,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
@@ -1080,9 +1092,174 @@ dV \approx \Delta \cdot dS = \frac{N}{S_0}dS = \frac{\EUR{1\,000\,000}}{82}\cdot
 ]
 
 	\addplot[color = Set1-B, mark = none, thick, samples at={0,0.01,...,1}] {0.5*(\x - 0.5)^2 + 0.1};
+	
+	\drawVolNode{0.10}{0.180}{10P}{south west}
+	\drawVolNode{0.25}{0.131}{25P}{south west}
+	\drawVolNode{0.50}{0.100}{DN }{south}
+	\drawVolNode{0.75}{0.131}{25C}{south east}
+	\drawVolNode{0.90}{0.180}{10C}{south east}
 \end{axis}
 \end{tikzpicture}
 \end{frame}
+
+
+
+\begin{frame}{Параметризация улыбки волатильности}
+\justify
+Волатильности опционов со страйками 10P, 25P, DN, 25C и 10C хорошо описывают форму улыбки волатильности, но с ними тоже есть неудобство. Когда волатильность на рынке повышается, более-менее равномерно повышаются все пять волатильностей (<<прилив поднимает все лодки>>).
+
+\justify
+Риск-реверсал (\en{risk-reversal, risky}): RR25 --- купленный колл 25C и проданный пут 25P.
+\begin{align*}
+\sigma_{RR25} = \sigma_{25C} - \sigma_{25P}
+\end{align*}
+
+\justify
+Бабочка (\en{butterfly, fly}): FLY25 --- купленные колл 25C и пут 25P, проданные колл и пут $DN$
+\begin{align*}
+\sigma_{FLY25} = 0.5\cdot(\sigma_{25P} - 2\sigma_{DN} + \sigma_{25C})
+\end{align*}
+
+\justify
+Формулы RR и FLY похожи на первую и вторую разностную производную.
+\end{frame}
+
+
+
+\begin{frame}{Параметризация улыбки волатильности}
+\justify
+Волатильность стрэддла DN задаёт общий уровень улыбки. Выше $\sigma_{DN}$ --- выше дисперсия распределения цены базового актива.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			xtick={0.10, 0.25, 0.5, 0.75, 0.90},
+			xticklabels={10P, 25P, DN, 25C, 10C},
+			ytick={0,0.02,0.04,...,0.24},
+			xmin=0, xmax=1,
+			ymin=0, ymax=0.24,
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)},
+			legend entries = {
+  	   $\sigma_{DN}=6\%$,
+  	   $\sigma_{DN}=10\%$
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.03)},anchor=south east}
+]
+
+	\addplot[color = Set1-B, mark = none, thick, dashed, samples at={0,0.01,...,1}] {0.5*(\x - 0.5)^2 + 0.06};
+	
+
+	\addplot[color = Set1-B, mark = none, thick, samples at={0,0.01,...,1}] {0.5*(\x - 0.5)^2 + 0.1};
+	
+	\draw[<->, >= triangle 45, thick] (0.5, 0.0) -- (0.5, 0.1);
+	
+	\drawVolNode{0.5}{0.1}{DN}{south}
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Параметризация улыбки волатильности}
+\justify
+Риск-реверсал задаёт наклон улыбки, или скошенность распределения базового актива влево или вправо.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			xtick={0.10, 0.25, 0.5, 0.75, 0.90},
+			xticklabels={10P, 25P, DN, 25C, 10C},
+			ytick={0,0.02,0.04,...,0.24},
+			xmin=0, xmax=1,
+			ymin=0, ymax=0.24,
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)},
+			legend entries = {
+  	   $\sigma_{RR25}=0\%$,
+  	   $\sigma_{RR25}=4\%$
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.03)},anchor=south east}
+]
+
+	\addplot[color = Set1-B, mark = none, thick, dashed, samples at={0,0.01,...,1}] {0.5*(\x - 0.5)^2 + 0.1};
+	
+
+	\addplot[color = Set1-B, mark = none, thick, samples at={0,0.01,...,0.5}] {0.32*(\x - 0.5)^2 + 0.1};
+	
+	\addplot[color = Set1-B, mark = none, thick, samples at={0.5,0.51,...,1}] {0.96*(\x - 0.5)^2 + 0.1};
+	
+	
+	\drawVolNode{0.25}{0.12}{25P}{north east}
+	
+	\drawVolNode{0.75}{0.16}{25C}{south east}
+	
+	\draw (0.25, 0.12) -- (0.75, 0.16);
+	
+	\draw (0.25, 0.12) -- (0.9, 0.12);
+	\draw (0.75, 0.16) -- (0.9, 0.16);
+	
+	\draw[<->, >= triangle 45, thick] (0.87, 0.16) -- (0.87, 0.12) node[pos=0.5, anchor=west] {$\sigma_{RR25}$};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Параметризация улыбки волатильности}
+\justify
+Бабочка задаёт вогнутость улыбки, или толщину хвостов распределения базового актива.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			xtick={0.10, 0.25, 0.5, 0.75, 0.90},
+			xticklabels={10P, 25P, DN, 25C, 10C},
+			ytick={0,0.02,0.04,...,0.24},
+			xmin=0, xmax=1,
+			ymin=0, ymax=0.24,
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)},
+			legend entries = {
+  	   $\sigma_{FLY25}=1\%$,
+  	   $\sigma_{FLY25}=4\%$
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.03)},anchor=south east}
+]
+
+	\addplot[color = Set1-B, mark = none, thick, dashed, samples at={0,0.01,...,1}] {0.16*(\x - 0.5)^2 + 0.1};
+
+	\addplot[color = Set1-B, mark = none, thick, samples at={0.0,0.01,...,1}] {0.64*(\x - 0.5)^2 + 0.1};
+	
+	
+	\drawVolNode{0.25}{0.14}{25P}{south west}
+	
+	\drawVolNode{0.75}{0.14}{25C}{south east}
+	
+	\drawVolNode{0.50}{0.10}{DN}{north}
+	
+	\draw (0.25, 0.14) -- (0.75, 0.14);
+
+	\draw[<->, >= triangle 45, thick] (0.5, 0.10) -- (0.5, 0.14) node[pos=0.5, anchor=west] {$\sigma_{FLY25}$};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
 \end{document}
 
 
