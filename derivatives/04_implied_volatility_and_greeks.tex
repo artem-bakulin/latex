@@ -1334,13 +1334,109 @@ V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sig
 			ylabel={Вега опциона}
 ]
 	
-	\addplot[color = Set1-A, mark = none, thick]
+	\addplot[color = Set1-B, mark = none, thick]
 	table[
 		x=S,
 		y=vega,
 		col sep=comma
 	]
 	{black_scholes_vega.csv};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Тета}
+\justify
+Тета --- чувствительность PV к течению времени. На сколько подешевеет купленный опцион, когда он станет на один день ближе к экспирации?
+
+\begin{align*}
+\Theta = -\frac{\partial V}{\partial T}
+\end{align*}
+Обычные единицы измерения --- доллары или евро на календарный или торговый день.
+
+\justify
+Тета колл-опциона в модели Блэка-Шоулза:
+\begin{align*}
+\Theta = -\frac{\partial C}{\partial T} = - \frac{SN'(d_1)\sigma}{2\sqrt{T}} -rKe^{-rT}N(d_2)
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Тета колл-опциона}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			xtick={0.5},
+			xticklabels={$K$},
+			ytick={0},
+			scaled y ticks = false,
+			xmin=0, xmax=1,
+			ymax=0,
+			grid = none,
+			xlabel={Цена базового актива ($S$)},
+			ylabel={Тета опциона}
+]
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=S,
+		y=theta,
+		col sep=comma
+	]
+	{black_scholes_theta.csv};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Тета колл-опциона}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			xtick={\empty},
+			ytick={0},
+			xmin=0, xmax=1,
+			ymin=-0.15, ymax=0,
+			grid = major,
+			xlabel={Срок экспирации ($T$)},
+			ylabel={Тета опциона},
+			legend entries = {
+  	   Out-of-the-money,
+  	   In-the-money,
+  	   At-the-money
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.03)},anchor=south east}
+]
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=T,
+		y=theta_otm,
+		col sep=comma
+	]
+	{black_scholes_theta_by_money.csv};
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=T,
+		y=theta_itm,
+		col sep=comma
+	]
+	{black_scholes_theta_by_money.csv};
+
+
+	\addplot[color = Set1-C, mark = none, thick]
+	table[
+		x=T,
+		y=theta_atm,
+		col sep=comma
+	]
+	{black_scholes_theta_by_money.csv};
 \end{axis}
 \end{tikzpicture}
 \end{frame}
