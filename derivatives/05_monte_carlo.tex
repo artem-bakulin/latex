@@ -1,0 +1,460 @@
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{tabularx}
+
+\usepackage{enumitem}
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+% remove navigation bar
+\setbeamertemplate{navigation symbols}{} 
+
+\usepackage{eurosym}
+\renewcommand{\EUR}[1]{\textup{\euro}#1}
+
+\title{Лекция 5. Метод Монте-Карло}
+\author{Артём Бакулин}
+\date{11 ноября 2021 г.}
+
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
+\newcommand{\ruen}[2]{#1 (\en{#2})}
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\newcommand{\drawStockNode}[5]{
+
+	\node (#5)
+	[
+		draw,
+		rectangle,
+		rounded corners,
+		inner sep = 0pt,
+		outer sep = 0pt,
+		minimum width = 2.4cm,
+		minimum height = 0.55cm,
+		align = center
+	]
+	at (#3, #4)
+	{
+		\begin{tabular}{c|c}
+		#1 & #2
+		\end{tabular}
+	};
+}
+
+\newcommand{\drawStockLink}[4]{
+
+	\draw[
+		->,
+		>=triangle 90
+	]
+	(#1.east) -- (#2.west)
+	node[
+		pos = 0.5,
+		anchor = #4
+	]
+	{#3};
+}
+
+\newcommand{\drawOneStepBinomialTree}{
+	\drawStockNode{$S_0$} {?}{0}{ 0}{S0_node}
+	\drawStockNode{$S_0u$}{$V_u$}{4}{ 1}{Su_node}
+	\drawStockNode{$S_0d$}{$V_d$}{4}{-1}{Sd_node}
+	
+	\drawStockLink{S0_node}{Su_node}{$p$}{south east}	
+	\drawStockLink{S0_node}{Sd_node}{$1-p$}{north east}
+}
+
+\begin{frame}{Напоминание: биномиальная модель}
+
+\centering
+\begin{tikzpicture}
+\drawOneStepBinomialTree
+\end{tikzpicture}
+
+\justify
+Текущая цена акции $S_0$. Акция не платит дивидендов.
+
+\justify
+Акция может либо вырасти в цене до $S_0u$ с вероятностью $p$, либо снизиться до $S_0d$ с вероятностью $1-p$.
+
+\justify
+Безрисковая процентная ставка $r$, длина одного периода $T$ лет, причём $d < 1 + rT < u$.
+
+\justify
+Дериватив на акцию (скажем, опцион) принесёт прибыль либо $V_u$, либо $V_d$.
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: биномиальная модель}
+
+\centering
+\begin{tikzpicture}
+\drawOneStepBinomialTree
+\end{tikzpicture}
+
+\justify
+Рассмотрим портфель, который состоит из $\Delta$ акций и долга $L$. Подберём $\Delta$ и $L$ так, чтобы портфель реплицировал опцион.
+\begin{align*}
+&\begin{cases}
+L(1+rT) + \Delta S_0u = V_u \\
+L(1+rT) + \Delta S_0d = V_d
+\end{cases}
+\Rightarrow \\
+&\begin{cases}
+\Delta = \dfrac{V_u - V_d}{S_0(u - d)} \\
+L = 	\dfrac{V_du - V_ud}{(1+rT)(u - d)}
+\end{cases}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: биномиальная модель}
+\centering
+\begin{tikzpicture}
+\drawOneStepBinomialTree
+\end{tikzpicture}
+
+\justify
+Сегодняшняя цена дериватива $V$ равна цене реплицирующего портфеля:
+\begin{align*}
+V &= \Delta S_0 + L = \\
+&= \frac{V_u - V_d}{S_0(u - d)}S_0 + \frac{V_du - V_ud}{(1 + rT)(u - d)} = \\
+&= \frac{qV_u + (1-q)V_d}{1+rT}
+\end{align*}
+Здесь
+\begin{align*}
+q = \frac{1 + rT - d}{u - d} \text{--- <<риск-нейтральная вероятность>>}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: биномиальная модель}
+\centering
+\begin{tikzpicture}
+	\drawStockNode{$\$100$} {?}{0}{ 0}{S0_node}
+	\drawStockNode{$\$120$}{$\$20$}{4}{0.5}{Su_node}
+	\drawStockNode{$\$80$}{$\$0$}{4}{-0.5}{Sd_node}
+	
+	\drawStockLink{S0_node}{Su_node}{$90\%$}{south}	
+	\drawStockLink{S0_node}{Sd_node}{$10\%$}{north}
+\end{tikzpicture}
+
+\justify
+Акция стоит $\$100$ и может либо вырасти до $\$120$ ($u=1.2$), либо упасть до $\$80$ ($d=0.8$). Безрисковая ставка $r=0\%$. Сколько стоит колл-опцион со страйком $\$100$?
+
+\justify
+Риск-нейтральная вероятность:
+\begin{align*}
+q = \frac{1 + rT - d}{u - d} = \frac{1 - 0.8}{1.2 - 0.8} = 0.5
+\end{align*}
+
+\justify
+Цена опциона:
+\begin{align*}
+V = \frac{qV_u + (1-q)V_d}{1 + rT} = 0.5\cdot\$20 + 0.5\cdot\$0 = \$10
+\end{align*}
+\end{frame}
+
+
+
+\renewcommand{\drawStockLink}[2]{
+
+	\draw[
+		->,
+		>=triangle 45
+	]
+	(#1.east) -- (#2.west)
+	{};
+}
+
+\renewcommand{\drawStockNode}[5]{
+
+	\node (#5)
+	[
+		draw,
+		rectangle,
+		rounded corners,
+		inner sep = 1pt,
+		outer sep = 0pt,
+		minimum width = 1.5cm
+	]
+	at (#3, #4)
+	{
+		\centering
+		\begin{tabular}{c}
+		#1 \\ \hline #2
+		\end{tabular}
+	};
+}
+
+\newcommand{\nodeVerticalStep}{0.7}
+\newcommand{\nodeHorizontalStep}{2.75}
+
+\begin{frame}{Напоминание: биномиальная модель}
+\centering
+\begin{tikzpicture}
+\drawStockNode{$\$100$}{\only<1-7>{?}\only<8->{\$14.8}}{0}{0}{S0_node}
+
+\drawStockNode{$\$120$}{\only<1-5>{?}\only<6->{\$25.8}}{\nodeHorizontalStep}{\nodeVerticalStep}{Su_node}
+\drawStockNode{$\$80$}{\only<1-6>{?}\only<7->{\$3.8}}{\nodeHorizontalStep}{-\nodeVerticalStep}{Sd_node}
+
+\drawStockNode{$\$144$}{\only<1-2>{?}\only<3->{\$44}}{2*\nodeHorizontalStep}{2*\nodeVerticalStep}{Suu_node}
+\drawStockNode{$\$96$}{\only<1-3>{?}\only<4->{\$7.6}}{2*\nodeHorizontalStep}{0}{Sud_node}
+\drawStockNode{$\$64$}{\only<1-4>{?}\only<5->{\$0}}{2*\nodeHorizontalStep}{-2*\nodeVerticalStep}{Sdd_node}
+
+\drawStockNode{$\$172.8$}{\only<1>{?}\only<2->{\$72.8}}{3*\nodeHorizontalStep}{3*\nodeVerticalStep}{Suuu_node}
+\drawStockNode{$\$115.2$}{\only<1>{?}\only<2->{\$15.2}}{3*\nodeHorizontalStep}{\nodeVerticalStep}{Suud_node}
+\drawStockNode{$\$76.8$}{\only<1>{?}\only<2->{\$0}}{3*\nodeHorizontalStep}{-\nodeVerticalStep}{Sudd_node}
+\drawStockNode{$\$51.2$}{\only<1>{?}\only<2->{\$0}}{3*\nodeHorizontalStep}{-3*\nodeVerticalStep}{Sddd_node}
+
+\drawStockLink{S0_node}{Su_node}
+\drawStockLink{S0_node}{Sd_node}
+
+\drawStockLink{Su_node}{Suu_node}
+\drawStockLink{Su_node}{Sud_node}
+
+\drawStockLink{Sd_node}{Sud_node}
+\drawStockLink{Sd_node}{Sdd_node}
+
+\drawStockLink{Suu_node}{Suuu_node}
+\drawStockLink{Suu_node}{Suud_node}
+
+\drawStockLink{Sud_node}{Suud_node}
+\drawStockLink{Sud_node}{Sudd_node}
+
+\drawStockLink{Sdd_node}{Sudd_node}
+\drawStockLink{Sdd_node}{Sddd_node}
+\end{tikzpicture}
+
+\justify
+Пусть $u=1.2$, $d=0.8$, $r=0\%$, $S_0=\$100$. Сколько стоит колл-опцион со страйком $K=\$100$, истекающий через три шага?
+
+\justify
+Риск-нейтральная вероятность:
+\begin{align*}
+q = \frac{1 + rT - d}{u - d} = \frac{1 - 0.8}{1.2 - 0.8} = 0.5
+\end{align*}
+\end{frame}
+
+
+
+\newcommand{\highlightStockLink}[6]{
+	\draw[
+		color=#4,
+		very thick,
+		->,
+		>=triangle 45
+	]
+	(#1.east) -- (#2.west)
+	node[
+		pos=#5,
+		anchor=#6
+	]
+	{#3};
+}
+
+\newcommand{\highlightStockLinkUp}[3]{
+	\highlightStockLink{#1}{#2}{$q$}{#3}{0.5}{south}
+}
+
+\newcommand{\highlightStockLinkDown}[3]{
+	\highlightStockLink{#1}{#2}{$1-q$}{#3}{0.15}{west}
+}
+
+\begin{frame}{Напоминание: биномиальная модель}
+\centering
+\begin{tikzpicture}
+\drawStockNode{$S_0$}{?}{0}{0}{S0_node}
+
+\drawStockNode{$S_0u$}{?}{\nodeHorizontalStep}{\nodeVerticalStep}{Su_node}
+\drawStockNode{$S_0d$}{?}{\nodeHorizontalStep}{-\nodeVerticalStep}{Sd_node}
+
+\drawStockNode{$S_0u^2$}{?}{2*\nodeHorizontalStep}{2*\nodeVerticalStep}{Suu_node}
+\drawStockNode{$S_0ud$}{?}{2*\nodeHorizontalStep}{0}{Sud_node}
+\drawStockNode{$S_0d^2$}{?}{2*\nodeHorizontalStep}{-2*\nodeVerticalStep}{Sdd_node}
+
+\drawStockNode{$S_0u^3$}{$V_3$}{3*\nodeHorizontalStep}{3*\nodeVerticalStep}{Suuu_node}
+\drawStockNode{$S_0u^2d$}{$V_2$}{3*\nodeHorizontalStep}{\nodeVerticalStep}{Suud_node}
+\drawStockNode{$S_0ud^2$}{$V_1$}{3*\nodeHorizontalStep}{-\nodeVerticalStep}{Sudd_node}
+\drawStockNode{$S_0d^3$}{$V_0$}{3*\nodeHorizontalStep}{-3*\nodeVerticalStep}{Sddd_node}
+
+\only<1-2>{
+	\drawStockLink{S0_node}{Su_node}
+	\drawStockLink{S0_node}{Sd_node}
+
+	\drawStockLink{Su_node}{Suu_node}
+	\drawStockLink{Su_node}{Sud_node}
+
+	\drawStockLink{Sd_node}{Sud_node}
+	\drawStockLink{Sd_node}{Sdd_node}
+
+	\drawStockLink{Suu_node}{Suuu_node}
+	\drawStockLink{Suu_node}{Suud_node}
+
+	\drawStockLink{Sud_node}{Suud_node}
+	\drawStockLink{Sud_node}{Sudd_node}
+
+	\drawStockLink{Sdd_node}{Sudd_node}
+	\drawStockLink{Sdd_node}{Sddd_node}
+}
+
+\only<3>{
+	\highlightStockLinkUp{S0_node}{Su_node}{Set1-A}
+	\highlightStockLinkUp{Su_node}{Suu_node}{Set1-A}
+	\highlightStockLinkDown{Suu_node}{Suud_node}{Set1-A}
+}
+
+\only<4>{
+	\highlightStockLinkUp{S0_node}{Su_node}{Set1-A}
+	\highlightStockLinkDown{Su_node}{Sud_node}{Set1-A}
+	\highlightStockLinkUp{Sud_node}{Suud_node}{Set1-A}
+}
+
+\only<5>{
+	\highlightStockLinkDown{S0_node}{Sd_node}{Set1-A}
+	\highlightStockLinkUp{Sd_node}{Sud_node}{Set1-A}
+	\highlightStockLinkUp{Sud_node}{Suud_node}{Set1-A}
+}
+
+\end{tikzpicture}
+
+\justify
+Риск-нейтральная вероятность: $q = \dfrac{1 + rT - d}{u - d}$.
+
+\justify
+Цена дериватива сегодня:
+\begin{align*}
+V = \frac{q^3V_3 + \only<1>{3q^2(1-q)}\only<2->{\alert{3q^2(1-q)}}V_2 + 3q(1-q)^2V_1 + (1-q)^3V_0}{(1+rT)^3}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральная вероятность}
+\justify
+Если представить, что $q$ --- вероятность движения акции вверх, то $3q^2(1-q)$ --- вероятность того, что акция дважды вырастет и один раз упадёт (не важно, в каком порядке). Тогда акция будет стоить $S_0u^2d$, а дериватив принесёт прибыль $V_2$.
+
+\justify
+\centering
+\begin{tabular}{l|l|l}
+Цена акции & Прибыль & <<Вероятность>> \\ \hline
+$S_0u^3$   & $V_3$   & $q^3$ \\
+$S_0u^2d$  & $V_2$   & $q^2(1-q)$ \\
+$S_0ud^2$  & $V_1$   & $q(1-q)^2$ \\ 
+$S_0d^3$   & $V_0$   & $(1-q)^3$ 
+\end{tabular}
+
+\justify
+Цена дериватива похожа на дисконтированное <<математическое ожидание>> прибыли.
+\begin{align*}
+V = \frac{q^3V_3 + 3q^2(1-q)V_2 + 3q(1-q)^2V_1 + (1-q)^3V_0}{(1+rT)^3}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральная вероятность}
+\justify
+Рассмотрим акцию как дериватив с выплатой $V(S) = S$. Акция --- это колл-опцион на саму себя со страйком 0.
+\begin{align*}
+S &= \frac{q^3S_0u^3 + 3q^2(1-q)S_0u^2d + 3q(1-q)^2S_0ud^2 + (1-q)^3S_0d^3}{(1+rT)^3} = \\
+&= S_0\frac{q^3u^3 + 3q^2u^2(1-q)d + 3qu(1-q)^2d^2 + (1-q)^3d^3}{(1+rT)^3} = \\
+&= S_0\frac{\Big(qu + (1-q)d \Big)^3}{(1+rT)^3} 
+= S_0\frac{\left(\dfrac{1+rT-d}{u-d}u + \dfrac{u-1-rT}{u-d}d \right)^3}{(1+rT)^3} = \\
+&= S_0 \frac{\left(\dfrac{(1+rT)(u-d)}{u-d} \right)^3}{(1+rT)^3} = S_0
+\end{align*}
+
+\justify
+Акция стоит своё <<математическое ожидание>>.
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральная вероятность}
+\justify
+Рассмотрим безрисковую бескупонную облигацию, которая выплатит $\$1$ номинала на третьем шаге, то есть $V(S) = 1$.
+\begin{align*}
+B &= \frac{q^3 \cdot 1 + 3q^2(1-q) \cdot 1 + 3q(1-q)^2 \cdot 1 + (1-q)^3 \cdot 1}{(1+rT)^3} = \\
+&= \frac{\Big(q + (1-q) \Big)^3}{(1+rT)^3} = \frac{1}{(1+rT)^3}
+\end{align*}
+
+\justify
+Безрисковая облигация стоит своё <<математическое ожидание>>.
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральная вероятность}
+\justify
+Чтобы вычислить коэффициенты $q$ и $1-q$, мы составили реплицирующий портфель и предположили отсутствие возможностей для арбитража. Значение $q$ механически вычисляется из параметров задачи $u$ и $d$ (возможный разброс цены акции вверх и вниз) и $r$ (безрисковая процентная ставка).
+
+\justify
+Оказалось, что цены всех трёх активов (дериватива, акции, безрисковой облигации) оказались равны дисконтированному <<математическому ожиданию>> будущих выплат, если вместо истинных вероятностей подставить <<риск-нейтральные вероятности>> $q$ и $1-q$.
+
+\justify
+Совпадение ли это?
+\end{frame}
+
+
+
+\begin{frame}{Фундаментальная теорема}
+\justify
+Справедлива фундаментальная теорема оценки активов (\en{Fundamental Theorem of Asset Pricing}):
+
+\justify
+На рынке с дискретным временем* нет возможностей для арбитража тогда и только тогда, когда существует риск-нейтральная вероятностная мера $\mathbb{Q}$, эквивалентная** вероятностной мере реального мира $\mathbb{P}$.
+
+\justify
+*Существует формулировка в непрерывном времени.
+
+\justify
+**Две вероятностные меры $\mathbb{P}$ и $\mathbb{Q}$ называются эквивалентными, если для любого события $A$ справедливо, что
+\begin{align*}
+\mathbb{P}(A)=0 \quad \Leftrightarrow \quad \mathbb{Q}(A)=0
+\end{align*}
+Меры $\mathbb{P}$ и $\mathbb{Q}$ согласны в том, какие события хотя бы гипотетически возможны, но могут присваивать им разную вероятность.
+\end{frame}
+
+\end{document}
+
+
