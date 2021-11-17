@@ -1,0 +1,971 @@
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{tabularx}
+
+\usepackage{enumitem}
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+% remove navigation bar
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamertemplate{page number in head/foot}[totalframenumber] 
+
+\usepackage{eurosym}
+\renewcommand{\EUR}[1]{\textup{\euro}#1}
+
+\title{Лекция 6. Кредитные дефолтные свопы}
+\author{Артём Бакулин}
+\date{18 ноября 2021 г.}
+
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
+\newcommand{\ruen}[2]{#1 (\en{#2})}
+
+% https://tex.stackexchange.com/questions/98003/filter-rows-from-a-table
+\pgfplotsset{
+    discard if not/.style 2 args={
+        x filter/.code={
+            \edef\tempa{\thisrow{#1}}
+            \edef\tempb{#2}
+            \ifx\tempa\tempb
+            \else
+                \def\pgfmathresult{inf}
+            \fi
+        }
+    }
+}
+
+
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Кредитный дефолтный своп}
+\justify
+\alert{Кредитный дефолтный своп} (credit default swap, CDS) --- производный финансовый инструмент, который позволяет купить или продать страховку от дефолта по облигациям или другим долгам.
+
+\justify
+Важные параметры сделки:
+\begin{itemize}
+\justifying
+\item Базовый заёмщик (reference entity). Например, <<Газпром>>.
+\item Застрахованный номинал. Например, \$10\,000\,000.
+\item Дата начала и окончания действия страховки. Например, начало сегодня, окончание через год.
+\item Фиксированный купон (<<спред>>) --- процент от номинала, который покупатель выплачивает продавцу. Например, 2\% годовых.
+\end{itemize}
+
+\justify
+<<Купить>> CDS --- согласится платить фиксированный купон в обмен на страховку.
+\end{frame}
+
+
+
+\newcommand{\swapPartyNode}[5]{
+
+	\draw (#1, #2)
+		node[
+			rectangle,
+			draw,
+			rounded corners,
+			anchor = south,
+			minimum height = 0.8cm,
+			minimum width = 2.5cm
+		]
+		{#5}
+	--
+	(#3, #4);
+}
+
+\newcommand{\swapBuyerPaymentEx}[7]{
+
+	\draw [
+		->,
+		>=triangle 90
+	] 
+	(#1, #2)
+	node[
+		label = left:{#7}
+	]{}
+	-- (#3, #4)
+	node[
+		pos=0.5,
+		anchor=south
+	]
+	{#5}
+	node[
+		pos=0.5,
+		anchor=north
+	]
+	{#6};
+}
+
+\newcommand{\swapBuyerPayment}[6]{
+
+	\swapBuyerPaymentEx{#1}{#2}{#3}{#4}{#5}{}{#6}
+}
+
+\begin{frame}{Кредитный дефолтный своп}
+\justify
+Пример: CDS сроком на 1 год, с номиналом \$10\,000\,000 и купоном $2.0\%$ годовых.
+
+\justify
+\centering
+\begin{tikzpicture}[thick]
+
+		\swapPartyNode{0}{0}{0}{-4}{Покупатель}
+		
+		\swapPartyNode{5.5}{0}{5.5}{-4}{Продавец}
+		
+		\swapBuyerPayment{0}{-1}{2.5}{-1}{\$50\,000}{3 мес.}
+		\swapBuyerPayment{0}{-2}{2.5}{-2}{\$50\,000}{6 мес.}
+		\swapBuyerPayment{0}{-3}{2.5}{-3}{\$50\,000}{9 мес.}
+		\swapBuyerPayment{0}{-4}{2.5}{-4}{\$50\,000}{12 мес.}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Кредитный дефолтный своп}
+\justify
+Референсный заёмщик объявил дефолт через 8 месяцев.
+
+\justify
+\centering
+\begin{tikzpicture}[thick]
+		\swapPartyNode{0}{0}{0}{-2.67}{Покупатель}
+		
+		\swapPartyNode{5.5}{0}{5.5}{-2.67}{Продавец}
+		
+		\swapBuyerPayment{0}{-1}{2.5}{-1}{\$50\,000}{3 мес.}
+		\swapBuyerPayment{0}{-2}{2.5}{-2}{\$50\,000}{6 мес.}
+		\swapBuyerPaymentEx{0}{-2.67}{2.5}{-2.67}{\$33\,000}{Облигация}{8 мес.}
+		
+		\swapBuyerPayment{5.5}{-2.67}{3}{-2.67}{\$10\,000\,000}{}
+\end{tikzpicture}
+
+
+\justify
+Две разновидности CDS:
+\begin{itemize}
+\justifying
+\item Поставочный (облигация в обмен на номинал).
+\item Расчётный (продавец выплачивает разницу между номиналом и рыночной ценой облигации).
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Кредитный дефолтный своп}
+\justify
+Предположим, что случился дефолт:
+\begin{itemize}
+\justifying
+\item Застрахованный номинал \$10\,000\,000.
+\item Рыночная цена облигаций после объявления дефолта
+
+$\$4\,000\,000$.
+\end{itemize}
+
+\justify
+\alert{Поставочный} (\en{deliverable}) кредитный своп:
+\begin{itemize}
+\justifying
+\item Покупатель передаёт продавцу облигации, по которым случился дефолт.
+\item Продавец выплачивает полный номинал застрахованных облигаций (\$10\,000\,000).
+\end{itemize}
+
+\justify
+\alert{Расчётный} (\en{cash settled}) кредитный своп:
+\begin{itemize}
+\justifying
+\item Продавец выплачивает разницу между застрахованным номиналом и остаточной ценой облигаций (\$6\,000\,000).
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{Хеджирование кредитного риска}
+\justify
+Допустим, мы владеем корпоративной облигацией. Вышли негативные новости, и теперь мы опасаемся, что вероятность дефолта сильно выросла. Наши варианты:
+\begin{itemize}
+\item Продать облигацию на рынке.
+\item Купить страховку --- кредитный своп.
+\end{itemize}
+
+\justify
+На сферическом ликвидном рынке в вакууме продать облигацию можно мгновенно и с нулевыми расходами. На практике поиск покупателя не самой ликвидной бумаги может занять недели.
+
+\justify
+Купить кредитный своп иногда проще и дешевле, чем продать облигацию. Когда (и если) рынок успокоится, кредитный своп можно будет продать.
+
+\justify
+Особенно удобно использовать CDS для страхования неторгуемых долгов, таких как банковские кредиты.
+\end{frame}
+
+
+
+\begin{frame}{Спекуляция на кредитном риске}
+
+\justify
+Допустим, мы верим, что кредитное качество референсного заёмщика будет ухудшаться. Наши варианты:
+\begin{itemize}
+\justifying
+\item Продать вкороткую (зашортить) рискованную облигацию и купить безрисковую государственную (чтобы убрать риск общего движения процентных ставок).
+\item Купить кредитный дефолтный своп.
+\end{itemize}
+
+\justify
+Нужно ли владеть облигацией, чтобы купить страховку на неё? Нет! Такая позиция называется naked CDS*.
+
+\justify
+* В Европе запрещены \en{naked CDS}\ на государственные облигации членов ЕС.
+\end{frame}
+
+
+\renewcommand{\swapPartyNode}[4]{
+
+	\draw (#1, #2)
+		node[
+			rectangle,
+			draw,
+			rounded corners,
+			anchor = south,
+			minimum height = 0.8cm,
+			minimum width = 2.8cm
+		]
+		(#4)
+		{#3};
+}
+
+\newcommand{\paymentFlow}[4] {
+	\draw [
+		->,
+		>=triangle 90
+	]
+	(#1) -- (#2)
+	node[
+		pos = 0.5,
+		anchor = #4
+	]
+	{#3};
+}
+
+\begin{frame}{Спекуляция на кредитном риске}
+\justify
+Если мы купили своп за 2\% у компании А, а потом смогли продать своп за 3\% компании B, то мы будем зарабатывать 1\% годовых с застрахованного номинала до тех пор, пока не случится дефолт.
+
+\justify
+\centering
+\begin{tikzpicture}
+
+	\swapPartyNode{0}{2}{Компания А}{A}
+	\swapPartyNode{0}{0}{Спекулянт}{S}
+	\swapPartyNode{0}{-2}{Компания B}{B}
+	
+	\paymentFlow{[xshift=-0.5cm] S.north}{[xshift=-0.5cm] A.south}{2\%}{east};
+	\paymentFlow{[xshift=-0.5cm] B.north}{[xshift=-0.5cm] S.south}{3\%}{east};
+	
+	\paymentFlow{[xshift=+0.5cm] A.south}{[xshift=+0.5cm] S.north}{Страховка}{west};
+	\paymentFlow{[xshift=+0.5cm] S.south}{[xshift=+0.5cm] B.north}{Страховка}{west};
+	
+	\swapPartyNode{6}{2}{Компания А}{A}
+	\swapPartyNode{6}{0}{Спекулянт}{S}
+	\swapPartyNode{6}{-2}{Компания B}{B}
+	
+	\paymentFlow{[xshift=-0.5cm] A.south}{[xshift=-0.5cm] S.north}{Номинал}{east};
+	\paymentFlow{[xshift=-0.5cm] S.south}{[xshift=-0.5cm] B.north}{Номинал}{east};
+	
+	\paymentFlow{[xshift=+0.5cm] S.north}{[xshift=+0.5cm] A.south}{Облигация}{west};
+	\paymentFlow{[xshift=+0.5cm] B.north}{[xshift=+0.5cm] S.south}{Облигация}{west};
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Спекуляция на кредитном риске}
+\justify
+Допустим, мы верим, что кредитное качество референсного заёмщика будет улучшаться. Наши варианты:
+\begin{itemize}
+\justifying
+\item Купить рискованную облигацию и продать вкороткую (зашортить) безрисковую государственную (чтобы убрать риск общего движения процентных ставок).
+\item Продать кредитный дефолтный своп.
+\end{itemize}
+
+\justify
+Если мы продали своп за 3\% компании А, а потом смогли купить своп за 2\% компании B, то мы будем зарабатывать 1\% годовых с застрахованного номинала до тех пор, пока не случится дефолт.
+\end{frame}
+
+
+
+\begin{frame}{Факторы, влияющие на цену CDS}
+\justify
+На честную цену CDS влияют следующие факторы:
+\begin{itemize}
+\justifying
+\item Вероятность дефолта референсного заёмщика. Её можно вычислить либо из котировок других CDS, либо из рыночных цен облигаций этого заёмщика.
+\item Recovery rate --- остаточная стоимость  облигации в случае дефолта. Обычно вычисляется на основе исторических данных о дефолтах заёмщиков в той же юрисдикции, в том же секторе экономики, с сопоставимым кредитным рейтингом.
+\item Ставка дисконтирования будущих платежей.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Recovery rate}
+\justify
+Moody's Corporate Default and Recovery Rates, 1920-2010.
+
+\vspace{\baselineskip}
+\begin{tabular}{l|l|l|l}
+Position						& 2010		& 2009		& 1982-2010 \\
+\hline
+1st	Lien Bank Loan	 		& 72.30\%	& 56.30\% & 59.60\% \\
+2nd Lien Bank Loan 		& 18.40\%	& 20.80\% & 27.90\% \\
+Sr. Unsecured	Bank Loan	& n.a.		& 37.90\% & 39.90\% \\
+Sr. Secured Bond			& 54.70\%	& 29.60\% & 49.10\%	 \\
+\hline
+Sr. Unsecured	Bond		& 63.80\%	& 35.50\% & 37.40\%	 \\
+\hline
+Sr. Subordinated Bond	& 39.40\%	& 18.00\% & 25.30\%	\\
+Subordinated Bond		& 32.20\%	& 25.10\% & 24.20\%	\\
+Jr. Subordinated Bond	 	& n.a.		& n.a.		&17.10\%	\\
+\end{tabular}
+
+\justify
+Правило большого пальца: 40\%.
+\end{frame}
+
+
+
+\begin{frame}{Кредитный рейтинг}
+\justify
+Почему бы не использовать кредитный рейтинг эмитента, чтобы оценить вероятность дефолта?
+
+\justify
+Шкала \en{S\&P}\ (от лучшего к худшему):
+\begin{align*}
+\text{Инвестиционный рейтинг}
+&\begin{cases}
+\text{AAA} \\
+\text{AA+, AA, AA-} \\
+\text{A+, A, A-} \\
+\text{BBB+, BBB, BBB-,}
+\end{cases} \\
+\text{Спекулятивный рейтинг}
+&\begin{cases}
+\text{BB+, BB, BB-,} \\
+\text{B+, B, B-,} \\
+\text{CCC+, CCC, CCC-,} \\
+\text{CC,} \\
+\text{C} \\
+\text{D}
+\end{cases}
+\end{align*}
+\end{frame}
+
+
+
+\newcommand{\addDefaultRatePlot}[3] {
+
+	\addplot[
+		color = #2,
+		mark = #3,
+		thick
+	]
+	table[
+		x = year,
+		y = #1,
+		col sep = comma
+	]
+	{sp_2020_global_corporate_default_rates.csv};
+}
+
+\begin{frame}{Кредитный рейтинг}
+\justify
+Кредитные рейтинги отражают скорее относительную вероятность дефолта, чем абсолютную.
+
+\justify
+\centering
+\begin{tikzpicture}
+	\begin{axis}[
+		width = \textwidth,
+		height = \textheight - 2cm,
+		ymin = 0,
+		ymax = 13,
+		xmin = 1982,
+		xmax = 2020,
+		grid = major,
+		xticklabel = {\pgfmathprintnumber[precision=0, 1000 sep=]{\tick}},
+		yticklabel = {\pgfmathprintnumber[precision=0]{\tick}\%},
+		ylabel = {Частота дефолтов},
+		legend entries = {
+  	   		\small Спекулятивный,
+      		\small Инвестиционный
+  		},
+  		legend cell align={left}
+	]
+		
+		\addDefaultRatePlot{speculative_grade_default_rate}{Set1-A}{square}
+		
+		\addDefaultRatePlot{investment_grade_default_rate}{Set1-B}{*}
+	\end{axis}
+\end{tikzpicture}
+
+\centering
+\small Данные: \en{S\&P Global}
+\end{frame}
+
+
+
+\begin{frame}{Вероятность дефолта и цена облигации}
+\justify
+Государственная (безрисковая) бескупонная облигация с погашением через 1 год стоит $G=98\%$ номинала. Вложили \$980 сегодня --- получили \$1\,000 через год. Доходность инвестиций $\$1\,000 / \$980 - 1 \approx 2.04\%$.
+
+\justify
+Корпоративная облигация на 1 год стоит $C=95\%$ номинала. Вложили \$950 сегодня --- получили \$1\,000 через год, если не случится дефолта. Доходность $\$1\,000 / \$950 - 1 \approx 5.3\%$.
+
+\justify
+Почему участники рынка ценят корпоративную облигацию меньше (требуют более высокую доходность в хорошем случае)?
+
+\justify
+В случае дефолта recovery rate составит $R=40\%$. Вложили \$950 сегодня --- получили \$400 через год. Доходность составит $\$400 / \$950 - 1 = -57.9\%$.
+\end{frame}
+
+
+
+\begin{frame}{Вероятность дефолта и цена облигации}
+\justify
+Государственная облигация стоит $G=98\%$ номинала, корпоративная стоит $C=95\%$, при дефолте recovery rate составит $R=40\%$.
+
+\justify
+Предположим, что участники рынка риск-нейтральны. При какой вероятности дефолта $p$ математические ожидания доходностей государственной и корпоративной облигаций совпадут?
+
+\centering
+\begin{tabular}{l|c|c|c|c|c}
+& & \multicolumn{2}{c|}{Дефолт ($p$)} & \multicolumn{2}{c}{Нет дефолта ($1-p$)} \\
+Облиг. & Цена & Выплата & Дох-ть & Выплата & Дох-ть \\
+\hline
+Гос.  & 0.98 & 1     & 1/0.98 - 1 & 1 & 1/0.98 - 1\\
+Корп. & 0.95 & 0.4 & 0.4/0.95 - 1 & 1 & 1/0.95 - 1
+\end{tabular}
+
+\justify
+Математические ожидания доходностей должны совпадать:
+\begin{align*}
+\frac{1}{0.98} - 1 &= p\left(\frac{0.4}{0.95} - 1\right) + (1-p)\left(\frac{1}{0.95} - 1\right) \Rightarrow \\
+p &= \frac{1 - C/G}{1-R} = \frac{1 - 0.95/0.98}{1-0.4} \approx 5.1\%
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Вероятность дефолта и доходность облигации}
+\justify
+Формулу вероятности дефолта можно переписать в терминах доходностей безкупонных облигаций $r_g$ и $r_c$. Если $T$ --- количество лет до погашения, то
+\begin{align*}
+G = \frac{1}{(1 + r_g)^T}, C = \frac{1}{(1 + r_c)^T}
+\end{align*}
+Тогда
+\begin{align*}
+p = \frac{1 - \dfrac{C}{G}}{1-R} = \frac{1 - \dfrac{(1 + r_g)^T}{(1 + r_c)^T}}{1 - R}
+\end{align*}
+(В предположении, что при дефолте мы получим остаточную стоимость облигации в ту же дату, в которую должны были получить номинал)
+\end{frame}
+
+
+
+\begin{frame}{Вероятность дефолта и кредитный спред}
+\justify
+Если процентные ставки не очень высоки, то формулу можно упростить до:
+\begin{equation*}
+p = \frac{1 - \dfrac{(1 + r_g)^T}{(1 + r_c)^T}}{1 - R} \approx \frac{T(r_c - r_g)}{1 - R}
+\end{equation*}
+
+\justify
+Например, доходность годовой облигации одного крупного немецкого инвестиционного банка из Франкфурта составляет 0.25\%. Доходность аналогичной облигации Германии составляет $-0.80\%$. При банкротстве банка кредиторы могут рассчитывать на recovery rate 40\%.
+
+\justify
+Какова вероятность дефолта этого банка в течение года?
+\begin{equation*}
+p \approx \frac{r_{Bank} - r_{Germany}}{1-R} = \frac{0.25\% - (-0.80\%)}{1-40\%} = 1.75\%
+\end{equation*}
+\end{frame}
+
+
+
+\begin{frame}{Интерполяция вероятности дефолта}
+\justify
+Введём несколько обозначений. Пусть $\xi$ --- случайная величина, время дефолта референсного заёмщика.
+
+\justify
+$D(T)$ --- вероятность того, что дефолт произойдёт до момента времени $T$ (\en{default}).
+\begin{align*}
+D(T) = \mathbb{P}(\xi < T)
+\end{align*}
+
+\justify
+$S(T)$ --- вероятность того, что референсный заёмщик доживёт до момента $T$ (\en{survive}).
+\begin{align*}
+S(T) = \mathbb{P}(\xi \ge T) = 1 - D(T)
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Интерполяция вероятности дефолта}
+\justify
+Пусть из цен однолетней и двухлетней облигаций следует, что компания разорится за $T_1=1$ год с вероятностью $D(T_1) = 2\%$ и за $T_2=2$ года с вероятностью $D(T_2) = 5\%$. Какова вероятность того, что компания разорится в течение $T^{*} = 1.5$ лет $D(T^{*})$?
+
+\justify
+Предположим, что если компания выжила в первый год, то на неё начинает действовать экспоненциальное распределение с параметром $\lambda$. А именно, вероятность дожить до момента $T$, которую мы обозначим $S(T)$, вычисляется как:
+\begin{align*}
+1 - D(T) = S(T) = S(T_1)e^{-\lambda(T-T_1)}
+\end{align*}
+Откуда взять значение $\lambda$?
+\end{frame}
+
+
+
+
+\newcommand{\nodeWithDropLines}[2]{
+    \node[
+        circle,
+        fill,
+        color=Set1-A,
+        inner sep=2pt
+    ]
+    at (axis cs: #1, #2)
+    {};
+
+    \draw[
+        dashed,
+        thick
+    ]
+    (axis cs: 0, #2) -- (axis cs: #1, #2) -- (axis cs: #1, 0);
+}
+
+\begin{frame}{Интерполяция вероятности дефолта}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width = \textwidth,
+    height = \textheight - 1cm,
+    xmin = 0, xmax = 3,
+    ymin = 0, ymax = 1.2,
+    xtick = {1, 2},
+    xticklabels = {$T_1$, $T_2$},
+    xtick pos = left,
+    ytick = {0.404, 0.9, 1},
+    yticklabels = {$S(T_2)$, $S(T_1)$, 1},
+    ytick pos = left,
+    axis lines = middle
+]
+
+\addplot[color=Set1-A, thick, domain=0:1]{exp(ln(0.9)*x)};
+\addplot[color=Set1-A, thick, domain=1:2]{0.9 * exp(-0.8 * (x - 1))};
+\addplot[color=Set1-A, thick, domain=2:3]{0.9*exp(-0.8)*exp(-2*(x-2))};
+
+\nodeWithDropLines{1}{0.9}
+\nodeWithDropLines{2}{0.404}
+
+\node[anchor=west] at (axis cs: 1.5, 0.65) {$S(T_1)e^{-\lambda (T - T_1)}$};
+
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+
+\begin{frame}{Интерполяция вероятности дефолта}
+\justify
+Значение $\lambda$ можно вычислить из значений $D(T_1)$ и $D(T_2)$.
+\begin{align*}
+1 - D(T_2) &= S(T_2) = S(T_1)e^{-\lambda(T_2-T_1)} = (1 - D(T_1))e^{-\lambda(T_2-T_1)}
+\end{align*}
+Следовательно,
+\begin{align*}
+\lambda = \dfrac{\ln\left(\dfrac{1 - D(T_1)}{1 - D(T_2)}\right)}{T_2 - T_1}
+\end{align*}
+В нашем случае, $\lambda \approx 3.11\%$. Тогда
+\begin{align*}
+D(1.5) = 1 - S(1.5) = 1 - (1 - D(1))e^{-3.11\% \cdot (1.5 - 1)} \approx 3.51\%
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Интенсивность дефолта}
+\justify
+Функция $\lambda(t)$ называется \alert{функцией интенсивности дефолта} (\en{default intensity}), если вероятность дефолта к моменту времени $t+dt$ при условии отсутствия дефолта к моменту $t$ равна
+\begin{equation*}
+\mathbb{P}(\xi < t+dt | \xi \ge t) = \lambda(t)dt
+\end{equation*}
+Другое название --- hazard rate.
+
+\justify
+Вероятность выживания к моменту времени $T$:
+\begin{equation*}
+\mathbb{P}(\xi \ge T) = S(T) = e^{-\int_0^T\lambda(x)dx}
+\end{equation*}
+
+\justify
+Если функция --- константа ($\lambda(t)=\lambda$), то вероятность выживания до момента $T$ вычисляется как
+\begin{equation*}
+\mathbb{P}(\xi \ge T) = S(T) = e^{-\lambda T}
+\end{equation*}
+\end{frame}
+
+
+
+\begin{frame}{Интенсивность дефолта}
+\centering
+\begin{tabular}{l|l|l|l|l|l}
+Год & $\lambda=1\%$ & $\lambda=2\%$ &  $\lambda=3\%$ & $\lambda=4\%$ & $\lambda=5\%$ \\
+\hline
+1	& 1.00\%	& 1.98\%	& 2.96\%	& 3.92\%	& 4.88\% \\
+2	& 1.98\%	& 3.92\%	& 5.82\%	& 7.69\%	& 9.52\% \\
+3	& 2.96\%	& 5.82\%	& 8.61\%	& 11.31\%	& 13.93\% \\
+4	& 3.92\%	& 7.69\%	& 11.31\%	& 14.79\%	& 18.13\% \\
+5	& 4.88\%	& 9.52\%	& 13.93\%	& 18.13\%	& 22.12\% \\
+10	& 9.52\%	& 18.13\%	& 25.92\%	& 32.97\%	& 39.35\% \\
+15	& 13.93\%	& 25.92\%	& 36.24\%	& 45.12\%	& 52.76\% \\
+20  & 18.13\%	& 32.97\%	& 45.12\%	& 55.07\%	& 63.21\% \\
+30  & 25.92\%	& 45.12\%	& 59.34\%	& 69.88\%	& 77.69\%
+\end{tabular}
+\end{frame}
+
+
+
+\begin{frame}{Прайсинг CDS}
+\justify
+Предположим, что мы знаем вероятность дефолта, recovery rate, и коэффициенты дисконтирования. Как посчитать честную цену CDS?
+
+\vspace{\baselineskip}
+Математические ожидания дисконтированных платежей продавца и покупателя должны совпадать. Для каждой даты в будущем необходимо рассчитать:
+\begin{itemize}
+\item Вероятность, что эмитент доживёт до этой даты $S(T)$.
+\item Вероятность, что эмитент разорится именно в эту дату $D(T) - D(T - 1 \text{ день})$.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Прайсинг CDS}
+\justify
+С вероятностью $S(T)$ покупатель выплачивает купон, если $T$ --- одна из дат выплат купона.
+\begin{center}
+\begin{tikzpicture}[thick, scale=0.6]
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Покупатель} -- (0, -1.5);
+		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Продавец} -- (7.5, -1.5);
+		\draw [->,>=triangle 90] (0, -1.0) node[label=left:{T}]{} -- (3.5, -1.0) node[pos=0.5,anchor=south]{\$50\,000};
+\end{tikzpicture}
+\end{center}
+
+\justify
+С вероятностью $D(T) - D(T - 1 \text{день})$ покупатель платит накопленный купон и остаточную стоимость облигации, а продавец выплачивает застрахованный номинал.
+\begin{center}
+\begin{tikzpicture}[thick, scale=0.6]
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Покупатель} -- (0, -1.5);
+		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Продавец} -- (7.5, -1.5);
+		\draw [->,>=triangle 90] (0, -1.0) node[label=left:{T}]{} -- (3.5, -1.0) node[pos=0.5,anchor=south]{\$33\,333} node[pos=0.5,anchor=north] {Облигация};
+		\draw [->,>=triangle 90] (7.5, -1.0) -- (4.5, -1.0) node[pos=0.5,anchor=south]{\$10\,000\,000};
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}{Пример задачи}
+\justify
+Оцените справедливую стоимость (купон) кредитного свопа со следующими параметрами.
+
+\begin{itemize}
+\justifying
+\item Срок 1 год.
+\item Выплата купона раз в квартал (1/4 года).
+\item Recovery Rate 40\%.
+\item Вероятность дефолта задана экспоненциальным распределением с параметром $\lambda = 2\%$.
+\item При дефолте выплата страховки произойдёт в дату следующего купона.
+\item Дисконтированием пренебречь.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Решение}
+\justify
+Пусть $x$ --- годовой купон в кредитном свопе с застрахованным номиналом $1$ и recovery rate $R$. Пусть $S(t)$ --- вероятность того, что референсный заёмщик доживёт до момента $t$ лет. Распишем платежи покупателя и продавца и вероятности каждого платежа.
+
+\begin{center}
+\begin{tikzpicture}[thick, scale=0.7]
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Покупатель} -- (0, -5.5);
+		\draw (10.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Продавец} -- (10.5, -5.5);
+		\draw [->,>=triangle 90] (0, -1.0) node[label=left:{$\frac{1}{4}$ года}]{} -- (5.0, -1.0) node[pos=0.5,anchor=south]{$\frac{x}{4}; S(\frac{1}{4})$};
+		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{$\frac{1}{2}$ года}]{} -- (5.0, -2.5) node[pos=0.5,anchor=south]{$\frac{x}{4}; S(\frac{1}{2})$};
+		\draw [->,>=triangle 90] (0, -4.0) node[label=left:{$\frac{3}{4}$ года}]{} -- (5.0, -4.0) node[pos=0.5,anchor=south]{$\frac{x}{4}; S(\frac{3}{4})$};
+		\draw [->,>=triangle 90] (0, -5.5) node[label=left:{$1$ год}]{} -- (5.0, -5.5) node[pos=0.5,anchor=south]{$\frac{x}{4}; S(1)$};
+    
+    \draw [->,>=triangle 90] (10.5, -1.0) -- (5.5, -1.0) node[pos=0.5,anchor=south]{$1-R; 1 - S(\frac{1}{4})$};
+    \draw [->,>=triangle 90] (10.5, -2.5) -- (5.5, -2.5) node[pos=0.5,anchor=south]{$1-R; S(\frac{1}{4}) - S(\frac{1}{2})$};
+    \draw [->,>=triangle 90] (10.5, -4.0) -- (5.5, -4.0) node[pos=0.5,anchor=south]{$1-R; S(\frac{1}{2}) - S(\frac{3}{4})$};
+    \draw [->,>=triangle 90] (10.5, -5.5) -- (5.5, -5.5) node[pos=0.5,anchor=south]{$1-R; S(\frac{3}{4}) - S(1)$};
+
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}{Решение}
+\justify
+Математическое ожидание суммы платежей покупателя равно математическому ожиданию суммы платежей продавца.
+
+\begin{equation*}
+\frac{x}{4} \cdot \left( S\left(\frac{1}{4}\right) + S\left(\frac{1}{2}\right) + S\left(\frac{3}{4}\right) +S\left(1\right) \right) = (1 - R)(1 - S(1))
+\end{equation*}
+
+По условию задачи, $S(t)=e^{-\lambda t}$, поэтому
+
+\begin{equation*}
+x = \frac{4(1 - R)(1 - e^{-\lambda})}{e^{-\lambda / 4} + e^{-\lambda / 2} + e^{-3\lambda / 4} + e^{-\lambda}}
+\end{equation*}
+
+Подставляя $R = 0.4$ и $\lambda = 0.02$, получим:
+
+\begin{equation*}
+\frac{4(1 - 0.4)(1 - e^{-0.02})}{e^{-0.02 / 4} + e^{-0.02 / 2} + e^{-3\cdot0.02 / 4} + e^{-0.02}} \approx 1.203\%
+\end{equation*}
+\end{frame}
+
+
+
+\begin{frame}{Решение (второй способ)}
+\justify
+Референсный эмитент доживёт до момента $1$ год с вероятностью $S(1) = e^{-\lambda \cdot 1} \approx 1 - \lambda = 0.98$.
+
+\vspace{\baselineskip}
+Другими словами, дефолт случится в течение года с вероятностью $\approx 2\%$. Если дефолт произойдёт, то ваши потери составят $1 - R = 0.6$ или $60\%$.
+
+\vspace{\baselineskip}
+Сколько вы готовы заплатить за страховку от события, которое произойдёт с вероятностью $2\%$ и причинит вам убыток в $60\%$ инвестированного номинала? Конечно $2\% \cdot 60\% = 1.2\%$! 
+\end{frame}
+
+
+
+\begin{frame}{Демонстрация}
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральная и реальная вероятности}
+\justify
+Насколько точны рыночные оценки вероятности дефолта?
+
+\vspace{\baselineskip}
+Не особо. Рынок почти всегда \alert{переоценивает} вероятность дефолта. Компании разоряются \alert{реже}, чем можно было бы предполагать, глядя на рыночные котировки.
+
+\vspace{\baselineskip}
+В нашей модели все инвесторы риск-нейтральные, то есть их интересует только математическое ожидание доходности, и не интересует риск (дисперсия). Риск-нейтральному инвестору всё равно: получить \$100 наверняка, или с вероятностью 50/50 получить либо \$0, либо \$200.
+
+\vspace{\baselineskip}
+Правда ли, что Homo Sapiens риск-нейтральны? Нет!
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральная и реальная вероятности}
+\centering
+\begin{tikzpicture}
+	\begin{axis}[
+		width = \textwidth,
+		height = \textheight - 2cm,
+		date coordinates in = x,
+		xticklabel = {\year},
+		xtick = {1990-01-01, 1995-01-01, 2000-01-01, 2005-01-01, 2010-01-01, 2015-01-01, 2020-01-01},
+		ylabel = {\small Рост \$1 начальных инвестиций},
+		ymode = log,
+		log ticks with fixed point,
+  		extra y ticks = {0.5, 2, 3, 4, 5},
+ 		extra y tick labels = {0.5, 2, 3, 4, 5},
+		xmin = 1986-10-31,
+		xmax = 2021-12-31,
+		ymin = 0.9,
+		ymax = 16,
+		grid = both
+	]
+		\addplot[color=Set1-A, thick] table[x=month, y=high_yield_growth, col sep=comma] {bofa_bond_indices.csv};
+		
+		\addplot[color=Set1-B, thick] table[x=month, y=corp_growth, col sep=comma] {bofa_bond_indices.csv};
+	\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральность и страховка}
+\justify
+Новая BMW X5 стоит 6 миллионов рублей. Страховка КАСКО на год стоит 250 тысяч рублей. Вероятность того, что пряморукий лектор разобьёт машину за год 2\%. После аварии машина стоит 0. Что выбрать?
+
+\justify
+Мат. ожидание со страховкой: $-250\,000 \cdot 100\% = -250\,000$.
+
+\justify
+Мат. ожидание без страховки: $-6\,000\,000 \cdot 2\% = -120\,000$.
+
+Дополнительный фактор: серьёзный разговор с женой.
+
+\justify
+Лектор предпочтёт избежать риска: никакая экономия в мат. ожидании не окупает
+разговора с женой в плохом сценарии!
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральная и реальная вероятности}
+\justify
+Люди, принимающие инвестиционные решения, избегают риска (являются risk-averse), и это влияет на рынок облигаций и CDS.
+\begin{itemize}
+\justifying
+\item Покупателей рискованных облигаций не устраивает математическое ожидание доходности, равное доходности безрисковых бумаг. Они требуют премию за риск (risk premium), которая компенсирует дискомфорт от рискованной инвестиции. Выше доходность --- ниже цена облигаций.
+
+\item Покупатели CDS боятся потерь от дефолта, поэтому они готовы платить бОльшую премию за страховку, чем сферические риск-нейтральные инвесторы. Больше спрос --- выше цена CDS.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральная и реальная вероятности}
+\justify
+Кроме того, мы не знаем, какую recovery rate участники рынка закладывают в цены. Не существует ликвидных деривативов (каких-нибудь recovery rate swap), которые позволяли бы разделить recovery rate и вероятность дефолта.
+
+\justify
+Означает ли это, что нельзя использовать наши вероятности для оценки CDS? Нет!
+
+\justify
+Во-первых, если у нас есть ликвидные рыночные инструменты, мы всегда можем захеджироваться и устранить неопределённость относительно вероятности дефолта.
+
+\justify
+Во-вторых, в формулу цены CDS входит только произведение (1-RecoveryRate) и вероятности, и нам почти никогда не нужно знать их по отдельности.
+\end{frame}
+
+
+
+\begin{frame}{Оценка деривативов через репликацию}
+\justify
+Вероятности дефолта и recovery rate нужны, чтобы подобрать правильную комбинацию 
+ингридиентов, которые повторяют кредитный дефолтный своп:
+
+\justify
+\begin{itemize}
+\justifying
+\item Дать кому-то деньги в долг под залог корпоративной облигации.
+\item Продать облигацию на рынке.
+\item Купить безрисковую облигацию или заключить asset swap.
+\end{itemize}
+
+\justify
+Если модель помогает подобрать реплицирующий портфель, то не так важно, что она исходит из неверной оценки вероятности дефолта.
+
+\end{frame}
+
+
+
+\begin{frame}{Реформа рынка в 2009 г.}
+\justify
+В начале 2009 года регуляторы провели реформу рынка кредитных деривативов, чтобы избежать повторения кризиса 2008 года.
+
+\begin{itemize}
+\justifying
+\item Обязательный централизованный клиринг.
+\item 4 стандартных даты выплаты купонов: 20 марта, 20 июня, 20 сентября, 20 декабря.
+\item Фиксированные купоны либо по 1\% (облигации с высоким рейтингом), либо по 5\% (мусорные облигации).
+\end{itemize}
+
+\justify
+Все по-прежнему котируют CDS в терминах спреда (например, 2.40\%/2.41\%), но реальные купоны всё равно будут либо 1\%, либо 5\%. Одна из сторон сделки выплачивает другой сумму, рассчитанную по стандартной методологии, чтобы компенсировать разницу в купоне.
+\end{frame}
+
+
+
+\begin{frame}{Wrong Way CDS}
+\justify
+Что бы Вы сказали о следующих сделках?
+\begin{itemize}
+\item Купить CDS на Германию у Deutsche Bank.
+\item Купить CDS на Deutsche Bank у сегодняшнего лектора.
+\end{itemize}
+
+\justify
+Страховка надёжна ровно настолько, насколько надёжен её продавец, который тоже может разориться. Важно, чтобы дефолт референсного эмитента не имел корреляции с дефолтом продавца страховки.
+
+\justify
+Загадка: кто и у кого покупает CDS на гос. долг США?
+\end{frame}
+
+
+
+\begin{frame}{Если всего этого мало}
+\justify
+Индексный кредитный своп:
+\begin{itemize}
+\item 100 компаний-заемщиков.
+\item Начальный номинал \$10\,000\,000.
+\item При дефолте каждой компании номинал (и купон) уменьшается на \$100\,000.
+\end{itemize}
+
+Nth-to-default CDS:
+\begin{itemize}
+\item 100 компаний-заёмщиков
+\item Начальный номинал \$10\,000\,000.
+\item После первых $N$ дефолтов выплачивается полный номинал.
+\end{itemize}
+Оценка зависит не только от вероятностей дефолта, но и от корреляций между дефолтами. Подробности в учебнике Hull.
+\end{frame}
+
+
+
+\begin{frame}{Зачем?}
+\justify
+Кредитные деривативы --- это не только огромный рынок, но и важный компонент цены других деривативов:
+\begin{itemize}
+\item Credit valuation adjustment (CVA)
+\item Debt valuation adjustment (DVA)
+\item Capital valuation adjustment (KVA)
+\end{itemize}
+\end{frame}
+
+\end{document}
+
+
