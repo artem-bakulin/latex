@@ -143,3 +143,19 @@ frontier_data %>%
     gold_mid = (100 + (stocks+bonds+reit)) / 2
   )
 
+###############################################################################
+# Plot a smaller version with just two assets
+
+mu <- mu %>% head(2)
+sigmas <- sigmas %>% head(2)
+corr_mat <- corr_mat[1:2, 1:2]
+
+frontier_data_two_assets <- calculate_efficient_frontier(mu, sigmas, corr_mat, 0, 20)
+
+frontier_data_two_assets %>%
+  write_csv("efficient_frontier_plot_data_two_assets.csv")
+
+lambda = 0.1
+frontier_data %>% 
+  mutate(utility = target_return - lambda/2 * std_dev^2) %>% 
+  filter(utility == max(utility))

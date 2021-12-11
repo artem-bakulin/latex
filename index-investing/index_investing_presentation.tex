@@ -13,6 +13,7 @@
 \usepackage{color}
 \usepackage{cancel}
 \usepackage{multirow}
+\usepackage{multicol}
 \pgfplotsset{compat=1.17}
 \usetikzlibrary{arrows,snakes,backgrounds,shapes}
 \usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
@@ -23,12 +24,16 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{setspace}
+\usepackage{mathtools}
+
+\usepackage{qrcode}
+
 
 \title{Индексное инвестирование}
 \author{Артём Бакулин}
-\date{\today}
+\date{декабрь 2021 г.}
 
-%\def\usebankstyle{1}
+\def\usebankstyle{1}
 
 \ifdefined\usebankstyle
 
@@ -99,18 +104,21 @@
 		\begin{frame}{Disclaimer}
 			\small
 			\justify
-			Данный материал не является предложением или предоставлением какой-либо услуги.
-			Данный материал предназначен исключительно для информационных и иллюстративных
-			целей и не предназначен для распространения в рекламных целях. Любой анализ третьих
-			сторон не предполагает какого-либо одобрения или рекомендации. Мнения, выраженные в
-			данном материале, являются актуальными на текущий момент, появляются только в этом
-			материале и могут быть изменены без предварительного уведомления. Эта информация
-			предоставляется с пониманием того, что в отношении материала, предоставленного
-			здесь, вы будете принимать самостоятельное решение в отношении любых действий в
-			связи с настоящим материалом, и это решение является основанным на вашем
-			собственном суждении, и что вы способны понять и оценить последствия этих действий.
-			ООО «ТехЦентр Дойче Банка» не несет никакой ответственности за любые убытки любого
-			рода, относящихся к этому материалу.
+			Данный материал не является предложением или предоставлением
+			какой-либо услуги. Данный материал предназначен исключительно для
+			информационных и иллюстративных целей и не предназначен для
+			распространения в рекламных целях. Любой анализ третьих сторон не 		
+			предполагает какого-либо одобрения или рекомендации. Мнения, 
+			выраженные в	данном материале, являются актуальными на текущий момент,
+			появляются только в этом материале и могут быть изменены без 
+			предварительного уведомления. Эта информация предоставляется с 
+			пониманием того, что в отношении материала, предоставленного здесь, вы
+			будете принимать самостоятельное решение в отношении любых действий в
+			связи с настоящим материалом, и это решение является основанным на 
+			вашем	собственном суждении, и что вы способны понять и оценить 
+			последствия этих действий. ООО <<ТехЦентр Дойче Банка>> не несет 
+			никакой ответственности за любые убытки любого рода, относящихся к
+			 этому материалу.
 		\end{frame}
 	}
 
@@ -128,6 +136,13 @@
 	}
 \fi
 
+\newcommand{\menteeqrcode}{
+	\begin{minipage}{0.3\textwidth}
+		\qrcode[height=\textwidth]{https://www.menti.com/ssoimunbud}
+	\end{minipage}
+}
+
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
 
 
 \begin{document}
@@ -165,32 +180,265 @@
 
 
 
-\begin{frame}{Рациональные инвесторы}
-\justify
-Обычно инвесторы любят доходность и не любят риск. Из двух
-инвестиций с одинаковым риском лучше та, которая даёт большую доходность. Из двух инвестиций с одинаковой доходностью лучше та, которая несёт меньший риск.
+    \newcommand{\addGrowthPlot}[4]{
+        \addplot[
+            color = #2,
+            line width = 1pt, 
+            mark = #3,
+            mark repeat = 120,
+            mark phase = 36,
+            mark options = {scale=1.5},
+            style = #4
+        ]
+        table[
+            x = date,
+            y = #1,
+            col sep = comma
+        ]
+        {data/fama_french_cumulative_growth_data.csv};
+    }
 
-\vspace{\baselineskip}
-Является ли избегание риска (risk aversion) нерациональным поведением слабых духом? Нет! Рациональный инвестор тоже может не любить риск.
+\begin{frame}{Акции против облигаций}
+\centering
+
+\begin{tikzpicture}
+\begin{axis}[
+    width=\textwidth,
+    height=\textheight - 1cm,
+    date coordinates in=x,
+    date ZERO=1926-06-30,
+    xtick={1930-01-01,1940-01-01,1950-01-01,1960-01-01,1970-01-01,1980-01-01,1990-01-01,2000-01-01,2010-01-01,2020-01-01},
+    minor xtick={1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+    xticklabel=\year,
+    grid=both,
+    xmin=1926-12-31,
+    xmax=2025-01-01,
+    ymode=log,
+    ymax=10000,
+    log ticks with fixed point,
+    ylabel={\small Рост \$1 начальных инвестиций},
+    ylabel shift = -10pt,
+    legend entries={
+        Рынок акций США,
+        Безрисковые облигации,
+        Инфляция (CPI-U)
+    },
+    legend pos=north west,
+    legend style={font=\scriptsize},
+    legend cell align={left}
+]
+    
+    \addGrowthPlot{mkt}{Set1-A}{none}{solid}
+    \addGrowthPlot{rf}{Set1-B}{square}{solid}
+    \addGrowthPlot{cpi}{Set1-C}{none}{dashed}
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize{Данные: Kenneth French Data Library.}
+\end{frame}
+
+
+
+\begin{frame}{Риск и доходность - 1}
+\justify
+Вы должны вложить крупную сумму (например, один годовой доход) в одну из двух ценных бумаг. Какую из них вы выберете?
+
+\justify
+\centering
+\begin{minipage}[t]{0.6\textwidth}
+	\begin{tabular}{l|r|r}
+	                              & Бумага A & Бумага B  \\ \hline
+	Цена сегодня                  & \$100    & \$100     \\ \hline
+	\multirow{2}{*}{Вер-ть 50\%}  & \$105    & \$130     \\ 
+	                              & ($+5\%$) & ($+30\%$) \\ \hline
+	\multirow{2}{*}{Вер-ть 50\%}  & \$105    & \$80      \\
+	                              & ($+5\%$) & ($-20\%$)  \\ \hline
+	\multirow{2}{*}{Среднее}      & \$105    & \$105     \\
+	                              & ($+5\%$) & ($+5\%$)
+	\end{tabular}
+\end{minipage}
+\hfill
+\menteeqrcode
+\end{frame}
+
+
+
+\begin{frame}{Риск и доходность - 2}
+\justify
+Вы должны вложить крупную сумму (например, один годовой доход) в одну из двух ценных бумаг. Какую из них вы выберете?
+
+\justify
+\centering
+\begin{minipage}[t]{0.6\textwidth}
+	\begin{tabular}{l|r|r}
+	                              & Бумага A & Бумага B     \\ \hline
+	Цена сегодня                  & \$100    & \alert{\$85} \\ \hline
+	\multirow{2}{*}{Вер-ть 50\%}  & \$105    & \$130        \\ 
+	                              & ($+5\%$) & ($+52.9\%$)  \\ \hline
+	\multirow{2}{*}{Вер-ть 50\%}  & \$105    & \$80         \\
+	                              & ($+5\%$) & ($-5.9\%$)  \\ \hline
+	\multirow{2}{*}{Среднее}      & \$105    & \$105        \\
+	                              & ($+5\%$) & (\alert{$+23.5\%$})
+	\end{tabular}
+\end{minipage}
+\hfill
+\menteeqrcode
+\end{frame}
+
+
+
+\begin{frame}{Избегание риска}
+\justify
+Обычно инвесторы любят доходность и не любят риск. Из двух инвестиций с 
+одинаковым риском лучше та, которая даёт большую доходность. Из двух инвестиций 
+с одинаковой доходностью лучше та, которая несёт меньший риск.
+
+\justify
+Проще всего было бы объяснить избегание риска (\en{risk aversion}) 
+нерациональостью слабых духом \en{homo sapiens}. Можно ли построить модель, в
+которой рациональный робот (\en{homo economicus}) тоже будет не любить риск?
+\end{frame}
+
+
+
+\begin{frame}{Счастье и пончики}
+\justify
+Счастье --- в пончиках (точнее, в логарифме их количества). Каждый следующий 
+пончик менее ценен, чем предыдущий. Не столь приятно получить четвёртый пончик, 
+как обидно потерять третий и остаться с двумя.
+
+\justify
+\centering
+\begin{tikzpicture}
+	\begin{axis} [
+		width = \textwidth,
+		height = \textheight - 3.2cm,
+		xmin = 0, xmax = 7,
+		ymin = -1, ymax = 2,
+		grid = major,
+		xlabel = {\small Количество шоколадных пончиков с шоколадом},
+		ylabel = {\small Уровень счастья},
+		ylabel near ticks
+	]
+		\addplot[
+			color = Set1-B,
+			thick,
+			samples at = {0.1,0.11,...,7}
+		]
+		{ln(x)};
+		
+		\draw[thick] 
+			(3, 1.099) -- 
+			(4, 1.099) -- 
+			node[
+				pos = 0.5,
+				anchor = west
+			]
+			{0.28}
+			(4, 1.386);
+
+		\draw[thick] 
+			(2, 0.693) -- 
+			(3, 0.693) -- 
+			node[
+				pos = 0.5,
+				anchor = west
+			]
+			{0.41}
+			(3, 1.099);
+
+		\node[
+			fill = Set1-B,
+			circle,
+			inner sep = 2pt
+		]
+		at (3, 1.099) {};
+	\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: мат. ожидание}
+\justify
+Математическое ожидание (\en{expected value}) случайной величины $\mathcal{X}: 
+\Omega \to \mathbb{R}$, заданной на вероятностном пространстве $(\Omega, 
+\mathcal{F}, \mathbb{P})$ --- интеграл Лебега
+\begin{align*}
+\mathbb{E}\mathcal{X} = \int\limits_\Omega\mathcal{X}(\omega)d\mathbb{P}(\omega)
+\end{align*}
+
+\justify
+Если у случайной величины $\mathcal{X}$ есть плотность $f(x)$, то
+\begin{align*}
+\mathbb{E}\mathcal{X} = \int\limits_{-\infty}^{+\infty}x\cdot f(x)dx
+\end{align*}
+
+\justify
+Если дискретная случайная величина $\mathcal{X}$ принимает значения $x_1,...,x_n$ с вероятностями $p_1,...,p_n$, то
+\begin{align*}
+\mathbb{E}\mathcal{X} = \sum\limits_{i=1}^{n} p_i x_i
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: мат. ожидание - 2}
+\justify
+Математическое ожидание линейно (даже если случайные величины не являются 
+независимыми):
+\begin{align*}
+\mathbb{E}(a\mathcal{X} + b\mathcal{Y}) =
+a\mathbb{E}\mathcal{X} + b\mathbb{E}\mathcal{Y}
+\end{align*}
+для любых случайных величин $\mathcal{X}$ и $\mathcal{Y}$, для которых 
+существует мат. ожидание.
+
+\justify
+Пример: пусть $\mathcal{X}$ --- результат броска игрального кубика, на котором 
+грани от 1 до 6 выпадают с вероятностями $1/6$.
+\begin{align*}
+\mathbb{E}\mathcal{X} =
+\frac{1}{6} \cdot 1 + \frac{1}{6} \cdot 2 + ... + \frac{1}{6} \cdot 6 = 3.5
+\end{align*}
+
+\justify
+Если у нас два кубика (как в <<Монополии>>), то мат. ожидание суммы очков равно
+\begin{align*}
+\mathbb{E}(\mathcal{X} + \mathcal{X})
+= 2\mathbb{E}\mathcal{X}
+= 2 \cdot 3.5 = 7
+\end{align*}
 \end{frame}
 
 
 
 \begin{frame}{Функция полезности}
 \justify
-Рациональный homo economicus максимизирует функцию полезности (utility function). Из двух альтернатив он всегда выбирает ту, которая даёт большую полезность.
+Предположим, что рациональный инвестор оптимизирует функцию полезности (\en{
+utility function})\ $u(x)$, где $x$ --- уровень богатства. Среди всех 
+альтернатив он выбирает ту, которая обещает более высокую среднюю ожидаемую
+полезность.
+\begin{align*}
+\mathbb{E}\Big(u(x)\Big) \to \max
+\end{align*}
 
-\vspace{\baselineskip}
-Предположим, что функция полезности рационального инвестора --- десятичный логарифм количества долларов на счету. Чем больше миллиардов, тем лучше, но каждый следующий миллиард приносит меньше счастья, чем предыдущий. Реалистично? Более чем!
+\justify
+Предположим, что функция полезности рационального инвестора --- десятичный 
+логарифм количества долларов на счету. Чем больше миллиардов, тем лучше, но 
+каждый следующий миллиард приносит меньше счастья, чем предыдущий.
 \end{frame}
 
 
 
 \begin{frame}{Сложный выбор}
 \justify
-Инвестор имеет на счету \$100\,000, которые дают полезность $\lg 100\,000 = 5.0$. Он должен вложить их в один из двух инструментов: в безрисковые облигации или рискованные акции.
+Инвестор имеет на счету \$100\,000, которые дают полезность
+$\lg 100\,000 = 5.0$. Он должен вложить их в один из двух инструментов: в 
+безрисковые облигации или рискованные акции.
 
-\vspace{\baselineskip}
+\justify
+\centering
 \begin{tabular}{c|c|c|c|c|c}
 \multirow{2}{*}{Сценарий} & \multirow{2}{*}{Вер-ть} & \multicolumn{2}{c|}{Облигации} & \multicolumn{2}{c}{Акции} \\
 \cline{3-6}
@@ -200,8 +448,10 @@
 Среднее &      & \$105\,000 & \alert{5.021} & \$105\,000 & \alert{5.013}
 \end{tabular}
 
-\vspace{\baselineskip}
-Рациональный инвестор выберет менее рискованную альтернативу! Это верно не только для логарифма, но и для любой выпуклой вверх функции полезности (когда каждый следующий доллар радует меньше предыдущего).
+\justify
+Рациональный инвестор выберет менее рискованную альтернативу! Это верно не 
+только для логарифма, но и для любой выпуклой вверх функции полезности (когда 
+каждый следующий доллар радует меньше предыдущего).
 \end{frame}
 
 
@@ -210,7 +460,8 @@
 \justify
 Что нужно сделать, чтобы рациональный инвестор выбрал рискованные акции или хотя бы воспринимал альтернативы безразлично? Например, пообещать более высокую доходность в хорошем сценарии и более высокое матожидание!
 
-\vspace{\baselineskip}
+\justify
+\centering
 \begin{tabular}{c|c|c|c|c|c}
 \multirow{2}{*}{Сценарий} & \multirow{2}{*}{Вер-ть} & \multicolumn{2}{c|}{Облигации} & \multicolumn{2}{c}{Акции} \\
 \cline{3-6}
@@ -220,49 +471,239 @@
 Среднее &      & \$105\,000 & 5.021    & \alert{\$107\,353} & \alert{5.021}
 \end{tabular}
 
-\vspace{\baselineskip}
-Дополнительные \$2\,353 в мат. ожидании --- премия за риск (risk premium), которая компенсирует инвестору дискомфорт от возможных потерь в плохом сценарии.
+\justify
+Дополнительные \$2\,353 в мат. ожидании --- премия за риск (risk premium), 
+которая компенсирует инвестору дискомфорт от возможных потерь в плохом 
+сценарии.
 \end{frame}
 
 
 
 \begin{frame}{Полная доходность}
 \justify
-Пусть $P_t$ --- цена актива (акции, облигации, квартиры) в момент времени $t$, а $D_t$ --- денежная выплата (дивиденд , купон, аренда квартиры) в этот же момент времени. Нас интересует полная доходность --- рост цены (capital gain) плюс дивиденды. Считаем, что налогов нет.
+Пусть $P_t$ --- цена актива (акции, облигации, квартиры) в момент времени $t$, 
+а $D_t$ --- денежная выплата (дивиденд , купон, аренда квартиры) в этот же 
+момент времени. Нас интересует полная доходность --- рост цены (capital gain) 
+плюс дивиденды. Считаем, что налогов нет.
 \begin{align*}
 R_{t+1} = \dfrac{P_{t+1} + D_{t+1}}{P_t} - 1
 \end{align*}
-Следствие: ниже цена сегодня --- выше будущая доходность, и наоборот. Например, если инвесторы требуют премию за риск, то она будет скорее отражаться в более низкой цене сегодня, чем в будущих выплатах (которые мы не всегда знаем).
+
+\justify
+Следствие: ниже цена сегодня --- выше будущая доходность.
+
+\justify
+Хорошая компания (например, с высокими будущими дивидендами) --- не обязательно 
+хорошая инвестиция. Если все согласны, что компания хорошая, то сегодняшняя 
+цена акции будет выше, а будущая доходность --- ниже.
 \end{frame}
 
 
 
-\begin{frame}{Теория вероятностей}
+\begin{frame}{Ожидаемая доходность}
 \justify
-Пусть $X$ и $Y$ --- случайные величины, доходности двух активов.
-
-\vspace{\baselineskip}
-Мат. ожидание линейно:
+Будущая цена, будущие дивиденды и будущая доходность --- случайные величины. 
+Перейдём к математическим ожиданиям.
 \begin{align*}
-\mathbb{E}(\alpha X + \beta Y) = \alpha\mathbb{E}X + \beta\mathbb{E}Y
+\mathcal{R}_{t+1} 
+&= \frac{\mathcal{P}_{t+1} + \mathcal{D}_{t+1}}{P_t} - 1   
+\quad \Rightarrow \\
+\mathbb{E}\mathcal{R}_{t+1}
+&= \frac{\mathbb{E}\mathcal{P}_{t+1} + \mathbb{E}\mathcal{D}_{t+1}}{P_t} - 1 
+\quad \Rightarrow \\
+P_t &=
+\frac{\mathbb{E}\mathcal{P}_{t+1} + \mathbb{E}\mathcal{D}_{t+1}}{1 + \mathbb{E}\mathcal{R}_{t+1}}
 \end{align*}
 
-Дисперсия и стандартное отклонение:
+\justify
+Текущая цена акции --- ожидаемые будущие выплаты, продисконтированные по 
+ожидаемой (требуемой участниками рынка) доходности.
+
+\justify
+Если участники рынка требуют премию за риск, то она будет отражена в более 
+низкой сегодняшней цене (более высокой требуемой доходности). 
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: дисперсия}
+\justify
+Дисперсия (\en{variance}) случайной величины $\mathcal{X}$ --- мера разброса 
+относительно мат. ожидания:
 \begin{align*}
-Var(X) = \sigma_{X}^2 = \mathbb{E}\left[(X - \mathbb{E}X)^2\right]
+\operatorname{Var}(\mathcal{X})
+= \mathbb{E}\Big[(\mathcal{X} - \mathbb{E}\mathcal{X})^2\Big]
 \end{align*}
 
-Ковариация и корреляция:
+\justify
+Стандартное отклонение (\en{standard deviation}) или волатильность 
+(\en{volatility})--- квадратный корень из дисперсии:
 \begin{align*}
-Cov(X, Y) = \mathbb{E}\left[(X - \mathbb{E}X)(Y - \mathbb{E}Y)\right] = \rho\sigma_X\sigma_Y
+\sigma_{\mathcal{X}} = \sqrt{\operatorname{Var}(\mathcal{X})}
 \end{align*}
 
-
-Дисперсия линейной комбинации случайных величин:
+\justify
+Если $\mathcal{X}$ --- результат броска кубика, то
 \begin{align*}
-Var(\alpha X + \beta Y) &= \alpha^2 Var(X) + \beta^2 Var(Y) + 2Cov(X, Y) = \\
-&= \alpha^2\sigma_X^2 + \beta^2 \sigma_Y^2 + 2\rho\sigma_X\sigma_Y
-\end{align*}\end{frame}
+\operatorname{Var}(\mathcal{X}) 
+= \frac{1}{6}(1 - 3.5)^2 + \frac{1}{6}(2 - 3.5)^2 + ... + \frac{1}{6}(6-3.5)^2 
+\approx 2.92
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: ковариация и корреляция}
+\justify
+Ковариация (\en{covariance}) показывает линейную связь между случайными величинами: насколько чаще более высокие значения одной выпадают одновременно 
+с более высокими значениями другой.
+\begin{align*}
+\operatorname{Cov}(\mathcal{X}_1, \mathcal{X}_2) =
+\mathbb{E}\Big[(\mathcal{X}_1 - \mathbb{E}\mathcal{X}_1)
+(\mathcal{X}_2 - \mathbb{E}\mathcal{X}_2)\Big]
+\end{align*}
+
+\justify
+Коэффициент корреляции Пирсона $\rho$ (\en{Pearson correlation}):
+\begin{align*}
+\rho =
+\frac{
+	\operatorname{Cov}(\mathcal{X}_1, \mathcal{X}_2)
+}{
+	\sqrt{\operatorname{Var}(\mathcal{X}_1)\operatorname{Var}(\mathcal{X}_2)}
+}
+\end{align*}
+
+\justify
+Если обозначить $\sigma_1$ и $\sigma_2$ стандартные 
+отклонения, то
+\begin{align*}
+\operatorname{Cov}(\mathcal{X}_1, \mathcal{X}_2) 
+= \rho\sigma_1\sigma_2
+\end{align*}
+
+\justify
+Ковариация линейна:
+\begin{align*}
+\operatorname{Cov}(\mathcal{X}, a\mathcal{Y} + b\mathcal{Z}) =
+a\operatorname{Cov}(\mathcal{X}, \mathcal{Y}) +
+b\operatorname{Cov}(\mathcal{X}, \mathcal{Z})
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: дисперсия суммы}
+\justify
+Дисперсия линейной комбинации:
+\begin{align*}
+\operatorname{Var}(a\mathcal{X}_1 + b\mathcal{X}_2)
+&= a^2\operatorname{Var}(\mathcal{X}_1)
++ b^2\operatorname{Var}(\mathcal{X}_2) 
++ 2ab\operatorname{Cov}(\mathcal{X}_1, \mathcal{X}_2) = \\
+&= a^2\sigma_1^2 + b^2\sigma_2^2 + 2ab\rho\sigma_1\sigma_2
+\end{align*}
+
+\justify
+Пример: $\mathbb{E}\mathcal{X}_1 = -1$, $\mathbb{E}\mathcal{X}_2 = 1$,
+$\sigma_1 = \sigma_2 = 1$, $\rho = 0.5$, $a=b=0.5$.
+\begin{minipage}[t]{0.5\textwidth}
+	\begin{tikzpicture}
+		\begin{axis}[
+			width = \textwidth,
+			height = \textwidth,
+			xmin = -4, xmax = 2,
+			ymin = -2, ymax = 4,
+			grid = major
+		]
+		
+		\addplot[
+			only marks,
+			color = Set1-B
+		]
+		table[
+			x = x1,
+			y = x2,
+			col sep = comma
+		]
+		{data/sum_of_normal_scatter.csv};
+		
+		\draw[thick] (0, -5) -- (0, 5);
+		\draw[thick] (-5, 0) -- (5, 0);
+		\end{axis}
+	\end{tikzpicture}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.5\textwidth}
+	\begin{tikzpicture}
+		\begin{axis}[
+			width = \textwidth,
+			height = \textwidth,
+			grid = major,
+			xmin = -4, xmax = 4,
+			ymin = 0, ymax = 0.5
+		]
+		
+		\addplot[
+			dashed,
+			thick,
+			color = Set1-B
+		]
+		table[
+			x = x,
+			y = x1,
+			col sep = comma
+		]
+		{data/sum_of_normal_density.csv};
+		
+		
+		\addplot[
+			dashed,
+			thick,
+			color = Set1-B
+		]
+		table[
+			x = x,
+			y = x2,
+			col sep = comma
+		]
+		{data/sum_of_normal_density.csv};
+		
+		\addplot[
+			thick,
+			color = Set1-A
+		]
+		table[
+			x = x,
+			y = avg,
+			col sep = comma
+		]
+		{data/sum_of_normal_density.csv};
+		
+		\end{axis}
+	\end{tikzpicture}
+\end{minipage}
+\end{frame}
+
+
+
+\begin{frame}{Оптимизация среднего и дисперсии}
+\justify
+Предположим, что инвесторы измеряют риск дисперсией (или стандартным 
+отклонением) доходности. Чем выше матожидание доходности, тем лучше. Чем выше 
+дисперсия (стандартное отклонение), тем хуже.
+
+\justify
+(*) Например, инвестор имеет экспоненциальную функцию полезности
+$u(x) = 1 -e^{-\lambda x}$, где $x$ --- богатство, $\lambda$ --- степень 
+нелюбви к риску. Путь будущее богатство --- нормально распределённая случайная 
+величина $\mathcal{X} \sim \mathcal{N}(\mu, \sigma^2)$. Тогда инвестор будет 
+максимизировать выражение
+\begin{align*}
+\mathbb{E}\mathcal{X} - \frac{\lambda}{2}\operatorname{Var}(\mathcal{X})
+\to \max
+\end{align*}
+\end{frame}
 
 
 
@@ -270,12 +711,15 @@ Var(\alpha X + \beta Y) &= \alpha^2 Var(X) + \beta^2 Var(Y) + 2Cov(X, Y) = \\
 \justify
 Две акции $X$ и $Y$ имеют одинаковые ожидаемые доходности и стандартные отклонения: $\mu = 5\%$ и $\sigma = 10\%$. Корреляция доходностей $\rho=0.4$. Инвестор может вложить долю $w$ своего богатства в $X$ и долю $(1 - w)$ в $Y$.
 
-\vspace{\baselineskip}
+\justify
 Ожидаемая доходность не зависит от $w$:
 \begin{align*}
-\mathbb{E}(wX + (1 - w)Y) &= w\mathbb{E}X + (1-w)\mathbb{E}Y \\ &= w\mu + (1 - w)\mu = \mu = 5\%
+\mathbb{E}(w\mathcal{X} + (1 - w)\mathcal{Y}) 
+&= w\mathbb{E}\mathcal{X} + (1-w)\mathbb{E}\mathcal{Y} = \\
+&= w\mu + (1 - w)\mu = \mu = 5\%
 \end{align*}
 
+\justify
 Может ли выбор $w$ уменьшить стандартное отклонение, т.е. риск?
 \end{frame}
 
@@ -285,7 +729,7 @@ Var(\alpha X + \beta Y) &= \alpha^2 Var(X) + \beta^2 Var(Y) + 2Cov(X, Y) = \\
 \center
 \begin{tikzpicture}
 \begin{axis}[
-  width = \textwidth * 0.7,
+  width = \textwidth * 0.667,
   xlabel={\small $w$ --- доля инвестиций в акцию $X$},
   ylabel={\small Ст. откл. портфеля, \%},
   xlabel near ticks,
@@ -328,56 +772,27 @@ Var(\alpha X + \beta Y) &= \alpha^2 Var(X) + \beta^2 Var(Y) + 2Cov(X, Y) = \\
 
 
 
-\begin{frame}{Оптимизация портфеля по Марковицу - 1}
+\begin{frame}{Портфель из двух активов - 1}
+\justify
+В нашем распоряжении два актива: индекс акций и индекс облигаций. Предположим,
+что мы точно знаем будущие распределения доходностей активов и их корреляцию.
+Какие портфели мы могли бы из них составить?
+
+\justify
 \centering
-\begin{tabular}{l|r|r|r|r|r|r}
- & \multicolumn{2}{c|}{Доходность} & \multicolumn{4}{c}{Корреляция} \\ \cline{2-7}
-Актив         & Сред.  & Ст.~откл. & Акц. & Обл. & Нед. & Зол. \\ \hline
-Акции         & 10.9\% & 15.2\%    & 1.00  & 0.00   & 0.59    & 0.04 \\
-Облигации     & 5.2\%  & 3.6\%     & 0.00  & 1.00   & 0.19    & 0.28 \\
-Недвижимость  & 10.8\% & 19.2\%    & 0.59  & 0.19   & 1.00    & 0.13 \\
-Золото        & 7.0\%  & 15.6\%    & 0.04  & 0.28   & 0.13    & 1.00
+\begin{tabular}{l|r|r|r|r}
+ & \multicolumn{2}{c|}{Доходность} & \multicolumn{2}{c}{Корреляция} \\ \cline{2-5}
+Актив         & Сред.  & Ст.~откл. & Акц.  & Обл. \\ \hline
+Акции         & 10.9\% & 15.2\%    & 1.00  & 0.00 \\
+Облигации     & 5.2\%  & 3.6\%     & 0.00  & 1.00
 \end{tabular}
 
+\justify{\scriptsize 
+Средние годовые доходности, стандартные отклонения и корреляции по данным сайта Portfolio Visualizer (1994--2020).
+}
+
 \justify
-\scriptsize
-Средние годовые доходности, стандартные отклонения и корреляции по данным сайта Portfolio Visualizer (1994-2020).
-\end{frame}
-
-
-
-\begin{frame}{Оптимизация портфеля по Марковицу - 2}
-\justify
-Пусть у нас есть $n$ активов с ожидаемыми доходностями $\mu_i$, стандартными отклонениями $\sigma_i$, корреляциями $\rho_{i,j}$. Инвестиционный портфель задан весами $x_i$. Какие веса активов в портфеле минимизируют риск при фиксированной ожидаемой доходности $r$?
-\begin{align*}
-x = \begin{bmatrix}
-x_1, \\
-x_2, \\
-\vdots \\
-x_n
-\end{bmatrix},
-\mu = \begin{bmatrix}
-\mu_1, \\
-\mu_2, \\
-\vdots \\
-\mu_n
-\end{bmatrix},
-S = \begin{bmatrix}
-\sigma_1^2 & \rho_{1,2}\sigma_1\sigma_2 & \cdots & \rho_{1,n}\sigma_1\sigma_n \\
-\rho_{2,1}\sigma_2\sigma_1 & \sigma_2^2 & \cdots & \rho_{2,n}\sigma_2\sigma_n \\
-\vdots & \vdots & \ddots & \vdots \\
-\rho_{n,1}\sigma_n\sigma_1 & \rho_{n,2}\sigma_n\sigma_2 & \cdots & \sigma_n^2
-\end{bmatrix}
-\end{align*}
-Задача квадратичного программирования (quadratic programming):
-\begin{align*}
-\begin{cases}
-x^TS x \to \min \\
-\mu^Tx = r \\
-\sum x_i = 1 \\
-x \ge 0
-\end{cases}
-\end{align*}
+(*) Прошлые доходности не предсказывают будущие доходности.
 \end{frame}
 
 
@@ -395,7 +810,109 @@ x \ge 0
     {\scriptsize #3};
 }
 
-\newcommand{\drawPortfolioNode}[8]{
+\newcommand{\drawPortfolioNode}[6]{
+    \node[
+        anchor=#6,
+        inner sep=1pt
+    ] at (axis cs: #1, #2) {
+    	  \setlength\tabcolsep{2pt}
+	     \scriptsize
+	     \begin{tabular}{|l|r|}
+		  \hline
+		  \multicolumn{2}{|c|}{#3} \\ \hline
+		  Акц. & #4\% \\
+		  Обл. & #5\% \\
+		  \hline
+		  \end{tabular}
+    };
+	 
+	 \node[
+	     circle,
+	     fill,
+	     inner sep=2pt,
+	     color=Set1-B
+    ] at (axis cs:#1, #2) {};
+}
+
+
+
+\begin{frame}{Портфель из двух активов - 2}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=\textwidth,
+    height=\textheight - 1cm,
+    xlabel={\small Стандартное отклонение (волатильность), \%},
+    ylabel={\small Ожидаемая доходность, \%},
+    xlabel near ticks,
+    ylabel near ticks,
+    xmin=0, xmax=16,
+    ymin=0, ymax=14
+]
+
+\addplot[
+    line width=1pt,
+    color=Set1-B
+]
+table[
+    x=std_dev,
+    y=target_return,
+    col sep=comma
+]
+{data/efficient_frontier_plot_data_two_assets.csv};
+
+\drawAssetNode{15.2}{10.9}{Акции}
+
+\drawAssetNode{3.6}{5.2}{Облигации}
+
+\drawPortfolioNode{5.4}{7.0}{Портфель 1}{31.6}{68.4}{south east}
+
+\drawPortfolioNode{12.8}{10}{Портфель 2}{84.2}{15.8}{south east}
+
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Портфель из нескольких активов}
+\centering
+\begin{tabular}{l|r|r|r|r|r|r}
+ & \multicolumn{2}{c|}{Доходность} & \multicolumn{4}{c}{Корреляция} \\ \cline{2-7}
+Актив         & Сред.  & Ст.~откл. & Акц. & Обл. & Нед. & Зол. \\ \hline
+Акции         & 10.9\% & 15.2\%    & 1.00  & 0.00   & 0.59    & 0.04 \\
+Облигации     & 5.2\%  & 3.6\%     & 0.00  & 1.00   & 0.19    & 0.28 \\
+Недвижимость  & 10.8\% & 19.2\%    & 0.59  & 0.19   & 1.00    & 0.13 \\
+Золото        & 7.0\%  & 15.6\%    & 0.04  & 0.28   & 0.13    & 1.00
+\end{tabular}
+
+\justify
+{\scriptsize
+Средние годовые доходности, стандартные отклонения и корреляции по данным сайта 
+Portfolio Visualizer (1994--2020).
+}
+
+\justify
+Какой портфель минимизирует риск при заданной ожидаемой доходности или 
+максимизирует ожидаемую доходность при заданном уровне риска?
+\end{frame}
+
+
+
+\renewcommand{\drawAssetNode}[3]{
+    \node[
+        circle,
+        fill,
+        inner sep=2pt
+    ] at (axis cs: #1, #2) {};
+    \node[
+        anchor=north
+    ]
+    at (axis cs: #1, #2)
+    {\scriptsize #3};
+}
+
+\renewcommand{\drawPortfolioNode}[8]{
     \node[
         anchor=#8,
         inner sep=1pt
@@ -430,7 +947,7 @@ x \ge 0
 \begin{axis}[
     width=\textwidth,
     height=\textheight - 1cm,
-    xlabel={\small Стандартное отклонение, \%},
+    xlabel={\small Стандартное отклонение (волатильность), \%},
     ylabel={\small Ожидаемая доходность, \%},
     xlabel near ticks,
     ylabel near ticks,
@@ -479,7 +996,7 @@ table[
 \begin{axis}[
   width=\textwidth,
   height=\textwidth/2,
-  xlabel={\small Стандартное отклонение, \%},
+  xlabel={\small Стандартное отклонение (волатильность), \%},
   ylabel={\small Доля актива, \%},
   xlabel near ticks,
   ylabel near ticks,
@@ -503,18 +1020,263 @@ table[
 \end{axis}
 \end{tikzpicture}
 \justify
-Граница эффективности (efficient frontier) --- линия, на которой лежат портфели, имеющие минимальный риск при заданном уровне доходности. Обычно портфели на границе содержат комбинацию базовых активов, а не какой-то один из них.
+Граница эффективности (efficient frontier) --- линия, на которой лежат 
+портфели, имеющие минимальный риск при заданном уровне доходности. Обычно 
+портфели на границе содержат комбинацию базовых активов, а не какой-то один из 
+них.
+\end{frame}
+
+
+
+\begin{frame}{Оптимизация портфеля по Марковицу - 1}
+\justify
+Пусть у нас есть $n$ активов с ожидаемыми доходностями $\mu_i$, стандартными 
+отклонениями $\sigma_i$, корреляциями $\rho_{i,j}$. Инвестиционный портфель 
+задан весами $x_i$. Какие веса активов в портфеле минимизируют риск при 
+фиксированной ожидаемой доходности $r$?
+\begin{align*}
+x = \begin{bmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_n
+\end{bmatrix}
+\mu = \begin{bmatrix}
+\mu_1 \\
+\mu_2 \\
+\vdots \\
+\mu_n
+\end{bmatrix}
+S = \begin{bmatrix}
+\sigma_1^2 & \rho_{1,2}\sigma_1\sigma_2 & \cdots & \rho_{1,n}\sigma_1\sigma_n \\
+\rho_{2,1}\sigma_2\sigma_1 & \sigma_2^2 & \cdots & \rho_{2,n}\sigma_2\sigma_n \\
+\vdots & \vdots & \ddots & \vdots \\
+\rho_{n,1}\sigma_n\sigma_1 & \rho_{n,2}\sigma_n\sigma_2 & \cdots & \sigma_n^2
+\end{bmatrix}
+\end{align*}
+
+\justify
+Задача квадратичного программирования (\en{quadratic programming}):
+\begin{align*}
+\begin{cases}
+x^TS x \to \min \\
+\mu^Tx = r \\
+\sum x_i = 1 \\
+x \ge 0
+\end{cases}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Оптимизация портфеля по Марковицу - 2}
+\begin{align*}
+\begin{cases}
+\alert{x^TS x \to \min} \\
+\mu^Tx = r \\
+\sum x_i = 1 \\
+x \ge 0
+\end{cases}
+\end{align*}
+
+\justify
+$x^TSx$ --- это компактная запись дисперсии портфеля. Например, если у нас 
+всего два актива ($n=2$), то
+\begin{align*}
+x^TSx &=
+\begin{bmatrix}x_1 & x_2\end{bmatrix}
+\begin{bmatrix}\sigma_1^2 & \rho\sigma_1\sigma_2 \\
+\rho\sigma_1\sigma_2 & \sigma_2^2\end{bmatrix}
+\begin{bmatrix}
+x_1 \\ x_2
+\end{bmatrix} = \\
+&= x_1^2\sigma_1^2 + x_2^2\sigma_2^2 + 2x_1x_2\rho\sigma_1\sigma_2
+\end{align*}
+
+\justify
+Это формула дисперсии линейной комбинации. Если минимизировать это выражение, 
+то мы найдём такие веса $x_1$ и $x_2$, при которых дисперсия портфеля 
+минимальна. 
+\end{frame}
+
+
+
+\begin{frame}{Оптимизация портфеля по Марковицу - 3}
+\begin{align*}
+\begin{cases}
+x^TS x \to \min \\
+\alert{\mu^Tx = r} \\
+\sum x_i = 1 \\
+x \ge 0
+\end{cases}
+\end{align*}
+
+\justify
+Ограничение $\mu^Tx = r$ заставляет искать только такие доли активов $x_i$, при 
+которых ожидаемая доходность портфеля равна $r$:
+\begin{align*}
+\mu^Tx =
+\begin{bmatrix}
+\mu_1 & \mu_2 & ... & \mu_n
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\ x_2 \\ ... \\ x_n
+\end{bmatrix} =
+\mu_1 x_1 + \mu_2 x_2 + ... + \mu_n x_n
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Оптимизация портфеля по Марковицу - 4}
+\begin{align*}
+\begin{cases}
+x^TS x \to \min \\
+\mu^Tx = r \\
+\alert{\sum x_i = 1} \\
+\alert{x \ge 0}
+\end{cases}
+\end{align*}
+
+\justify
+Ограничение $\sum x_i = 1$ заставляет искать только такие портфели (веса 
+$x_i$), в которых суммарный вес всех активов равен 1 (мы должны инвестировать 
+весь капитал, но не больше, чем у нас есть).
+
+\justify
+Ограничение $x \ge 0$ оставляет только те портфели (веса $x_i$), в которых все 
+веса положительные (можно только покупать активы, но нельзя продавать в 
+короткую).
 \end{frame}
 
 
 
 \begin{frame}{Оптимизация с безрисковым активом - 1}
 \justify
-Предположим, что на рынке есть безрисковый (risk-free) $F$, который имеет стандартное отклонение $0\%$. Пример: короткие Treasury Bills (ни единого разрыва за 230 лет).
+Предположим, что на рынке есть безрисковый (risk-free) актив $F$, который имеет 
+стандартное отклонение $0\%$. Пример: короткие \en{Treasury Bills}\ (ни единого 
+разрыва за 230 лет).
 
 \justify
-Предположим также, что инвесторы могут занимать деньги под безрисковую процентную ставку.
+Предположим также, что инвесторы могут занимать деньги под безрисковую 
+процентную ставку.
+
+\justifying
+\centering
+\begin{tabular}{l|r|r|r|r|r|r|r}
+ & \multicolumn{2}{c|}{Доходность} & \multicolumn{5}{c}{Корреляция} \\ 
+ \cline{2-8}
+Актив    & Сред.  & Ст.~откл. & Акц. & Обл. & Нед. & Зол. & \alert{Без.} \\ \hline
+Акции    & 10.9\% & 15.2\%    & 1.00 & 0.00 & 0.59 & 0.04 & \alert{0.00} \\
+Облиг.   & 5.2\%  & 3.6\%     & 0.00 & 1.00 & 0.19 & 0.28 & \alert{0.00} \\
+Недвиж.  & 10.8\% & 19.2\%    & 0.59 & 0.19 & 1.00 & 0.13 & \alert{0.00} \\
+Золото   & 7.0\%  & 15.6\%    & 0.04 & 0.28 & 0.13 & 1.00 & \alert{0.00} \\
+\alert{Безриск.} & \alert{4.0\%}  & \alert{0.0\%} & \alert{0.00} & \alert{0.00} & \alert{0.00} & \alert{0.00} & \alert{1.00}
+\end{tabular}
 \end{frame}
+
+
+
+\renewcommand{\drawAssetNode}[4]{
+    \node[
+        circle,
+        fill,
+        inner sep=2pt
+    ] at (axis cs: #1, #2) {};
+    \node[
+        anchor=#4
+    ]
+    at (axis cs: #1, #2)
+    {\scriptsize #3};
+}
+
+\renewcommand{\drawPortfolioNode}[8]{\node[anchor=#8] at (axis cs: #1, #2) {
+		\scriptsize \begin{tabular}{|l|r|}
+		\hline
+		\multicolumn{2}{|c|}{#3} \\ \hline
+		Акц. & #4\% \\
+		Обл. & #5\% \\
+		Нед. & #6\%  \\
+		Зол. & #7\% \\
+		\hline
+		\end{tabular}
+	};
+	\node[circle, fill, inner sep=2pt, color=Set1-B] at (axis cs:#1, #2) {};
+}
+
+\newcommand{\drawPortfolioNodeFive}[9]{\node[anchor=#9] at (axis cs: #1, #2) {
+		\scriptsize \begin{tabular}{|l|r|}
+		\hline
+		\multicolumn{2}{|c|}{#3} \\ \hline
+		Акц. & #4\% \\
+		Обл. & #5\% \\
+		Нед. & #6\% \\
+		Зол. & #7\% \\
+		Без. & #8\% \\
+		\hline
+		\end{tabular}
+	};
+	\node[circle, fill, inner sep=2pt, color=Set1-B] at (axis cs:#1, #2) {};
+}
+
+
+\begin{frame}{Оптимизация с безрисковым активом - 2}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=\textwidth,
+    height=\textheight-1cm,
+    xlabel={\small Стандартное отклонение (волатильность), \%},
+    ylabel={\small Ожидаемая доходность, \%},
+    xlabel near ticks,
+    ylabel near ticks,
+    xmin=0, xmax=14,
+    ymin=0, ymax=10
+]
+
+\draw[line width=1pt, color=Set1-B] (0, 4) -- (12, 6.5);
+
+\drawAssetNode{0.0}{4.0}{Безриск. ($F$)}{north west}
+
+\drawPortfolioNode{12.0}{6.5}{Портфель $\Pi$}{0.0}{30.0}{0.0}{70.0}{south east}
+
+\drawPortfolioNodeFive{3}{4.625}{$0.75F + 0.25\Pi$}{0.0}{7.5}{0.0}{17.5}{75.0}{north west}
+
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Оптимизация с безрисковым активом - 3}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=\textwidth,
+    height=\textheight-1cm,
+    xlabel={\small Стандартное отклонение (волатильность), \%},
+    ylabel={\small Ожидаемая доходность, \%},
+    xlabel near ticks,
+    ylabel near ticks,
+    xmin=0, xmax=14,
+    ymin=0, ymax=10
+]
+
+\draw[line width=1pt, color=Set1-B] (0, 4) -- (20, 14);
+
+\drawAssetNode{0.0}{4.0}{Безриск. ($F$)}{north west}
+
+\drawPortfolioNode{3.60}{5.80}{Портфель $\Pi$}{10.5}{89.3}{0.0}{0.2}{north west}
+
+\drawPortfolioNodeFive{7.2}{7.6}{$-F + 2\Pi$}{21.0}{178.6}{0.0}{0.4}{$-100.0$}{north west}
+
+\addplot[line width=1pt, color=Set1-B, dashed] table[x=std_dev, y=target_return, col sep=comma] {data/efficient_frontier_plot_data.csv};
+
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
 
 
 \renewcommand{\drawAssetNode}[4]{
@@ -551,13 +1313,14 @@ table[
 	\node[circle, fill, inner sep=2pt, color=Set1-B] at (axis cs:#1, #2) {};
 }
 
-\begin{frame}{Оптимизация с безрисковым активом - 2}
+
+\begin{frame}{Оптимизация с безрисковым активом - 4}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
     width=\textwidth,
     height=\textheight-1cm,
-    xlabel={\small Стандартное отклонение, \%},
+    xlabel={\small Стандартное отклонение (волатильность), \%},
     ylabel={\small Ожидаемая доходность, \%},
     xlabel near ticks,
     ylabel near ticks,
@@ -567,9 +1330,9 @@ table[
 
 \addplot[line width=1pt, color=Set1-B, domain=0:21] {4 + x * (6.75 - 4) / 4.83};
 
-\drawPortfolioNodeTwo{1.45}{4.83}{Портфель А}{30}{70}{north west}
+\drawPortfolioNodeFive{1.45}{4.83}{$0.7F + 0.3T$}{7.3}{20.9}{0.4}{1.4}{$70.0$}{north west}
 
-\drawPortfolioNodeTwo{7.25}{8.12}{Портфель B}{150}{-50}{north west}
+\drawPortfolioNodeFive{7.25}{8.12}{$-0.5F + 1.5T$}{36.3}{104.2}{2.3}{7.2}{$-50.0$}{north west}
 
 \drawAssetNode{0.0}{4.0}{F}{north west}
 
@@ -583,60 +1346,280 @@ table[
 
 
 
-\begin{frame}{Оптимизация с безрисковым активом - 3}
+\begin{frame}{Касательный портфель}
 \justify
-Теорема о двух фондах: любой портфель на новой границе эффективности можно представить как линейную комбинацию безрискового актива $F$ и касательного (tangent) портфеля рискованных активов $T$.
+Теорема о двух фондах: новая граница эффективности --- прямая линия. Любой 
+портфель на этой прямой можно представить как линейную комбинацию безрискового 
+актива $F$ и касательного (\en{tangent}) портфеля рискованных активов $T$.
 
-\vspace{\baselineskip}
-В зависимости от предпочтительного баланса риска и доходности, все инвесторы будут держать разные количества $F$ и $T$. Однако никто не будет держать отличную от $T$ комбинацию рискованных активов, потому что такая комбинация будет заведомо хуже (меньше доход при том же риске или больший риск при той же доходности).
+\justify
+Каждый инвестор, который хочет оказаться на границе эффективности, должен 
+вложить какую-то часть в безрисковый актив (или наоборот, занять деньги под 
+безрисковую ставку), а остальной капитал распределить между рискованны активами
+пропорционально их весам в касательном портфеле $T$.
 
-\vspace{\baselineskip}
-Все инвесторы в совокупности распределят свои деньги между рискованными активами в соответствии с весами в портфеле $T$. Портфель $T$ --- рыночный портфель (market portfolio)!
+\justify
+Как узнать веса активов в касательном портфеле $T$, не решая задачу 
+квадратичного программирования?
 \end{frame}
 
 
 
-\begin{frame}{Оптимизация с безрисковым активом - 4}
+\begin{frame}{Рыночный портфель - 1}
 \justify
-Предположим, что все инвесторы владеют \$200 млрд. \$100 млрд. они вложили в безрисковый актив, а \$100 млрд. --- в рискованные активы.
+Предположим, что все инвесторы на рынке решают одну и ту же задачу оптимизации.
+Они имеют одинаковое мнение об ожидаемых доходностях, дисперсиях и корреляциях.
+Они скармливают в алгоритм квадратичного программирования одни и те же входные 
+значения и получают один и тот же ответ.
 
 \justify
-Кто-то вложит в рискованную активы большую долю капитала, кто-то меньшую. Но каждый вложит в золото 4.8\% от своих инвестиций в рискованные активы, потому что иначе он окажется под границей эффективности. Суммарно все инвесторы купят золота на \$4.8 млрд.
+Предположим, что все инвесторы готовы вложить \$100 триллионов в рискованные 
+активы. Каждый из них знает, что в касательном портфеле $T$ правильная доля 
+золота $4.8\%$. Тогда все инвесторы будут готовы вложить в золото \$4.8 
+триллиона.
 
 \justify
-Сколько золота купят инвесторы? Всё, что есть на рынке! Ни один слиток не останется бесхозным. Если в природе существует 4.8 миллиона унций золота, то спрос и предложение уравновесятся на цене \$1000 за унцию.
+Если суммарный спрос на золото \$4.8 триллиона, а всего в природе существует 
+4.8 миллиардов унций золота, то невидимая рука рынка установит цену золота на 
+уровне \$1000 за унцию так, чтобы ни одна унция не осталась без хозяина.
 \end{frame}
 
 
 
-\begin{frame}{На пути к CAPM}
+\begin{frame}{Рыночный портфель - 2}
 \justify
-Обозначим $R_{free}$ и $R_{mkt}$ доходности безрискового актива и рыночного портфеля, а $\sigma_{mkt}$ --- стандартное отклонение рыночного портфеля. Инвестор вложил долю $\beta$ своего богатства в рыночный портфель, а долю $1-\beta$ --- в безрисковый актив. Какую среднюю доходность $\mathbb{E}(R)$ он получит?
+И каждый инвестор по отдельности, и все инвесторы сообща распределяют капитал 
+по рискованным активам пропорционально весам в касательном портфеле $T$. Если 
+Петя вложил в золото 4.8\% от \$100, а Вася --- 4.8\% от \$100\,000, то вместе 
+они вложили в золото 4.8\% от своего общего капитала \$100\,100.
 
-\begin{align*}
-\mathbb{E}(R) &= \mathbb{E}\left[ \beta R_{mkt} + (1 - \beta)R_{free} \right] \Leftrightarrow \\
-\mathbb{E}(R) - R_{free} &= \beta (\mathbb{E}(R_{mkt}) - R_{free})
-\end{align*}
+\justify
+Следовательно, рыночная капитализация актива (суммарная стоимость всех единиц 
+актива) должна быть пропорциональна его весу в касательном портфеле $T$.
 
-Избыточная доходность (excess return) составного портфеля зависит от $\beta$ --- чувствительности к рыночному риску (market risk). Это верно для портфелей на границе эффективности. Но вдруг это верно для любого актива в экономике?
+\justify
+\centering
+\begin{tabular}{l|r|r}
+Актив        & Капитализация & Вес в портфеле $T$ \\ \hline
+Акции        &  \$24.2 трлн. &  24.2\%             \\
+Облигации    &  \$69.5 трлн. &  69.5\%             \\
+Недвижимость &   \$1.5 трлн. &   1.5\%             \\
+Золото       &   \$4.8 трлн. &   4.8\%             \\ \hline
+Итого        & \$100.0 трлн. & 100.0\% 
+\end{tabular}
 \end{frame}
 
 
 
-\begin{frame}{Capital Asset Pricing Model}
-Можно доказать, что ожидаемая доходность $\mathbb{E}(R_{asset})$ любого актива на рынке равна
+\begin{frame}{Рыночный портфель - 3}
+\centering
+\begin{tabular}{l|r|r}
+Актив        & Капитализация & Доля рынка \\ \hline
+Акции        &  \$24.2 трлн. &  24.2\%    \\
+Облигации    &  \$69.5 трлн. &  69.5\%    \\
+Недвижимость &   \$1.5 трлн. &   1.5\%    \\
+Золото       &   \$4.8 трлн. &   4.8\%    
+\end{tabular}
+
+\justify
+Если вы --- маленький частный инвестор, который не может повлиять своими 
+сделками на цены активов, то самый простой способ узнать веса в касательном 
+портфеле $T$ --- посмотреть на рыночные капитализации и поверить, что остальные 
+инвесторы не дураки и уже решили задачу оптимизации за вас.
+
+\justify
+Единственное решение, которое вам надо принять --- сколько денег вложить в 
+безрисковый актив. После этого вам нужно купить на оставшийся капитал
+все-все-все рискованные активы пропорционально их рыночной капитализации. Это 
+единственный способ оказаться на границе эффективности, а не под ней.
+\end{frame}
+
+
+
+\begin{frame}{Отношение Шарпа - 1}
+\justify
+Отношение Шарпа (\en{Sharpe ratio}) --- отношение ожидаемой избыточной 
+доходности портфеля $\mathcal{R}$ сверх безрисковой ставки $R_f$ к стандартному 
+отклонению доходности $\sigma$.
 \begin{align*}
-\mathbb{E}(R_{asset}) = R_{free} + \dfrac{Cov(R_{asset}, R_{mkt})}{Var(R_{mkt})} \left (\mathbb{E}(R_{mkt}) - R_{free} \right)
+S = \frac{\mathbb{E}\mathcal{R} - R_f}{\sigma}
 \end{align*}
-Обозначим
+
+\justify
+Отношение Шарпа --- <<цена>> избыточной доходности.
+
+\justify
+Если отношение Шарпа равно 0.5, каждый дополнительный 1\% волатильности 
+<<покупает>> дополнительные 0.5\% ожидаемой доходности сверх безрисковой 
+ставки. Чтобы заработать на 1\% больше, нужно будет терпеть волатильность 
+портфеля на 2\% выше.
+\end{frame}
+
+
+
+\begin{frame}{Отношение Шарпа - 2}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=\textwidth,
+    height=\textheight-1cm,
+    xlabel={\small Стандартное отклонение (волатильность), \%},
+    ylabel={\small Ожидаемая доходность, \%},
+    xlabel near ticks,
+    ylabel near ticks,
+    xmin=0, xmax=14,
+    ymin=0, ymax=10
+]
+
+\addplot[line width=1pt, color=Set1-B, domain=0:21] {4 + x * (6.75 - 4) / 4.83};
+
+%\drawPortfolioNodeFive{1.45}{4.83}{$0.7F + 0.3T$}{7.3}{20.9}{0.4}{1.4}{$70.0$}{north west}
+
+%\drawPortfolioNodeFive{7.25}{8.12}{$-0.5F + 1.5T$}{36.3}{104.2}{2.3}{7.2}{$-50.0$}{north west}
+
+%\drawAssetNode{0.0}{4.0}{F}{north west}
+
+\drawPortfolioNode{4.83}{6.75}{Портфель T}{24.2}{69.5}{1.5}{4.8}{south east}
+
+\draw[<->, >= triangle 45] (4.83, 0) -- (4.83, 4) node[pos=0.5, anchor=west] 
+{\small $R_f = 4\%$};
+
+\draw[<->, >= triangle 45] (4.83, 4) -- (4.83, 6.75) node[pos=0.5, anchor=west]
+{\small $\mathbb{E}\mathcal{R}_m - R_f = 2.75\%$};
+
+\draw[<->, >= triangle 45] (0, 4) -- (4.83, 4) node[pos=0.5, anchor=north]
+{\small $\sigma_m=4.83\%$};
+
+\draw[dashed] (4.83, 6.75) -- (14, 6.75);
+
+\draw (1.5, 4) arc [
+	start angle = 0,
+	end angle = 29.65,
+	x radius = 1.5,
+	y radius = 1.5
+];
+
+\draw (6.33, 6.75) arc [
+	start angle = 0,
+	end angle = 29.65,
+	x radius = 1.5,
+	y radius = 1.5
+] node [pos=0.8, anchor=west] {\small $\tg s = \dfrac{2.75}{4.83}$};
+
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Отношение Шарпа - 3}
+\justify
+Инвестор решил оказаться на границе эффективности и вложил долю капитала $w$ в 
+рыночный портфель с доходностью $\mathcal{R}_{m}$ и стандартным отклонением
+$\sigma_{m}$, а долю $1-w$ --- в безрисковый актив.
 \begin{align*}
-\beta_{asset} = \dfrac{Cov(R_{asset}, R_{mkt})}{Var(R_{mkt})} = \rho_{asset,mkt}\dfrac{\sigma_{asset}}{\sigma_{mkt}}
+S = \frac{w\mathbb{E}\mathcal{R}_{m} + (1-w)R_f - R_f}{w\sigma_{m}} = 
+\frac{w(\mathcal{R}_{m} - R_f)}{w\sigma_{m}} =
+\frac{\mathcal{R}_{m} - R_f}{\sigma_{m}}
 \end{align*}
-Тогда:
+
+\justify
+Все портфели на прямой границе эффективности имеют одинаковое отношение Шарпа.
+
+\justify
+Отношение Шарпа касательного рыночного портфеля --- угловой коэффициент 
+(тангенс угла наклона) прямой границы эффективности.
+\end{frame}
+
+
+
+\begin{frame}{На пути к CAPM - 1}
+\justify
+Инвестор вложил $w$ в рыночный портфель и $1-w$ в безрисковый актив. На рынке
+появился совершенно новый актив с доходностью $\mathcal{R}_{a}$, 
+стандартным отклонением $\sigma_{a}$ и корреляцией со всем рынком $\rho$.
+
+\justify
+Инвестор может переложить небольшую долю $\varepsilon$ из безрискового актива в 
+новый рискованный актив.
+
+\justify
+Новая ожидаемая доходность:
 \begin{align*}
-\mathbb{E}(R_{asset}) - R_{free} = \beta_{asset}(\underbrace{\mathbb{E}(R_{mkt}) - R_{free}}_{\text{премия за риск}})
+\mathbb{E}\mathcal{R} =
+w\mathbb{E}\mathcal{R}_{m} + 
+\varepsilon\mathbb{E}\mathcal{R}_a +
+(1 - w - \varepsilon)R_{f}
 \end{align*}
-Это формулировка Capital Asset Pricing Model (CAPM).
+
+\justify
+Новое стандартное отклонение:
+\begin{align*}
+\sigma = \sqrt{
+	w^2\sigma_m^2 +
+	2w\varepsilon\rho\sigma_m\sigma_a + \varepsilon^2\sigma_a^2
+}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{На пути к CAPM - 2}
+\justify
+Новое отношение Шарпа:
+\begin{align*}
+S(\varepsilon) = \frac{
+	w(\mathbb{E}\mathcal{R}_{m} - R_f) + 
+	\varepsilon(\mathbb{E}\mathcal{R}_a - R_f)
+}{
+	\sqrt{
+		w^2\sigma_m^2 +
+		2w\varepsilon\rho\sigma_m\sigma_a + \varepsilon^2\sigma_a^2
+	}
+}
+\end{align*}
+
+\justify
+Возьмём производную в точке $\varepsilon = 0$:
+\begin{align*}
+\frac{\partial S}{\partial \varepsilon} \Biggr\rvert_{\varepsilon = 0} = 
+\frac{1}{w\sigma_m} \left(
+	\mathbb{E}\mathcal{R}_a - R_f -
+	\frac{\rho\sigma_{a}}{\sigma_m}(\mathbb{E}\mathcal{R}_m - R_f)
+\right)
+\end{align*}
+
+\justify
+Чтобы рынок был в равновесии, производная должна быть равна нулю! Если она 
+положительная (добавление актива улучшает отношение Шарпа), то все бросятся 
+покупать актив. Спрос вырастет, цена увеличится, ожидаемая доходность упадёт.
+\end{frame}
+
+
+
+\begin{frame}{Capital Asset Pricing Model (CAPM)}
+\justify
+Чтобы рынок был в равновесии, для любого актива должно выполняться соотношение
+\begin{align*}
+\underbrace{\mathbb{E}\mathcal{R}_{a} - R_f}_{\mathclap{
+\substack{\text{изб. дох-ть} \\ \text{актива}}}} = \dfrac{\rho\sigma_a}{\sigma_m}
+\underbrace{\Big(\mathbb{E}\mathcal{R}_m - R_f\Big)}_{\mathclap{
+\substack{\text{рыночная премия} \\ \text{за риск}}}}
+\end{align*}
+
+\justify
+Это модель ценообразования капитальных активов (\en{Capital Asset Pricing 
+Model, CAPM}). Коэффициент связи доходности актива с доходностью рынка обычно 
+называют <<бета>>:
+\begin{align*}
+\beta_a = \dfrac{\rho\sigma_a}{\sigma_m} =
+\dfrac{\operatorname{Cov}(\mathcal{R}_a, \mathcal{R}m)}
+{\operatorname{Var}(\mathcal{R}_m)}
+\end{align*}
+
+\justify
+Ожидаемая доходность актива зависит не от его дисперсии как таковой, а от 
+ковариации со всем остальным рынком!
 \end{frame}
 
 
@@ -644,38 +1627,91 @@ table[
 \begin{frame}{Систематический риск}
 \justify
 \begin{align*}
-&\mathbb{E}(R_{asset}) - R_{free} = \beta_{asset}(\mathbb{E}(R_{mkt}) - R_{free}) \\
-&\beta_{asset} = \dfrac{Cov(R_{asset}, R_{mkt})}{Var(R_{mkt})} = \rho_{asset,mkt}\dfrac{\sigma_{asset}}{\sigma_{mkt}}
+&\mathbb{E}(\mathcal{R}_{a}) - R_{f} =
+\beta_{a}\big(
+	\mathbb{E}\mathcal{R}_{mkt} - R_{f}		
+\big) \\
+&\beta_a = \dfrac{\rho\sigma_a}{\sigma_m} =
+\dfrac{\operatorname{Cov}(\mathcal{R}_a, \mathcal{R}m)}
+{\operatorname{Var}(\mathcal{R}_m)}
 \end{align*}
 
-Доходность любого актива зависит от его <<беты>>. <<Бета>> 1.5 означает, что если рынок растёт (падает) на 1\%, то актив в среднем растёт (падает) на 1.5\%. Придумайте примеры акций с $\beta<1$ и $\beta>1$?
+\justify
+Доходность любого актива зависит от его <<беты>>. <<Бета>> 1.5 означает, что 
+если рынок растёт (падает) на 1\%, то актив в среднем растёт (падает) на 1.5\%. 
 
-\vspace{\baselineskip}
-Можно сказать, что <<бета>> отражает чувствительность актива к некому глобальному рыночному риску (market risk) или систематическому риску (systematic risk). Насколько актив растёт вместе с рынком в хорошие времена, и насколько он падает вместе с рынком в плохие.
+\justify
+Можно сказать, что <<бета>> отражает чувствительность актива к глобальному 
+рыночному риску (\en{market risk}) или систематическому риску (\en{systematic 
+risk}). Насколько актив растёт вместе с рынком в хорошие времена, и насколько 
+он падает вместе с рынком в плохие.
+
+\justify
+Придумайте примеры акций с $\beta<1$ и $\beta>1$?
+\end{frame}
+
+
+
+\begin{frame}{<<Беты>> некоторых акций}
+\centering
+\begin{tabular}{l|l|r}
+Компания         & Тикер   & <<Бета>> \\ \hline
+Lufthansa        & LHA.DE  & 1.70     \\
+Infineon         & IFX.DE  & 1.49     \\
+Deutsche Bank    & DBK.DE  & 1.44     \\
+BMW              & BMW.DE  & 1.25     \\
+Siemens          & SIE.DE  & 1.09     \\
+Deutsche Telekom & DTE.DE  & 0.75     \\
+Henkel           & HEN3.DE & 0.65    \\
+Merck            & MRK.DE  & 0.45     
+\end{tabular}
+
+\justify
+\centering
+{\scriptsize Данные: Yahoo Finance}
+
+\justify
+Чем сильнее бизнес компании страдает в кризис, тем выше <<бета>>.
+
+\justify
+(*) <<Бета>> отдельной компании зависит не только от индустрии, но и от 
+соотношения акционерного капитала и долговой нагрузки.
 \end{frame}
 
 
 
 \begin{frame}{Идиосинкратический риск}
 \justify
-Каждый актив (каждая акция) несёт свой собственный специфический риск. Самолёт авиакомпании может упасть, завод корпорации может сгореть. Этот идиосинкратический (idiosyncratic) риск можно уменьшить до нуля диверсификацией (diversify away). Рациональный инвестор держит в портфеле тысячи активов, поэтому не страдает от этого риска.
+Каждый актив (каждая акция) несёт свой собственный специфический риск. Самолёт 
+авиакомпании может упасть, завод корпорации может сгореть. Этот 
+идиосинкратический (\en{idiosyncratic}) риск можно уменьшить до нуля 
+диверсификацией (\en{diversify away}). Рациональный инвестор держит в портфеле 
+тысячи активов, поэтому не страдает от этого риска.
 
 \justify
-Вывод: идиосинкратический риск не входит в цену активов! Вы не зарабатываете дополнительную премию за риск, если держите в портфеле всего одну (пусть даже самую любимую) акцию. Все остальные инвесторы диверсифицировали этот риск и поэтому не требуют премию за риск (т.е. скидку в цене).
+Вывод: идиосинкратический риск не входит в цену активов! Вы не зарабатываете 
+дополнительную премию за риск, если держите в портфеле всего одну (пусть даже 
+самую любимую) акцию. Все остальные инвесторы диверсифицировали этот риск и 
+поэтому не требуют премию за риск (т.е. скидку в цене).
 
 \justify
-Систематический риск нельзя диверсифицировать. Инвесторы должны с ним мириться, поэтому требуют и получают компенсацию.
+Систематический риск нельзя диверсифицировать. Инвесторы должны с ним мириться, 
+поэтому требуют и получают компенсацию.
 \end{frame}
 
 
 
 \begin{frame}{Предел диверсификации - 1}
 \justify
-Пусть есть $n$ акций с одинаковыми ожидаемыми доходностями $\mu=5\%$ и стандартными отклонениями $\sigma = 20\%$. Все акции попарно связаны коэффициентом корреляции $\rho=0.25$. Мы вложили по доле $1/n$ в каждую акцию. Чему равно стандартное отклонение портфеля?
+Пусть есть $n$ акций с одинаковыми ожидаемыми доходностями $\mu=5\%$ и 
+стандартными отклонениями $\sigma = 20\%$. Все акции попарно связаны 
+коэффициентом корреляции $\rho=0.25$. Мы вложили по доле $1/n$ в каждую акцию. 
+Чему равно стандартное отклонение портфеля?
 
 \begin{align*}
 \sqrt{Var\left(\sum\limits_{i=1}^{n}\frac{1}{n}X_i \right)} &=
-\sqrt{\frac{1}{n^2}\left(\sum\limits_{i=1}^{n}Var(X_i) + 2\sum\limits_{1 \le i < j \le n}Cov(X_i, X_j)\right)} = \\
+\sqrt{\frac{1}{n^2}\left(\sum\limits_{i=1}^{n}Var(X_i) + 2\sum\limits_{
+1 \le i < j \le n}Cov(X_i, X_j)\right)} = \\
 &= \sqrt{\frac{1}{n^2}\left(n\sigma^2 + n(n-1)\rho\sigma^2\right)} = \\
 &= \sigma\sqrt{\frac{1}{n} + \frac{n-1}{n}\rho} \to \sigma\sqrt{\rho}
 \end{align*}
@@ -711,26 +1747,44 @@ table[
 
 
 
-\begin{frame}{Роль ковариации с рынком}
+\begin{frame}{Роль корреляции с рынком - 1}
 \justify
 Какую из двух акций выбрать?
 
-\vspace{\baselineskip}
+\justify
 \centering
 \begin{tabular}{l|r|r|r}
-Состояние мира & Вероятность & Акция 1  & Акция 2 \\ \hline
-\only<1>{Состояние 1}\only<2->{Потеря работы}    & 50\%        & \$1\,000 & \$500 \\
-\only<1>{Состояние 2}\only<2->{Премия \$10\,000}    & 50\%        & \$500    & \$1\,000 \\ \hline
-Мат. ожидание  &             & \$750    & \$750
+Состояние мира   & Вер-ть & Акция A  & Акция B \\ \hline
+Потеря работы    & 50\%   & \$1\,000 & \$500 \\
+Премия 6 зарплат & 50\%   & \$500    & \$1\,000 \\ \hline
+Среднее          &        & \$750    & \$750
 \end{tabular}
 
-\only<3>{
 \justify
-Инвестор с выпуклой вверх функцией полезности ценит активы, которые приносят доход в плохие времена, когда остальные активы падают. Такой актив сглаживает удар по потреблению и поэтому стоит дорого.
+\centering
+\menteeqrcode
+\end{frame}
+
+
+
+\begin{frame}{Роль корреляции с рынком - 2}
+\justify
+Инвесторам нравятся активы, которые дают дополнительный доход в <<плохие 
+времена>>. Например, всем нравятся те активы, которые дают страховку от потери
+работы.
 
 \justify
-Если актив приносит доход в хорошие времена, когда каждый дополнительный доллар не так ценен, то инвестор требует премию за риск.
-}
+Для рядового инвестора шанс потерять работу в кризис выше, чем в спокойное 
+время. Он будет искать такие активы, которые не так сильно упадут в кризис, 
+когда каждый дополнительный доллар будет на счету.
+
+\justify
+Спрос на активы, которые не сильно падают в кризис вместе с рынком (имеют 
+низкую <<бету>>), выше, их цена --- выше, а ожидаемая доходность --- ниже.
+
+\justify
+Максимальную ожидаемую доходность дают те активы, которые обвалятся ровно в тот
+момент, когда вам будет больнее всего (это активы с высокой <<бетой>>).
 \end{frame}
 
 
@@ -745,7 +1799,7 @@ table[
 \item Standard and Poor's 500 --- 500 крупнейших компаний США.
 \item Russel 2000 --- 2000 крупнейших компаний США.
 \item STOXX 600 --- 600 крупнейших компаний Европы.
-\item ММВБ (рубли) и РТС (доллары) --- 42 крупнейшие компании России.
+\item ММВБ (рубли) и РТС (доллары) --- 43 крупнейшие компании России.
 \item MSCI World --- 1600 крупнейших компаний мира.
 \end{itemize}
 \end{frame}
@@ -777,7 +1831,7 @@ Index = \dfrac{\sum P_iQ_i}{D}
 
 
 
-    \newcommand{\addGrowthPlot}[4]{
+    \renewcommand{\addGrowthPlot}[4]{
         \addplot[
             color = #2,
             line width = 1pt, 
@@ -884,7 +1938,7 @@ Index = \dfrac{\sum P_iQ_i}{D}
 \end{tabular}
 {\scriptsize Годовые доходности сверх безрисковой процентной ставки.
 
-Данные: Kenneth French Data Library. \par }
+Данные: Kenneth French Data Library.}
 
 \justify
 Внимание! Есть точка зрения, что историческая доходность рынка США слишком высока и является загадкой (equity risk premium puzzle). Инвесторы должны очень-очень не любить риск, чтобы спрос и предложение уравновесились на такой премии за риск. Не имеем ли мы дело с эффектом выжившего (survivorship bias)?
@@ -894,7 +1948,8 @@ Index = \dfrac{\sum P_iQ_i}{D}
 
 \begin{frame}{Избегание риска - 1}
 \justify
-Вы должны вложить весь свой капитал на срок 15 лет. Какой актив выбрать: A или B?
+Вы должны вложить весь свой капитал на срок 15 лет. Какой актив выбрать: A или
+B?
 
 \centering
 \begin{tikzpicture}
@@ -2248,7 +3303,6 @@ Bessembinder (2018): 4\% лучших акций обеспечили весь �
 
 \end{itemize}
 \end{frame}
-
 
 
 \insertdisclaimerframe
