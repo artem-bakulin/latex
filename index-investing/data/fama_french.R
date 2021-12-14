@@ -14,11 +14,14 @@ download_fama_french_factors_data <- function() {
   )
 
   data <- read_csv("F-F_Research_Data_Factors_CSV.zip", skip=3, skip_empty_rows=TRUE) %>% 
+    mutate(
+      yyyymmdd = as.numeric(`...1`)
+    ) %>% 
     filter(
-      X1 >= 190000
+      yyyymmdd >= 190000,
     ) %>% 
     transmute(
-      month = make_date(X1 %/% 100, X1 %% 100, 1),
+      month = make_date(yyyymmdd %/% 100, yyyymmdd %% 100, 1),
       mkt_rf = `Mkt-RF` / 100,
       smb = SMB / 100,
       hml = HML / 100,
@@ -39,11 +42,14 @@ download_momentum_factor_data <- function() {
   )
   
   data <- read_csv("F-F_Momentum_Factor_CSV.zip", skip=13, skip_empty_rows=TRUE) %>% 
+    mutate(
+      yyyymmdd = as.numeric(`...1`)
+    ) %>% 
     filter(
-      X1 >= 190000
+      yyyymmdd >= 190000,
     ) %>% 
     transmute(
-      month = make_date(X1 %/% 100, X1 %% 100, 1),
+      month = make_date(yyyymmdd %/% 100, yyyymmdd %% 100, 1),
       mom = Mom / 100
     )
   
@@ -123,6 +129,7 @@ summarize_annual_returns <- function (data) {
 }
 
 annual_returns_summary <- annual_returns %>% 
+  filter(year >= 1927, year <= 2020) %>% 
   group_by(
     factor,
     period = case_when(
@@ -204,7 +211,7 @@ cumulative_growth_data <- fama_french_four_factors_data %>%
   )
 
 cumulative_growth_data %>% 
-  write_csv("fama_french_cumulative_growth_data.csv")
+  write_csv("fama_french_cumulative_growth_data.csv", na="NaN")
 
 set.seed(1)
 sample_annualized_returns <- function(x, periods_per_year=12, years=1, n=50) {
@@ -232,6 +239,9 @@ simulated_annual_returns %>%
 
 holding_years <- 1:30
 holding_quantiles <- c(0, 0.01, 0.05, 0.25, 0.5, 0.75, 0.95, 0.99, 1)
+
+cumulative_growth_data <- cumulative_growth_data %>% 
+  filter(year(date) <= 2020)
 
 returns_by_holding_period <- lapply(holding_years, function(years_in) {
   
@@ -279,6 +289,5 @@ investment_outcome_by_period <- lapply(holding_years, function(years_in) {
 
 investment_outcome_by_period %>% 
   pivot_wider(names_from="growth_pct", values_from="growth") %>% 
-  tail()
   write_csv("us_mkt_regular_investment.csv")
 

@@ -11,13 +11,15 @@ library(readr)
 #     sigmas  - a vector of expected standard deviations
 #     corrMat - correlation matrix
 #     target  - required level of return
-optimize_for_target_return <- function(returns, sigmas, corr_mat, target)
+#     lending_rate_idx - index of an asset that represents margin lending rate. This asset can only have negative weight
+optimize_for_target_return <- function(returns, sigmas, corr_mat, target, lending_rate_idx=NA)
 {
   # We are solving a quadratic programming problem:
   # x^T * H * x -> min subject to 
   # x * returns^T = target
   # sum(x) = 1
-  # x >= 0
+  # x >= 0 (for all assets except the lending one)
+  # x_l <= 0 (for l = lending_rate_idx)
   
   n <- length(returns);
   
@@ -38,13 +40,17 @@ optimize_for_target_return <- function(returns, sigmas, corr_mat, target)
   # x >= 0
   A3 <- diag(n);
   b3 <- matrix(rep(0, n), ncol=1);
-
+  if (!is.na(lending_rate_idx)) {
+    A3[lending_rate_idx, lending_rate_idx] <- -1
+  }
+  
   Amat <- rbind(A1, A2, A3);
   bvec <- rbind(b1, b2, b3);
   
   # Minimize 1/2*x^T*D*x - d^T*x subject to
   # A*x >= b
   # Where first 2 rows in A are equalities
+
   weights <- solve.QP(Dmat, dvec, t(Amat), bvec, meq=2)$solution;
   
   sigma <- sqrt(t(weights) %*% Dmat %*% weights);
@@ -53,14 +59,14 @@ optimize_for_target_return <- function(returns, sigmas, corr_mat, target)
 }
 
 
-calculate_efficient_frontier <- function(returns, sigmas, corr_mat, min_return, max_return, step=0.05) {
+calculate_efficient_frontier <- function(returns, sigmas, corr_mat, min_return, max_return, lending_rate_idx=NA, step=0.05) {
    
   result <- c()
   
   for (return in seq(min_return, max_return, step)) {
     
     solution <- tryCatch({
-      optimize_for_target_return(returns, sigmas, corr_mat, return);
+      optimize_for_target_return(returns, sigmas, corr_mat, return, lending_rate_idx);
     }, error = function(e) {
       NULL
     })
@@ -146,11 +152,11 @@ frontier_data %>%
 ###############################################################################
 # Plot a smaller version with just two assets
 
-mu <- mu %>% head(2)
-sigmas <- sigmas %>% head(2)
-corr_mat <- corr_mat[1:2, 1:2]
+mu2 <- mu %>% head(2)
+sigmas2 <- sigmas %>% head(2)
+corr_mat2 <- corr_mat[1:2, 1:2]
 
-frontier_data_two_assets <- calculate_efficient_frontier(mu, sigmas, corr_mat, 0, 20)
+frontier_data_two_assets <- calculate_efficient_frontier(mu2, sigmas2, corr_mat2, 0, 20)
 
 frontier_data_two_assets %>%
   write_csv("efficient_frontier_plot_data_two_assets.csv")
@@ -159,3 +165,23 @@ lambda = 0.1
 frontier_data %>% 
   mutate(utility = target_return - lambda/2 * std_dev^2) %>% 
   filter(utility == max(utility))
+
+###############################################################################
+# Plot a frontier where marginal lending rate is higher than risk-free rate
+
+risk_free_rate <- 4
+lending_rate <- 5
+epsilon_sigma <- 1e-4
+
+mu_ex <- c(mu, "free"=risk_free_rate, "lending"=lending_rate)
+sigmas_ex <- c(sigmas, "free"=epsilon_sigma, "lending"=epsilon_sigma)
+corr_mat_ex <- diag(length(mu_ex))
+corr_mat_ex[1:length(mu), 1:length(mu)] <- corr_mat
+
+frontier_with_lending <- calculate_efficient_frontier(mu_ex, sigmas_ex, corr_mat_ex, risk_free_rate, 20, lending_rate_idx = length(mu_ex))
+
+frontier_with_lending %>% 
+  ggplot(aes(std_dev, target_return)) + geom_line()
+
+frontier_with_lending %>% 
+  View()
