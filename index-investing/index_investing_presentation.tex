@@ -2323,95 +2323,6 @@ Library, St. Louis  Fed.
 
 
 
-\begin{frame}{Отношение Шарпа}
-\justify
-Отношение Шарпа (Sharpe ratio) --- отношение средней избыточной доходности 
-портфеля к её стандартному отклонению.
-\begin{align*}
-\overline{R_{excess}} &= \dfrac{1}{n}\sum\limits_{t=1}^{n}(R_{portfolio,t} - R_{free,t})\\
-Sharpe &= \dfrac{\overline{R_{excess}}}{\sqrt{\dfrac{1}{n-1}\sum\limits_{t=1}^{n}(R_{portfolio,t} - R_{free,t} - \overline{R_{excess}})^2}}
-\end{align*}
-
-Хозяйке на заметку: касательный (tangent) портфель имеет максимальное отношение 
-Шарпа среди всех портфелей, составленных из рискованных активов.
-\end{frame}
-
-
-
-\begin{frame}{Отношение Сортино}
-\justify
-Отношение Сортино (Sortino information ratio) --- отношение доходности сверх 
-минимально допустимой $R_{min}$ (minimum acceptable return) к волатильности 
-<<вниз>>.
-\begin{align*}
-\overline{R_{excess}} &=
-\dfrac{1}{n}\sum\limits_{t=1}^{n}(R_{portfolio,t} - R_{min,t}) \\
-Sortino &= \dfrac{
-	\overline{R_{excess}}
-}{
-	\sqrt{\dfrac{1}{n-1}\sum\limits_{t=1}^{n}\left(\min[0, R_{portfolio,t} - R_{min, t}]\right)^2}
-}
-\end{align*}
-
-\justify
-В качестве минимально допустимой доходности можно использовать как константу 
-(например, 0), так и переменную величину (например, безрисковую доходность).
-\end{frame}
-
-
-
-\begin{frame}{Геометрическое среднее - 1}
-\justify
-Арифметическое среднее доходностей --- лучшая оценка того, что случится с 
-вашими инвестициями в следующий период (месяц, год). Если вы оцениваете 
-инвестиции на несколько периодов, то используйте геометрическое среднее.
-\begin{align*}
-Geom Mean = \left(
-\prod\limits_{t=1}^{n}(1 + R_{portfolio,t} - R_{free,t})
-\right)^{\dfrac{1}{n}} - 1
-\end{align*}
-
-\justify
-Пример: за два года портфель сходил на 20\% вниз, а потом на 20\% вверх.
-\begin{itemize}
-\justifying
-\item Арифметическое среднее: $(-20\%+20\%)/2 = 0\%$.
-\item Геометрическое среднее: $\sqrt{(1-0.2)(1+0.2)} - 1 = -4\%$. 
-\end{itemize}
-\end{frame}
-
-
-
-\begin{frame}{Геометрическое среднее - 2}
-\centering
-\begin{tabular}{l|r|r|r|r|r}
-\multirow{2}{*}{Период} &
-Арифм. & 
-\multirow{2}{*}{Ст. откл.} &
-Геом. &
-Отнош. &
-Отнош. \\
-& сред. & & сред. & Шарпа & Сортино \\ 
-\hline
-1927--1959 & 11.3\% & 24.9\% & 8.3\% & 0.45 & 1.00 \\
-1960--1989 &  5.2\% & 16.9\% & 3.8\% & 0.31 & 0.58 \\
-1990--2020 &  9.4\% & 17.9\% & 7.8\% & 0.52 & 1.06 \\
-1960--2020 &  7.5\% & 17.4\% & 6.0\% & 0.43 & 0.86 \\ \hline
-1927--2020 &  8.8\% & 20.2\% & 6.8\% & 0.44 & 0.91
-\end{tabular}
-
-{\scriptsize Годовые доходности сверх безрисковой процентной ставки.
-
-Данные: Kenneth French Data Library. \par }
-
-\justify
-Хозяйке на заметку: если актив следует геометрическому броуновскому движению,
-то геометрическое среднее отличается от арифметического среднего на $
-\sigma^2/2$, где $\sigma$ --- стандартное отклонение.
-\end{frame}
-
-
-
 \begin{frame}{Прогнозирование рыночной премии за риск}
 \justify
 Можно ли предсказать, какой будет equity risk premium в следующем году, чтобы 
@@ -2564,6 +2475,22 @@ CAPE}) использует среднюю прибыль компаний за 
 
 
 
+\newcommand{\dotWithNumber}[5] {
+        \node[
+            circle,
+            fill,
+            inner sep = 2pt,
+            color = #3
+        ]
+        at (axis cs: #1, #2) {};
+        
+        \node[
+            anchor=#5
+        ]
+        at (axis cs: #1, #2)
+        {#4};
+}
+
 \begin{frame}{P/E Шиллера (CAPE) - 2}
 \centering
 \begin{tikzpicture}
@@ -2577,7 +2504,7 @@ CAPE}) использует среднюю прибыль компаний за 
     xticklabel=\year,
     grid=both,
     xmin=1880-01-01,
-    xmax=2025-01-01,
+    xmax=2030-01-01,
     ylabel={\small Cyclically adjusted P/E},
     %ylabel shift = -10pt,
     %legend entries={
@@ -2601,6 +2528,13 @@ CAPE}) использует среднюю прибыль компаний за 
             col sep = comma
         ]
         {data/shiller_cape.csv};
+        
+        \dotWithNumber{1929-09-01}{32.6}{Set1-B}{\small 32.6}{south}        
+        
+        \dotWithNumber{1999-12-01}{44.2}{Set1-B}{\small 44.2}{south}
+        
+        \dotWithNumber{2021-09-01}{38.3}{Set1-B}{\small 38.3}{south}
+        
 \end{axis}
 \end{tikzpicture}
 {\scriptsize Данные: Robert Shiller.}
@@ -2608,7 +2542,60 @@ CAPE}) использует среднюю прибыль компаний за 
 
 
 
-\begin{frame}{Реальные процентные ставки}
+\begin{frame}{Модель Гордона}
+\justify
+Пусть акция приносит дивиденды $D$. Первая выплата случится через год. Начиная 
+со второго года выплаты растут на $g$ процентов в год. Ставка дисконтирования 
+будущих платежей $r$. Чему равна цена такой акции?
+
+\begin{align*}
+P = \frac{D}{1+r} + \frac{D(1+g)}{(1+r)^2} + \frac{D(1+g)^2}{(1+r)^3} + ... = 
+\frac{D}{r - g}
+\end{align*}
+
+\justify
+Эта формула известна как модель Гордона (\en{Gordon growth model}).
+\end{frame}
+
+
+
+\begin{frame}{Процентные ставки}
+\justify
+Предположим, что дивиденды $D$ равны чистой прибыли $E$. Ставку дисконтирования 
+$r$ распишем как в CAPM через безрисковую ставку $r_f$ и премию за риск $\pi$:
+\begin{align*}
+r = r_f + \pi
+\end{align*}
+
+\justify
+Перейдём к реальной ставке $r_f^*$ и реальной скорости роста дивидендов $g^*$
+сверх инфляции $i$:
+\begin{align*}
+r_f = r_f^* + i, \quad g = g^* + i
+\end{align*}
+Тогда:
+\begin{align*}
+P = \frac{D}{r - g} = \frac{E}{r_f^* + i + \pi - (g^* + i)} 
+\quad\Rightarrow\quad \frac{P}{E} = \frac{1}{r_f^* + \pi - g^*}
+\end{align*}
+
+\justify
+Вывод: ниже реальная ставка $r_f^*$ --- выше отношение P/E при той же премии за 
+риск $\pi$ и темпе роста дивидендов $g^*$.
+\end{frame}
+
+
+
+\newcommand{\plotThickAxis}[1]{
+        \draw[very thick]
+        (axis cs:1880-01-01, #1) -- (axis cs: 2050-01-01, #1);   
+}
+
+\newcommand{\plotThickZeroAxis}{
+    \plotThickAxis{0}
+}
+
+\begin{frame}{Реальные процентные ставки - 1}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -2621,92 +2608,137 @@ CAPE}) использует среднюю прибыль компаний за 
     xticklabel=\year,
     yticklabel={\pgfmathprintnumber{\tick}\%},
     grid=both,
-    xmin=2000-01-01,
-    xmax=2021-06-01,
-    ymin=-1,
-    ymax=5,
-    ylabel={\small \begin{tabular}{c}Treasury Inflation-Indexed \\ Long-Term Average Yield\end{tabular}},
+    xmin=2003-01-01,
+    xmax=2024-12-01,
+    ymin=-1.5,
+    ymax=5.5,
+    ylabel={\small Доходность облигаций},
     ylabel shift = -10pt,
-    %legend entries={
-    %    Рынок акций,
-    %    Акции минус облигации,
-    %    Безрисковые облигации,
-    %    Инфляция (CPI-U)
-    %},
-    %legend pos=north west,
-    %legend style={font=\scriptsize},
-    %legend cell align={left}
+    legend entries={
+        10Y Treasury Notes,
+        10Y Treasury Inflation-Protected Securities
+    },
+    legend pos=north east,
+    legend style={font=\scriptsize},
+    legend cell align={left}
 ]
     
+        \addplot[
+            color = Set1-A,
+            line width = 1pt
+        ]
+        table[
+            x = DATE,
+            y = GS10,
+            col sep = comma
+        ]
+        {data/GS10.csv};
+        
         \addplot[
             color = Set1-B,
             line width = 1pt
         ]
         table[
             x = DATE,
-            y = DLTIIT,
+            y = FII10,
             col sep = comma
         ]
-        {data/DLTIIT.csv};
+        {data/FII10.csv};
         
+        \dotWithNumber{2021-11-01}{1.56}{Set1-A}{\small 1.56}{south west}
+
+        \dotWithNumber{2021-11-01}{-1.06}{Set1-B}{\small $-1.06$}{south west}
+
+		  \plotThickZeroAxis
+
 \end{axis}
 \end{tikzpicture}
-{\scriptsize Данные: St. Louis Fed (LTIIT)}.
+{\scriptsize Данные: St. Louis Fed (GS10, FII10)}.
 \end{frame}
 
 
 
-\begin{frame}{Цена к прибыли - 1}
-\justify
-Инвесторы готовы инвестировать доллары под ставку <<инфляция МИНУС 0.4\% годовых>>. Что это значит для P/E и CAPE?
+ \newcommand{\plotShillerData}[7]{    
+        \addplot[
+            color = #2,
+            line width = 1pt,
+            mark = #3,
+            mark repeat = 120,
+            mark phase = 60,
+            mark options = {scale=2},
+        ]
+        table[
+            x = month,
+            y = #1,
+            col sep = comma
+        ]
+        {data/shiller_cape.csv};   
+        
+	   \dotWithNumber{#4}{#5}{#2}{#6}{#7}
+    }
 
-\justify
-Пусть акция приносит дивиденды $D$. Первая выплата случится через год. Начиная со второго года выплаты растут на $g$ процентов в год. Ставка дисконтирования будущих платежей $r$. Чему равна цена такой компании?
-\begin{align*}
-P = \frac{D}{1+r} + \frac{D(1+g)}{(1+r)^2} + \frac{D(1+g)^2}{(1+r)^3} + ... = \frac{D}{r - g}
-\end{align*}
 
-Эта формула известна как модель Гордона (Gordon growth model).
+\begin{frame}{Реальные процентные ставки - 2}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width = \textwidth,
+    height = \textheight - 1cm,
+    date coordinates in=x,
+    date ZERO=1880-01-01,
+    xtick={1880-01-01,1900-01-01,1920-01-01,1940-01-01,1960-01-01,1980-01-01,2000-01-01,2020-01-01},
+    minor xtick={1890-01-01,1910-01-01,1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01,2030-01-01},
+    xticklabel=\year,
+    yticklabel={\pgfmathparse{100*\tick}\pgfmathprintnumber{\pgfmathresult}\%},
+    grid=both,
+    xmin=1880-01-01,
+    xmax=2040-01-01,
+    ymin=-0.04,
+    ymax=0.16,
+    ylabel={\small Доходность облигаций},
+    ylabel shift = -5pt,
+    legend entries={
+        Номинальная дох-ть,
+        Реальная дох-ть
+    },
+    legend pos=north west,
+    legend style={font=\small},
+    legend cell align={left}
+]         
+    
+    \plotShillerData{long_rate}{Set1-A}{none}{2021-09-01}{0.0129}{\small 1.29}{west}
+    \plotShillerData{real_rate_10y}{Set1-B}{none}{2021-09-01}{-0.006}{\small -0.60}{west}
+        
+    \plotThickZeroAxis
+\end{axis}
+\end{tikzpicture}
+\centering
+{\scriptsize Данные: Robert Shiller.}
 \end{frame}
 
 
 
-\begin{frame}{Цена к прибыли - 2}
+\begin{frame}{Избыточная доходность CAPE - 1}
 \justify
-Предположим, что дивиденды $D$ равны чистой прибыли $E$. Ставку дисконтирования $r$ распишем как в CAPM через безрисковую ставку $r_f$ и премию за риск $\pi$:
-\begin{align*}
-r = r_f + \pi
-\end{align*}
-Перейдём к реальной ставке $r_f^*$ и реальной скорости роста дивидендов $g^*$ сверх инфляции $i$:
-\begin{align*}
-r_f = r_f^* + i, \quad g = g^* + i
-\end{align*}
-Тогда:
-\begin{align*}
-P = \frac{D}{r - g} = \frac{E}{r_f^* + i + \pi - (g^* + i)} \quad\Rightarrow\quad \frac{P}{E} = \frac{1}{r_f^* + \pi - g^*}
-\end{align*}
-Вывод: ниже реальная ставка $r_f^*$ --- выше отношение P/E при той же премии за риск $\pi$ и темпе роста дивидендов $g^*$.
-\end{frame}
-
-
-
-\begin{frame}{Цена к прибыли - 3}
-\justify
-Предположим, что $g^* = 0$, то есть дивиденды и прибыль компаний растут на инфляцию.
+Предположим, что $g^* = 0$, то есть дивиденды и прибыль компаний растут на 
+инфляцию.
 \begin{align*}
 P = \frac{E}{r_f^* + \pi} \quad\Rightarrow\quad \pi = \frac{E}{P} - r_f^*
 \end{align*}
 
 \justify
-Отношение E/P называется earnings yield. Разность earnings yield и безрисковой реальной ставки, которая называется excess earnings yield, может подсказать (а может и не подсказать) будущую премию за риск $\pi$.
+Отношение $E/P$ называется CAPE yield. Разность earnings yield и 
+безрисковой реальной ставки, которая называется excess CAPE yield (ECY), может 
+подсказать (а может и не подсказать) будущую премию за риск $\pi$.
 
 \justify
-Верно ли, что из высокого (относительно истории) отношения $P/E$ следует низкий excess earnings yield и низкая премия за риск? Не обязательно.
+Верно ли, что из высокого (относительно истории) отношения $P/E$ следует низкий 
+excess CAPE yield и низкая премия за риск? Не обязательно.
 \end{frame}
 
 
 
-\begin{frame}{CAPE Excess Yield}
+\begin{frame}{Избыточная доходность CAPE - 2}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -2715,14 +2747,14 @@ P = \frac{E}{r_f^* + \pi} \quad\Rightarrow\quad \pi = \frac{E}{P} - r_f^*
     date coordinates in=x,
     date ZERO=1880-01-01,
     xtick={1880-01-01,1900-01-01,1920-01-01,1940-01-01,1960-01-01,1980-01-01,2000-01-01,2020-01-01},
-    minor xtick={1890-01-01,1910-01-01,1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+    minor xtick={1890-01-01,1910-01-01,1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01,2030-01-01},
     xticklabel=\year,
     grid=both,
     xmin=1880-01-01,
-    xmax=2025-01-01,
+    xmax=2035-01-01,
     ymin = -0.05,
     ymax = 0.25,
-    ylabel={\small CAPE Excess Yield},
+    ylabel={\small Excess CAPE Yield (ECY)},
     yticklabel={\pgfmathparse{100*\tick}\pgfmathprintnumber{\pgfmathresult}\%}
     %ylabel shift = -10pt,
     %legend entries={
@@ -2745,62 +2777,240 @@ P = \frac{E}{r_f^* + \pi} \quad\Rightarrow\quad \pi = \frac{E}{P} - r_f^*
             y = cape_excess_yield,
             col sep = comma
         ]
-        {data/shiller_cape_excess_yield.csv};
+        {data/shiller_cape.csv};
+        
+        \dotWithNumber{2021-11-01}{0.0322}{Set1-B}{\small 3.2}{west}
+        
+         \dotWithNumber{1930-04-01}{-0.0119}{Set1-B}{\small $-1.2$}{west}
+    		\dotWithNumber{2000-01-01}{-0.0152}{Set1-B}{\small $-1.5$}{west}
+     
+        
+	    \plotThickZeroAxis
 \end{axis}
 \end{tikzpicture}
 {\scriptsize Данные: Robert Shiller.}
 \end{frame}
 
 
-\begin{frame}{CAPE Excess Yield}
+
+\begin{frame}{Избыточная доходность CAPE - 3}
 \centering
 \begin{tabular}{l|r|r|r|r|r}
-Период     &     5\% &   25\% &   50\% &    75\% &    95\% \\ \hline 
-1881--1915 & -0.92\% & 0.25\% & 1.46\% &  4.74\% &  6.89\% \\ 
-1916--1950 &  0.16\% & 2.88\% & 8.53\% & 12.55\% & 19.19\% \\
-1951--1985 &  0.97\% & 2.45\% & 5.38\% &  8.12\% & 10.37\% \\
-1986--2020 &  0.21\% & 1.54\% & 2.63\% &  3.79\% &  5.63\% \\ \hline
-1881--2020 & -0.30\% & 1.55\% & 3.50\% &  6.69\% & 13.26\%
+Период     &    5\% &   5\% &  50\% &   75\% &   95\% \\ \hline 
+1881--1915 & -0.9\% & 0.2\% & 1.5\% &  4.7\% &  6.9\% \\ 
+1916--1950 &  0.2\% & 2.9\% & 8.5\% & 12.6\% & 19.2\% \\
+1951--1985 &  1.0\% & 2.5\% & 5.4\% &  8.1\% & 10.4\% \\
+1986--2020 &  0.2\% & 1.5\% & \alert{2.6\%} &  3.8\% &  5.6\% \\ \hline
+1881--2020 & -0.3\% & 1.5\% & \alert{3.5\%} &  6.7\% & 13.3\%
 \end{tabular}
 
 \centering
 {\scriptsize Распределение CAPE Excess Yield. Данные: Robert Shiller.}
 
 \justify
-Shiller (2020): текущее значение 3.43\% (февраль 2021 г.) чуть ниже исторической медианы. Акции стоят дорого в терминах P/E, но не так дорого по сравнению с облигациями.
+Shiller (2020): текущее значение 3.2\% (сентябрь 2021 г.) чуть ниже 
+исторической медианы. Акции стоят дорого в терминах P/E, но не так дорого по 
+сравнению с облигациями.
 
 \justify
-Значит, можно не опасаться обвала рынка в ближайшие лет 5? Нет, не значит. Акции --- по-прежнему рискованный инструмент. Возьмите столько риска, сколько комфортно лично вам.
+Значит, можно не опасаться обвала рынка в ближайшие лет 5? Нет, не значит. 
+Акции --- по-прежнему рискованный инструмент. Возьмите столько риска, сколько 
+комфортно лично вам.
 \end{frame}
 
 
 
-\begin{frame}{Международная диверсификация}
-\justify
-Что, если рынок акций США --- это случайное исключение из правил? А вдруг он повторит судьбу рынка Японии, который стагнирует уже 30 лет?
-
+\begin{frame}{CAPE и прогнозирование премии за риск}
 \centering
-\begin{tabular}{l|r|r|r|r}
-\multirow{2}{*}{Регион} &
-Геом. & 
-Арифм. &
-\multirow{2}{*}{Ст. откл.} &
-Отнош. \\
-& сред. & сред. & & Шарпа \\ \hline
-Европа    & 4.3\% & 6.1\% & 19.7\% & 0.31 \\
-Япония    & 4.2\% & 8.7\% & 29.2\% & 0.30 \\
-Швейцария & 4.6\% & 6.4\% & 19.4\% & 0.33 \\
-UK        & 5.5\% & 7.3\% & 19.6\% & 0.37 \\
-США       & 6.5\% & 8.5\% & 19.9\% & 0.43 \\ \hline
-Мир       & 5.2\% & 6.6\% & 17.4\% & 0.38
+\begin{tabular}{r|r|r|r|r}
+\multicolumn{2}{c|}{Изб.\,дох-ть\,CAPE} &
+\multicolumn{3}{c}{Десятилетняя\,дох-ть\,акций} \\
+\hline
+Мин. & Макс. & Средняя & Худшая & Лучшая \\
+\hline
+-1.5\% &  0.7\% &  0.2\%  & -5.9\% &  8.9\% \\
+ 0.7\% &  1.5\% &  2.3\%  & -4.4\% & 11.9\% \\
+ 1.5\% &  1.9\% &  3.8\%  & -4.0\% & 15.2\% \\
+ 2.0\% &  2.6\% &  4.2\%  & -3.2\% & 16.1\% \\ 
+\hline
+ \alert{2.6\%} &  \alert{3.3\%} &  \alert{5.5\%}  & \alert{-4.0\%} & \alert{15.8\%} \\
+\hline
+ 3.3\% &  4.8\% &  8.0\%  & -1.2\% & 15.4\% \\
+ 4.8\% &  6.4\% &  9.1\%  &  1.9\% & 14.3\% \\
+ 6.4\% &  8.2\% &  9.6\%  &  3.8\% & 14.3\% \\
+ 8.2\% & 10.0\% &  10.7\% &  6.0\% & 14.3\% \\ 
+10.0\% & 14.4\% &  14.4\% &  7.8\% & 18.8\%  
 \end{tabular}
 
 \centering
-{\scriptsize Годовые доходности рынков акций сверх инфляции (реальная доходность),
-1900--2019. Данные: Credit Suisse Global Investment Returns Yearbook 2020.}
+{\scriptsize Excess CAPE Yield и будущая премия за риск, 1927--2010. Данные: Robert Shiller.}
 
 \justify
-Вывод: диверсифицируйтесь не только по компаниям и отраслям, но и по странам.
+Проблема: в 1950 году мы не могли знать, что значение 3.2\% попадёт в 5-й 
+дециль с 1927 по 2010 год.
+\end{frame}
+
+
+
+\begin{frame}{Бэктестинг - 1}
+\justify
+Бэктестинг (\en{backtesting}) --- проверка стратегии на исторических данных. 
+Как стратегия торговала бы в момент времени $T$, если бы знала все 
+данные, известные к моменту времени $T$?
+
+\justify
+Стратегия CAPE:
+\begin{itemize}
+\item Каждый месяц вычисляем избыточную доходность CAPE.
+\item Находим её квантиль $Q$ в историческом распределении за последние 40 лет
+(480 наблюдений).
+\item Доля акций на следующий месяц $\max(\min((Q - 5\%) / (95\%-5\%), 1), 0)$.
+\end{itemize}
+
+\justify
+Стратегия 50/50: раз в месяц вкладываем 50\% в акции и 50\% в безрисковый 
+актив.
+\end{frame}
+
+
+
+\newcommand{\plotThickOneAxis}{
+   \plotThickAxis{1.0}   
+}
+
+\renewcommand{\addGrowthPlot}[4]{
+        \addplot[
+            color = #2,
+            line width = 1pt, 
+            mark = #3,
+            mark repeat = 120,
+            mark phase = 276,
+            mark options = {scale=2},
+            style = #4
+        ]
+        table[
+            x = date,
+            y = #1,
+            col sep = comma
+        ]
+        {data/cape_strategy_growth_1927.csv};
+    }
+
+\begin{frame}{Бэктестинг - 2}
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width = \textwidth,
+    height = \textheight - 1cm,
+    date coordinates in=x,
+    date ZERO=1926-06-30,
+    xtick={1930-01-01,1940-01-01,1950-01-01,1960-01-01,1970-01-01,1980-01-01,1990-01-01,2000-01-01,2010-01-01,2020-01-01},
+    minor xtick={1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+    xticklabel=\year,
+    grid=both,
+    xmin=1926-12-31,
+    xmax=2025-01-01,
+    ymode=log,
+    log ticks with fixed point,
+    ylabel={Рост \$1 сверх безрисковой ставки},
+    ylabel shift = -5pt,
+    legend entries={
+            CAPE,
+            50/50,
+            Преимущество CAPE
+        },
+    legend pos=north west,
+    legend style={font=\scriptsize},
+    legend cell align={left}
+    ]
+    \addGrowthPlot{strategy_growth}{Set1-A}{square}{solid}
+    \addGrowthPlot{benchmark_growth}{Set1-B}{o}{solid}
+    \addGrowthPlot{overperformance}{Set1-C}{none}{solid}
+    \plotThickAxis{1.0}
+\end{axis}
+\end{tikzpicture}
+{\scriptsize Данные: Kenneth French Data Library, Robert Shiller.}
+\end{frame}
+
+
+
+\renewcommand{\addGrowthPlot}[4]{
+        \addplot[
+            color = #2,
+            line width = 1pt, 
+            mark = #3,
+            mark repeat = 60,
+            mark phase = 60,
+            mark options = {scale=2},
+            style = #4
+        ]
+        table[
+            x = date,
+            y = #1,
+            col sep = comma
+        ]
+        {data/cape_strategy_growth_1990.csv};
+    }
+    
+\begin{frame}{Бэктестинг - 3}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=\textwidth,
+    height = \textheight - 1cm,
+    date coordinates in=x,
+    date ZERO=1926-06-30,
+    xtick={1990-01-01,1995-01-01,2000-01-01,2005-01-01,2010-01-01,2015-01-01,2020-01-01},
+    xticklabel=\year,
+    grid=both,
+    xmin=1990-01-01,
+    xmax=2022-01-01,
+        ylabel={Рост \$1 сверх безрисковой ставки},
+        ylabel shift = -5pt,
+        legend entries={
+            Стратегия CAPE,
+            Стратегия 50/50,
+            Преимущество CAPE
+        },
+        legend pos=north west,
+        legend style={font=\scriptsize},
+        legend cell align={left}
+    ]
+    \addGrowthPlot{strategy_growth}{Set1-A}{square}{solid}
+    \addGrowthPlot{benchmark_growth}{Set1-B}{o}{solid}
+    \addGrowthPlot{overperformance}{Set1-C}{none}{solid}
+    \plotThickAxis{1.0}
+
+\end{axis}
+\end{tikzpicture}
+{\scriptsize Данные: Kenneth French Data Library, Robert Shiller.}
+\end{frame}
+
+
+
+\begin{frame}{Бэктестинг - 4}
+\centering
+{\small
+\begin{tabular}{l|r|r|r|r|r|r}
+& \multicolumn{2}{c|}{1927--1959} & \multicolumn{2}{c|}{1960--1989} & \multicolumn{2}{c}{1990--2020} \\ 
+\cline{2-7}
+                   & CAPE    & 50/50 & CAPE    & 50/50 & CAPE    & 50/50 \\   \hline
+Ср. дох-ть &  7.8\% &   5.4\%  &   3.4\% &   2.4\%   &   4.2\% &   4.3\%   \\
+Ст. откл.  &  12.3\% &   11.7\%  &  8.0\% &  7.8\%   &  7.4\% &  7.6\%   \\
+От. Шарпа  &   0.64  &   0.46    &   0.43  &   0.31    &   0.56  &   0.56    \\
+Просадка   & -39.5\% & -58.4\%   & -33.0\% & -32.0\%   & -37.0\% & -30.3\% \\
+Доля акций &  46.5\% & 50.0\%   &  40.0\% & 50.0\%   &  34.3\% & 50.0\%  \\ 
+\cline{2-7}
+Мед. ECY   & \multicolumn{2}{c|}{6.0\%} & \multicolumn{2}{c|}{3.9\%} & \multicolumn{2}{c}{2.3\%} 
+\end{tabular}
+}
+
+\justify
+Даже если поверить, что в первой половине XX стратегия CAPE обгоняла стратегию
+50/50, в наши дни преимущество пропало. Даже если есть статистическая связь 
+между избыточной доходностью CAPE и премией за риск, её не так-то просто 
+превратить в прибыльную торговую стратегию.
 \end{frame}
 
 
@@ -2893,15 +3103,145 @@ Vanguard (2012): выгоднее вложить все деньги сразу.
 
 
 
+\begin{frame}{Отношение Шарпа}
+\justify
+Отношение Шарпа (Sharpe ratio) --- отношение средней избыточной доходности 
+портфеля к её стандартному отклонению.
+\begin{align*}
+\overline{R_{excess}}
+&= \dfrac{1}{n}\sum\limits_{t=1}^{n}(R_{portfolio,t} - R_{free,t})\\
+Sharpe &= \dfrac{\overline{R_{excess}}}
+{\sqrt{\dfrac{1}{n-1}\sum\limits_{t=1}^{n}(R_{portfolio,t} - R_{free,t} - 
+\overline{R_{excess}})^2}}
+\end{align*}
+
+\justify
+Хозяйке на заметку: касательный (\en{tangent}) портфель имеет максимальное 
+отношение Шарпа среди всех портфелей, составленных из рискованных активов.
+\end{frame}
+
+
+
+\begin{frame}{Отношение Сортино}
+\justify
+Отношение Сортино (Sortino information ratio) --- отношение доходности сверх 
+минимально допустимой $R_{min}$ (minimum acceptable return) к волатильности 
+<<вниз>>.
+\begin{align*}
+\overline{R_{excess}} &=
+\dfrac{1}{n}\sum\limits_{t=1}^{n}(R_{portfolio,t} - R_{min,t}) \\
+Sortino &= \dfrac{
+	\overline{R_{excess}}
+}{
+	\sqrt{\dfrac{1}{n-1}\sum\limits_{t=1}^{n}
+		\left(\min[0, R_{portfolio,t} - R_{min, t}]\right)^2}
+}
+\end{align*}
+
+\justify
+В качестве минимально допустимой доходности можно использовать как константу 
+(например, 0), так и переменную величину (например, безрисковую доходность).
+\end{frame}
+
+
+
+\begin{frame}{Геометрическое среднее - 1}
+\justify
+Арифметическое среднее доходностей --- лучшая оценка того, что случится с 
+вашими инвестициями в следующий период (месяц, год). Если вы оцениваете 
+инвестиции на несколько периодов, то используйте геометрическое среднее.
+\begin{align*}
+Geom Mean = \left(
+\prod\limits_{t=1}^{n}(1 + R_{portfolio,t} - R_{free,t})
+\right)^{\dfrac{1}{n}} - 1
+\end{align*}
+
+\justify
+Пример: за два года портфель сходил на 20\% вниз, а потом на 20\% вверх.
+\begin{itemize}
+\justifying
+\item Арифметическое среднее: $(-20\%+20\%)/2 = 0\%$.
+\item Геометрическое среднее: $\sqrt{(1-0.2)(1+0.2)} - 1 = -4\%$. 
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Геометрическое среднее - 2}
+\centering
+\begin{tabular}{l|r|r|r|r|r}
+\multirow{2}{*}{Период} &
+Арифм. & 
+\multirow{2}{*}{Ст. откл.} &
+Геом. &
+Отнош. &
+Отнош. \\
+& сред. & & сред. & Шарпа & Сортино \\ 
+\hline
+1927--1959 & 11.3\% & 24.9\% & 8.3\% & 0.45 & 1.00 \\
+1960--1989 &  5.2\% & 16.9\% & 3.8\% & 0.31 & 0.58 \\
+1990--2020 &  9.4\% & 17.9\% & 7.8\% & 0.52 & 1.06 \\
+1960--2020 &  7.5\% & 17.4\% & 6.0\% & 0.43 & 0.86 \\ \hline
+1927--2020 &  8.8\% & 20.2\% & 6.8\% & 0.44 & 0.91
+\end{tabular}
+
+{\scriptsize Годовые доходности сверх безрисковой процентной ставки.
+
+Данные: Kenneth French Data Library. \par }
+
+\justify
+Хозяйке на заметку: если актив следует геометрическому броуновскому движению,
+то геометрическое среднее отличается от арифметического среднего на $
+\sigma^2/2$, где $\sigma$ --- стандартное отклонение.
+\end{frame}
+
+
+\begin{frame}{Международная диверсификация}
+\justify
+Что, если рынок акций США --- это случайное исключение из правил? А вдруг он 
+повторит судьбу рынка Японии, который стагнирует уже 30 лет?
+
+\centering
+\begin{tabular}{l|r|r|r|r}
+\multirow{2}{*}{Регион} &
+Геом. & 
+Арифм. &
+\multirow{2}{*}{Ст. откл.} &
+Отнош. \\
+& сред. & сред. & & Шарпа \\ \hline
+Европа    & 4.3\% & 6.1\% & 19.7\% & 0.31 \\
+Япония    & 4.2\% & 8.7\% & 29.2\% & 0.30 \\
+Швейцария & 4.6\% & 6.4\% & 19.4\% & 0.33 \\
+UK        & 5.5\% & 7.3\% & 19.6\% & 0.37 \\
+США       & 6.5\% & 8.5\% & 19.9\% & 0.43 \\ \hline
+Мир       & 5.2\% & 6.6\% & 17.4\% & 0.38
+\end{tabular}
+
+\centering
+{\scriptsize Годовые доходности рынков акций сверх инфляции (реальная доходность),
+1900--2019. Данные: Credit Suisse Global Investment Returns Yearbook 2020.}
+
+\justify
+Вывод: диверсифицируйтесь не только по компаниям и отраслям, но и по странам.
+\end{frame}
+
+
+
+
 \begin{frame}{Оценка успеха управляющих - 1}
 \justify
-Лектор составил портфель акций на Московской бирже в ноябре 2015 г. За 5 лет он заработал 114\%. Три паевых фонда, красный, жёлтый и зелёный, заработали 136\%, 114\% и 107\%. Молодцы ли лектор и управляющие фондами?
+Лектор составил портфель акций на Московской бирже в ноябре 2015 г. За 5 лет он 
+заработал 114\%. Три паевых фонда, красный, жёлтый и зелёный, заработали 136\%, 
+114\% и 107\%. Молодцы ли лектор и управляющие фондами?
 
-\vspace{\baselineskip}
-\only<2->{Безрисковая процентная ставка (ключевая ставка ЦБ) за тот же период дала бы $51\%$. Индекс ММВБ полной доходности (включая дивиденды минус налоги) вырос на $150\%$.
+\justify
+Безрисковая процентная ставка (ключевая ставка ЦБ) за тот же период дала бы 
+$51\%$. Индекс ММВБ полной доходности (включая дивиденды минус налоги) вырос на 
+$150\%$.
 
-\vspace{\baselineskip}
-Какой риск взяли на себя лектор и управляющие, и получили ли они компенсацию за этот риск?}
+\justify
+Какой риск взяли на себя лектор и управляющие, и получили ли они компенсацию за 
+этот риск?
 \end{frame}
 
 
