@@ -6,56 +6,97 @@ library(lubridate)
 library(curl)
 library(RcppRoll)
 
+
+string_to_date <- function(x) {
+  
+  yyyymm_or_yyyy <- as.numeric(x)
+  res <- rep(make_date(), length(x))
+  
+  year_indices <- yyyymm_or_yyyy <= 10000
+  res[year_indices] <- make_date(
+    yyyymm_or_yyyy[year_indices],
+    1, 
+    1)
+  
+  month_indices <- !year_indices
+  res[month_indices] <- make_date(
+    yyyymm_or_yyyy[month_indices] %/% 100,
+    yyyymm_or_yyyy[month_indices] %% 100, 
+    1
+  )
+  
+  res
+}
+
+
+download_generic_fama_french_data <- function(url, skip_rows, category=NA) {
+  
+  file_name <- basename(url)
+  curl_download(url, file_name)
+  
+  raw_data <- read_csv(file_name, skip=skip_rows)
+  
+  category_and_tail <- if(is.na(category)) {
+    raw_data
+  } else {
+    category_index <- match(category,  raw_data$`...1`)
+    raw_data %>% tail(-category_index-1)
+  }
+  
+  na_index <- match(TRUE, is.na(as.numeric(category_and_tail$`...1`)))
+  category <- if(!is.na(na_index)) {
+    category_and_tail %>% head(na_index - 1)
+  } else {
+    category_and_tail
+  }
+  
+  category <- category %>% 
+    mutate(`...1` = string_to_date(`...1`))
+  
+  category <- if (all(month(category$`...1`) == 1)) {
+    category %>% 
+      rename(year = `...1`)
+  } else {
+    category %>% 
+      rename(month = `...1`)
+  }
+  
+  file.remove(file_name)
+  
+  category
+}
+
+
 download_fama_french_factors_data <- function() {
   
-  curl_download(
+  data <- download_generic_fama_french_data(
     "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip",
-    "F-F_Research_Data_Factors_CSV.zip"
+    skip_rows = 3
   )
-
-  data <- read_csv("F-F_Research_Data_Factors_CSV.zip", skip=3, skip_empty_rows=TRUE) %>% 
-    mutate(
-      yyyymmdd = as.numeric(`...1`)
-    ) %>% 
-    filter(
-      yyyymmdd >= 190000,
-    ) %>% 
+  
+  data %>% 
     transmute(
-      month = make_date(yyyymmdd %/% 100, yyyymmdd %% 100, 1),
+      month = month,
       mkt_rf = `Mkt-RF` / 100,
       smb = SMB / 100,
       hml = HML / 100,
       rf = RF / 100
     )
-  
-  file.remove("F-F_Research_Data_Factors_CSV.zip")
-  
-  data
 }
 
 
 download_momentum_factor_data <- function() {
   
-  curl_download(
+  data <- download_generic_fama_french_data(
     "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip",
-    "F-F_Momentum_Factor_CSV.zip"
+    skip_rows = 13
   )
   
-  data <- read_csv("F-F_Momentum_Factor_CSV.zip", skip=13, skip_empty_rows=TRUE) %>% 
-    mutate(
-      yyyymmdd = as.numeric(`...1`)
-    ) %>% 
-    filter(
-      yyyymmdd >= 190000,
-    ) %>% 
+  data %>% 
     transmute(
-      month = make_date(yyyymmdd %/% 100, yyyymmdd %% 100, 1),
+      month = month,
       mom = Mom / 100
     )
-  
-  file.remove("F-F_Momentum_Factor_CSV.zip")
-  
-  data
 }
 
 
@@ -213,6 +254,34 @@ cumulative_growth_data <- fama_french_four_factors_data %>%
 cumulative_growth_data %>% 
   write_csv("fama_french_cumulative_growth_data.csv", na="NaN")
 
+cumulative_growth_data_1990 <- fama_french_four_factors_data %>% 
+  filter(year(month) >= 1990) %>% 
+  bind_rows(
+    tibble(
+      "month" = as.Date("1989-12-01"),
+      mkt_rf = 0,
+      smb = 0,
+      hml = 0,
+      rf = 0,
+      mom = 0
+    )
+  ) %>% 
+  arrange(month) %>% 
+  left_join(inflation_data, by="month") %>% 
+  transmute(
+    date = make_date(year(month), month(month), days_in_month(month)),
+    mkt = cumprod(1 + mkt_rf + rf),
+    mkt_rf = cumprod(1 + mkt_rf),
+    smb = cumprod(1 + smb),
+    hml = cumprod(1 + hml),
+    mom = cumprod(1 + mom),
+    rf = cumprod(1 + rf),
+    cpi = cpi / first(cpi)
+  )
+
+cumulative_growth_data_1990 %>% 
+  write_csv("fama_french_cumulative_growth_data_1990.csv", na="NaN")
+
 set.seed(1)
 sample_annualized_returns <- function(x, periods_per_year=12, years=1, n=50) {
   
@@ -291,3 +360,106 @@ investment_outcome_by_period %>%
   pivot_wider(names_from="growth_pct", values_from="growth") %>% 
   write_csv("us_mkt_regular_investment.csv")
 
+
+
+###############################################################################
+# Download size and size/beta portfolios
+
+size_portfolios <- download_generic_fama_french_data(
+  "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Portfolios_Formed_on_ME_CSV.zip",
+  skip_rows=12,
+  "Value Weight Returns -- Annual from January to December"
+)
+
+annual_rf <- fama_french_four_factors_data %>% 
+  group_by(
+    year = make_date(year(month), 1, 1)
+  ) %>% 
+  summarize(
+    rf = prod(1 + rf) - 1
+  )
+
+size_portfolios %>% 
+  pivot_longer(-year, names_to = "bucket", values_to = "bucket_return") %>% 
+  mutate(bucket_return = bucket_return / 100) %>% 
+  filter(bucket %in% c("Lo 20", "Qnt 2", "Qnt 3", "Qnt 4", "Hi 20")) %>% 
+  inner_join(annual_rf, by="year") %>% 
+  group_by(bucket) %>% 
+  summarise(
+    mean_excess_return = mean(bucket_return - rf)
+  )
+
+size_and_beta_portfolios <- download_generic_fama_french_data(
+  "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/25_Portfolios_ME_BETA_5x5_CSV.zip",
+  skip_rows = 16,
+  "Average Value Weighted Returns -- Annual"
+)
+
+size_and_beta_portfolios %>% 
+  pivot_longer(-year, names_to = "bucket", values_to = "bucket_return") %>% 
+  mutate(bucket_return = bucket_return / 100) %>% 
+  inner_join(annual_rf, by="year") %>% 
+  group_by(bucket) %>% 
+  summarise(
+    mean_excess_return = mean(bucket_return - rf)
+  ) 
+
+value_portfolios <- download_generic_fama_french_data(
+  "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Portfolios_Formed_on_BE-ME_CSV.zip",
+  skip_rows = 23,
+  "Value Weight Returns -- Annual from January to December"
+)
+
+value_portfolios %>% 
+  pivot_longer(-year, names_to = "bucket", values_to = "bucket_return") %>% 
+  filter(bucket %in% c("Lo 20", "Qnt 2", "Qnt 3", "Qnt 4", "Hi 20")) %>% 
+  mutate(bucket_return = bucket_return / 100) %>% 
+  inner_join(annual_rf, by="year") %>% 
+  group_by(bucket) %>% 
+  summarise(
+    mean_excess_return = mean(bucket_return - rf)
+  )
+
+###############################################################################
+# Download international F-F factors
+
+intl_ff_data <- download_generic_fama_french_data(
+  "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_3_Factors_CSV.zip",
+  skip_rows = 6
+) %>% 
+  transmute(
+    month = month,
+    mkt_rf = as.numeric(`Mkt-RF`) / 100,
+    smb = as.numeric(SMB) / 100,
+    hml = as.numeric(HML) / 100,
+    rf = as.numeric(RF) / 100
+  )
+
+intl_mom_data <- download_generic_fama_french_data(
+  "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_Mom_Factor_CSV.zip",
+  skip_rows = 6
+) %>% 
+  transmute(
+    month = month,
+    mom = as.numeric(WML) / 100
+  )
+
+intl_growth_data <- intl_ff_data %>% 
+  inner_join(intl_mom_data, by="month") %>% 
+  transmute(
+    date = make_date(year(month), month(month), days_in_month(month)),
+    mkt_rf = cumprod(1 + mkt_rf),
+    smb = cumprod(1 + smb),
+    hml = cumprod(1 + hml),
+    mom = cumprod(1 + mom)
+  ) %>% 
+  filter(date >= make_date(1990, 12, 31)) %>% 
+  mutate(
+    mkt_rf = mkt_rf / first(mkt_rf),
+    smb = smb / first(smb),
+    hml = hml / first(hml),
+    mom = mom / first(mom)
+  )
+
+intl_growth_data %>% 
+  write_csv("fama_french_international_cumulative_growth_data.csv")

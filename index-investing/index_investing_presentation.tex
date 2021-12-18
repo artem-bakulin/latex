@@ -134,6 +134,13 @@
 	
 	\newcommand{\insertdisclaimerframe}{
 	}
+	
+	% remove navigation bar
+	\setbeamertemplate{navigation symbols}{}
+
+	% add page counter
+	\setbeamertemplate{page number in head/foot}[totalframenumber] 
+
 \fi
 
 
@@ -3157,11 +3164,11 @@ Geom Mean = \left(
 \end{align*}
 
 \justify
-Пример: за два года портфель сходил на 20\% вниз, а потом на 20\% вверх.
+Пример: за два года портфель сходил на 20\% вверх, а потом на 20\% вниз.
 \begin{itemize}
 \justifying
-\item Арифметическое среднее: $(-20\%+20\%)/2 = 0\%$.
-\item Геометрическое среднее: $\sqrt{(1-0.2)(1+0.2)} - 1 = -4\%$. 
+\item Арифметическое среднее: $(+20\%-20\%)/2 = 0\%$.
+\item Геометрическое среднее: $\sqrt{(1+0.2)(1-0.2)} - 1 \approx -2\%$. 
 \end{itemize}
 \end{frame}
 
@@ -3355,42 +3362,200 @@ R_{fund,t} - R_{free,t} = \alpha + \beta(R_{mkt,t} - R_{free,t}) + \epsilon_t, \
 Индекс  & 0.00\% \scriptsize{(0.00\%)}  & 1.00 \scriptsize{(0.00)}   &  1.00 & 0.73 & 1.29
 \end{tabular}
 \justify
-{\scriptsize(62 месячных доходностей 11.2015--12.2020. Значения $\hat{\alpha}$ и $\hat{\beta}$ для месячных доходностей. Отношения Шарпа и Сортино сконвертированы в годовое выражение умножением на $\sqrt{12}$.)}
+{\scriptsize(62 месячных доходностей 11.2015--12.2020. Значения $\hat{\alpha}$ 
+и $\hat{\beta}$ для месячных доходностей. Отношения Шарпа и Сортино 
+сконвертированы в годовое выражение умножением на $\sqrt{12}$.)}
 
 \justify
-Если купить фонд лектора с <<плечом>> $1/0.61 = 1.64$, то можно получить <<бету>> 1.0, как в индексе, но получать дополнительную доходность $0.07\% \cdot 1.64 \cdot 12 = 1.37\%$ в год при том же систематическом риске. Слишком хорошо, чтобы быть правдой.
+Если купить фонд лектора с <<плечом>> $1/0.61 = 1.64$, то можно получить 
+<<бету>> 1.0, как в индексе, но получать дополнительную доходность $0.07\% 
+\cdot 1.64 \cdot 12 = 1.37\%$ в год при том же систематическом риске. Слишком 
+хорошо, чтобы быть правдой.
 \end{frame}
 
 
 
 \begin{frame}{Дополнительные факторы риска}
 \justify
-Согласно CAPM, единственный риск, за который можно заработать премию --- это систематический рыночный риск. Так ли это на самом деле? Вдруг лектор с положительной <<альфой>> (забудем на минуту, что она не статистически значимая) на самом деле заработал на другом риске?
+Согласно CAPM, единственный риск, за который можно заработать премию --- это 
+систематический рыночный риск.
 
-\vspace{\baselineskip}
-Несколько наблюдений об американском рынке акций:
-\begin{itemize}
-\justifying
-\item Эффект размера (size effect). Акции небольших компаний растут лучше, чем акции крупных.
-\item Эффект стоимости (value effect). Акции компаний с высоким отношением бухгалтерского капитала (book value) к рыночной капитализации (market cap) растут лучше, чем акции компаний с низким отношением.
-\item Инерция (momentum). Акции, которые выросли в прошлом году, растут лучше, чем акции, упавшие в прошлом году.
-\end{itemize}
-\end{frame}
-
-
-
-\begin{frame}{Факторные портфели}
 \justify
-Составим синтетические портфели, которые будут зарабатывать деньги за счёт эффектов размера, стоимости и инерции.
+Так ли это на самом деле? Вдруг лектор с положительной <<альфой>> (забудем на 
+минуту, что она не статистически значимая) на самом деле заработал на другом 
+риске?
 
+\end{frame}
+
+
+
+\begin{frame}{<<Аномалии>> на рынке акций}
+\justify
+<<Аномалии>> (\en{anomalies}) --- статистические закономерности, которые 
+наблюдаются на рынке акций, но которые нельзя объяснить моделью CAPM.
+
+\justify
+Эффект размера (\en{size effect}). Акции небольших компаний в среднем дают 
+более высокую доходность, чем акции крупных компаний.
+
+\justify
+Эффект стоимости (\en{value effect}). Скучные акции <<стоимости>> (\en{value}) 
+в среднем дают более высокую доходность, чем гламурные акции роста 
+(\en{growth}).
+
+\justify
+Инерция (\en{momentum}). Акции, которые выросли в прошлом году, растут лучше, 
+чем акции, упавшие в прошлом году.
+\end{frame}
+
+
+
+\begin{frame}{Эффект размера - 1}
+\justify
+Разобьём все акции на пять групп по возрастанию рыночной капитализации. 
+Посмотрим на среднюю избыточную доходность сверх безрисковой процентной ставки.
+
+\justify
+\centering
+\begin{tabular}{r|r|r|r|r}
+Мал. 20\% &      2 &      3 &      4 & Бол. 20\% \\ \hline
+   14.0\% & 12.5\% & 11.7\% & 10.7\% &     8.3\%
+\end{tabular}
+
+\centering
+{\scriptsize Средняя годовая доходность акций сверх безрисковой ставки в
+зависимости от рыночной капитализации, 1927--2020 гг. Данные Kenneth French
+Data Lubrary.}
+\end{frame}
+
+
+
+\begin{frame}{Эффект размера - 2}
+\justify
+Акции с более высокой <<бетой>> должны давать более высокую доходность. Что, 
+если у маленьких акций просто более высокая <<бета>>? Разобьём все акции на 25 
+групп: 5 по возрастанию размера и 5 по возрастанию <<беты>>.
+
+\justify
+\centering
+\begin{tabular}{l|r|r|r|r|r}
+              &   Мал. &      2 &      3 &     4  & Бол. \\ \hline
+Низк. $\beta$ & 10.4\% &  9.3\% &  8.9\% &  8.9\% & 6.8\% \\
+2             & 12.0\% & 11.3\% & 11.4\% & 10.6\% & 7.4\% \\
+3             & 12.6\% & 12.4\% & 10.8\% &  9.9\% & 7.4\% \\
+4             & 13.8\% & 11.7\% & 10.6\% &  8.3\% & 7.8\% \\
+Выс. $\beta$  & 11.9\% &  9.2\% & 10.0\% & 10.7\% & 7.3\%
+\end{tabular}
+
+\centering
+{\scriptsize Средняя годовая доходность акций сверх безрисковой ставки в
+зависимости от капитализации и <<беты>>, 1964--2020 гг. Данные Kenneth French 
+Data Lubrary.}
+
+\justify
+Загадка: что случилось с акциями с высокой <<бетой>>?
+\end{frame}
+
+
+
+\begin{frame}{Эффект стоимости - 1}
+\justify
+Принцип <<стоимостного>> инвестирования (\en{value investing}): ищите 
+недоценённые бумаги с помощью фундаментального анализа, то есть на основании
+финансовых показателей.
+
+\justify
+Некоторые простейшие показатели:
 \begin{itemize}
 \justifying
-\item SMB (Small Minus Big): покупаем 50\% самых маленьких акций, продаём 50\% самых больших.
-\item HML (High book/market Minus Low book/market): покупаем 33\% акций с высоким отношением book/market, продаём 33\% акций с низким отношением.
-\item MOM (MOMentum): покупаем 30\% лучших акций прошлого года, продаём 30\% худших.
+\item Цена к прибыли (\en{price / earnings, P/E}).
+\item Дивидендная доходность (\en{dividend yield, D/P}).
+\item Бухгалтерский капитал к рыночной капитализации (\en{book\,value / 
+market\,value, B/M}).
 \end{itemize}
-Оказывается, что все три портфеля имеют положительную историческую доходность. При этом сами стратегии довольно простые, скорее даже механические!
+
+\justify
+Показатель $B/M$ удобен тем, что обычно ни числитель, ни знаменатель обычно не 
+обращаются в ноль и не бывают отрицательными. Прибыль же может быть 
+отрицательной, а дивиденды --- нулевыми.
 \end{frame}
+
+
+
+
+\begin{frame}{Эффект стоимости - 2}
+\justify
+Разобьём компании на 5 групп по возрастанию показателя B/M.
+\begin{itemize}
+\justifying
+\item Компании с высоким B/M --- скучные компании <<стоимости>>. Например,
+поставщики коммунальных услуг с многочисленными физическими активами на балансе
+(высокое значение \en{book value}).
+\item Компании с низким B/M --- гламурные компании <<роста>>. Например,
+интернет-гиганты, нематериальные активы которых не отражены в бухгалтерском
+капитале (низкое значение \en{book value}). 
+\end{itemize}
+
+\justify
+\centering
+\begin{tabular}{r|r|r|r|r}
+Низк. B/M &     2 &     3 &      4 & Выс. B/M \\ \hline
+    8.6\% & 8.4\% & 9.8\% & 10.3\% &   13.1\% 
+\end{tabular}
+
+\centering
+{\scriptsize Средняя годовая доходность акций сверх безрисковой ставки в
+зависимости от отношения book/market, 1927--2020 гг. Данные Kenneth French 
+Data Library.}
+\end{frame}
+
+
+
+\begin{frame}{Факторные портфели SMB и HML}
+\justify
+Fama, French (1993): разобьём акции на 6 групп в зависимости от размера и 
+отношения B/M.
+
+\justify
+\centering
+\begin{tabular}{l|c|c}
+                & Мал. 50\%     & Бол. 50\% \\ \hline
+30\% низк. B/M  & Small Growth  & Big Growth \\
+40\% сред. B/M  & Small Neutral & Big Neutral \\
+30\% высок. B/M & Small Value   & Big Value
+\end{tabular}
+
+\justify
+Портфель SMB (Small Minus Big): покупаем все small части, продаём в короткую
+все big части.
+
+\justify
+Портфель HML (High B/M Minus Low B/M): покупаем две Value части, продаём в 
+короткую две Growth части.
+\end{frame}
+
+
+
+\begin{frame}{Факторный портфель MOM}
+\justify
+Эффект инерции: прошлые победители продолжают побежать. Сгруппируем акции в 
+зависимости от размера и доходности за предшествующий год.
+
+\justify
+\centering
+\begin{tabular}{l|c|c}
+             & Мал. 50\%     & Бол. 50\% \\ \hline
+30\% худших  & Small Losers  & Big Losers \\
+40\% средних & Small Medium  & Big Medium \\
+30\% лучших  & Small Winners & Big Winners
+\end{tabular}
+
+\justify
+Факторный портфель MOM (\en{MOMentum}), он же WML (Winners Minus Losers) или
+UMD (Up Minus Down): покупаем обе части Winners, продаём в короткую обе части
+Losers.
+\end{frame}
+
 
 
     \newcommand{\addFactorPlot}[3]{
@@ -3452,8 +3617,63 @@ R_{fund,t} - R_{free,t} = \alpha + \beta(R_{mkt,t} - R_{free,t}) + \epsilon_t, \
 \end{frame}
 
 
+    \renewcommand{\addFactorPlot}[3]{
+        \addplot[
+            color=#2,
+            mark=#3,
+            line width=1pt,
+            mark repeat=120,
+            mark phase=36,
+            mark options={scale=2}
+        ]
+        table [
+            x = date,
+            y = #1,
+            col sep=comma
+        ]
+        {data/fama_french_cumulative_growth_data_1990.csv};
+    }
 
 \begin{frame}{Доходности факторных портфелей - 2}
+\centering
+    \begin{tikzpicture}
+    \begin{axis}[
+        width=\textwidth,
+        height=\textheight - 1cm,
+        date coordinates in=x,
+        date ZERO=1990-01-01,
+        xtick={1990-01-01,1995-01-01,2000-01-01,2005-01-01,2010-01-01,2015-01-01,2020-01-01},
+        %minor xtick={1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+        xticklabel=\year,
+        grid=both,
+        xmin=1989-12-31,
+        xmax=2023-01-01,
+        ymode=log,
+        ymax=10,
+        log ticks with fixed point,
+        ylabel={\small Рост \$1 начальных инвестиций},
+        ylabel shift = -10pt,
+        legend entries={
+            MOM,
+            HML,
+            SMB
+        },
+        legend pos=north west,
+        legend style={font=\scriptsize},
+        legend cell align={left}
+    ]
+    \addFactorPlot{mom}{Set1-A}{none}
+    \addFactorPlot{hml}{Set1-B}{none}
+    \addFactorPlot{smb}{Set1-C}{none}
+
+    \end{axis}
+    \end{tikzpicture}
+{\scriptsize Данные: Kenneth French Data Library.}
+\end{frame}
+
+
+
+\begin{frame}{Доходности факторных портфелей - 3}
 \centering
 \small
 \begin{tabular}{l|l|r|r|r|c}
@@ -3480,6 +3700,65 @@ MOM & 1927--59 &  7.4\% (17.8\%) & 2.40 &  2.3\% & [-1.1\%, 15.9\%] \\
 
 {\scriptsize Годовые доходности 1927--2020. Данные: Kenneth French Data Library}
 \end{frame}
+
+
+
+\renewcommand{\addFactorPlot}[3]{
+        \addplot[
+            color=#2,
+            mark=#3,
+            line width=1pt,
+            mark repeat=120,
+            mark phase=36,
+            mark options={scale=2}
+        ]
+        table [
+            x = date,
+            y = #1,
+            col sep=comma
+        ]
+        {data/fama_french_international_cumulative_growth_data.csv};
+    }
+
+\begin{frame}{Факторы на рынке развитых стран (без США)}
+\centering
+    \begin{tikzpicture}
+    \begin{axis}[
+        width=\textwidth,
+        height=\textheight - 1cm,
+        date coordinates in=x,
+        date ZERO=1991-01-01,
+        xtick={1991-01-01,1995-01-01,2000-01-01,2005-01-01,2010-01-01,2015-01-01,2020-01-01},
+        %minor xtick={1930-01-01,1950-01-01,1970-01-01,1990-01-01,2010-01-01},
+        xticklabel=\year,
+        grid=both,
+        xmin=1990-12-31,
+        xmax=2023-01-01,
+        ymode=log,
+        ymax=10,
+        log ticks with fixed point,
+        ylabel={\small Рост \$1 начальных инвестиций},
+        ylabel shift = -10pt,
+        legend entries={
+            MOM,
+            HML,
+            MKT-RF,
+            SMB
+        },
+        legend pos=north west,
+        legend style={font=\scriptsize},
+        legend cell align={left}
+    ]
+    \addFactorPlot{mom}{Set1-A}{none}
+    \addFactorPlot{hml}{Set1-B}{none}
+    \addFactorPlot{mkt_rf}{Set1-D}{none}
+    \addFactorPlot{smb}{Set1-C}{none}
+
+    \end{axis}
+    \end{tikzpicture}
+{\scriptsize Данные: Kenneth French Data Library.}
+\end{frame}
+
 
 
 
