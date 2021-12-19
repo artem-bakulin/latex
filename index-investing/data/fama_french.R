@@ -463,3 +463,26 @@ intl_growth_data <- intl_ff_data %>%
 
 intl_growth_data %>% 
   write_csv("fama_french_international_cumulative_growth_data.csv")
+
+fama_french_four_factors_data %>% 
+  mutate(
+    interval = case_when(
+      month >= '1990-07-01' & month <= '1991-03-01' ~ "1990.07--1991.03",
+      month >= '2000-03-01' & month <= '2000-11-01' ~ "2000.03--2000.11",
+      month >= '2007-12-01' & month <= '2009-06-01' ~ "2007.12--2009.06",
+      month >= '2020-02-01' & month <= '2020-04-01' ~ "2020.02--2020.04",
+      TRUE ~ "Other"
+    )
+  ) %>% 
+  filter(interval != "Other") %>% 
+  group_by(interval) %>% 
+  summarise(
+    mkt_rf = prod(1 + mkt_rf) - 1,
+    smb = prod(1 + smb) - 1,
+    hml = prod(1 + hml) - 1,
+    mom = prod(1 + mom) - 1
+  )
+
+fama_french_four_factors_data %>%
+  filter(year(month) >= 2000) %>% 
+  ggplot(aes(mkt_rf, hml)) + geom_point()
