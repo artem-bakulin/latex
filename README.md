@@ -18,3 +18,5 @@ LaTeX sources for Habrahabr posts, presentations, and other stuff
 ## Presentations
 
 [Индексное инвестирование (ВМК МГУ, весна 2021)](https://artem-bakulin.github.io/latex/papers/index-investing-presentation-spring-2021/)
+
+[Индексное инвестирование (декабрь 2021)](https://artem-bakulin.github.io/latex/papers/index-investing-presentation-dec-2021/)
