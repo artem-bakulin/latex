@@ -40,3 +40,12 @@ tibble(
     C_25 = black_scholes_price(S, 72, 0.25, 0.25, 0.06, 0)
   ) %>% 
   write_csv("call_price.csv")
+
+tibble(
+  x = seq(-5, 5, 0.01)
+) %>% 
+  mutate(
+    norm_density = dnorm(x),
+    lognorm_density = dlnorm(x)
+  ) %>% 
+  write_csv("norm_and_lognorm_density.csv")

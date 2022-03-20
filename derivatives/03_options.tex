@@ -35,12 +35,14 @@
 \usepackage{eurosym}
 \renewcommand{\EUR}[1]{\textup{\euro}#1}
 
-\title{Лекция 3. Опционы}
+\title{Опционы}
 \author{Артём Бакулин}
-\date{21 октября 2021 г.}
+\date{21 марта 2022 г.}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
+
+\setbeamertemplate{page number in head/foot}[totalframenumber] 
 
 \newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
 \newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
@@ -96,7 +98,7 @@
 		
 		\draw [->, >=triangle 45] (2.5, 0) .. controls (3, 2) and (8, 2) .. (8.5, 0) node[pos=0.5, anchor=north]{+3 месяца};
 		
-		\draw [->, >=triangle 45] (8.5, 0) .. controls (8, 0.5) and (7, 0.5) .. (6.5, 0) node[pos=0.5, anchor=south]{-1 день};
+		\draw [->, >=triangle 45] (8.5, 0) .. controls (8, 0.5) and (7, 0.5) .. (6.5, 0) node[pos=0.5, anchor=south]{$-1$ день};
 		
 		\circlewithtext{0.5}{0}{Сегодня};
 		\circlewithtext{2.5}{0}{\begin{tabular}{c}Спот \\ $-500$ р. \end{tabular}};
@@ -561,16 +563,55 @@ C_K(t) - P_K(t) = S(t) - Ke^{-r(T-t)}
 
 
 
+\newcommand{\drawStockNode}[5]{
+
+	\node (#5)
+	[
+		draw,
+		rectangle,
+		rounded corners,
+		inner sep = 0pt,
+		outer sep = 0pt,
+		minimum width = 2.4cm,
+		minimum height = 0.55cm,
+		align = center
+	]
+	at (#3, #4)
+	{
+		\begin{tabular}{c|c}
+		#1 & #2
+		\end{tabular}
+	};
+}
+
+\newcommand{\drawStockLink}[4]{
+
+	\draw[
+		->,
+		>=triangle 90
+	]
+	(#1.east) -- (#2.west)
+	node[
+		pos = 0.5,
+		anchor = #4
+	]
+	{#3};
+}
+
+\newcommand{\drawOneStepBinomialTree}{
+	\drawStockNode{\$100}{?}{0}{0}{S0_node}
+	\drawStockNode{\$120}{\$20}{4}{ 1}{Su_node}
+	\drawStockNode{\$80}{\$0}{4}{-1}{Sd_node}
+	
+	\drawStockLink{S0_node}{Su_node}{$90\%$}{south east}	
+	\drawStockLink{S0_node}{Sd_node}{$10\%$}{north east}
+}
+
 \begin{frame}{Биномиальная модель}
 \centering
 \begin{tikzpicture}
-	\node(s) at (0 ,0) {\$100};
-	\node(su) at (3, 1) [anchor=west] {\$120, Payoff=\$20};
-	\node(sd) at (3, -1) [anchor=west] {\$80, Payoff=\$0};
-
-	\draw (s) [->] -- (su) node[above,midway] {90\%} ;
-	\draw (s) [->] -- (sd) node[below,midway] {10\%};
-	\draw (s) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
+	\drawOneStepBinomialTree
+	\draw (S0_node.east) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
 \end{tikzpicture}
 
 \justify
@@ -589,13 +630,8 @@ $$\mathbb{E}(Payoff) = 0.9\cdot \$20 + 0.1\cdot \$0 = \$18 $$
 \begin{frame}{Биномиальная модель}
 \centering
 \begin{tikzpicture}
-	\node(s) at (0 ,0) {\$100};
-	\node(su) at (3, 1) [anchor=west] {\$120, Payoff=\$20};
-	\node(sd) at (3, -1) [anchor=west] {\$80, Payoff=\$0};
-
-	\draw (s) [->] -- (su) node[above,midway] {90\%} ;
-	\draw (s) [->] -- (sd) node[below,midway] {10\%};
-	\draw (s) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
+	\drawOneStepBinomialTree
+	\draw (S0_node.east) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
 \end{tikzpicture}
 
 \justify
@@ -618,14 +654,10 @@ $$\Pi = 0.5 \cdot \$80 - \$40 = \$0$$
 \begin{frame}{Биномиальная модель}
 \centering
 \begin{tikzpicture}
-	\node(s) at (0 ,0) {\$100};
-	\node(su) at (3, 1) [anchor=west] {\$120, Payoff=\$20};
-	\node(sd) at (3, -1) [anchor=west] {\$80, Payoff=\$0};
-
-	\draw (s) [->] -- (su) node[above,midway] {90\%};
-	\draw (s) [->] -- (sd) node[below,midway] {10\%};
-	\draw (s) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
+	\drawOneStepBinomialTree
+	\draw (S0_node.east) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
 \end{tikzpicture}
+
 
 \justify
 Если портфель из долга и $0.5$ акции \alert{завтра} принесёт столько же денег, сколько и колл-опцион, то \alert{сегодня} они должны стоить одинаково.
@@ -641,13 +673,8 @@ C_{K=100} = \Pi_0 = 0.5 \cdot \$100 - \$40 = \$10
 \begin{frame}{Биномиальная модель}
 \centering
 \begin{tikzpicture}
-	\node(s) at (0 ,0) {\$100};
-	\node(su) at (3, 1) [anchor=west] {\$120, Payoff=\$20};
-	\node(sd) at (3, -1) [anchor=west] {\$80, Payoff=\$0};
-
-	\draw (s) [->] -- (su) node[above,midway] {90\%};
-	\draw (s) [->] -- (sd) node[below,midway] {10\%};
-	\draw (s) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
+	\drawOneStepBinomialTree
+	\draw (S0_node.east) [dashed] -- (3, 0) node[anchor=west] {K=\$100};
 \end{tikzpicture}
 
 \justify
@@ -664,15 +691,19 @@ C_{K=100} = \Pi_0 = 0.5 \cdot \$100 - \$40 = \$10
 
 
 
+\renewcommand{\drawOneStepBinomialTree}{
+	\drawStockNode{$S_0$}{?}{0}{0}{S0_node}
+	\drawStockNode{$S_0u$}{$V_u$}{4}{ 1}{Su_node}
+	\drawStockNode{$S_0d$}{$V_d$}{4}{-1}{Sd_node}
+	
+	\drawStockLink{S0_node}{Su_node}{$p$}{south east}	
+	\drawStockLink{S0_node}{Sd_node}{$1 - p$}{north east}
+}
+
 \begin{frame}{Биномиальная модель}
 \centering
 \begin{tikzpicture}
-	\node(s) at (0 ,0) {$S_0$};
-	\node(su) at (3, 1) [anchor=west] {$S_0u$, Payoff=$V_u$};
-	\node(sd) at (3, -1) [anchor=west] {$S_0d$, Payoff=$V_d$};
-
-	\draw (s) [->] -- (su);
-	\draw (s) [->] -- (sd);
+	\drawOneStepBinomialTree
 \end{tikzpicture}
 
 \justify
@@ -689,12 +720,7 @@ C_{K=100} = \Pi_0 = 0.5 \cdot \$100 - \$40 = \$10
 \begin{frame}{Биномиальная модель}
 \centering
 \begin{tikzpicture}
-	\node(s) at (0 ,0) {$S_0$};
-	\node(su) at (3, 1) [anchor=west] {$S_0u$, Payoff=$V_u$};
-	\node(sd) at (3, -1) [anchor=west] {$S_0d$, Payoff=$V_d$};
-
-	\draw (s) [->] -- (su);
-	\draw (s) [->] -- (sd);
+	\drawOneStepBinomialTree
 \end{tikzpicture}
 
 \justify
@@ -719,12 +745,7 @@ L = \dfrac{V_du - V_ud}{(1+r\tau)(u-d)}
 \begin{frame}{Биномиальная модель}
 \centering
 \begin{tikzpicture}
-	\node(s) at (0 ,0) {$S_0$};
-	\node(su) at (3, 1) [anchor=west] {$S_0u$, Payoff=$V_u$};
-	\node(sd) at (3, -1) [anchor=west] {$S_0d$, Payoff=$V_d$};
-
-	\draw (s) [->] -- (su);
-	\draw (s) [->] -- (sd);
+\drawOneStepBinomialTree
 \end{tikzpicture}
 
 \justify
@@ -742,34 +763,73 @@ q = \dfrac{1+r\tau - d}{u-d} \text{ --- <<риск-нейтральная вер
 
 
 
+\renewcommand{\drawStockLink}[2]{
+
+	\draw[
+		->,
+		>=triangle 45
+	]
+	(#1.east) -- (#2.west)
+	{};
+}
+
+\renewcommand{\drawStockNode}[5]{
+
+	\node (#5)
+	[
+		draw,
+		rectangle,
+		rounded corners,
+		inner sep = 1pt,
+		outer sep = 0pt,
+		minimum width = 1.5cm
+	]
+	at (#3, #4)
+	{
+		\centering
+		\begin{tabular}{c}
+		#1 \\ \hline #2
+		\end{tabular}
+	};
+}
+
+\newcommand{\nodeVerticalStep}{0.7}
+\newcommand{\nodeHorizontalStep}{2.75}
+
 \begin{frame}{Биномиальная модель}
 \centering
 \begin{tikzpicture}
-	\node(s) at (0 ,0) {\only<1-2>{\$100} \only<9->{\$14.8}};
-	\node(su) at (2, 0.5) [anchor=west] {\only<1-2>{\$120} \only<7->{\$25.8}};
-	\node(sd) at (2, -0.5) [anchor=west] {\only<1-2>{\$80} \only<8->{\$3.8}};
-	\node(suu) at (4, 1) [anchor=west] {\only<1-2>{\$144} \only<4->{\$44}};
-	\node(sud) at (4, 0) [anchor=west] {\only<1-2>{\$96} \only<5->{\$7.6}};
-	\node(sdd) at (4, -1) [anchor=west] {\only<1-2>{\$64} \only<6->{\$0}};
-	\node(suuu) at (6, 1.5) [anchor=west] {\only<1-2>{\$172.8}  \only<3->{\$72.8}};
-	\node(suud) at (6, 0.5) [anchor=west] {\only<1-2>{\$115.2}  \only<3->{\$15.2}};
-	\node(sudd) at (6, -0.5) [anchor=west] {\only<1-2>{\$76.8}  \only<3->{\$0}};
-	\node(sddd) at (6, -1.5) [anchor=west] {\only<1-2>{\$51.2} \only<3->{\$0}};
+\drawStockNode{$\$100$}{\only<1-7>{?}\only<8->{\$14.8}}{0}{0}{S0_node}
 
-	\draw (s) [->] -- (su);
-	\draw (s) [->] -- (sd);
+\drawStockNode{$\$120$}{\only<1-5>{?}\only<6->{\$25.8}}{\nodeHorizontalStep}{\nodeVerticalStep}{Su_node}
+\drawStockNode{$\$80$}{\only<1-6>{?}\only<7->{\$3.8}}{\nodeHorizontalStep}{-\nodeVerticalStep}{Sd_node}
 
-	\draw (su) [->] -- (suu);
-	\draw (su) [->] -- (sud);
-	\draw (sd) [->] -- (sud);
-	\draw (sd) [->] -- (sdd);
+\drawStockNode{$\$144$}{\only<1-2>{?}\only<3->{\$44}}{2*\nodeHorizontalStep}{2*\nodeVerticalStep}{Suu_node}
+\drawStockNode{$\$96$}{\only<1-3>{?}\only<4->{\$7.6}}{2*\nodeHorizontalStep}{0}{Sud_node}
+\drawStockNode{$\$64$}{\only<1-4>{?}\only<5->{\$0}}{2*\nodeHorizontalStep}{-2*\nodeVerticalStep}{Sdd_node}
 
-	\draw (suu) [->] -- (suuu);
-	\draw (suu) [->] -- (suud);
-	\draw (sud) [->] -- (suud);
-	\draw (sud) [->] -- (sudd);
-	\draw (sdd) [->] -- (sudd);
-	\draw (sdd) [->] -- (sddd);
+\drawStockNode{$\$172.8$}{\only<1>{?}\only<2->{\$72.8}}{3*\nodeHorizontalStep}{3*\nodeVerticalStep}{Suuu_node}
+\drawStockNode{$\$115.2$}{\only<1>{?}\only<2->{\$15.2}}{3*\nodeHorizontalStep}{\nodeVerticalStep}{Suud_node}
+\drawStockNode{$\$76.8$}{\only<1>{?}\only<2->{\$0}}{3*\nodeHorizontalStep}{-\nodeVerticalStep}{Sudd_node}
+\drawStockNode{$\$51.2$}{\only<1>{?}\only<2->{\$0}}{3*\nodeHorizontalStep}{-3*\nodeVerticalStep}{Sddd_node}
+
+\drawStockLink{S0_node}{Su_node}
+\drawStockLink{S0_node}{Sd_node}
+
+\drawStockLink{Su_node}{Suu_node}
+\drawStockLink{Su_node}{Sud_node}
+
+\drawStockLink{Sd_node}{Sud_node}
+\drawStockLink{Sd_node}{Sdd_node}
+
+\drawStockLink{Suu_node}{Suuu_node}
+\drawStockLink{Suu_node}{Suud_node}
+
+\drawStockLink{Sud_node}{Suud_node}
+\drawStockLink{Sud_node}{Sudd_node}
+
+\drawStockLink{Sdd_node}{Sudd_node}
+\drawStockLink{Sdd_node}{Sddd_node}
 \end{tikzpicture}
 
 \justify
@@ -785,81 +845,161 @@ q = \dfrac{1+r\tau - d}{u - d} = \dfrac{1 - 0.8}{1.2 - 0.8} = 0.5
 
 
 \begin{frame}{Биномиальная модель}
-Важно: параметр $\Delta$ меняется в каждом узле.
-
 \centering
 \begin{tikzpicture}
-	\node(s) at (0 ,0) {0.58};
-	\node(su) at (2, 0.5) [anchor=west] {0.76};
-	\node(sd) at (2, -0.5) [anchor=west] {0.24};
-	\node(suu) at (4, 1) [anchor=west] {1.00};
-	\node(sud) at (4, 0) [anchor=west] {0.40};
-	\node(sdd) at (4, -1) [anchor=west] {0.00};
-	\node(suuu) at (6, 1.5) [anchor=west] {\$72.8};
-	\node(suud) at (6, 0.5) [anchor=west] {\$20};
-	\node(sudd) at (6, -0.5) [anchor=west] {\$0};
-	\node(sddd) at (6, -1.5) [anchor=west] {\$0};
+\drawStockNode{$\$100$}{$\Delta=0.58$}{0}{0}{S0_node}
 
-	\draw (s) [->] -- (su);
-	\draw (s) [->] -- (sd);
+\drawStockNode{$\$120$}{$\Delta=0.76$}{\nodeHorizontalStep}{\nodeVerticalStep}{Su_node}
+\drawStockNode{$\$80$}{$\Delta=0.24$}{\nodeHorizontalStep}{-\nodeVerticalStep}{Sd_node}
 
-	\draw (su) [->] -- (suu);
-	\draw (su) [->] -- (sud);
-	\draw (sd) [->] -- (sud);
-	\draw (sd) [->] -- (sdd);
+\drawStockNode{$\$144$}{$\Delta=1.0$}{2*\nodeHorizontalStep}{2*\nodeVerticalStep}{Suu_node}
+\drawStockNode{$\$96$}{$\Delta=0.4$}{2*\nodeHorizontalStep}{0}{Sud_node}
+\drawStockNode{$\$64$}{$\Delta=0.0$}{2*\nodeHorizontalStep}{-2*\nodeVerticalStep}{Sdd_node}
 
-	\draw (suu) [->] -- (suuu);
-	\draw (suu) [->] -- (suud);
-	\draw (sud) [->] -- (suud);
-	\draw (sud) [->] -- (sudd);
-	\draw (sdd) [->] -- (sudd);
-	\draw (sdd) [->] -- (sddd);
+\drawStockNode{$\$172.8$}{$\Delta=1$}{3*\nodeHorizontalStep}{3*\nodeVerticalStep}{Suuu_node}
+\drawStockNode{$\$115.2$}{$\Delta=1$}{3*\nodeHorizontalStep}{\nodeVerticalStep}{Suud_node}
+\drawStockNode{$\$76.8$}{$\Delta=0$}{3*\nodeHorizontalStep}{-\nodeVerticalStep}{Sudd_node}
+\drawStockNode{$\$51.2$}{$\Delta=0$}{3*\nodeHorizontalStep}{-3*\nodeVerticalStep}{Sddd_node}
+
+\drawStockLink{S0_node}{Su_node}
+\drawStockLink{S0_node}{Sd_node}
+
+\drawStockLink{Su_node}{Suu_node}
+\drawStockLink{Su_node}{Sud_node}
+
+\drawStockLink{Sd_node}{Sud_node}
+\drawStockLink{Sd_node}{Sdd_node}
+
+\drawStockLink{Suu_node}{Suuu_node}
+\drawStockLink{Suu_node}{Suud_node}
+
+\drawStockLink{Sud_node}{Suud_node}
+\drawStockLink{Sud_node}{Sudd_node}
+
+\drawStockLink{Sdd_node}{Sudd_node}
+\drawStockLink{Sdd_node}{Sddd_node}
 \end{tikzpicture}
 
 \justify
 Справедливая безарбитражная цена опциона не зависит от вероятностей изменения цены вверх и вниз. Если мы можем \alert{динамически} ребалансировать портфель, состоящий из акций и долга, то мы можем реплицировать любой опцион.
+
+\justify
+Эта стратегия называется \alert{дельта-хэджирование} (\en{delta hedging}).
 \end{frame}
 
 
 
+\newcommand{\highlightStockLink}[6]{
+	\draw[
+		color=#4,
+		very thick,
+		->,
+		>=triangle 45
+	]
+	(#1.east) -- (#2.west)
+	node[
+		pos=#5,
+		anchor=#6
+	]
+	{#3};
+}
+
+\newcommand{\highlightStockLinkUp}[3]{
+	\highlightStockLink{#1}{#2}{$q$}{#3}{0.5}{south}
+}
+
+\newcommand{\highlightStockLinkDown}[3]{
+	\highlightStockLink{#1}{#2}{$1-q$}{#3}{0.15}{west}
+}
+
 \begin{frame}{Биномиальная модель}
+\centering
 \begin{tikzpicture}
-	\node(s) at (0 ,0) {$S_0$};
-	\node(su) at (1, 0.5) [anchor=west] {$S_0u$};
-	\node(sd) at (1, -0.5) [anchor=west] {$S_0d$};
-	\node(suu) at (3, 1) [anchor=west] {$S_0u^2$};
-	\node(sud) at (3, 0) [anchor=west] {$S_0ud$};
-	\node(sdd) at (3, -1) [anchor=west] {$S_0d^2$};
-	\node(suuu) at (5, 1.5) [anchor=west] {$S_0u^3$, Payoff = $V_3=V(S_0u^3)$};
-	\node(suud) at (5, 0.5) [anchor=west] {$S_0u^2d$, Payoff = $V_2=V(S_0u^2d)$};
-	\node(sudd) at (5, -0.5) [anchor=west] {$S_0ud^2$, Payoff = $V_1=V(S_0ud^2)$};
-	\node(sddd) at (5, -1.5) [anchor=west] {$S_0d^3$, Payoff = $V_0=V(S_0d^3)$};
+\drawStockNode{$S_0$}{?}{0}{0}{S0_node}
 
-	\draw (s) [->] -- (su);
-	\draw (s) [->] -- (sd);
+\drawStockNode{$S_0u$}{?}{\nodeHorizontalStep}{\nodeVerticalStep}{Su_node}
+\drawStockNode{$S_0d$}{?}{\nodeHorizontalStep}{-\nodeVerticalStep}{Sd_node}
 
-	\draw (su) [->] -- (suu);
-	\draw (su) [->] -- (sud);
-	\draw (sd) [->] -- (sud);
-	\draw (sd) [->] -- (sdd);
+\drawStockNode{$S_0u^2$}{?}{2*\nodeHorizontalStep}{2*\nodeVerticalStep}{Suu_node}
+\drawStockNode{$S_0ud$}{?}{2*\nodeHorizontalStep}{0}{Sud_node}
+\drawStockNode{$S_0d^2$}{?}{2*\nodeHorizontalStep}{-2*\nodeVerticalStep}{Sdd_node}
 
-	\draw (suu) [->] -- (suuu);
-	\draw (suu) [->] -- (suud);
-	\draw (sud) [->] -- (suud);
-	\draw (sud) [->] -- (sudd);
-	\draw (sdd) [->] -- (sudd);
-	\draw (sdd) [->] -- (sddd);
+\drawStockNode{$S_0u^3$}{$V_3$}{3*\nodeHorizontalStep}{3*\nodeVerticalStep}{Suuu_node}
+\drawStockNode{$S_0u^2d$}{$V_2$}{3*\nodeHorizontalStep}{\nodeVerticalStep}{Suud_node}
+\drawStockNode{$S_0ud^2$}{$V_1$}{3*\nodeHorizontalStep}{-\nodeVerticalStep}{Sudd_node}
+\drawStockNode{$S_0d^3$}{$V_0$}{3*\nodeHorizontalStep}{-3*\nodeVerticalStep}{Sddd_node}
+
+\only<1-2>{
+	\drawStockLink{S0_node}{Su_node}
+	\drawStockLink{S0_node}{Sd_node}
+
+	\drawStockLink{Su_node}{Suu_node}
+	\drawStockLink{Su_node}{Sud_node}
+
+	\drawStockLink{Sd_node}{Sud_node}
+	\drawStockLink{Sd_node}{Sdd_node}
+
+	\drawStockLink{Suu_node}{Suuu_node}
+	\drawStockLink{Suu_node}{Suud_node}
+
+	\drawStockLink{Sud_node}{Suud_node}
+	\drawStockLink{Sud_node}{Sudd_node}
+
+	\drawStockLink{Sdd_node}{Sudd_node}
+	\drawStockLink{Sdd_node}{Sddd_node}
+}
+
+\only<3>{
+	\highlightStockLinkUp{S0_node}{Su_node}{Set1-A}
+	\highlightStockLinkUp{Su_node}{Suu_node}{Set1-A}
+	\highlightStockLinkDown{Suu_node}{Suud_node}{Set1-A}
+}
+
+\only<4>{
+	\highlightStockLinkUp{S0_node}{Su_node}{Set1-A}
+	\highlightStockLinkDown{Su_node}{Sud_node}{Set1-A}
+	\highlightStockLinkUp{Sud_node}{Suud_node}{Set1-A}
+}
+
+\only<5>{
+	\highlightStockLinkDown{S0_node}{Sd_node}{Set1-A}
+	\highlightStockLinkUp{Sd_node}{Sud_node}{Set1-A}
+	\highlightStockLinkUp{Sud_node}{Suud_node}{Set1-A}
+}
+
 \end{tikzpicture}
 
 \justify
-<<Риск-нейтральная вероятность>>: $q=\dfrac{1+r\tau-d}{u-d}$
+Риск-нейтральная вероятность: $q = \dfrac{1 + rT - d}{u - d}$.
 
-Цена опциона сейчас:
+\justify
+Цена дериватива сегодня:
 \begin{align*}
-C =  \dfrac{q^3V_3 + 3q^2(1-q)V_2 + 3q(1-q)^2V_1 + (1-q)^3V_0}{(1+r\tau)^3} 
+V = \frac{q^3V_3 + \only<1>{3q^2(1-q)}\only<2->{\alert{3q^2(1-q)}}V_2 + 3q(1-q)^2V_1 + (1-q)^3V_0}{(1+rT)^3}
 \end{align*}
+\end{frame}
 
-Если представить, что $q$ --- вероятность движения цены вверх, то выше записано математическое ожидание.
+
+
+\begin{frame}{Риск-нейтральная вероятность}
+\justify
+Если представить, что $q$ --- вероятность движения акции вверх, то $3q^2(1-q)$ --- вероятность того, что акция дважды вырастет и один раз упадёт (не важно, в каком порядке). Тогда акция будет стоить $S_0u^2d$, а дериватив принесёт прибыль $V_2$.
+
+\justify
+\centering
+\begin{tabular}{l|l|l}
+Цена акции & Прибыль & <<Вероятность>> \\ \hline
+$S_0u^3$   & $V_3$   & $q^3$ \\
+$S_0u^2d$  & $V_2$   & $3q^2(1-q)$ \\
+$S_0ud^2$  & $V_1$   & $3q(1-q)^2$ \\ 
+$S_0d^3$   & $V_0$   & $(1-q)^3$ 
+\end{tabular}
+
+\justify
+Цена дериватива похожа на дисконтированное <<математическое ожидание>> прибыли.
+\begin{align*}
+V = \frac{q^3V_3 + 3q^2(1-q)V_2 + 3q(1-q)^2V_1 + (1-q)^3V_0}{(1+rT)^3}
+\end{align*}
 \end{frame}
 
 
@@ -875,9 +1015,17 @@ C^k_n &= \dfrac{n!}{k!(n-k)!}
 Что будет, если вместо произвольной функции $V(S)$ взять функцию $max(S-K,0)$, как в колл-опционе, и устремить $n$ к бесконечности? Получится формула Блэка-Шоулза.
 
 \vspace{\baselineskip}
-Строгое доказательство (28 страниц) здесь:
+Строгое доказательство с помощью закона больших чисел и центральной
+предельной теоремы здесь (28 страниц):
 
 \url{http://www.math.cmu.edu/~handron/21_370/BS.pdf}
+\end{frame}
+
+
+
+\begin{frame}{Демонстрация: доска Гальтона}
+
+\url{https://www.mathsisfun.com/data/quincunx.html}
 \end{frame}
 
 
@@ -889,7 +1037,7 @@ C^k_n &= \dfrac{n!}{k!(n-k)!}
 \justify
 На каждом самом маленьком шаге цена акции растёт на $\mu$ процентов годовых в среднем, а также колеблется вокруг этого среднего со стандартным отклонением (волатильностью) $\sigma$.
 \begin{align*}
-\frac{S_{i+1} - S_i}{S_i} = \mu \Delta t + \sigma \sqrt{\Delta t} \quad \epsilon_i \sim \mathcal{N}(0, 1)
+\frac{S_{i+1} - S_i}{S_i} = \mu \Delta t + \sigma \sqrt{\Delta t} \quad \xi_i \sim \mathcal{N}(0, 1)
 \end{align*}
 
 \justify
@@ -962,17 +1110,39 @@ d &= 1 + \mu \Delta t - \sigma\sqrt{\Delta t}
 \justify
 Если геометрическое броуновское движение начинается с цены базового актива $S_0$ с трендом $\mu$ и волатильностью $\sigma$, то цена базового актива через время $T$ $S_T$ есть случайная величина:
 \begin{align*}
-S_T = S_0\cdot \exp\left((\mu - \sigma^2/2)T + \sigma\sqrt{T}\varepsilon\right) \quad \varepsilon \sim \mathcal{N}(0, 1)
+S_T = S_0\cdot \exp\left((\mu - \sigma^2/2)T + \sigma\sqrt{T}\xi\right) \quad \xi \sim \mathcal{N}(0, 1)
 \end{align*} 
 
 \justify
 Логарифм изменения цены (грубо: процентный прирост) есть случайная величина, которая следует нормальному распределению:
 \begin{align*}
-\ln\left(\frac{S_T}{S_0}\right) = \left(\mu - \frac{\sigma^2}{2}\right)T + \sigma\sqrt{T}\varepsilon \quad \varepsilon \sim \mathcal{N}(0, 1)
+\ln\left(\frac{S_T}{S_0}\right) = \left(\mu - \frac{\sigma^2}{2}\right)T + \sigma\sqrt{T}\xi \quad \xi \sim \mathcal{N}(0, 1)
 \end{align*}
 
 \justify
 Поэтому говорят, что цена базового актива следует лог-нормальному распределению.
+\end{frame}
+
+
+
+\begin{frame}{Геометрическое броуновское движение}
+\centering
+\begin{tikzpicture}
+	\begin{axis}[
+		width = \textwidth,
+		height = \textheight - 1cm,
+		xmin = -5, xmax = 5,
+		ymin = 0, ymax = 0.7,
+		grid = major,
+		legend entries = {Нормальное, Лог-нормальное},
+		legend pos = north west
+	]
+		
+		\addplot[color=Set1-A, thick] table[x=x, y=norm_density, col sep=comma] {norm_and_lognorm_density.csv};
+		
+				\addplot[color=Set1-B, thick] table[x=x, y=lognorm_density, col sep=comma] {norm_and_lognorm_density.csv};
+	\end{axis}
+\end{tikzpicture}
 \end{frame}
 
 
