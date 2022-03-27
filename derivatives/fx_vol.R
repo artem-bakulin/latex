@@ -65,7 +65,7 @@ get_central_bank_fx_rate <- function(ccy, from_year, to_year) {
   data
 }
 
-get_central_bank_fx_rate("USD", 2012, 2021) %>% 
+get_central_bank_fx_rate("USD", 2012, 2022) %>% 
   mutate(log_return = log(fx_rate / lag(fx_rate))) %>% 
   filter(!is.na(log_return)) %>% 
   group_by(mid_month = make_date(year(date), month(date), 15)) %>% 
@@ -73,13 +73,15 @@ get_central_bank_fx_rate("USD", 2012, 2021) %>%
   write_csv("USDRUB_realized_vol.csv")
 
 
-
 fly_spreads <- read_csv("usdrub_implied_vol.csv") %>% 
   mutate(
-    fly =  lag(call) + lead(call) - 2*call,
+    left_call = approx(strike, y=call, xout=strike-1, rule = 1)$y,
+    right_call = approx(strike, y=call, xout=strike+1, rule = 1)$y,
+    fly =  left_call + right_call - 2*call,
   ) %>% 
   filter(
-    !is.na(fly)
+    !is.na(fly),
+    round(strike) == strike
   ) %>% 
   mutate(
     fly = if_else(fly < 0, 0, fly)
@@ -95,20 +97,20 @@ kernel_density <- density(
   fly_spreads$strike,
   weights = fly_spreads$density_weight,
   kernel = "gaussian",
-  bw = 0.55
+  bw = 1.0
 )
 
 density_fun <- approxfun(kernel_density$x, kernel_density$y, yleft=0, yright=0)
 
-implied_mean <- integrate(function(x) {x*density_fun(x)}, lower=55, upper=95)[["value"]]
+implied_mean <- integrate(function(x) {x*density_fun(x)}, lower=60, upper=135)[["value"]]
 
-implied_std <- sqrt(integrate(function(x) {density_fun(x) * (x - implied_mean)^2}, lower=55, upper=95)[["value"]])
+implied_std <- sqrt(integrate(function(x) {density_fun(x) * (x - implied_mean)^2}, lower=60, upper=135)[["value"]])
 
 # https://en.wikipedia.org/wiki/Log-normal_distribution
 mu <- log(implied_mean^2 / sqrt(implied_mean^2 + implied_std^2))
 sigma <- sqrt(log(1 + implied_std^2 / implied_mean^2))
 
-tibble(strike = seq(55, 95, 0.1)) %>% 
+tibble(strike = seq(60, 135, 0.1)) %>% 
   mutate(
     implied_density = density_fun(strike),
     lognormal_density = dlnorm(strike, mu, sigma)
@@ -183,7 +185,7 @@ tibble(S = seq(0, 1, 0.01)) %>%
   mutate(
     gamma = black_scholes_gamma(S, 0.5, 1, 0.2, 0, 0)
   ) %>% 
-  write_csv("black_scholes_gamma.csv")
+  write_csv("black_scholes_gamma.csv", na = "")
 
 tibble(T = seq(0.01, 1, 0.01)) %>% 
   mutate(

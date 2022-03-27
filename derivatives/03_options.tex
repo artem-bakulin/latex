@@ -23,6 +23,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{setspace}
+\usepackage{cancel}
 
 \usepackage{enumitem}
 \setitemize{label=\usebeamerfont*{itemize item}%
@@ -734,7 +735,7 @@ L(1+r\tau) + \Delta S_0 d = V_d
 
 \begin{equation*}
 \begin{cases}
-\Delta = \dfrac{V_u - V_d}{S(u-d)} \\
+\Delta = \dfrac{V_u - V_d}{S_0(u-d)} \\
 L = \dfrac{V_du - V_ud}{(1+r\tau)(u-d)}
 \end{cases}
 \end{equation*}
@@ -752,7 +753,7 @@ L = \dfrac{V_du - V_ud}{(1+r\tau)(u-d)}
 Цена опциона равна цене реплицирующего портфеля:
 \begin{align*}
 C &= \Delta S_0 +L = \\
- &= \dfrac{V_u-V_d}{u-d}S_0 + \dfrac{V_du -V_ud}{(1+r\tau)(u-d)} = \\
+ &= \dfrac{V_u-V_d}{(u-d)\cancel{S_0}}\cancel{S_0} + \dfrac{V_du -V_ud}{(1+r\tau)(u-d)} = \\
  &= \dfrac{qV_u +(1-q)V_d}{1+r\tau},
 \end{align*}
 где
@@ -1037,7 +1038,7 @@ C^k_n &= \dfrac{n!}{k!(n-k)!}
 \justify
 На каждом самом маленьком шаге цена акции растёт на $\mu$ процентов годовых в среднем, а также колеблется вокруг этого среднего со стандартным отклонением (волатильностью) $\sigma$.
 \begin{align*}
-\frac{S_{i+1} - S_i}{S_i} = \mu \Delta t + \sigma \sqrt{\Delta t} \quad \xi_i \sim \mathcal{N}(0, 1)
+\frac{S_{i+1} - S_i}{S_i} = \mu \Delta t + \sigma \sqrt{\Delta t}\xi_i, \quad \xi_i \sim \mathcal{N}(0, 1)
 \end{align*}
 
 \justify
