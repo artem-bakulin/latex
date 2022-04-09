@@ -33,12 +33,14 @@
 % remove navigation bar
 \setbeamertemplate{navigation symbols}{} 
 
+\setbeamertemplate{page number in head/foot}[totalframenumber] 
+
 \usepackage{eurosym}
 \renewcommand{\EUR}[1]{\textup{\euro}#1}
 
-\title{Лекция 5. Метод Монте-Карло}
+\title{Метод Монте-Карло}
 \author{Артём Бакулин}
-\date{11 ноября 2021 г.}
+\date{4 апреля 2022 г.}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -886,7 +888,7 @@ f = \max\left(\frac{S(t_1) + S(t_2) + ... + S(t_k)}{n} - K, 0\right)
 \end{align*}
 
 \justify
-Например, азиатский опцион может платить разность между средним курсом USDRUB ЦБ РФ за месяц и страйком $71$. 
+Например, азиатский опцион может платить разность между средним курсом USDRUB ЦБ РФ за месяц и страйком $80$. 
 
 \justify
 Выплата по азиатскому опциону зависит от всей траектории цены, а не только от конечной точки (является \en{path-dependent}). Аналитической формулы цены такого опциона нет. 
@@ -969,10 +971,10 @@ S_{i,j} &= S_{i,j-1} \exp\Big((r - \sigma^2/2)(t_j - t_{j-1}) + \sigma\sqrt{t_j 
 
 \centering
 \begin{tabular}{l|l}
-EURUSD & 1.165 \\
-GBPUSD & 1.356 \\
-JPYUSD & 0.00886 \\
-CADUSD & 0.804
+EURUSD & 1.1040 \\
+GBPUSD & 1.3110 \\
+JPYUSD & 0.00816 \\
+CADUSD & 0.7990
 \end{tabular}
 
 \justify
