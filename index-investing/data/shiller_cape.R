@@ -25,7 +25,7 @@ cape_yield_data %>%
   filter(!is.na(cape_excess_yield)) %>% 
   group_by(
     period = case_when(
-      month >= '1986-01-01' & month <= '2020-12-01' ~ "1986--2020",
+      month >= '1986-01-01' & month <= '2021-12-01' ~ "1986--2021",
       month >= '1951-01-01' & month <= '1985-12-01' ~ "1951--1985",
       month >= '1916-01-01' & month <= '1950-12-01' ~ "1916--1950",
       month >= "1881-01-01" & month <= '1915-12-01' ~ "1881--1915",
@@ -36,8 +36,8 @@ cape_yield_data %>%
   ungroup() %>% 
   bind_rows(
     cape_yield_data %>%
-      filter(month >= '1881-01-01', month <= '2020-12-01') %>% 
-      group_by(period = "1881--2020") %>% 
+      filter(month >= '1881-01-01', month <= '2021-12-01') %>% 
+      group_by(period = "1881--2021") %>% 
       summarize_cape_yield()
   ) %>% 
   pivot_wider(names_from="pct", values_from="cape_yield") %>% 
@@ -59,7 +59,7 @@ CAPE_QUANTILES <- c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
 cape_yield_data %>% 
   filter(
     year(month) >= 1927,
-    year(month) <= 2010,
+    year(month) <= 2011,
     !is.na(cape_excess_yield),
     !is.na(subsequent_stock_return_10y)
   ) %>% 
@@ -125,20 +125,20 @@ summarize_backtest_resuls <- function(data) {
 }
 
 backtest_data %>% 
-  filter(month >= '1927-01-01' & month <= '2020-12-01') %>% 
+  filter(month >= '1927-01-01' & month <= '2021-12-01') %>% 
   group_by(
     period = case_when(
       month >= '1927-01-01' & month <= '1959-12-01' ~ "1927--1959",
       month >= '1960-01-01' & month <= '1989-12-01' ~ "1960--1989",
-      month >= '1990-01-01' & month <= '2020-12-01' ~ "1990--2020",
+      month >= '1990-01-01' & month <= '2021-12-01' ~ "1990--2021",
       TRUE ~ "Other"
     )
   ) %>% 
   summarize_backtest_resuls() %>% 
   bind_rows(
     backtest_data %>% 
-      filter(month >= '1927-01-01' & month <= '2020-12-01') %>% 
-      group_by(period = '1927--2020') %>% 
+      filter(month >= '1927-01-01' & month <= '2021-12-01') %>% 
+      group_by(period = '1927--2021') %>% 
       summarize_backtest_resuls()
   )
 
