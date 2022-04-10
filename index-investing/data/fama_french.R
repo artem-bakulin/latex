@@ -381,8 +381,9 @@ annual_rf <- fama_french_four_factors_data %>%
 
 size_portfolios %>% 
   pivot_longer(-year, names_to = "bucket", values_to = "bucket_return") %>% 
-  mutate(bucket_return = bucket_return / 100) %>% 
   filter(bucket %in% c("Lo 20", "Qnt 2", "Qnt 3", "Qnt 4", "Hi 20")) %>% 
+  mutate(bucket_return = as.numeric(bucket_return)) %>% 
+  mutate(bucket_return = bucket_return / 100) %>% 
   inner_join(annual_rf, by="year") %>% 
   group_by(bucket) %>% 
   summarise(
@@ -397,12 +398,13 @@ size_and_beta_portfolios <- download_generic_fama_french_data(
 
 size_and_beta_portfolios %>% 
   pivot_longer(-year, names_to = "bucket", values_to = "bucket_return") %>% 
-  mutate(bucket_return = bucket_return / 100) %>% 
+  mutate(bucket_return = as.numeric(bucket_return) / 100) %>% 
   inner_join(annual_rf, by="year") %>% 
   group_by(bucket) %>% 
   summarise(
     mean_excess_return = mean(bucket_return - rf)
-  ) 
+  ) %>% 
+  View()
 
 value_portfolios <- download_generic_fama_french_data(
   "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Portfolios_Formed_on_BE-ME_CSV.zip",
@@ -413,7 +415,7 @@ value_portfolios <- download_generic_fama_french_data(
 value_portfolios %>% 
   pivot_longer(-year, names_to = "bucket", values_to = "bucket_return") %>% 
   filter(bucket %in% c("Lo 20", "Qnt 2", "Qnt 3", "Qnt 4", "Hi 20")) %>% 
-  mutate(bucket_return = bucket_return / 100) %>% 
+  mutate(bucket_return = as.numeric(bucket_return) / 100) %>% 
   inner_join(annual_rf, by="year") %>% 
   group_by(bucket) %>% 
   summarise(
