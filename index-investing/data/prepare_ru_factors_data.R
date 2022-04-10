@@ -44,7 +44,7 @@ parse_ru_month_year <- function(x) {
 
 download_ru_factor_file <- function(file_name, factor_name) {
  
-  BASE_URL <- "https://ipei.ranepa.ru/images/2019/CAPMRU/jan2021/"
+  BASE_URL <- "https://ipei.ranepa.ru/images/2019/CAPMRU/jan2022/"
   url <- paste0(BASE_URL, file_name)
   
   curl_download(url, file_name)
@@ -71,14 +71,14 @@ download_ru_factor_file <- function(file_name, factor_name) {
 }
 
 if (!file.exists("ru_factors_data.csv")) {
-  rmrf_ru <- download_ru_factor_file("RMRF_TR_jan2021.csv", "rmrf_ru")
-  smb_ru  <- download_ru_factor_file("SMB_TR_jan2021.csv",  "smb_ru")
-  hml_ru  <- download_ru_factor_file("HML_TR_jan2021.csv",  "hml_ru")
-  mom_ru  <- download_ru_factor_file("MOM_TR_jan2021.csv",  "mom_ru")
-  liq_ru  <- download_ru_factor_file("LIQ_TR_jan2021.csv",  "liq_ru")
-  dy_ru   <- download_ru_factor_file("DY_TR_jan2021.csv",   "dy_ru")
-  soe_ru  <- download_ru_factor_file("SOE_TR_jan2021.csv",  "soe_ru")
-  pe_ru  <- download_ru_factor_file("PE_TR_jan2021.csv",  "pe_ru")
+  rmrf_ru <- download_ru_factor_file("RMRF_TR_jan2022.csv", "rmrf_ru")
+  smb_ru  <- download_ru_factor_file("SMB_TR_jan2022.csv",  "smb_ru")
+  hml_ru  <- download_ru_factor_file("HML_TR_jan2022.csv",  "hml_ru")
+  mom_ru  <- download_ru_factor_file("MOM_TR_jan2022.csv",  "mom_ru")
+  liq_ru  <- download_ru_factor_file("LIQ_TR_jan2022.csv",  "liq_ru")
+  dy_ru   <- download_ru_factor_file("DY_TR_jan2022.csv",   "dy_ru")
+  soe_ru  <- download_ru_factor_file("SOE_TR_jan2022.csv",  "soe_ru")
+  pe_ru  <- download_ru_factor_file("PE_TR_jan2022.csv",  "pe_ru")
   
   ru_factors_normalized <- bind_rows(
     rmrf_ru,
@@ -99,6 +99,7 @@ if (!file.exists("ru_factors_data.csv")) {
 ru_factors_normalized <- read_csv("ru_factors_data.csv")
 
 ru_factors_normalized %>% 
+  filter(year(month) <= 2021) %>% # No factors data for 2022 yet 
   group_by(factor) %>% 
   summarise(
     return_mean = mean(return),

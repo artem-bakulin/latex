@@ -206,12 +206,13 @@ all_returns %>%
     green_growth = cumprod(1 + green_return),
     yellow_growth = cumprod(1 + yellow_return),
     red_growth = cumprod(1 + red_return)
-  ) %>% tail()
+  )
 
 ru_factor_returns <- read_csv("ru_factors_data.csv") %>% 
   pivot_wider(names_from="factor", values_from="return")
 
 all_returns %>% 
+  filter(year(month) <= 2021) %>% # No factors data for 2022 yet
   inner_join(ru_factor_returns, by="month") %>% 
-  lm(personal_excess_return ~ benchmark_excess_return + soe_ru, data=.) %>% 
+  lm(personal_excess_return ~ benchmark_excess_return + smb_ru + soe_ru, data=.) %>% 
   summary()
