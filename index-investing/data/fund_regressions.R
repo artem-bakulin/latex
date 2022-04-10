@@ -47,13 +47,13 @@ total_return_gross_index <- read_csv("total_return_gross_index.csv")
 
 risk_free <- read_tsv("cbr_key_rate.txt")
 
-red <- read_tsv("red_share_price.txt")
+red <- read_csv("red_share_price.txt")
 
-green <- read_tsv("green_share_price.txt")
+green <- read_csv("green_share_price.txt")
 
-yellow <- read_tsv("yellow_share_price.txt")
+yellow <- read_csv("yellow_share_price.txt")
 
-personal <- read_tsv("personal_share_price.txt")
+personal <- read_csv("personal_share_price.txt")
 
 
 green_returns <- green %>% 

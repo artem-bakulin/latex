@@ -62,3 +62,13 @@ date	cbr_rate	source
 2020-04-27	0.055	key rate
 2020-06-22	0.045	key rate
 2020-07-27	0.0425	key rate
+2021-03-22	0.045	key rate
+2021-04-26	0.050	key rate
+2021-06-15	0.055	key rate
+2021-07-26	0.065	key rate
+2021-09-13	0.0675	key rate
+2021-10-25	0.075	key rate
+2021-12-20	0.085	key rate
+2021-02-14	0.095	key rate
+2021-02-28	0.20	key rate
+2021-04-11	0.14	key rate
