@@ -43,10 +43,13 @@
 	% Use black dash rather than blue triangle for each \item
 	\setbeamertemplate{itemize item}{\color{black}\textemdash}
 	
-	\definecolor{bank-light-blue}{HTML}{00A3E0}
+	\definecolor{bank-light-blue-title}{RGB}{74, 201, 227}
+	\definecolor{bank-light-blue}{RGB}{0, 163, 224}
 	\definecolor{bank-dark-blue}{RGB}{0, 24, 168}
-	
-	\setbeamercolor{frametitle}{fg=bank-light-blue}
+
+	% In new template slide title is black
+	%\setbeamercolor{frametitle}{fg=bank-light-blue}
+	\setbeamercolor{frametitle}{fg=black}
 	
 	\setbeamertemplate{frametitle}{
 	    \begin{beamercolorbox}[ht=0.9cm]{frametitle}
@@ -77,25 +80,32 @@
 	}
 
 	\newcommand{\inserttitleframe}{
-		% Background image is defined inside these curcly braces
+		% Background image is defined inside these curly braces
 		{
 			\usebackgroundtemplate{\includegraphics[width=\paperwidth]{img/bank_background.jpg}}
 			\begin{frame}[plain]
-				\vspace{3.5cm}
 				
-				%\hspace{-0.4cm} {\footnotesize Математические модели в инвестиционных банках}
+				\vspace{-0.9cm} \hspace{-0.6cm} {\tiny
+					\begin{tabular}{l}
+						 \color{white} Deutsche Bank \\
+						 \color{bank-light-blue-title} Technology Center
+					\end{tabular}
+				}
+
+				\vspace{3.4cm}
 				
+				\hspace{-0.4cm} {\footnotesize \color{white} Математические модели в инвестиционных банках}			
 				\vspace{0.5cm}
 				
-				\hspace{-0.4cm} {\huge \inserttitle}
+				\hspace{-0.4cm} {\huge \color{white} \inserttitle}
 				
 				\vspace{0.2cm}
 				
-				\hspace{-0.4cm} {\scriptsize \color{bank-light-blue} \#PositiveImpact}
+				\hspace{-0.4cm} {\scriptsize \color{black} \#PositiveImpact}
 				
 				\vspace{0.2cm}
 				
-				\hspace{-0.4cm} {\footnotesize \insertauthor, \insertdate}
+				\hspace{-0.4cm} {\footnotesize \color{white} \insertauthor, \insertdate}
 			\end{frame}
 		}
 	}
