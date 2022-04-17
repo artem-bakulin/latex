@@ -97,25 +97,25 @@ sp500 <- read_csv("SP500.csv") %>%
     sp500 = SP500
   )
 
-libor <- read_csv("USD3MTD156N.csv") %>% 
+tbills3m <- read_csv("DTB3.csv") %>% 
   rename(
     date = DATE,
-    libor = USD3MTD156N
+    tbills3m = DTB3
   )
 
 merged_data <- vix %>% 
   inner_join(sp500, by="date") %>% 
-  inner_join(libor, by="date") %>% 
+  inner_join(tbills3m, by="date") %>% 
   transmute(
     date = date,
     vix = as.numeric(vix) / 100,
     sp500 = as.numeric(sp500),
-    libor = as.numeric(libor) / 100
+    tbills3m = as.numeric(tbills3m) / 100
   ) %>% 
   filter(
     !is.na(vix),
     !is.na(sp500),
-    !is.na(libor)
+    !is.na(tbills3m)
   ) %>% 
   mutate(
     sp500_chg = sp500 / lag(sp500) - 1

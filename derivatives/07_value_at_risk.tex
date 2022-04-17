@@ -38,9 +38,9 @@
 \usepackage{eurosym}
 \renewcommand{\EUR}[1]{\textup{\euro}#1}
 
-\title{Лекция 7. Value at Risk (VaR)}
+\title{Value at Risk (VaR)}
 \author{Артём Бакулин}
-\date{25 ноября 2021 г.}
+\date{18 апреля 2022 г.}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -81,7 +81,7 @@
 
 \justify
 Трейдеру, его менеджерам, акционерам, регуляторам --- всем нужна численная оценка 
-рыночного риска, который он взял на себя.
+рыночного риска.
 
 \justify
 Стандартный ответ  --- оценить рыночный риск в 
@@ -575,7 +575,7 @@ DV01, USD/б.п. & 100 & $-100$ \\
 \justifying
 \item Базовый актив --- индекс S\&P 500.
 \item Волатильность --- индекс \en{implied}\ волатильности VIX.
-\item Безрисковая ставка --- трёхмесячный долларовый LIBOR.
+\item Безрисковая ставка --- доходность трёхмесячных T-Bills.
 \end{itemize}
 
 \justify
@@ -591,10 +591,11 @@ DV01, USD/б.п. & 100 & $-100$ \\
 		width = \textwidth,
 		height = \textheight - 1.75cm,
 		date coordinates in=x,
-		xmin = 2019-11-11, xmax = 2021-11-16,
-		ymin = 2000, ymax = 4800,
+		xmin = 2020-04-15, xmax = 2022-04-13,
+		ymin = 2500, ymax = 5000,
 		grid = major,
-		xtick = {2020-01-01, 2020-04-01, 2020-07-01, 2020-10-01, 2021-01-01, 2021-04-01, 2021-07-01, 2021-10-01},
+		xtick = {2020-07-01, 2020-10-01, 2021-01-01, 2021-04-01, 2021-07-01, 2021-10-01,
+		         2022-01-01, 2022-04-01},
 		xticklabel = {\month.\year},
 		xticklabel style = {rotate=45, anchor=east},
 	]
@@ -616,10 +617,11 @@ DV01, USD/б.п. & 100 & $-100$ \\
 		width = \textwidth,
 		height = \textheight - 1.75cm,
 		date coordinates in=x,
-		xmin = 2019-11-11, xmax = 2021-11-16,
-		ymin = 0, ymax = 0.8,
+		xmin = 2020-04-15, xmax = 2022-04-13,
+		ymin = 0, ymax = 0.5,
 		grid = major,
-		xtick = {2020-01-01, 2020-04-01, 2020-07-01, 2020-10-01, 2021-01-01, 2021-04-01, 2021-07-01, 2021-10-01},
+		xtick = {2020-07-01, 2020-10-01, 2021-01-01, 2021-04-01, 2021-07-01, 2021-10-01,
+		         2022-01-01, 2022-04-01},
 		xticklabel = {\month.\year},
 		xticklabel style = {rotate=45, anchor=east},
 		yticklabel = {\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%}
@@ -642,22 +644,23 @@ DV01, USD/б.п. & 100 & $-100$ \\
 		width = \textwidth,
 		height = \textheight - 1.75cm,
 		date coordinates in=x,
-		xmin = 2019-11-11, xmax = 2021-11-16,
-		ymin = 0, ymax = 0.02,
+		xmin = 2020-04-15, xmax = 2022-04-13,
+		ymin = 0, ymax = 0.01,
 		grid = major,
-		xtick = {2020-01-01, 2020-04-01, 2020-07-01, 2020-10-01, 2021-01-01, 2021-04-01, 2021-07-01, 2021-10-01},
+		xtick = {2020-07-01, 2020-10-01, 2021-01-01, 2021-04-01, 2021-07-01, 2021-10-01,
+		         2022-01-01, 2022-04-01},
 		xticklabel = {\month.\year},
 		xticklabel style = {rotate=45, anchor=east},
 		yticklabel = {\pgfmathparse{\tick*100}\pgfmathprintnumber[fixed, fixed zerofill, precision=1]{\pgfmathresult}\%},
 		scaled y ticks = false
 	]
 	
-	\addplot[color=Set1-B, thick] table[x=date, y=libor, col sep=comma] {var_sp500_data.csv};
+	\addplot[color=Set1-B, thick] table[x=date, y=tbills3m, col sep=comma] {var_sp500_data.csv};
 	\end{axis}
 \end{tikzpicture}
 
 \centering
-\small Данные: St. Louis Fed (USD3MTD156N).
+\small Данные: St. Louis Fed (DTB3).
 \end{frame}
 
 
@@ -665,19 +668,19 @@ DV01, USD/б.п. & 100 & $-100$ \\
 \begin{frame}{Исторические симуляции}
 
 \justify
-Предположим, что в будущем рыночные переменные будут следовать тому же распределению, что и в прошлом. Выберем некоторый период истории, например, последние 2 года, или стрессовый период 2008--2009. Построим выборку изменений рыночных переменных.
+Предположим, что в будущем рыночные переменные будут следовать тому же распределению, что и в прошлом. Выберем некоторый период истории, например, последние 2 года, или стрессовый период 2008--2009 гг. Построим выборку изменений рыночных переменных.
  
 \justify
 \centering
 \begin{tabular}{l|r|r|r}
            & S\&P 500 & Вол-ть   & Ставка \\ \hline
-02.09.2020 & 3\,581   & 32.7\%   & 0.251\% \\
-03.09.2020 & 3\,455   & 37.6\%   & 0.250\% \\ \hline
-Изменение  & $-3.5\%$ & +4.9\%   & $-0.001\%$ 
+02.09.2020 & 3\,581   & 32.7\%   & 0.12\% \\
+03.09.2020 & 3\,455   & 37.6\%   & 0.11\% \\ \hline
+Изменение  & $-3.5\%$ & +4.9\%   & $-0.01\%$ 
 \end{tabular}
 
 \justify
-Если повторится 3 сентября 2020 года, то индекс S\&P 500 упадёт на 3.5\% относительного \alert{сегодняшнего} уровня, волатильность вырастет на 4.9 процентных пункта, процентная ставка упадёт на 0.001 процентных пункта.
+Если повторится 3 сентября 2020 года, то индекс S\&P 500 упадёт на 3.5\% относительного \alert{сегодняшнего} уровня, волатильность вырастет на 4.9 процентных пункта, процентная ставка упадёт на 0.01 процентных пункта.
 
 \end{frame}
 
@@ -691,9 +694,9 @@ DV01, USD/б.п. & 100 & $-100$ \\
 \centering
 \begin{tabular}{l|r|r|r}
                       & S\&P 500 & Вол-ть   & Ставка \\ \hline
-Сегодня 25.11.2021    & 4\,701   & 20.9\%   & 0.160\% \\
-Изменение             & $-3.5\%$ & +4.9\%   & $-0.001\%$ \\ \hline
-<<Завтра 03.09.2020>> & 4\,536   & 25.8\%   & 0.159\%
+Сегодня 13.04.2022    & 4\,447   & 25.5\%   & 0.75\% \\
+Изменение             & $-3.5\%$ & +4.9\%   & $-0.01\%$ \\ \hline
+<<Завтра 03.09.2020>> & 4\,291   & 30.4\%   & 0.74\%
 \end{tabular}
 
 \justify
@@ -702,9 +705,9 @@ DV01, USD/б.п. & 100 & $-100$ \\
 \justify
 \centering
 \begin{tabular}{l|r}
-Сегодня               & \$19\,589 \\
-<<Завтра 03.09.2020>> & \$23\,323 \\ \hline
-Прибыль/убыток        & $+\$3\,734$
+Сегодня               & \$22\,638 \\
+<<Завтра 03.09.2020>> & \$34\,497 \\ \hline
+Прибыль/убыток        & $+\$11\,859$
 \end{tabular}
 \end{frame}
 
@@ -761,10 +764,11 @@ DV01, USD/б.п. & 100 & $-100$ \\
 		width = \textwidth,
 		height = \textheight - 1.75cm,
 		date coordinates in=x,
-		xmin = 2019-11-11, xmax = 2021-11-16,
-		ymin = -0.12, ymax = 0.1,
+		xmin = 2020-04-15, xmax = 2022-04-13,
+		ymin = -0.06, ymax = 0.04,
 		grid = major,
-		xtick = {2020-01-01, 2020-04-01, 2020-07-01, 2020-10-01, 2021-01-01, 2021-04-01, 2021-07-01, 2021-10-01},
+		xtick = {2020-07-01, 2020-10-01, 2021-01-01, 2021-04-01, 2021-07-01, 2021-10-01,
+		         2022-01-01, 2022-04-01},
 		xticklabel = {\month.\year},
 		xticklabel style = {rotate=45, anchor=east},
 		yticklabel = {\pgfmathparse{\tick*100}\pgfmathprintnumber[fixed, fixed zerofill, precision=0]{\pgfmathresult}\%},
@@ -787,7 +791,7 @@ DV01, USD/б.п. & 100 & $-100$ \\
 	\begin{axis}[
 		width = \textwidth,
 		height = \textheight - 1.5cm,
-		xmin = -0.15, xmax = 0.15,
+		xmin = -0.07, xmax = 0.07,
 		ymin = 0, ymax = 50,
 		xticklabel = {\pgfmathparse{\tick*100}\pgfmathprintnumber[fixed, fixed zerofill, precision=0]{\pgfmathresult}\%},
 		scaled x ticks = false,
@@ -874,7 +878,7 @@ DV01, USD/б.п. & 100 & $-100$ \\
 	\begin{axis}[
 		width = \textwidth,
 		height = \textheight - 1.5cm,
-		xmin = -0.15, xmax = 0.15,
+		xmin = -0.07, xmax = 0.07,
 		ymin = 0, ymax = 50,
 		xticklabel = {\pgfmathparse{\tick*100}\pgfmathprintnumber[fixed, fixed zerofill, precision=0]{\pgfmathresult}\%},
 		scaled x ticks = false,
