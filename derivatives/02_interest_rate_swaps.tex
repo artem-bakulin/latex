@@ -485,7 +485,7 @@ EURIBOR публикуется в дни, когда работает платё
 \justify
 2) Если дата окончания выпала на выходной, то она сдвигается вперёд на ближайший 
 рабочий день, если только ближайший рабочий день --- не в следующем месяце. Пример: 
-17.03.2023 (пт) --- 19.06.2022 (пн).
+17.03.2023 (пт) --- 19.06.2023 (пн).
 
 \justify
 3) В противном случае дата окончания сдвигается назад. Пример: 29.11.2022 (вт) --- 28.02.2023 (вт).
@@ -593,29 +593,29 @@ T+1 (завтра): ЕЦБ опубликует среднюю ставку вч
 
 \begin{frame}{Фьючерсы на EURIBOR}
 \justify
-Биржа \en{ICE Futures Europe}\ (бывшая LIFFE) предлагает фьючерсы на трёхмесячный EURIBOR. Например, \alert{FEIM2} --- фьючерс на июнь 2022 года*.
+Биржа \en{ICE Futures Europe}\ (бывшая LIFFE) предлагает фьючерсы на трёхмесячный EURIBOR. Например, \alert{FEIM3} --- фьючерс на июнь 2023 года*.
 
 \justify
 \centering
 \begin{tabular}{r|r}
 Покупка & Продажа \\ \hline
-100.325 & 100.330
+96.29 & 96.30
 \end{tabular}
 
 \justify
-Если мы <<купим>> 10 фьючерсов по 100.330, то:
+Если мы <<купим>> 10 фьючерсов по 96.30, то:
 \begin{itemize}
 \justifying
 \item Прямо сейчас мы ничего не платим.
-\item 13 июня 2022 года** биржа установит финальную цену фьючерса $F = 100 - X$, где 
+\item 19 июня 2023 года** биржа установит финальную цену фьючерса $F = 100 - X$, где 
 $X$ --- трёхмесячный EURIBOR, опубликованный в этот день.
-\item Мы заработаем $10 \cdot (F - 100.330) \cdot \EUR{2\,500}$, где \EUR{2\,500} --- 
+\item Мы заработаем $10 \cdot (F - 96.30) \cdot \EUR{2\,500}$, где \EUR{2\,500} --- 
 константа из спецификации фьючерса.
 \end{itemize}
 
 \justify
 *FEI --- код контракта. M --- код месяца (H --- март, M --- июнь, U --- сентябрь, Z --- 
-декабрь). 2 --- последняя цифра года.
+декабрь). 3 --- последняя цифра года.
 
 \justify
 **Третья среда месяца минус два рабочих дня.
@@ -628,41 +628,41 @@ $X$ --- трёхмесячный EURIBOR, опубликованный в это
 Я заранее знаю, что в июне я разбогатею на \EUR{1\,000\,000}. Я планирую положить деньги на депозит в надёжном банке примерно под EURIBOR, чтобы в сентябре поехать в отпуск. У меня есть \alert{процентный риск} (\en{interest rate risk}): я не знаю, сколько денег у меня будет к сентябрю.
 
 \justify
-Решение: купить один фьючерс на EURIBOR по 100.33.
+Решение: купить один фьючерс на EURIBOR по 96.30.
 
 \justify
-Допустим, к 13 июня EURIBOR снизится до $-0.70\%$.
+Допустим, к 19 июня EURIBOR снизится до $2.50\%$.
 \begin{itemize}
 \justifying
-\item Биржа установит финальную цену $100 - (-0.70) = 100.70$.
-\item Прибыль по фьючерсу $(100.70-100.33)\cdot\EUR{2\,500} = \EUR{925}$.
-\item Депозит под EURIBOR $-0.70\%$ на три месяца принесёт
+\item Биржа установит финальную цену $100 - 2.50 = 97.50$.
+\item Прибыль по фьючерсу $(97.50-96.30)\cdot\EUR{2\,500} = \EUR{3\,000}$.
+\item Депозит под EURIBOR $2.50\%$ на три месяца принесёт
 
-$\EUR{1\,000\,000} \cdot (-0.0070) / 4 = -\EUR{1\,750}$.
-\item Итого, я заработаю $\EUR{925} - \EUR{1\,750} = -\EUR{825}$.
+$\EUR{1\,000\,000} \cdot 0.025 / 4 = \EUR{6\,250}$.
+\item Итого, я заработаю $\EUR{3\,000} + \EUR{6\,250} = -\EUR{9\,250}$.
 \end{itemize} 
 
 \justify
-Я заработал бы столько же, если бы EURIBOR был $-0.33\%$: $\EUR{1\,000\,000} \cdot (-0.0033)/4 =-\EUR{825}$.
+Я заработал бы столько же, если бы EURIBOR был $3.70\%$: $\EUR{1\,000\,000} \cdot 0.037/4 =\EUR{9\,250}$.
 \end{frame}
 
 
 
 \begin{frame}{Фьючерсы на EURIBOR}
 \justify
-Допустим, мы купили июньский фьючерс по 100.33 в марте. В июне мы открыли депозит под
+Допустим, мы купили июньский фьючерс по 96.30 в марте. В июне мы открыли депозит под
 EURIBOR, каким бы он ни был, до сентября. Сколько мы заработаем?
 
 \justify
 \centering
 \begin{tabular}{r|r|r|r|r}
-EURIBOR   & Цена фьючерса & Фьючерс      & Депозит & Итого \\ \hline
-$-0.10\%$ & 100.10        & $-\EUR{575}$ & $-\EUR{250}$    & $-\EUR{825}$ \\
-$-0.20\%$ & 100.20        & $-\EUR{325}$ & $-\EUR{500}$ & $-\EUR{825}$ \\
-$-0.30\%$ & 100.30        & $-\EUR{75}$ & $-\EUR{750}$ & $-\EUR{825}$ \\
-$-0.33\%$ & 100.33        & $\EUR{0}$    & $-\EUR{825}$ & $-\EUR{825}$ \\
-$-0.40\%$ & 100.40        & $+\EUR{175}$ & $-\EUR{1\,000}$ & $-\EUR{825}$ \\
-$-0.50\%$ & 100.50        & $+\EUR{425}$ & $-\EUR{1\,250}$ & $-\EUR{825}$
+EURIBOR   & Цена фьючерса & Фьючерс         & Депозит & Итого \\ \hline
+$2.50\%$ & 97.50        & $\EUR{3\,000}$ & $\EUR{6\,250}$  & $\EUR{9\,250}$ \\
+$3.00\%$ & 97.00        & $\EUR{1\,750}$ & $\EUR{7\,500}$  & $\EUR{9\,250}$ \\
+$3.50\%$ & 96.50        & $\EUR{500}$    & $\EUR{8\,750}$  & $\EUR{9\,250}$ \\
+$3.70\%$ & 96.30        & $\EUR{0}$       & $\EUR{9\,250}$  & $\EUR{9\,250}$ \\
+$4.00\%$ & 96.00        & $-\EUR{750}$    & $\EUR{10\,000}$ & $\EUR{9\,250}$ \\
+$4.50\%$ & 95.50        & $-\EUR{2\,000}$ & $\EUR{11\,250}$ & $\EUR{9\,250}$
 \end{tabular}
 
 \justify
@@ -683,7 +683,7 @@ $-0.50\%$ & 100.50        & $+\EUR{425}$ & $-\EUR{1\,250}$ & $-\EUR{825}$
 \justifying
 \item Срок (\en{term, maturity}) --- дата последнего платежа. Например, 1 год.
 \item Размер (\en{notional amount, principal amount}) --- сумма, с которой платятся проценты. Например, \EUR{1} миллион.
-\item Купон (\en{coupon}) или ставка свопа (\en{swap rate}) --- фиксированная ставка, которую платит одна сторона. Например, $-0.5\%$.
+\item Купон (\en{coupon}) или ставка свопа (\en{swap rate}) --- фиксированная ставка, которую платит одна сторона. Например, $3.0\%$ годовых.
 \item Референсная ставка (\en{reference rate}) --- тип плавающей ставки, которую платит вторая сторона. Например, 3M EURIBOR.
 \end{itemize}
 
@@ -703,18 +703,18 @@ $-0.50\%$ & 100.50        & $+\EUR{425}$ & $-\EUR{1\,250}$ & $-\EUR{825}$
 
 		\draw [dashed,->,>=triangle 90] (9.5, -1) node[label=right:{\text{фиксинг $E_1$}}]{} -- (5, -1) node[pos=0.5,anchor=south]{\euro 1\,000\,000};
 
-		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{$T_1 = \text{3M}$}]{} -- (4.5, -2.5) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{-0.50\%}{4}$};
+		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{$T_1 = \text{3M}$}]{} -- (4.5, -2.5) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{3.0\%}{4}$};
 
 		\draw [snake=snake,->,>=triangle 90] (9.5, -2.5)  node[label=right:{\text{фиксинг $E_2$}}]{} -- (5, -2.5) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_1}{4}$};
 
-		\draw [->,>=triangle 90] (0, -4) node[label=left:{$T_2 = \text{6M}$}]{} -- (4.5, -4) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{-0.50\%}{4}$};
+		\draw [->,>=triangle 90] (0, -4) node[label=left:{$T_2 = \text{6M}$}]{} -- (4.5, -4) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{3.0\%}{4}$};
 
 		\draw [snake=snake,->,>=triangle 90] (9.5, -4)  node[label=right:{\text{фиксинг $E_3$}}]{} -- (5, -4) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_2}{4}$};
 
-		\draw [->,>=triangle 90] (0, -5.5) node[label=left:{$T_3 = \text{9M}$}]{} -- (4.5, -5.5) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{-0.50\%}{4}$};
+		\draw [->,>=triangle 90] (0, -5.5) node[label=left:{$T_3 = \text{9M}$}]{} -- (4.5, -5.5) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{3.0\%}{4}$};
 
 		\draw [snake=snake,->,>=triangle 90] (9.5, -5.5)  node[label=right:{\text{фиксинг $E_4$}}]{} -- (5, -5.5) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_3}{4}$};
-		\draw [->,>=triangle 90] (0, -7) node[label=left:{$T_4 = \text{12M}$}]{} -- (4.5, -7) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{-0.50\%}{4}$};
+		\draw [->,>=triangle 90] (0, -7) node[label=left:{$T_4 = \text{12M}$}]{} -- (4.5, -7) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{3.0\%}{4}$};
 
 		\draw [snake=snake,->,>=triangle 90] (9.5, -7) -- (5, -7) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_4}{4}$};
 \end{tikzpicture}
@@ -724,7 +724,7 @@ $-0.50\%$ & 100.50        & $+\EUR{425}$ & $-\EUR{1\,250}$ & $-\EUR{825}$
 
 \begin{frame}{Управление процентным риском}
 \justify
-Процентный своп позволяет превратить кредит под плавающую ставку (например, EURIBOR+1\%) в кредит под фиксированную ставку (например, 0.5\%) и наоборот.
+Процентный своп позволяет превратить кредит под плавающую ставку (например, EURIBOR+1\%) в кредит под фиксированную ставку (например, 4.0\%) и наоборот.
 
 \justify
 \centering
@@ -739,17 +739,17 @@ $-0.50\%$ & 100.50        & $+\EUR{425}$ & $-\EUR{1\,250}$ & $-\EUR{825}$
 		\node (Deutsche) at (0, -3) [company] {Deutsche};
 		\node (Citi) at (7, -3) [company] {Citi};
 
-		\draw [fixed] ([yshift=0.2cm]A.east) -- ([yshift=0.2cm]B.west) node[pos=0.5,anchor=south]{-0.5\%};
+		\draw [fixed] ([yshift=0.2cm]A.east) -- ([yshift=0.2cm]B.west) node[pos=0.5,anchor=south]{3.0\%};
 
 		\draw [floating] ([yshift=-0.2cm]B.west) -- ([yshift=-0.2cm]A.east) node[pos=0.5,anchor=north]{EURIBOR};
 
 		\draw [floating] (A.south) -- (Deutsche.north) node[pos=0.5,anchor=west]{EURIBOR + 1\%};
 
-		\draw [fixed] (B.south) -- (Citi.north) node[pos=0.5,anchor=east]{$0.8\%$};
+		\draw [fixed] (B.south) -- (Citi.north) node[pos=0.5,anchor=east]{$3.5\%$};
 	\end{tikzpicture}
 
 \justify
-Итого: A платит 0.5\%, B платит EURIBOR + 1.3\%.
+Итого: A платит 4.0\%, B платит EURIBOR + 0.5\%.
 \end{frame}
 
 
@@ -761,8 +761,8 @@ $-0.50\%$ & 100.50        & $+\EUR{425}$ & $-\EUR{1\,250}$ & $-\EUR{825}$
 \begin{itemize}
 \justifying
 \item Занять деньги на 3 месяца стоит EURIBOR + 1\%. 
-\item Занять деньги на 5 лет стоит 4.5\%.
-\item Процентный своп на 5 лет стоит $-0.5\%$.
+\item Занять деньги на 5 лет стоит 7.0\%.
+\item Процентный своп на 5 лет стоит $3.0\%$.
 \end{itemize}
 
 \justify
@@ -776,10 +776,10 @@ $-0.50\%$ & 100.50        & $+\EUR{425}$ & $-\EUR{1\,250}$ & $-\EUR{825}$
 
 \begin{frame}{Кредиты под плавающую ставку}
 \justify
-Мы можем понадеяться, что сможем и в будущем занимать деньги под EURIBOR + 1\%. Если раз в три месяца заново брать кредит на 3 месяца под EURIBOR+1\%, и продать процентный своп на 5 лет по $-0.5\%$, то можно зафиксировать стоимость кредита 1.5\%.
+Мы можем понадеяться, что сможем и в будущем занимать деньги под EURIBOR + 1\%. Если раз в три месяца заново брать кредит на 3 месяца под EURIBOR+1\%, и продать процентный своп на 5 лет по $3.0\%$, то можно зафиксировать стоимость кредита 4.0\%.
 
 \justify
-Минус такой стратегии: если в будущем наше кредитное качество снизится (банки будут опасаться, что наш проект не взлетает), то стоимость трёхмесячных кредитов вырастет. Например, в какой-то день придётся занять деньги под EURIBOR+6\%, и вся экономия разорится.
+Минус такой стратегии: если в будущем наше кредитное качество снизится (банки будут опасаться, что наш проект не взлетает), то стоимость трёхмесячных кредитов вырастет. Например, в какой-то день придётся занять деньги под EURIBOR+10\%, и вся экономия сломается.
 \end{frame}
 
 
@@ -870,17 +870,15 @@ x = \frac{\sum\limits_{i=1}^{n} E_i t_i \delta_i}{\sum\limits_{i=1}^{n} t_i \del
 \justify
 \centering
 \begin{tabular}{l|r}
-Инструмент        & Цена, б.п.* \\ \hline
-Последний фиксинг & -54.8 \\
-Своп 6M           & -54.7 \\
-Своп 9M           & -53.4 \\
-Своп 1Y           & -51.8 \\
-Своп 18M          & -48.1 \\
-Своп 2Y           & -44.2
+Инструмент        & Цена (купон) \\ \hline
+Последний фиксинг & 3.00\% \\
+Своп 6M           & 3.40\% \\
+Своп 9M           & 3.60\% \\
+Своп 1Y           & 3.70\% \\
+Своп 18M          & 3.75\% \\
+Своп 2Y           & 3.60\%
 \end{tabular}
 
-\justify
-*Базисный пункт (\en{basis point, bp}) --- одна сотая процента, 0.01\%.
 \end{frame}
 
 
@@ -891,20 +889,20 @@ x = \frac{\sum\limits_{i=1}^{n} E_i t_i \delta_i}{\sum\limits_{i=1}^{n} t_i \del
 		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -2.5);
 		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (7.5, -2.5);
 
-		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$-54.7$};
+		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$3.40\%$};
 
-		\draw [snake=snake,->,>=triangle 90] (7.5, -1)  -- (4, -1) node[pos=0.5,anchor=south] {$-54.8$};
+		\draw [snake=snake,->,>=triangle 90] (7.5, -1)  -- (4, -1) node[pos=0.5,anchor=south] {$3.00\%$};
 		
-		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{6M}]{} -- (3.5, -2.5) node[pos=0.5,anchor=south]{$-54.7$};
+		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{6M}]{} -- (3.5, -2.5) node[pos=0.5,anchor=south]{$3.40\%$};
 
 		\draw [snake=snake,->,>=triangle 90] (7.5, -2.5) -- (4, -2.5) node[pos=0.5,anchor=south] {$E_2$};
 \end{tikzpicture}
 
 \justify
-Мы знаем цену свопа на 6 месяцев ($-54.7$ б.п.). Также мы знаем и текущее значение EURIBOR ($-54.8$ б.п.), которое будет использовано для первого плавающего платежа. Отсюда мы можем вычислить <<ожидаемое>> значение $E_2$.
+Мы знаем цену свопа на 6 месяцев ($3.40\%$). Также мы знаем и текущее значение EURIBOR ($3.00\%$), которое будет использовано для первого плавающего платежа. Отсюда мы можем вычислить <<ожидаемое>> значение $E_2$.
 \begin{align*}
--54.7 - 54.7 &= -54.8 + E_2 \Rightarrow \\
-E_2 &= -54.6
+3.40\% + 3.40\% &= 3.00\% + E_2 \Rightarrow \\
+E_2 &= 3.80\%
 \end{align*}
 
 \end{frame}
@@ -913,14 +911,14 @@ E_2 &= -54.6
 
 \begin{frame}{Отступление об <<ожиданиях>> рынка}
 \justify
-Можем ли мы быть уверены, что <<ожидаемое>> рынком значение $E_2=-54.6$ --- правильное? Нет не можем. Скорее всего, в реальности значение EURIBOR будет другим. В среднем, процентные ставки оказываются чуть ниже, чем <<ожидаемые>> ставки, которые можно было вычислить из котировок свопов.
+Можем ли мы быть уверены, что <<ожидаемое>> рынком значение $E_2=3.80\%$ --- правильное? Нет не можем. Скорее всего, в реальности значение EURIBOR будет другим. В среднем, процентные ставки оказываются чуть ниже, чем <<ожидаемые>> ставки, которые можно было вычислить из котировок свопов.
 
 \justify
 <<Ожидаемая>> рынком ставка --- это всего-навсего ставка, которая соответствует текущим ценам свопов. Это два эквивалентных взгляда на одно и то же явление:
 
-1) Текущий фиксинг $-54.8$, своп на 6 месяцев $-54.7$.
+1) Текущий фиксинг $3.00\%$, своп на 6 месяцев $3.40\%$.
 
-2) Текущий фиксинг $-54.8$, ставка через 3 месяца $-54.6$.
+2) Текущий фиксинг $3.00\%$, ставка через 3 месяца $3.80\%$.
 \end{frame}
 
 
@@ -936,12 +934,12 @@ E_2 &= -54.6
 \begin{tabular}{l|r|r|r}
 Дата    & \multicolumn{2}{c|}{Своп} & Кредит \\ \hline
 Сегодня &          0  &  0            & 0 \\
-3M      & $-(-54.7)$  &  $+(-54.8)$   & 0 \\
-6M      & $-(-54.7)$  &  $+E_2$       & $-E_2$
+3M      & $-3.40\%$  &  $+3.00\%$   & 0 \\
+6M      & $-3.40\%$  &  $+E_2$       & $-E_2$
 \end{tabular}
 
 \justify
-Всего по всем платежам мы заплатим $-54.6$ вне зависимости от будущего значения EURIBOR $E_2$. Процентный своп позволяет нам жить в мире, в котором EURIBOR $E_2$ всегда оказывается равен $-54.6$.
+Всего по всем платежам мы заплатим $3.80\%$ вне зависимости от будущего значения EURIBOR $E_2$. Процентный своп позволяет нам жить в мире, в котором EURIBOR $E_2$ всегда оказывается равен $3.80\%$.
 \end{frame}
 
 
@@ -952,15 +950,15 @@ E_2 &= -54.6
 		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -4);
 		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (7.5, -4);
 
-		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$-53.4$};
+		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$3.60\%$};
 
-		\draw [snake=snake,->,>=triangle 90] (7.5, -1)  -- (4, -1) node[pos=0.5,anchor=south] {$-54.8$};
+		\draw [snake=snake,->,>=triangle 90] (7.5, -1)  -- (4, -1) node[pos=0.5,anchor=south] {$3.00\%$};
 		
-		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{6M}]{} -- (3.5, -2.5) node[pos=0.5,anchor=south]{$-53.4$};
+		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{6M}]{} -- (3.5, -2.5) node[pos=0.5,anchor=south]{$3.60\%$};
 
-		\draw [snake=snake,->,>=triangle 90] (7.5, -2.5) -- (4, -2.5) node[pos=0.5,anchor=south] {$-54.6$};
+		\draw [snake=snake,->,>=triangle 90] (7.5, -2.5) -- (4, -2.5) node[pos=0.5,anchor=south] {$3.80\%$};
 		
-		\draw [->,>=triangle 90] (0, -4) node[label=left:{9M}]{} -- (3.5, -4) node[pos=0.5,anchor=south]{$-53.4$};
+		\draw [->,>=triangle 90] (0, -4) node[label=left:{9M}]{} -- (3.5, -4) node[pos=0.5,anchor=south]{$3.60\%$};
 
 		\draw [snake=snake,->,>=triangle 90] (7.5, -4) -- (4, -4) node[pos=0.5,anchor=south] {$E_3$};
 \end{tikzpicture}
@@ -968,8 +966,8 @@ E_2 &= -54.6
 \justify
 Знание цены свопа на 9 месяцев ($-53.4$ б.п.) и двух первых значений EURIBOR ($-54.8$ и $-54.6$) позволяет вычислить <<ожидаемое>> значение $E_3$.
 \begin{align*}
--53.4 - 53.4 - 53.4 &= -54.8 - 54.6 - E_3 \Rightarrow \\
-E_3 &= -50.8
+3.60\% + 3.60\% + 3.60\% &= 3.0\% + 3.80\% + E_3 \Rightarrow \\
+E_3 &= 4.00\%
 \end{align*}
 \end{frame}
 
@@ -981,19 +979,19 @@ E_3 &= -50.8
 		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -5.5);
 		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (7.5, -5.5);
 
-		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$-51.8$};
+		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$3.70\%$};
 
-		\draw [snake=snake,->,>=triangle 90] (7.5, -1)  -- (4, -1) node[pos=0.5,anchor=south] {$-54.8$};
+		\draw [snake=snake,->,>=triangle 90] (7.5, -1)  -- (4, -1) node[pos=0.5,anchor=south] {$3.00\%$};
 		
-		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{6M}]{} -- (3.5, -2.5) node[pos=0.5,anchor=south]{$-51.8$};
+		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{6M}]{} -- (3.5, -2.5) node[pos=0.5,anchor=south]{$3.70\%$};
 
-		\draw [snake=snake,->,>=triangle 90] (7.5, -2.5) -- (4, -2.5) node[pos=0.5,anchor=south] {$-54.6$};
+		\draw [snake=snake,->,>=triangle 90] (7.5, -2.5) -- (4, -2.5) node[pos=0.5,anchor=south] {$3.80\%$};
 		
-		\draw [->,>=triangle 90] (0, -4) node[label=left:{9M}]{} -- (3.5, -4) node[pos=0.5,anchor=south]{$-51.8$};
+		\draw [->,>=triangle 90] (0, -4) node[label=left:{9M}]{} -- (3.5, -4) node[pos=0.5,anchor=south]{$3.70\%$};
 
-		\draw [snake=snake,->,>=triangle 90] (7.5, -4) -- (4, -4) node[pos=0.5,anchor=south] {$-50.8$};
+		\draw [snake=snake,->,>=triangle 90] (7.5, -4) -- (4, -4) node[pos=0.5,anchor=south] {$4.00\%$};
 		
-		\draw [->,>=triangle 90] (0, -5.5) node[label=left:{12M}]{} -- (3.5, -5.5) node[pos=0.5,anchor=south]{$-51.8$};
+		\draw [->,>=triangle 90] (0, -5.5) node[label=left:{12M}]{} -- (3.5, -5.5) node[pos=0.5,anchor=south]{$3.70\%$};
 
 		\draw [snake=snake,->,>=triangle 90] (7.5, -5.5) -- (4, -5.5) node[pos=0.5,anchor=south] {$E_4$};
 \end{tikzpicture}
@@ -1001,8 +999,8 @@ E_3 &= -50.8
 \justify
 Знание цены свопа на 12 месяцев ($-51.8$ б.п.) и трёх первых значений EURIBOR ($-54.8$, $-54.6$ и $-50.8$) позволяет вычислить <<ожидаемое>> значение $E_4$.
 \begin{align*}
--51.8-51.8-51.8-51.8 &= -54.8 - 54.6 - 50.8 - E_4 \Rightarrow \\
-E_4 &= -47.0
+3.70\%+3.70\%+3.70\%+3.70\% &= 3.00\% + 3.80\% + 4.00\% + E_4 \Rightarrow \\
+E_4 &= 4.00\%
 \end{align*}
 \end{frame}
 
@@ -1014,27 +1012,27 @@ E_4 &= -47.0
 		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -8.5);
 		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (7.5, -8.5);
 
-		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$-48.1$};
+		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$3.75\%$};
 
-		\draw [snake=snake,->,>=triangle 90] (7.5, -1)  -- (4, -1) node[pos=0.5,anchor=south] {$-54.8$};
+		\draw [snake=snake,->,>=triangle 90] (7.5, -1)  -- (4, -1) node[pos=0.5,anchor=south] {$3.00\%$};
 		
-		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{6M}]{} -- (3.5, -2.5) node[pos=0.5,anchor=south]{$-48.1$};
+		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{6M}]{} -- (3.5, -2.5) node[pos=0.5,anchor=south]{$3.75\%$};
 
-		\draw [snake=snake,->,>=triangle 90] (7.5, -2.5) -- (4, -2.5) node[pos=0.5,anchor=south] {$-54.6$};
+		\draw [snake=snake,->,>=triangle 90] (7.5, -2.5) -- (4, -2.5) node[pos=0.5,anchor=south] {$3.80\%$};
 		
-		\draw [->,>=triangle 90] (0, -4) node[label=left:{9M}]{} -- (3.5, -4) node[pos=0.5,anchor=south]{$-48.1$};
+		\draw [->,>=triangle 90] (0, -4) node[label=left:{9M}]{} -- (3.5, -4) node[pos=0.5,anchor=south]{$3.75\%$};
 
-		\draw [snake=snake,->,>=triangle 90] (7.5, -4) -- (4, -4) node[pos=0.5,anchor=south] {$-50.8$};
+		\draw [snake=snake,->,>=triangle 90] (7.5, -4) -- (4, -4) node[pos=0.5,anchor=south] {$4.00\%$};
 		
-		\draw [->,>=triangle 90] (0, -5.5) node[label=left:{12M}]{} -- (3.5, -5.5) node[pos=0.5,anchor=south]{$-48.1$};
+		\draw [->,>=triangle 90] (0, -5.5) node[label=left:{12M}]{} -- (3.5, -5.5) node[pos=0.5,anchor=south]{$3.75\%$};
 
-		\draw [snake=snake,->,>=triangle 90] (7.5, -5.5) -- (4, -5.5) node[pos=0.5,anchor=south] {$-47.0$};
+		\draw [snake=snake,->,>=triangle 90] (7.5, -5.5) -- (4, -5.5) node[pos=0.5,anchor=south] {$4.00\%$};
 		
-				\draw [->,>=triangle 90] (0, -7) node[label=left:{15M}]{} -- (3.5, -7) node[pos=0.5,anchor=south]{$-48.1$};
+				\draw [->,>=triangle 90] (0, -7) node[label=left:{15M}]{} -- (3.5, -7) node[pos=0.5,anchor=south]{$3.75\%$};
 
 		\draw [snake=snake,->,>=triangle 90] (7.5, -7) -- (4, -7) node[pos=0.5,anchor=south] {$E_5$};
 		
-				\draw [->,>=triangle 90] (0, -8.5) node[label=left:{18M}]{} -- (3.5, -8.5) node[pos=0.5,anchor=south]{$-48.1$};
+				\draw [->,>=triangle 90] (0, -8.5) node[label=left:{18M}]{} -- (3.5, -8.5) node[pos=0.5,anchor=south]{$3.75\%$};
 
 		\draw [snake=snake,->,>=triangle 90] (7.5, -8.5) -- (4, -8.5) node[pos=0.5,anchor=south] {$E_6$};
 \end{tikzpicture}
@@ -1046,23 +1044,23 @@ E_4 &= -47.0
 \justify
 У нас нет котировки свопа на 15 месяцев, есть только своп на 18 месяцев. Это даёт нам одно уравнение и два неизвестных значения EURIBOR $E_5$ и $E_6$.
 \begin{align*}
--54.8-54.6-50.8-47.0+E_5+E_6 = 6\cdot(-48.1)
+3.00\%+3.80\%+4.00\%+4.00\%+E_5+E_6 = 6\cdot3.75\%
 \end{align*}
 
 \justify
 Предположим, что будущие ставки изменяются линейно: на сколько $E_5$ больше $E_4$, на столько же $E_6$ больше, чем $E_5$.
 \begin{align*}
 \begin{cases}
--54.8-54.6-50.8-47.0+E_5+E_6 = 6\cdot(-48.1) \\
-E_5 - (-47.0) = E_6 - E_5
+3.00\%+3.80\%+4.00\%+4.00\%+E_5+E_6 = 6\cdot3.75\% \\
+E_5 - 4.00\% = E_6 - E_5
 \end{cases}
 \end{align*}
 
 С учётом предположения о линейной интерполяции:
 \begin{align*}
 \begin{cases}
-E_5 = -42.8 \\
-E_6 = -38.6
+E_5 = 3.90\% \\
+E_6 = 3.80\%
 \end{cases}
 \end{align*}
 \end{frame}
@@ -1189,7 +1187,7 @@ S_{6M}t_1\alert{\delta_1} + S_{6M}t_2\alert{\delta_2} = E_1t_1\delta_1 + \alert{
 \alert{\delta_1} = \dfrac{1}{1+E_1t_1} \\
 \alert{\delta_2} = \dfrac{1}{(1+E_1t_1)(1+\alert{E_2}t_2)}
 \end{cases}
-\Rightarrow E_2 \approx -54.60014
+\Rightarrow E_2 \approx 3.804\%
 \end{align*}
 \end{frame}
 
@@ -1216,13 +1214,13 @@ E(T_1, T_2) = \frac{\dfrac{\delta_{T_1}}{\delta_{T_2}} - 1}{T_2 - T_1}
 \centering
 \begin{tabular}{l|r|l|r}
 Срок & Купон & Срок & Купон \\ \hline
-3m   & $-49.2$ & 4y   & 57.2 \\
-6m   & $-41.2$ & 5y   & 67.1 \\
-9m   & $-32.9$ & 6y   & 73.4 \\
-1y   & $-22.6$ & 7y   & 79.0 \\
-18m  &   3.4 & 8y   & 84.9 \\
-2y   &  22.7 & 9y   & 90.8 \\
-3y   &  44.2 & 10y  & 96.4 
+3m   & 3.00\% & 4y   & 3.25\% \\
+6m   & 3.40\% & 5y   & 3.15\% \\
+9m   & 3.60\% & 6y   & 3.10\% \\
+1y   & 3.70\% & 7y   & 3.05\% \\
+18m  & 3.75\% & 8y   & 3.00\% \\
+2y   & 3.60\% & 9y   & 3.00\% \\
+3y   & 3.40\% & 10y  & 3.00\% 
 \end{tabular}
 \end{frame}
 
@@ -1235,13 +1233,13 @@ E(T_1, T_2) = \frac{\dfrac{\delta_{T_1}}{\delta_{T_2}} - 1}{T_2 - T_1}
   height=\textheight - 1cm,
   date coordinates in=x,
   date ZERO=2012-01-01,
-  xtick={2023-01-01, 2024-01-01, 2025-01-01, 2026-01-01, 2027-01-01, 2028-01-01, 2029-01-01},
+  xtick={2023-01-01, 2024-01-01, 2025-01-01, 2026-01-01, 2027-01-01, 2028-01-01, 2029-01-01, 2030-01-01},
   %minor xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01},
   %ytick={-0.5, 0, 0.5, 1.0, 1.5},
   %minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
   xticklabel={\year},
-  xmin=2022-03-31,
-  xmax=2029-01-01,
+  xmin=2023-03-13,
+  xmax=2030-01-01,
   %ymin=-0.75,
   %ymax=1.5,
   grid=major,
@@ -1253,7 +1251,7 @@ E(T_1, T_2) = \frac{\dfrac{\delta_{T_1}}{\delta_{T_2}} - 1}{T_2 - T_1}
   	   Сплайн
   },
   legend cell align={left},
-  legend pos = north west
+  legend pos = north east
 ]
 
 	\addplot[
@@ -1300,11 +1298,11 @@ E(T_1, T_2) = \frac{\dfrac{\delta_{T_1}}{\delta_{T_2}} - 1}{T_2 - T_1}
 \centering
 \begin{tabular}{l|l|l}
 & Receive & Pay \\ \hline
-Effective date & 23-Sep-2024 & 23-Sep-2024 \\ 
-Maturity date  & 22-Mar-2027 & 23-Mar-2027 \\
+Effective date & 15.09.2025 & 15.09.2025 \\ 
+Maturity date  & 15.03.2028 & 15.03.2028 \\
 Notional       & \EUR{1\,000\,000} & \EUR{1\,000\,000} \\
 Frquency       & Semi-annually     & Quarterly \\
-Rate           & \alert{0.9967\%}          & EURIBOR   \\
+Rate           & \alert{2.7646\%}          & EURIBOR-3M   \\
 Basis          & ACT/360           & ACT/360
 \end{tabular}
 \end{frame}
@@ -1314,18 +1312,18 @@ Basis          & ACT/360           & ACT/360
 \begin{frame}{Пример: риск}
 \justify
 PV01 (present value of 1 bp) или DV01 (dollar value of 1 bp): на сколько изменится
-PV, если процентная ставка изменится на 1 б.п.
+PV, если процентная ставка изменится на 1 базисный пункт.
 
 \justify
 \centering
 \begin{tabular}{l|r|r}
 Срок  & PV01 & Размер хэджа \\ \hline
-18m   & $-25$  евро/б.п. & $+\EUR{166\,000}$ \\
-2y    & $+138$ евро/б.п. & $-\EUR{683\,000}$ \\
-3y    & $+167$ евро/б.п. & $-\EUR{549\,000}$ \\
-4y    & $-28$  евро/б.п. & $+\EUR{70\,000}$ \\
-5y    & $-500$ евро/б.п. & $+\EUR{999\,000}$ \\ \hline
-Итого & $-248$ евро/б.п. & $+\EUR{3\,000}$
+18m   & $-23$  евро/б.п. & $+\EUR{158\,000}$ \\
+2y    & $+129$ евро/б.п. & $-\EUR{668\,000}$ \\
+3y    & $+155$ евро/б.п. & $-\EUR{545\,000}$ \\
+4y    & $-23$  евро/б.п. & $+\EUR{62\,000}$ \\
+5y    & $-455$ евро/б.п. & $+\EUR{989\,000}$ \\ \hline
+Итого & $-217$ евро/б.п. & $-\EUR{4\,000}$
 \end{tabular}
 
 \justify
@@ -1394,7 +1392,7 @@ $0.1\%$ --- базис или цена свопа.
 Под какую ставку мы сможем вкладывать деньги на день? Скорее всего --- близко к ESTER, средней ставке по депозитам овернайт в крупных банках.
 
 \justify
-Осталось только разобраться с процентным риском. Начиная цепочку депозитов сейчас, при ESTER $-0.57\%$, мы не знаем, по какой ставке будем открывать вклады через год. Вдруг ставки упадут ещё ниже?
+Осталось только разобраться с процентным риском. Начиная цепочку депозитов сейчас, при ESTER $2.40\%$, мы не знаем, по какой ставке будем открывать вклады через год. Вдруг ставки упадут ещё ниже?
 \end{frame}
 
 
@@ -1409,12 +1407,12 @@ $0.1\%$ --- базис или цена свопа.
 		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -2.5);
 		\draw (10.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (10.5, -2.5);
 
-		\draw [->,>=triangle 90] (0, -1) node[label=left:{1Y}]{} -- (5, -1) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot (-0.55\%)$};
+		\draw [->,>=triangle 90] (0, -1) node[label=left:{1Y}]{} -- (5, -1) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot (2.55\%)$};
 
 		\draw [snake=snake,->,>=triangle 90] (10.5, -1) -- (5.5, -1) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \overline{E_1}$};
 
 
-		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{2Y}]{} -- (5, -2.5) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot (-0.55\%)$};
+		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{2Y}]{} -- (5, -2.5) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot (2.55\%)$};
 
 		\draw [snake=snake,->,>=triangle 90] (10.5, -2.5) -- (5.5, -2.5) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \overline{E_2}$};
 \end{tikzpicture}
@@ -1432,7 +1430,7 @@ $\overline{E_1}$ и $\overline{E_2}$ --- средние ставки ESTER ($e_i
 \end{align*}
 
 \justify
-Фиксированная ставка $-0.55\%$ --- цена свопа.
+Фиксированная ставка $2.55\%$ --- цена свопа.
 \end{frame}
 
 
