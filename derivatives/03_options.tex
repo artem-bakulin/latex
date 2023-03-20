@@ -36,9 +36,9 @@
 \usepackage{eurosym}
 \renewcommand{\EUR}[1]{\textup{\euro}#1}
 
-\title{Опционы}
+\title{Опционы. Биномиальная модель}
 \author{Артём Бакулин}
-\date{21 марта 2022 г.}
+\date{20 марта 2023 г.}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -64,7 +64,7 @@
 \alert{Опцион колл (пут)} --- это контракт, который даёт владельцу право, но не обязанность, купить (продать) базовый актив по заранее оговоренной цене в заранее определённую дату. 
 
 \justify
-Пример: колл-опцион, который даёт право (но не обязанность) купить 1\,000 долларов за 72\,000 рублей рублей через 3 месяца. Сегодня за такой опцион нужно заплатить 500 рублей.
+Пример: колл-опцион, который даёт право (но не обязанность) купить 1\,000 долларов за 76\,000 рублей рублей через 3 месяца. Сегодня за такой опцион нужно заплатить 2\,000 рублей.
 \end{frame}
 
 
@@ -102,9 +102,9 @@
 		\draw [->, >=triangle 45] (8.5, 0) .. controls (8, 0.5) and (7, 0.5) .. (6.5, 0) node[pos=0.5, anchor=south]{$-1$ день};
 		
 		\circlewithtext{0.5}{0}{Сегодня};
-		\circlewithtext{2.5}{0}{\begin{tabular}{c}Спот \\ $-500$ р. \end{tabular}};
+		\circlewithtext{2.5}{0}{\begin{tabular}{c}Спот \\ $-2\,000$ р. \end{tabular}};
 		\circlewithtext{6.5}{0}{Экспирация};
-		\circlewithtext{8.5}{0}{\begin{tabular}{c}Поставка \\ $+\$1\,000$ \\ $-72\,000$ р.\end{tabular}};
+		\circlewithtext{8.5}{0}{\begin{tabular}{c}Поставка \\ $+\$1\,000$ \\ $-76\,000$ р.\end{tabular}};
 	\end{tikzpicture}
 	
 \justify
@@ -140,25 +140,25 @@
 
 \begin{frame}{Пример: колл-опцион}
 \justifying
-Колл-опцион на покупку долларов за рубли со страйком 72.
+Колл-опцион на покупку долларов за рубли со страйком 76.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=64:80,
+			domain=68:84,
 			%axis lines=middle,
-			xtick={64,66,...,80},
-			ytick={0,1,2,...,8},
-			xmin=64, xmax=80,
-			ymin=-1, ymax=8,
+			xtick={68,70,...,84},
+			ytick={-3,-2,...,8},
+			xmin=68, xmax=84,
+			ymin=-3, ymax=8,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Выплата (payoff)},
 		]
-  \addplot[Set1-A, very thick] {(\x > 72)*(\x - 72) + 0.05};
+  \addplot[Set1-A, very thick] {(\x > 76)*(\x - 76) + 0.05};
   
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 500, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -167,18 +167,18 @@
 
 \begin{frame}{Пример: покупаем колл-опцион}
 \justifying
-Покупка колл-опциона со страйком 72 за премию 0.5 руб.
+Покупка колл-опциона со страйком 76 за премию 2 руб.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=64:80,
+			domain=68:84,
 			%axis lines=middle,
-			xtick={64,66,...,80},
-			ytick={0,1,2,...,8},
-			xmin=64, xmax=80,
-			ymin=-1, ymax=8,
+			xtick={68,70,...,84},
+			ytick={-3,-2,...,8},
+			xmin=68, xmax=84,
+			ymin=-3, ymax=8,
 			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
 			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
 			grid = major,
@@ -186,9 +186,9 @@
 			ylabel={Прибыль (profit'n'loss)},
 			%scaled x ticks=false
 		]
-  \addplot[Set1-A, very thick] {(\x > 72)*(\x - 72) - 0.5};
+  \addplot[Set1-A, very thick] {(\x > 76)*(\x - 76) - 2};
   
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -197,18 +197,18 @@
 
 \begin{frame}{Пример: покупаем пут-опцион}
 \justifying
-Покупка пут-опциона со страйком 72 за премию 0.5 руб.
+Покупка пут-опциона со страйком 76 за премию 2 руб.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=64:80,
+			domain=68:84,
 			%axis lines=middle,
-			xtick={64,66,...,80},
-			ytick={0,1,2,...,8},
-			xmin=64, xmax=80,
-			ymin=-1, ymax=8,
+			xtick={68,70,...,84},
+			ytick={-3,-2,...,8},
+			xmin=68, xmax=84,
+			ymin=-3, ymax=8,
 			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
 			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
 			grid = major,
@@ -216,9 +216,9 @@
 			ylabel={Прибыль (profit'n'loss)},
 			%scaled x ticks=false
 		]
-  \addplot[Set1-A, very thick] {(\x < 72)*(72 - \x) - 0.5};
+  \addplot[Set1-A, very thick] {(\x < 76)*(76 - \x) - 2};
   
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -227,18 +227,18 @@
 
 \begin{frame}{Пример: продаём колл-опцион}
 \justifying
-Продажа колл-опциона со страйком 72 за премию 0.5 руб.
+Продажа колл-опциона со страйком 76 за премию 2 руб.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=64:80,
+			domain=68:84,
 			%axis lines=middle,
-			xtick={64,66,...,80},
-			ytick={-8,-7,...,0,1},
-			xmin=64, xmax=80,
-			ymin=-8, ymax=1,
+			xtick={66,68,...,84},
+			ytick={-8,-7,...,3},
+			xmin=68, xmax=84,
+			ymin=-8, ymax=3,
 			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
 			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
 			grid = major,
@@ -246,7 +246,7 @@
 			ylabel={Прибыль (profit'n'loss)},
 			%scaled x ticks=false
 		]
-  \addplot[Set1-A, very thick] {(\x > 72)*(72 - \x) + 0.5};
+  \addplot[Set1-A, very thick] {(\x > 76)*(76 - \x) + 2};
   
   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
 \end{axis}
@@ -257,18 +257,18 @@
 
 \begin{frame}{Пример: продаём пут-опцион}
 \justifying
-Продажа пут-опциона со страйком 72 за премию 0.5 руб.
+Продажа пут-опциона со страйком 76 за премию 2 руб.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=64:80,
+			domain=68:84,
 			%axis lines=middle,
-			xtick={64,66,...,80},
-			ytick={-8,-7,...,0,1},
-			xmin=64, xmax=80,
-			ymin=-8, ymax=1,
+			xtick={68,70,...,94},
+			ytick={-8,-7,...,3},
+			xmin=68, xmax=84,
+			ymin=-8, ymax=3,
 			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
 			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
 			grid = major,
@@ -276,9 +276,9 @@
 			ylabel={Прибыль (profit'n'loss)},
 			%scaled x ticks=false
 		]
-  \addplot[Set1-A, very thick] {(\x < 72)*(\x - 72) + 0.5};
+  \addplot[Set1-A, very thick] {(\x < 76)*(\x - 76) + 2};
   
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -287,10 +287,10 @@
 
 \begin{frame}{Хэджирование с помощью опционов}
 \justify
-Через три месяца нам понадобится \$1\,000 на отпуск. Форвардный курс на три месяца 72.0. Если купить форвард, мы зафиксируем курс, но что делать, если рубль укрепится до 50? Будет обидно покупать доллары по 72 при рыночном курсе 50.
+Через три месяца нам понадобится \$1\,000 на отпуск. Форвардный курс на три месяца 76.0. Если купить форвард, мы зафиксируем курс, но что делать, если рубль укрепится до 50? Будет обидно покупать доллары по 76 при рыночном курсе 50.
 
 \justify
-Решение: можно купить колл-опцион со страйком 72 на \$1\,000 за премию 500 рублей. Если доллар еще вырастет, мы исполняем опцион и покупаем по 72. Если рубль внезапно укрепляется до 50, опцион пропадает, а мы покупаем по рыночному курсу 50.
+Решение: можно купить колл-опцион со страйком 76 на \$1\,000 за премию 2\,000 рублей. Если доллар сильно вырастет, мы исполняем опцион и покупаем по 76. Если рубль внезапно укрепляется до 50, то опцион пропадает, а мы покупаем по рыночному курсу 50.
 
 \justify
 Плюс: не так обидно при укреплении рубля. Минус: прямо сейчас нужно заплатить за опцион. Опцион работает как страховка от падения рубля.
@@ -301,10 +301,10 @@
 
 \begin{frame}{Хэджирование с помощью опционов --- 2}
 \justify
-Через три месяца нам придут дивиденды \$1\,000 от иностранных инвестиций. Тогда же нам нужно будет заплатить рубли за ипотеку. Форвардный курс на три месяца 72.0. Если продать форвард, мы зафиксируем курс, но что делать, если рубль ослабнет до 90? Будет обидно продавать доллары по 72 при рыночном курсе 90.
+Через три месяца нам придут дивиденды \$1\,000 от иностранных инвестиций. Тогда же нам нужно будет заплатить рубли за ипотеку. Форвардный курс на три месяца 76.0. Если продать форвард, мы зафиксируем курс, но что делать, если рубль ослабнет до 90? Будет обидно продавать доллары по 76 при рыночном курсе 90.
 
 \justify
-Решение: можно купить пут-опцион со страйком 72 на \$1\,000 за премию 500 рублей. Если доллар упадёт до 50, мы исполняем опцион и продаём доллары по 72. Если доллар укрепится до 90, опцион пропадает, а мы продадим доллары по рыночному курсу 90.
+Решение: можно купить пут-опцион со страйком 76 на \$1\,000 за премию 2\,000 рублей. Если доллар упадёт до 50, мы исполняем опцион и продаём доллары по 76. Если доллар укрепится до 90, опцион пропадает, а мы продадим доллары по рыночному курсу 90.
 
 \justify
 Плюс: не так обидно при укреплении доллара. Минус: прямо сейчас нужно заплатить за опцион. Опцион работает как страховка от укрепления рубля.
@@ -314,23 +314,23 @@
 
 \begin{frame}{Спекуляция с помощью опционов}
 \justify
-Хрустальный шар показал, что за три месяца доллар сильно укрепится относительного текущего форвардного курса 72. Мы хотим на этом заработать, но \sout{жена} акционеры нашего хэдж-фонда выделили нам всего 500 рублей.
+Хрустальный шар показал, что за три месяца доллар сильно укрепится относительного текущего форвардного курса 76. Мы хотим на этом заработать, но \sout{жена} акционеры нашего хэдж-фонда выделили нам бюджет всего 2\,000 рублей.
 
 \justify
-Решение: можно купить колл-опцион со страйком 72 на \$1\,000 за премию 500 рублей. Если доллар укрепится до 80 рублей, мы заработаем $(80 - 72) \cdot 1\,000 - 500 = 7\,500$ рублей. Если этого не случится, мы просто потеряем нашу ставку.
+Решение: можно купить колл-опцион со страйком 76 на \$1\,000 за премию 2\,000 рублей. Если доллар укрепится до 90 рублей, мы заработаем $(90 - 76) \cdot 1\,000 - 2\,000 = 12\,000$ рублей. Если этого не случится, мы просто потеряем нашу ставку.
 
 \justify
-Опцион позволяет взять <<плечо>> --- увеличить выигрыш при хорошем исходе (как будто у нас есть целая \$1,000) ценой потерь в худшем исходе (можно потерять всю премию). Однако, проигрыш строго ограничен снизу, а выигрыш может быть бесконечно большим.
+Опцион позволяет взять <<плечо>> --- увеличить выигрыш при хорошем исходе (как будто у нас есть целая \$1\,000) ценой потерь в худшем исходе (можно потерять всю премию). Однако, проигрыш строго ограничен снизу, а выигрыш может быть бесконечно большим.
 \end{frame}
 
 
 
 \begin{frame}{Спекуляция с помощью опционов --- 2}
 \justify
-Хрустальный шар показал, что за три месяца доллар сильно упадёт относительного текущего форвардного курса 72. Мы хотим на этом заработать, но \sout{жена} акционеры нашего хэдж-фонда выделили нам всего 500 рублей.
+Хрустальный шар показал, что за три месяца доллар сильно упадёт относительного текущего форвардного курса 76. Мы хотим на этом заработать, но \sout{жена} акционеры нашего хэдж-фонда выделили нам всего 2\,000 рублей.
 
 \justify
-Решение: можно купить пут-опцион со страйком 72 на \$1\,000 за премию 500 рублей. Если доллар упадёт до 64 рублей, мы заработаем $(72 - 64) \cdot 1\,000 - 500 = 7\,500$ рублей. Если этого не случится, мы просто потеряем нашу ставку.
+Решение: можно купить пут-опцион со страйком 76 на \$1\,000 за премию 2\,000 рублей. Если доллар упадёт до 62 рублей, мы заработаем $(76 - 62) \cdot 1\,000 - 2\,000 = 12\,000$ рублей. Если этого не случится, мы просто потеряем нашу ставку.
 
 \justify
 Опцион пут позволяет сделать ставку на падение базового актива (доллара).
@@ -363,11 +363,11 @@
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=64:80,
+			domain=68:84,
 			%axis lines=middle,
-			xtick={64,66,...,80},
+			xtick={68,70,...,84},
 			ytick={-8,-7,...,6},
-			xmin=64, xmax=80,
+			xmin=68, xmax=84,
 			ymin=-6, ymax=6,
 			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
 			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
@@ -377,9 +377,9 @@
 			%scaled x ticks=false
 		]
 	
-  \addplot[Set1-A, very thick, dashed] {-(\x < 70)*(70 - \x) + 0.5};
-  \addplot[Set1-B, very thick, dashed] {(\x > 74)*(\x - 74) - 0.5};
-  \addplot[Set1-C, very thick] {-(\x < 70)*(70 - \x) + 0.5 + (\x > 74)*(\x - 74) - 0.5 + 0.05};	
+  \addplot[Set1-A, very thick, dashed] {-(\x < 74)*(74 - \x) + 0.5};
+  \addplot[Set1-B, very thick, dashed] {(\x > 78)*(\x - 78) - 0.5};
+  \addplot[Set1-C, very thick] {-(\x < 74)*(74 - \x) + 0.5 + (\x > 78)*(\x - 78) - 0.5 + 0.05};	
 
   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
 \end{axis}
@@ -396,11 +396,11 @@
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=64:80,
+			domain=68:84,
 			%axis lines=middle,
-			xtick={64,66,...,80},
+			xtick={68,70,...,84},
 			ytick={-8,-7,...,6},
-			xmin=64, xmax=80,
+			xmin=68, xmax=84,
 			ymin=-6, ymax=6,
 			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
 			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
@@ -410,9 +410,9 @@
 			%scaled x ticks=false
 		]
 		
-	  \addplot[Set1-A, very thick, dashed] {(\x > 70)*(\x - 70) - 0.5};
-  \addplot[Set1-B, very thick, dashed] {-(\x > 74)*(\x - 74) + 0.25};
-  \addplot[Set1-C, very thick] {(\x > 70)*(\x - 70) - 0.5 -(\x > 74)*(\x - 74) + 0.25};
+	  \addplot[Set1-A, very thick, dashed] {(\x > 74)*(\x - 74) - 1};
+  \addplot[Set1-B, very thick, dashed] {-(\x > 78)*(\x - 78) + 0.5};
+  \addplot[Set1-C, very thick] {(\x > 74)*(\x - 74) - 1 -(\x > 78)*(\x - 78) + 0.5};
   
   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
 \end{axis}
@@ -429,11 +429,11 @@
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=64:80,
+			domain=68:84,
 			%axis lines=middle,
-			xtick={64,66,...,80},
+			xtick={68,70,...,84},
 			ytick={-8,-7,...,6},
-			xmin=64, xmax=80,
+			xmin=68, xmax=84,
 			ymin=-6, ymax=6,
 			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
 			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
@@ -443,9 +443,9 @@
 			%scaled x ticks=false
 		]
 		
-	  \addplot[Set1-A, very thick, dashed] {(\x < 72)*(72 - \x) - 0.5};
-  \addplot[Set1-B, very thick, dashed] {(\x > 72)*(\x - 72) - 0.5};
-  \addplot[Set1-C, very thick] {(\x < 72)*(72 - \x) - 0.5 + (\x > 72)*(\x - 72) - 0.5};
+	  \addplot[Set1-A, very thick, dashed] {(\x < 76)*(76 - \x) - 1};
+  \addplot[Set1-B, very thick, dashed] {(\x > 76)*(\x - 76) - 1};
+  \addplot[Set1-C, very thick] {(\x < 76)*(76 - \x) - 1 + (\x > 76)*(\x - 76) - 1};
   
   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
 \end{axis}
@@ -462,11 +462,11 @@
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=64:80,
+			domain=68:84,
 			%axis lines=middle,
-			xtick={64,66,...,80},
+			xtick={68,70,...,84},
 			ytick={-6,-5,...,6},
-			xmin=64, xmax=80,
+			xmin=68, xmax=84,
 			ymin=-6, ymax=6,
 			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
 			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
@@ -476,9 +476,9 @@
 			%scaled x ticks=false
 		]
 		
-	\addplot[Set1-A, very thick, dashed] {(\x > 72)*(\x - 72) + 0.1};
-  	\addplot[Set1-B, very thick, dashed] {-(\x < 72)*(72-\x) - 0.1};
-  	\addplot[Set1-C, very thick] {(\x > 72)*(\x - 72) -(\x < 72)*(72-\x) };
+	\addplot[Set1-A, very thick, dashed] {(\x > 76)*(\x - 76) + 0.1};
+  	\addplot[Set1-B, very thick, dashed] {-(\x < 76)*(76-\x) - 0.1};
+  	\addplot[Set1-C, very thick] {(\x > 76)*(\x - 76) -(\x < 76)*(76-\x) };
  
    \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
 \end{axis}
@@ -489,17 +489,17 @@
 
 \begin{frame}{Комбинации: базовый актив и долг}
 \justifying
-1 доллар и долг в 72 рубля.
+1 доллар и долг в 76 рублей.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=64:80,
+			domain=68:84,
 			%axis lines=middle,
-			xtick={64,66,...,80},
+			xtick={68,70,...,84},
 			ytick={-6,-5,...,6},
-			xmin=64, xmax=80,
+			xmin=68, xmax=84,
 			ymin=-6, ymax=6,
 			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
 			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
@@ -509,7 +509,7 @@
 			%scaled x ticks=false
 		]
 		
-  	\addplot[Set1-C, very thick] {\x - 72};
+  	\addplot[Set1-C, very thick] {\x - 76};
  
    \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
 \end{axis}
@@ -539,9 +539,326 @@ C_K(t) - P_K(t) = S(t) - Ke^{-r(T-t)}
 
 
 
+\begin{frame}{Цифровые опционы}
+\justify
+Европейский цифровой (\en{\alert{digital}}) опцион колл (пут) --- контракт, по которому 
+владелец получит фиксированную выплату, если цена базового актива на момент экспирации 
+будет выше (ниже) заранее зафиксированного страйка.
+
+\justify
+Пример: европейский цифровой колл на пару доллар-рубль со страйком 76, экспирацией 
+через 3 месяца и номиналом 1\,000 рублей. Владелец получит 1\,000 рублей, если через 3 
+месяца спот-курс будет выше 76. Сейчас за такой опцион нужно заплатить премию 500 
+рублей.
+\end{frame}
+
+
+
+\begin{frame}{Покупаем цифровой колл}
+\justifying
+Цифровой колл: страйк 76, номинал 1 р.
+
+\justifying
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			domain=68:84,
+			%axis lines=middle,
+			xtick={68,70,...,84},
+			ytick={-6,-5,...,6},
+			xmin=68, xmax=84,
+			ymin=-2, ymax=2,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Выплата (payoff)},
+			%scaled x ticks=false
+		]
+		
+	\addplot[Set1-A, very thick, domain=76:84] {1};
+	\addplot[Set1-A, very thick, domain=68:76] {0.02};
+ 
+   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Покупаем цифровой пут}
+\justifying
+Цифровой пут: страйк 76, номинал 1 р.
+
+\justifying
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			domain=68:84,
+			%axis lines=middle,
+			xtick={68,70,...,84},
+			ytick={-6,-5,...,6},
+			xmin=68, xmax=84,
+			ymin=-2, ymax=2,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Выплата (payoff)},
+			%scaled x ticks=false
+		]
+		
+	\addplot[Set1-A, very thick, domain=76:84] {0.02};
+	\addplot[Set1-A, very thick, domain=68:76] {1};
+ 
+   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Цифровые опционы: применение}
+\justify
+Цифровой опцион --- удобный инструмент для спекуляции. Вы увидели в стеклянном шаре,
+что курс будет выше (ниже) определённого уровня, но не знаете, будет ли он сильно выше
+или совсем чуть-чуть. Вы покупаете цифровой колл (пут) и делаете ставку.
+
+\justify
+Плюсы: простая функция выплаты, цена --- почти что вероятность (сколько рублей вы 
+заплатите за ставку, которая заработает 1000 рублей, если доллар будет выше 76?). 
+Недостатки: сложно хеджировать опцион, если к моменту экспирации цена базового актива окажется около страйка. Маркет-мейкеры закладывают это неудобство в спред bid-ask.
+
+\justify
+Можно ли как-то связать цену цифрового опциона с ценой европейского опциона?
+\end{frame}
+
+
+
+\begin{frame}{Цифровой опцион и колл-спред}
+\justifying
+\only<1>{Колл-спред: купить колл-75.5, продать колл-76.5}
+\only<2>{Колл-спред: купить 2 колла-75.75, продать 2 колла-76.25}
+\only<3>{Колл-спред: купить 10 коллов-75.95, продать 10 коллов-76.05}
+
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			domain=74:78,samples=500,
+			%axis lines=middle,
+			xtick={72,73,...,80},
+			ytick={-2,-1.5,...,2},
+			xmin=74, xmax=78,
+			ymin=-1.5, ymax=1.5,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Выплата (payoff)},
+			%scaled x ticks=false
+		]
+
+\only<1>{
+	\addplot[Set1-A, very thick, dashed] {(\x > 75.5)*(\x - 75.5) - 0.03};
+  	\addplot[Set1-B, very thick, dashed] {-(\x > 76.5)*(\x - 76.5) + 0.06};
+  	\addplot[Set1-C, very thick] {(\x > 75.5)*(\x - 75.5) - (\x > 76.5)*(\x - 76.5) + 0.03};
+}
+\only<2>{
+	\addplot[Set1-A, very thick, dashed] {2*(\x > 75.75)*(\x - 75.75) - 0.03};
+  	\addplot[Set1-B, very thick, dashed] {-2*(\x > 76.25)*(\x - 76.25) + 0.06};
+  	\addplot[Set1-C, very thick] {2*(\x > 75.75)*(\x - 75.75) - 2*(\x > 76.25)*(\x - 76.25) + 0.03};
+}
+\only<3>{
+	\addplot[Set1-A, very thick, dashed] {10*(\x > 75.95)*(\x - 75.95) - 0.03};
+  	\addplot[Set1-B, very thick, dashed] {-10*(\x > 76.05)*(\x - 76.05) + 0.06};
+  	\addplot[Set1-C, very thick] {10*(\x > 75.95)*(\x - 75.95) - 10*(\x > 76.05)*(\x - 76.05) + 0.03};
+}
+ 
+   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Цифровой опцион: репликация}
+\justify
+Цифровой колл-опцион со страйком $K$ можно приблизить колл-спредом из ванильных
+колл-опционов со страйками $K-\varepsilon$ и $K+\varepsilon$:
+\begin{align*}
+D(K) \approx NC\left(K - \dfrac{1}{2N}\right) - NC\left(K + \dfrac{1}{2N}\right)
+\end{align*}
+Здесь $C(K)$ --- цена ванильного колл-опциона со страйком $K$, $D(K)$ --- цена 
+цифрового колла, $N$ --- число ванильных опционов в колл-спреде.
+
+\justify
+Хозяйке на заметку: цена цифрового опциона --- производная цены ванильного опциона по 
+страйку.
+\begin{align*}
+D(K) = \lim\limits_{\varepsilon\to 0}\dfrac{C(K-\varepsilon) - C(K+\varepsilon)}{2\varepsilon} = -\dfrac{\partial C}{\partial K}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Паритет колл-пут для цифровых опционов}
+\justify
+Рассмотрим портфель из цифрового колла и цифрового пута с одинаковым страйком:
+
+\justify
+\begin{itemize}
+\justifying
+\item Колл выплачивает 1 единицу валюты, если цена базового актива $\ge K$ (*).
+\item Пут выплачивает 1 единицу валюты, если цена базового актива $< K$.
+\end{itemize}
+
+\justify
+Портфель из цифрового колла и пута выплачивает 1 единицу валюты всегда, что бы ни 
+случилось, то есть это --- безрисковый депозит.
+\begin{align*}
+C_{digital}(K) + P_{digital}(K) = e^{-rT}
+\end{align*}
+
+\justify
+(*) Предположим, что колл выплачивает 1 единицу и при точном попадании в страйк.
+\end{frame}
+
+
+
+\begin{frame}{Барьеры}
+\justify
+Выплата по опциону с барьером (\en{barrier}) зависит от того, примет ли цена базового 
+актива определённое значение.
+
+\justify
+- \en{Knock-in (KI)}\ барьер: опцион возникает, только если цена достигает данного уровня.
+
+- \en{Kock-out (KO)}\ барьер: опцион пропадает, если цена достигает данного уровня.
+
+\justify
+- Европейский барьер: наблюдается только в момент экспирации.
+
+- Американский барьер: наблюдается всё время жизни опциона.
+
+- Оконный барьер: наблюдается в определённый промежуток времени.
+
+\justify
+Обычно инвесторы добавляют в опционы барьеры, чтобы сделать их дешевле.
+\end{frame}
+
+
+\begin{frame}{Пример: европейский барьер}
+\justify
+Колл со страйком 76 и европейским knock-out барьером 80.
+
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			domain=68:84,
+			%axis lines=middle,
+			xtick={68,70,...,84},
+			ytick={-3,-2,...,8},
+			xmin=68, xmax=84,
+			ymin=-3, ymax=8,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Выплата (payoff)},
+			%scaled x ticks=false
+		]
+  \addplot[Set1-A, very thick,domain=68:79.99] {(\x > 76)*(\x - 76) + 0.03};
+  \addplot[Set1-A, very thick,domain=80:84] {0.03};
+  
+  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Репликация европейских опционов}
+\justify
+Любой дериватив <<европейского>> типа (тот, в котором выплата определяется ценой 
+базового актива на момент экспирации) можно реплицировать комбинацией ванильных и/или
+цифровых европейских опционов.
+
+\justify
+- В точках, где график выплаты <<ломается>> добавялем ванильный опцион.
+
+- В точках, где график выплаты разрывный, добавляем цифровой опцион.
+
+\justify
+Как реплицировать европейский колл со страйком 76 и евпропейским \en{knock-out} 
+барьером 80?
+\end{frame}
+
+
+
+\begin{frame}{Репликация европейского барьера}
+\justify
+Купить ванильный колл-76
+\only<2->{, продать ванильный колл-80}
+\only<3->{, продать 4 цифровых колла-80}
+\justify
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			domain=70:86,
+			%axis lines=middle,
+			xtick={70,72,...,86},
+			ytick={-5,-4,...,6},
+			xmin=70, xmax=86,
+			ymin=-5, ymax=6,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Выплата (payoff)},
+			%scaled x ticks=false
+		]
+  \addplot[Set1-A, very thick, dashed] {(\x > 76)*(\x - 76) + 0.06};
+\only<2->{
+  \addplot[Set1-B, very thick, dashed] {-(\x > 80)*(\x - 80) - 0.03};
+}
+\only<2>{
+  \addplot[Set1-C, very thick] {-(\x > 80)*(\x - 80) - 0.03 + (\x > 76)*(\x - 76) + 0.06};
+}
+\only<3->{
+	\addplot[Set1-E, very thick, dashed, domain=70:80] {-0.06};
+	\addplot[Set1-E, very thick, dashed, domain=80:86] {-4};
+}
+\only<3>{
+	\addplot[Set1-C, very thick, domain=70:80] {-(\x > 80)*(\x - 80) - 0.03 + (\x > 76)*(\x - 76) + 0.06};
+	\addplot[Set1-C, very thick, domain=80:90] {0.03};
+}
+
+  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Барьерные опционы: пример}
+\justify
+<<В декабре 2013 года «Транснефть» купила барьерные опционы у Сбербанка с целью снизить стоимость обслуживания облигаций.>>
+
+\justify
+<<Компания «Транснефть» подала иск к Сбербанку, в котором требует признать недействительной сделку с производными инструментами, которая была заключена перед валютным кризисом 2014 года и принесла компании миллиардные убытки.>>
+
+\justify
+\small
+\url{www.rbc.ru/business/27/01/2017/588b62d79a7947730d59c4fe}
+\end{frame}
+
+
 \begin{frame}{Кто продаёт опционы?}
 \justify
-Опционы --- удобный инструмент и для хэджирования, и для спекуляции. Возможные потери ограничены снизу размером премии, а возможный выигрыш --- нет (для колл-опциона). Кто же тогда продаёт опционы, то есть соглашается на ограниченную прибыль в обмен на неограниченные убытки?
+Опционы --- удобный инструмент и для хэджирования, и для спекуляции. Возможные потери 
+ограничены снизу размером премии, а возможный выигрыш --- нет (для колл-опциона). Кто 
+же тогда продаёт опционы, то есть соглашается на ограниченную прибыль в обмен на 
+неограниченные убытки?
 \end{frame}
 
 
@@ -1020,315 +1337,6 @@ C^k_n &= \dfrac{n!}{k!(n-k)!}
 предельной теоремы здесь (28 страниц):
 
 \url{http://www.math.cmu.edu/~handron/21_370/BS.pdf}
-\end{frame}
-
-
-
-\begin{frame}{Демонстрация: доска Гальтона}
-
-\url{https://www.mathsisfun.com/data/quincunx.html}
-\end{frame}
-
-
-
-\begin{frame}{Геометрическое броуновское движение}
-\justify
-Предположим, что до экспирации опциона осталось $T$ лет, и мы построили биномиальное дерево из $N$ шагов. Длина каждого шага $\Delta t = T/N$ лет.
-
-\justify
-На каждом самом маленьком шаге цена акции растёт на $\mu$ процентов годовых в среднем, а также колеблется вокруг этого среднего со стандартным отклонением (волатильностью) $\sigma$.
-\begin{align*}
-\frac{S_{i+1} - S_i}{S_i} = \mu \Delta t + \sigma \sqrt{\Delta t}\xi_i, \quad \xi_i \sim \mathcal{N}(0, 1)
-\end{align*}
-
-\justify
-Это геометрическое броуновское движение. Такой процесс можно получить, если в биномиальном дереве положить
-\begin{align*}
-u &= 1 + \mu \Delta t + \sigma\sqrt{\Delta t} \\
-d &= 1 + \mu \Delta t - \sigma\sqrt{\Delta t}
-\end{align*}
-\end{frame}
-
-
-
-\newcommand{\plotBrownianMotion}[2] {
-	
-	\addplot[
-		color = #2,
-		mark = none,
-		thick
-	]
-	table[
-		x=t,
-		y=s,
-		col sep=comma
-	]
-	{#1};
-	
-	\addplot[
-		color = #2,
-		mark = none,
-		thick,
-		dashed,
-		forget plot
-	]
-	table[
-		x=t,
-		y=trend,
-		col sep=comma
-	]
-	{#1};
-}
-
-
-
-\begin{frame}{Геометрическое броуновское движение}
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-  width=\textwidth,
-  height=\textheight - 1cm,
-  xlabel near ticks,
-  ylabel near ticks,
-  xmin=0, xmax=1,
-  legend entries = {
-  	   {$\mu=5\%, \sigma=10\%, N=100$},
-      {$\mu=10\%, \sigma=40\%, N=500$}
-  },
-  legend cell align={left},
-  legend style={at={(0.97,0.03)},anchor=south east}
-]
-
-	\plotBrownianMotion{gbm_sample_100.csv}{Set1-A}
-	\plotBrownianMotion{gbm_sample_500.csv}{Set1-B}
-\end{axis}
-\end{tikzpicture}
-\end{frame}
-
-
-
-\begin{frame}{Геометрическое броуновское движение}
-\justify
-Если геометрическое броуновское движение начинается с цены базового актива $S_0$ с трендом $\mu$ и волатильностью $\sigma$, то цена базового актива через время $T$ $S_T$ есть случайная величина:
-\begin{align*}
-S_T = S_0\cdot \exp\left((\mu - \sigma^2/2)T + \sigma\sqrt{T}\xi\right) \quad \xi \sim \mathcal{N}(0, 1)
-\end{align*} 
-
-\justify
-Логарифм изменения цены (грубо: процентный прирост) есть случайная величина, которая следует нормальному распределению:
-\begin{align*}
-\ln\left(\frac{S_T}{S_0}\right) = \left(\mu - \frac{\sigma^2}{2}\right)T + \sigma\sqrt{T}\xi \quad \xi \sim \mathcal{N}(0, 1)
-\end{align*}
-
-\justify
-Поэтому говорят, что цена базового актива следует лог-нормальному распределению.
-\end{frame}
-
-
-
-\begin{frame}{Геометрическое броуновское движение}
-\centering
-\begin{tikzpicture}
-	\begin{axis}[
-		width = \textwidth,
-		height = \textheight - 1cm,
-		xmin = -5, xmax = 5,
-		ymin = 0, ymax = 0.7,
-		grid = major,
-		legend entries = {Нормальное, Лог-нормальное},
-		legend pos = north west
-	]
-		
-		\addplot[color=Set1-A, thick] table[x=x, y=norm_density, col sep=comma] {norm_and_lognorm_density.csv};
-		
-				\addplot[color=Set1-B, thick] table[x=x, y=lognorm_density, col sep=comma] {norm_and_lognorm_density.csv};
-	\end{axis}
-\end{tikzpicture}
-\end{frame}
-
-
-
-\begin{frame}{Модель Блэка-Шоулза}
-\justify
-Рассмотрим следующую модель:
-\begin{itemize}
-\item Базовый актив не платит дивидендов, его цена $S_0$.
-\item Европейский колл-опцион со сроком экспирации $T$ лет и страйком $K$.
-\item Безрисковая процентная ставка $r$ постоянна.
-\item Если биномиальное дерево состоит из $N$ шагов, то на каждом шаге цена акции умножается либо на $u = \mu T/N + \sigma\sqrt{T/N}$ либо на $d=\mu T/N - \sigma\sqrt{T/N}$, то есть цена следует геометрическому броуновскому движению. Здесь $\sigma=const$ --- волатильность, $\mu$ --- тренд.
-\item Идеальный ликвидный рынок без транзакционных издержек и без возможностей для арбитража.
-\end{itemize}
-\end{frame}
-
-
-
-\begin{frame}{Модель Блэка-Шоулза}
-Цена европейского колл-опциона задается формулой:
-\begin{align*}
-C_{BS} &= S_0N(d_1) - Ke^{-rT}N(d_2)
-\end{align*}
-где
-\begin{align*}
-d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r + \dfrac{\sigma^2}{2}\right)T\right) \\
-d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r - \dfrac{\sigma^2}{2}\right)T\right) \\
-N(x) &= \dfrac{1}{\sqrt{2\pi}}\int\limits_{-\infty}^x e^{-\frac{t^2}{2}}dt
-\end{align*}
-
-\justify
-Цена не зависит от тренда $\mu$!
-\end{frame}
-
-
-
-\begin{frame}{Модель Блэка-Шоулза}
-\justify
-Если базовый актив имеет дивидендную доходность $q$  и дивиденды выплачиваются непрерывно (валюта, индекс акций, нефть в хранилище):
-\begin{align*}
-C_{BS} &= S_0e^{-qT}N(d_1) - Ke^{-rT}N(d_2)
-\end{align*}
-где
-\begin{align*}
-d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q + \dfrac{\sigma^2}{2}\right)T\right) \\
-d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q- \dfrac{\sigma^2}{2}\right)T\right)
-\end{align*}
-\end{frame}
-
-
-
-\begin{frame}{Модель Блэка-Шоулза}
-\justify
-Пример: колл-опцион со страйком $K=72$, сроком $T=0.25$ лет, $r=6\%$, $q=0\%$.
-
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-			domain=64:80,
-			xtick={64,66,...,80},
-			ytick={0,1,2,...,10},
-			xmin=64, xmax=80,
-			ymin=0, ymax=10,
-			grid = major,
-			xlabel={Курс сегодня ($S_0$)},
-			ylabel={Цена опциона},
-  legend entries = {
-  	   $\sigma=25\%$,
-  	   $\sigma=10\%$,
-  	   $\sigma=5\%$,
-  	   $\sigma=0\%$
-  },
-  legend cell align={left},
-  legend style={at={(0.03,0.97)},anchor=north west}
-]
-
-	\addplot[color = Set1-A, mark = none, thick]
-	table[
-		x=S,
-		y=C_25,
-		col sep=comma
-	]
-	{call_price.csv};
-	
-	\addplot[color = Set1-B, mark = none, thick]
-	table[
-		x=S,
-		y=C_10,
-		col sep=comma
-	]
-	{call_price.csv};
-	
-	\addplot[color = Set1-C, mark = none, thick]
-	table[
-		x=S,
-		y=C_5,
-		col sep=comma
-	]
-	{call_price.csv};
-	
-	\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
-\end{axis}
-\end{tikzpicture}
-\end{frame}
-
-
-
-\begin{frame}{Модель Блэка-Шоулза}
-\justify
-Величину $\max(S - K, 0)$ называют внутренней стоимостью колл-опциона (\en{intrinsic value}). Столько денег мы бы заработали на опционе, если бы могли исполнить его прямо сейчас.
-
-\justify
-Если $C$ --- цена колл-опциона, то величина $C - \max(S - K, 0)$ называется временной стоимостью (\en{time value}). Она показывает, насколько опцион дороже, чем простая внутренняя стоимость. Чем выше волатильность, и чем больше времени осталось до экспирации, тем выше временная стоимость.
-\end{frame}
-
-
-\begin{frame}{Модель Блэка-Щоулза}
-\begin{align*}
-C_{BS} &= S_0N(d_1) - Ke^{-rT}N(d_2)
-\end{align*}
-
-\justify
-$S_0N(d_1)$ --- цена опциона <<актив или ничего>> (\en{asset-or-nothing call}). Этот опцион выплачивает 1 единицу базового актива, если цена выше страйка.
-
-\justify
-$e^{-rT}N(d_2)$ --- цена опциона <<деньги или ничего>> (\en{cash-or-nothing call}). Этот опцион выплачивает 1 единицу денег, если цена актива выше страйка.
-\end{frame}
-
-
-
-\begin{frame}{Приближённое вычисление: ATMF-колл}
-\justify
-Рассмотрим \en{at-the-money-forward (ATMF)}\ колл-опцион со страйком $K = F = S_0e^{(r-q)T}$.
-
-\begin{align*}
-d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{S_0e^{(r-q)T}}\right) + \left(r -q + \dfrac{\sigma^2}{2}\right)T\right) = \frac{\sigma \sqrt{T}}{2} \\
-d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{S_0e^{(r-q)T}}\right) + \left(r -q- \dfrac{\sigma^2}{2}\right)T\right) = -\frac{\sigma \sqrt{T}}{2}
-\end{align*}
-
-Тогда:
-\begin{align*}
-C_{atmf} &= S_0e^{-qT}N(d_1) - S_0e^{(r-q)T}e^{-rT}N(d_2) = \\
-&= S_0e^{-qT}\left[
-N\left(\frac{\sigma \sqrt{T}}{2}\right) - N\left(-\frac{\sigma \sqrt{T}}{2}\right)
-\right]
-\end{align*}
-\end{frame}
-
-
-
-\begin{frame}{Приближённое вычисление: ATMF-колл}
-\justify
-Разложим $N(x)$ в ряд Тейлора:
-\begin{align*}
-N(x) \approx \frac{x}{\sqrt{2\pi}} \quad \Rightarrow
-N(x) - N(-x) \approx \frac{2x}{\sqrt{2\pi}}
-\end{align*}
-
-Тогда:
-\begin{align*}
-N\left(\frac{\sigma \sqrt{T}}{2}\right) - N\left(-\frac{\sigma \sqrt{T}}{2}\right)
-\approx
-\frac{\sigma\sqrt{T}}{\sqrt{2\pi}}
-\approx
-0.4\sigma\sqrt{T}
-\end{align*}
-
-Если также предположить, что $q\approx 0\%$ и $e^{-qT} \approx 1$, то
-\begin{align*}
-C_{atmf} \approx 0.4 S_0 \sigma \sqrt{T}
-\end{align*}
-\end{frame}
-
-
-
-\begin{frame}{Приближённое вычисление: ATMF-колл}
-\justify
-Пример: спот-курс EURRUB равен $S=80$. Форвард на три месяца стоит $F=81$. Волатильность равна $\sigma=10\%$. Сколько стоит ATMF-колл со страйком $K=81$?
-
-\begin{align*}
-C_{atmf} \approx 0.4 \cdot S_0 \cdot \sigma \cdot \sqrt{T} = \\
-0.4 \cdot 80 \cdot 0.1 \cdot \sqrt{\dfrac{1}{4}} \approx 1.6
-\end{align*}
-
-Единицы измерения --- рубли за право купить 1 евро.
 \end{frame}
 
 \end{document}
