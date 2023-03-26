@@ -1,0 +1,1594 @@
+
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{cancel}
+
+\usepackage{enumitem}
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+% remove navigation bar
+\setbeamertemplate{navigation symbols}{} 
+
+\usepackage{eurosym}
+\renewcommand{\EUR}[1]{\textup{\euro}#1}
+
+\title{Модель Блэка-Шоулза}
+\author{Артём Бакулин}
+\date{27 марта 2023 г.}
+
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+\setbeamertemplate{page number in head/foot}[totalframenumber] 
+
+\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
+\newcommand{\ruen}[2]{#1 (\en{#2})}
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+\newcommand{\drawStockNode}[5]{
+
+	\node (#5)
+	[
+		draw,
+		rectangle,
+		rounded corners,
+		inner sep = 0pt,
+		outer sep = 0pt,
+		minimum width = 2.4cm,
+		minimum height = 0.55cm,
+		align = center
+	]
+	at (#3, #4)
+	{
+		\begin{tabular}{c|c}
+		#1 & #2
+		\end{tabular}
+	};
+}
+
+\newcommand{\drawStockLink}[4]{
+
+	\draw[
+		->,
+		>=triangle 90
+	]
+	(#1.east) -- (#2.west)
+	node[
+		pos = 0.5,
+		anchor = #4
+	]
+	{#3};
+}
+
+\newcommand{\drawOneStepBinomialTree}{
+	\drawStockNode{\$100}{?}{0}{0}{S0_node}
+	\drawStockNode{\$120}{\$20}{4}{ 1}{Su_node}
+	\drawStockNode{\$80}{\$0}{4}{-1}{Sd_node}
+	
+	\drawStockLink{S0_node}{Su_node}{$90\%$}{south east}	
+	\drawStockLink{S0_node}{Sd_node}{$10\%$}{north east}
+}
+
+
+
+\renewcommand{\drawOneStepBinomialTree}{
+	\drawStockNode{$S_0$}{?}{0}{0}{S0_node}
+	\drawStockNode{$S_0u$}{$V_u$}{4}{ 1}{Su_node}
+	\drawStockNode{$S_0d$}{$V_d$}{4}{-1}{Sd_node}
+	
+	\drawStockLink{S0_node}{Su_node}{$p$}{south east}	
+	\drawStockLink{S0_node}{Sd_node}{$1 - p$}{north east}
+}
+
+\begin{frame}{Напоминание: биномиальная модель}
+\centering
+\begin{tikzpicture}
+	\drawOneStepBinomialTree
+\end{tikzpicture}
+
+\justify
+\begin{itemize}
+\item Текущая цена акции $S_0$.
+\item Цена акции может либо вырасти до $S_0\cdot u$ ($u>1$), либо снизиться до $S_0 \cdot d$ ($d<1$).
+\item Длина одного периода $\tau$ лет, безрисковая  процентная ставка $r$, причём $d < 1+r\tau < u$.
+\item В случае роста или падения акции опцион принесет (будет иметь value) либо $V_u$, либо $V_d$.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: биномиальная модель -- 2}
+\centering
+\begin{tikzpicture}
+	\drawOneStepBinomialTree
+\end{tikzpicture}
+
+\justify
+Рассмотрим портфель, состоящий из $\Delta$ акций и долга $L$. 
+\begin{equation*}
+\begin{cases}
+L(1+r\tau) + \Delta S_0 u = V_u \\
+L(1+r\tau) + \Delta S_0 d = V_d
+\end{cases}
+\end{equation*}
+
+\begin{equation*}
+\begin{cases}
+\Delta = \dfrac{V_u - V_d}{S_0(u-d)} \\
+L = \dfrac{V_du - V_ud}{(1+r\tau)(u-d)}
+\end{cases}
+\end{equation*}
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: биномиальная модель -- 3}
+\centering
+\begin{tikzpicture}
+\drawOneStepBinomialTree
+\end{tikzpicture}
+
+\justify
+Цена опциона равна цене реплицирующего портфеля:
+\begin{align*}
+C &= \Delta S_0 +L = \\
+ &= \dfrac{V_u-V_d}{(u-d)\cancel{S_0}}\cancel{S_0} + \dfrac{V_du -V_ud}{(1+r\tau)(u-d)} = \\
+ &= \dfrac{qV_u +(1-q)V_d}{1+r\tau},
+\end{align*}
+где
+\begin{equation*}
+q = \dfrac{1+r\tau - d}{u-d} \text{ --- <<риск-нейтральная вероятность>>}
+\end{equation*}
+\end{frame}
+
+
+
+\renewcommand{\drawStockLink}[2]{
+
+	\draw[
+		->,
+		>=triangle 45
+	]
+	(#1.east) -- (#2.west)
+	{};
+}
+
+\renewcommand{\drawStockNode}[5]{
+
+	\node (#5)
+	[
+		draw,
+		rectangle,
+		rounded corners,
+		inner sep = 1pt,
+		outer sep = 0pt,
+		minimum width = 1.5cm
+	]
+	at (#3, #4)
+	{
+		\centering
+		\begin{tabular}{c}
+		#1 \\ \hline #2
+		\end{tabular}
+	};
+}
+
+\newcommand{\nodeVerticalStep}{0.7}
+\newcommand{\nodeHorizontalStep}{2.75}
+
+\begin{frame}{Напоминание: биномиальная модель -- 4}
+\centering
+\begin{tikzpicture}
+\drawStockNode{$\$100$}{\only<1-7>{?}\only<8->{\$14.8}}{0}{0}{S0_node}
+
+\drawStockNode{$\$120$}{\only<1-5>{?}\only<6->{\$25.8}}{\nodeHorizontalStep}{\nodeVerticalStep}{Su_node}
+\drawStockNode{$\$80$}{\only<1-6>{?}\only<7->{\$3.8}}{\nodeHorizontalStep}{-\nodeVerticalStep}{Sd_node}
+
+\drawStockNode{$\$144$}{\only<1-2>{?}\only<3->{\$44}}{2*\nodeHorizontalStep}{2*\nodeVerticalStep}{Suu_node}
+\drawStockNode{$\$96$}{\only<1-3>{?}\only<4->{\$7.6}}{2*\nodeHorizontalStep}{0}{Sud_node}
+\drawStockNode{$\$64$}{\only<1-4>{?}\only<5->{\$0}}{2*\nodeHorizontalStep}{-2*\nodeVerticalStep}{Sdd_node}
+
+\drawStockNode{$\$172.8$}{\only<1>{?}\only<2->{\$72.8}}{3*\nodeHorizontalStep}{3*\nodeVerticalStep}{Suuu_node}
+\drawStockNode{$\$115.2$}{\only<1>{?}\only<2->{\$15.2}}{3*\nodeHorizontalStep}{\nodeVerticalStep}{Suud_node}
+\drawStockNode{$\$76.8$}{\only<1>{?}\only<2->{\$0}}{3*\nodeHorizontalStep}{-\nodeVerticalStep}{Sudd_node}
+\drawStockNode{$\$51.2$}{\only<1>{?}\only<2->{\$0}}{3*\nodeHorizontalStep}{-3*\nodeVerticalStep}{Sddd_node}
+
+\drawStockLink{S0_node}{Su_node}
+\drawStockLink{S0_node}{Sd_node}
+
+\drawStockLink{Su_node}{Suu_node}
+\drawStockLink{Su_node}{Sud_node}
+
+\drawStockLink{Sd_node}{Sud_node}
+\drawStockLink{Sd_node}{Sdd_node}
+
+\drawStockLink{Suu_node}{Suuu_node}
+\drawStockLink{Suu_node}{Suud_node}
+
+\drawStockLink{Sud_node}{Suud_node}
+\drawStockLink{Sud_node}{Sudd_node}
+
+\drawStockLink{Sdd_node}{Sudd_node}
+\drawStockLink{Sdd_node}{Sddd_node}
+\end{tikzpicture}
+
+\justify
+Предположим, что $u=1.2$, $d=0.8$, $S_0=\$100$, $r=0\%$. Сколько стоит колл со страйком $K=100$?
+
+\justify
+<<Риск-нейтральная вероятность>>:
+\begin{align*}
+q = \dfrac{1+r\tau - d}{u - d} = \dfrac{1 - 0.8}{1.2 - 0.8} = 0.5
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Напоминание: биномиальная модель -- 5}
+\centering
+\begin{tikzpicture}
+\drawStockNode{$\$100$}{$\Delta=0.58$}{0}{0}{S0_node}
+
+\drawStockNode{$\$120$}{$\Delta=0.76$}{\nodeHorizontalStep}{\nodeVerticalStep}{Su_node}
+\drawStockNode{$\$80$}{$\Delta=0.24$}{\nodeHorizontalStep}{-\nodeVerticalStep}{Sd_node}
+
+\drawStockNode{$\$144$}{$\Delta=1.0$}{2*\nodeHorizontalStep}{2*\nodeVerticalStep}{Suu_node}
+\drawStockNode{$\$96$}{$\Delta=0.4$}{2*\nodeHorizontalStep}{0}{Sud_node}
+\drawStockNode{$\$64$}{$\Delta=0.0$}{2*\nodeHorizontalStep}{-2*\nodeVerticalStep}{Sdd_node}
+
+\drawStockNode{$\$172.8$}{$\Delta=1$}{3*\nodeHorizontalStep}{3*\nodeVerticalStep}{Suuu_node}
+\drawStockNode{$\$115.2$}{$\Delta=1$}{3*\nodeHorizontalStep}{\nodeVerticalStep}{Suud_node}
+\drawStockNode{$\$76.8$}{$\Delta=0$}{3*\nodeHorizontalStep}{-\nodeVerticalStep}{Sudd_node}
+\drawStockNode{$\$51.2$}{$\Delta=0$}{3*\nodeHorizontalStep}{-3*\nodeVerticalStep}{Sddd_node}
+
+\drawStockLink{S0_node}{Su_node}
+\drawStockLink{S0_node}{Sd_node}
+
+\drawStockLink{Su_node}{Suu_node}
+\drawStockLink{Su_node}{Sud_node}
+
+\drawStockLink{Sd_node}{Sud_node}
+\drawStockLink{Sd_node}{Sdd_node}
+
+\drawStockLink{Suu_node}{Suuu_node}
+\drawStockLink{Suu_node}{Suud_node}
+
+\drawStockLink{Sud_node}{Suud_node}
+\drawStockLink{Sud_node}{Sudd_node}
+
+\drawStockLink{Sdd_node}{Sudd_node}
+\drawStockLink{Sdd_node}{Sddd_node}
+\end{tikzpicture}
+
+\justify
+Справедливая безарбитражная цена опциона не зависит от вероятностей изменения цены вверх и вниз. Если мы можем \alert{динамически} ребалансировать портфель, состоящий из акций и долга, то мы можем реплицировать любой опцион.
+
+\justify
+Эта стратегия называется \alert{дельта-хэджирование} (\en{delta hedging}).
+\end{frame}
+
+
+
+\newcommand{\highlightStockLink}[6]{
+	\draw[
+		color=#4,
+		very thick,
+		->,
+		>=triangle 45
+	]
+	(#1.east) -- (#2.west)
+	node[
+		pos=#5,
+		anchor=#6
+	]
+	{#3};
+}
+
+\newcommand{\highlightStockLinkUp}[3]{
+	\highlightStockLink{#1}{#2}{$q$}{#3}{0.5}{south}
+}
+
+\newcommand{\highlightStockLinkDown}[3]{
+	\highlightStockLink{#1}{#2}{$1-q$}{#3}{0.15}{west}
+}
+
+\begin{frame}{Биномиальная модель и риск-нейтральная вероятность}
+\centering
+\begin{tikzpicture}
+\drawStockNode{$S_0$}{?}{0}{0}{S0_node}
+
+\drawStockNode{$S_0u$}{?}{\nodeHorizontalStep}{\nodeVerticalStep}{Su_node}
+\drawStockNode{$S_0d$}{?}{\nodeHorizontalStep}{-\nodeVerticalStep}{Sd_node}
+
+\drawStockNode{$S_0u^2$}{?}{2*\nodeHorizontalStep}{2*\nodeVerticalStep}{Suu_node}
+\drawStockNode{$S_0ud$}{?}{2*\nodeHorizontalStep}{0}{Sud_node}
+\drawStockNode{$S_0d^2$}{?}{2*\nodeHorizontalStep}{-2*\nodeVerticalStep}{Sdd_node}
+
+\drawStockNode{$S_0u^3$}{$V_3$}{3*\nodeHorizontalStep}{3*\nodeVerticalStep}{Suuu_node}
+\drawStockNode{$S_0u^2d$}{$V_2$}{3*\nodeHorizontalStep}{\nodeVerticalStep}{Suud_node}
+\drawStockNode{$S_0ud^2$}{$V_1$}{3*\nodeHorizontalStep}{-\nodeVerticalStep}{Sudd_node}
+\drawStockNode{$S_0d^3$}{$V_0$}{3*\nodeHorizontalStep}{-3*\nodeVerticalStep}{Sddd_node}
+
+\only<1-2>{
+	\drawStockLink{S0_node}{Su_node}
+	\drawStockLink{S0_node}{Sd_node}
+
+	\drawStockLink{Su_node}{Suu_node}
+	\drawStockLink{Su_node}{Sud_node}
+
+	\drawStockLink{Sd_node}{Sud_node}
+	\drawStockLink{Sd_node}{Sdd_node}
+
+	\drawStockLink{Suu_node}{Suuu_node}
+	\drawStockLink{Suu_node}{Suud_node}
+
+	\drawStockLink{Sud_node}{Suud_node}
+	\drawStockLink{Sud_node}{Sudd_node}
+
+	\drawStockLink{Sdd_node}{Sudd_node}
+	\drawStockLink{Sdd_node}{Sddd_node}
+}
+
+\only<3>{
+	\highlightStockLinkUp{S0_node}{Su_node}{Set1-A}
+	\highlightStockLinkUp{Su_node}{Suu_node}{Set1-A}
+	\highlightStockLinkDown{Suu_node}{Suud_node}{Set1-A}
+}
+
+\only<4>{
+	\highlightStockLinkUp{S0_node}{Su_node}{Set1-A}
+	\highlightStockLinkDown{Su_node}{Sud_node}{Set1-A}
+	\highlightStockLinkUp{Sud_node}{Suud_node}{Set1-A}
+}
+
+\only<5>{
+	\highlightStockLinkDown{S0_node}{Sd_node}{Set1-A}
+	\highlightStockLinkUp{Sd_node}{Sud_node}{Set1-A}
+	\highlightStockLinkUp{Sud_node}{Suud_node}{Set1-A}
+}
+
+\end{tikzpicture}
+
+\justify
+Риск-нейтральная вероятность: $q = \dfrac{1 + rT - d}{u - d}$.
+
+\justify
+Цена дериватива сегодня:
+\begin{align*}
+V = \frac{q^3V_3 + \only<1>{3q^2(1-q)}\only<2->{\alert{3q^2(1-q)}}V_2 + 3q(1-q)^2V_1 + (1-q)^3V_0}{(1+rT)^3}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральная вероятность}
+\justify
+Если представить, что $q$ --- вероятность движения акции вверх, то $3q^2(1-q)$ --- вероятность того, что акция дважды вырастет и один раз упадёт (не важно, в каком порядке). Тогда акция будет стоить $S_0u^2d$, а дериватив принесёт прибыль $V_2$.
+
+\justify
+\centering
+\begin{tabular}{l|l|l}
+Цена акции & Прибыль & <<Вероятность>> \\ \hline
+$S_0u^3$   & $V_3$   & $q^3$ \\
+$S_0u^2d$  & $V_2$   & $3q^2(1-q)$ \\
+$S_0ud^2$  & $V_1$   & $3q(1-q)^2$ \\ 
+$S_0d^3$   & $V_0$   & $(1-q)^3$ 
+\end{tabular}
+
+\justify
+Цена дериватива похожа на дисконтированное <<математическое ожидание>> прибыли.
+\begin{align*}
+V = \frac{q^3V_3 + 3q^2(1-q)V_2 + 3q(1-q)^2V_1 + (1-q)^3V_0}{(1+rT)^3}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Биномиальная модель}
+Для дерева, состоящего из $n$ шагов:
+\begin{align*}
+C &= \dfrac{\sum\limits_{k=0}^{n} C^k_nq^k(1-q)^{n-k}V(S_0u^kd^{n-k})}{(1+r\tau)^n} \\
+C^k_n &= \dfrac{n!}{k!(n-k)!}
+\end{align*}
+
+\justify
+Что будет, если вместо произвольной функции $V(S)$ взять функцию $max(S-K,0)$, как в колл-опционе, и устремить $n$ к бесконечности? Получится формула Блэка-Шоулза.
+
+\vspace{\baselineskip}
+Строгое доказательство с помощью закона больших чисел и центральной
+предельной теоремы здесь (28 страниц):
+
+\url{http://www.math.cmu.edu/~handron/21_370/BS.pdf}
+\end{frame}
+
+
+
+\begin{frame}{Демонстрация: доска Гальтона}
+
+\url{https://www.mathsisfun.com/data/quincunx.html}
+\end{frame}
+
+
+
+\begin{frame}{Центральная предельная теорема}
+\justify
+Пусть $\xi_i$ --- независимые одинаково распределённые случайные величины, которые имеют конечное математическое ожидание $\mathbb{E}\xi_i=\mu$ и конечную дисперсию $\operatorname{Var}(\xi_i) = \sigma^2$. Тогда имеет место сходимость по распределению:
+\begin{align*}
+\lim_{n \to \infty} \sqrt{n}\frac{\dfrac{1}{n}\sum\limits_{i=1}^{n}\xi_i - \mu}{\sigma} = \mathcal{N}(0, 1)
+\end{align*}
+
+\justify
+$\mathcal{N}(0, 1)$ --- стандартное нормальное распределение.
+
+\justify
+Это --- центральная предельная теорема (ЦПТ). Среднее арифметическое большого количества реализаций случайной величины следует нормальному распределению.
+\end{frame}
+
+
+
+\begin{frame}{Геометрическое броуновское движение}
+\justify
+Предположим, что до экспирации опциона осталось $T$ лет, и мы раздробили этот интервал на $N$ шагов длиной по $dt = T/N$ лет каждый.
+
+\justify
+Пусть на каждом самом маленьком шаге цена акции растёт в среднем на $
+\mu$ процентов годовых, а также колеблется вокруг этого среднего со 
+стандартным отклонением (волатильностью) $\sigma$.
+\begin{align*}
+\frac{S_{i+1} - S_i}{S_i} = \mu dt + \sigma\xi_i\sqrt{dt}, \quad \xi_i \sim \mathcal{N}(0, 1)
+\end{align*}
+
+\justify
+Это геометрическое броуновское движение. Такой процесс можно получить, если в биномиальном дереве положить
+\begin{align*}
+u &= e^{\mu dt + \sigma\sqrt{dt}} \\
+d &= e^{\mu dt - \sigma\sqrt{dt}}
+\end{align*}
+\end{frame}
+
+
+
+\newcommand{\plotBrownianMotion}[2] {
+	
+	\addplot[
+		color = #2,
+		mark = none,
+		thick
+	]
+	table[
+		x=t,
+		y=s,
+		col sep=comma
+	]
+	{#1};
+	
+	\addplot[
+		color = #2,
+		mark = none,
+		thick,
+		dashed,
+		forget plot
+	] 
+	table[
+		x=t,
+		y=trend,
+		col sep=comma
+	]
+	{#1};
+}
+
+
+
+\begin{frame}{Геометрическое броуновское движение}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  xlabel near ticks,
+  ylabel near ticks,
+  xmin=0, xmax=1,
+  legend entries = {
+  	   {$\mu=5\%, \sigma=10\%, N=100$},
+      {$\mu=10\%, \sigma=40\%, N=500$}
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.03)},anchor=south east}
+]
+
+	\plotBrownianMotion{gbm_sample_100.csv}{Set1-A}
+	\plotBrownianMotion{gbm_sample_500.csv}{Set1-B}
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Геометрическое движение}
+\justify
+Предположим, что $\sigma=0$. Никакой случайности нет, перед нами детерминистический закон:
+\begin{align*}
+\frac{S_{i+1} - S_i}{S_i} = \mu dt \quad \Rightarrow \quad S_{i+1} = S_i(1 + \mu dt)
+\end{align*}
+
+\justify
+На каждом шаге $dt$ акция растёт на $\mu$ процентов годовых (простые проценты без капитализации). Чему равна цена акции через время $T$ после $N$ шагов по $dt=T/N$ каждый?
+\begin{align*}
+S_T &= S_N = S_{N-1}\left(1+\mu\dfrac{T}{N}\right) 
+= S_{N-2}\left(1+\mu\dfrac{T}{N}\right)\left(1+\mu\dfrac{T}{N}\right) = \\
+&= S_0\left(1+\mu\dfrac{T}{N}\right)^N \to S_0e^{\mu T}
+\end{align*}
+
+\justify
+Это уже знакомые нам <<непрерывные>> проценты.
+\end{frame}
+
+
+
+\begin{frame}{Добавляем случайность}
+\justify
+Пусть акция не просто растёт на каждом шаге, а колеблется вокруг тренда $\mu$ вверх и 
+вниз случайным образом. Каким именно случайным? Если колебания цены акции отражают
+приходящую информацию (<<шоки>>), и эти шоки не зависят друг от друга, то можно 
+надеяться, что они складываются в нормальное распределение.
+\begin{align*}
+\frac{S_{i+1} - S_i}{S_i} = \mu dt + \sigma\xi_i\sqrt{dt}, \quad \xi_i \sim \mathcal{N}(0, 1)
+\end{align*}
+
+Здесь $\xi_i$ --- источник случайных шоков, $\sigma$ --- волатильность или коэффициент масштабирования. Обычные единицы измерения --- проценты годовых, как у тренда $\mu$ и процентных ставок.
+\end{frame}
+
+
+
+\begin{frame}{Геометрическое броуновское движение}
+\justify
+Если геометрическое броуновское движение начинается с цены базового актива $S_0$ с трендом $\mu$ и волатильностью $\sigma$, то цена базового актива через время $T$ $S_T$ есть случайная величина:
+\begin{align*}
+S_T = S_0\cdot \exp\left[\left(\mu - \frac{\sigma^2}{2}\right)T + \sigma\xi\sqrt{T}\right], \quad \xi \sim \mathcal{N}(0, 1)
+\end{align*} 
+
+\justify
+Логарифм изменения цены (грубо: процентный прирост) есть случайная величина, которая следует нормальному распределению:
+\begin{align*}
+\ln\left(\frac{S_T}{S_0}\right) = \ln S_T - \ln S_0 = \left(\mu - \frac{\sigma^2}{2}\right)T + \sigma\xi\sqrt{T} \quad \xi \sim \mathcal{N}(0, 1)
+\end{align*}
+
+\justify
+Поэтому говорят, что цена базового актива следует лог-нормальному распределению.
+\end{frame}
+
+
+
+\begin{frame}{Лог-нормальное распределение}
+\centering
+\begin{tikzpicture}
+	\begin{axis}[
+		width = \textwidth,
+		height = \textheight - 1cm,
+		xmin = -5, xmax = 5,
+		ymin = 0, ymax = 0.7,
+		grid = major,
+		legend entries = {Нормальное, Лог-нормальное},
+		legend pos = north west
+	]
+		
+		\addplot[color=Set1-A, thick] table[x=x, y=norm_density, col sep=comma] {norm_and_lognorm_density.csv};
+		
+				\addplot[color=Set1-B, thick] table[x=x, y=lognorm_density, col sep=comma] {norm_and_lognorm_density.csv};
+	\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Модель Блэка-Шоулза}
+\justify
+1. Базовый актив не платит дивидендов, его цена $S_0$.
+
+\justify
+2. Цена актива следует геометрическому броуновскому движению с трендом $\mu$ и волатильностью $\sigma$:
+\begin{align*}
+\dfrac{dS}{S} = \mu dt + \sigma\xi\sqrt{dt}, \quad \xi \sim \mathcal{N}(0,1)
+\end{align*}
+
+\justify
+3. Безрисковая процентная ставка $r$ постоянна.
+
+\justify
+4. Идеальный ликвидный рынок без транзакционных издержек и без возможностей для арбитража, на котором мы можем заниматься дельта-хеджированием сколь угодно часто.
+\end{frame}
+
+
+
+\begin{frame}{Формула Блэка-Шоулза}
+Цена европейского колл-опциона со страйком $K$ задается формулой:
+\begin{align*}
+C_{BS} &= S_0N(d_1) - Ke^{-rT}N(d_2)
+\end{align*}
+где
+\begin{align*}
+d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r + \dfrac{\sigma^2}{2}\right)T\right) \\
+d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r - \dfrac{\sigma^2}{2}\right)T\right) \\
+N(x) &= \dfrac{1}{\sqrt{2\pi}}\int\limits_{-\infty}^x e^{-\frac{t^2}{2}}dt
+\end{align*}
+
+\justify
+Цена не зависит от тренда $\mu$!
+\end{frame}
+
+
+
+\begin{frame}{Формула Блэка-Шоулза с дивидендами}
+\justify
+Если базовый актив имеет дивидендную доходность $q$  и дивиденды выплачиваются непрерывно (валюта, индекс акций, нефть в хранилище):
+\begin{align*}
+C_{BS} &= S_0e^{-qT}N(d_1) - Ke^{-rT}N(d_2)
+\end{align*}
+где
+\begin{align*}
+d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q + \dfrac{\sigma^2}{2}\right)T\right) \\
+d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q- \dfrac{\sigma^2}{2}\right)T\right)
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Модель Блэка-Шоулза}
+\justify
+Пример: колл-опцион со страйком $K=72$, сроком $T=0.25$ лет, $r=6\%$, $q=0\%$.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			domain=64:80,
+			xtick={64,66,...,80},
+			ytick={0,1,2,...,10},
+			xmin=64, xmax=80,
+			ymin=0, ymax=10,
+			grid = major,
+			xlabel={Курс сегодня ($S_0$)},
+			ylabel={Цена опциона},
+  legend entries = {
+  	   $\sigma=25\%$,
+  	   $\sigma=10\%$,
+  	   $\sigma=5\%$,
+  	   $\sigma=0\%$
+  },
+  legend cell align={left},
+  legend style={at={(0.03,0.97)},anchor=north west}
+]
+
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=S,
+		y=C_25,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=S,
+		y=C_10,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	\addplot[color = Set1-C, mark = none, thick]
+	table[
+		x=S,
+		y=C_5,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Временная и внутренняя стоимость}
+\justify
+Величину $\max(S - K, 0)$ называют внутренней стоимостью колл-опциона (\en{intrinsic value}). Столько денег мы бы заработали на опционе, если бы могли исполнить его прямо сейчас.
+
+\justify
+Если $C$ --- цена колл-опциона, то величина $C - \max(S - K, 0)$ называется временной стоимостью (\en{time value}). Она показывает, насколько опцион дороже, чем простая внутренняя стоимость. Чем выше волатильность, и чем больше времени осталось до экспирации, тем выше временная стоимость.
+\end{frame}
+
+
+\begin{frame}{Формула Блэка-Шоулза: интерпретация}
+\begin{align*}
+C_{BS} &= S_0e^{-qT}N(d_1) - Ke^{-rT}N(d_2)
+\end{align*}
+
+\justify
+$S_0e^{-qT}N(d_1)$ --- цена опциона <<актив или ничего>> (\en{asset-or-nothing call}). Этот опцион выплачивает 1 единицу базового актива, если цена выше страйка.
+
+\justify
+$e^{-rT}N(d_2)$ --- цена опциона <<деньги или ничего>> (\en{cash-or-nothing call}). Этот опцион выплачивает 1 единицу денег, если цена актива выше страйка.
+\end{frame}
+
+
+
+\begin{frame}{Цифровые опционы}
+\justify
+Цифровые колл и пут со страйком $K$:
+\begin{align*}
+C_K = e^{-rT}N(d_2), \quad P_K = e^{-rT}N(-d_2) \\
+d_2 = \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q- \dfrac{\sigma^2}{2}\right)T\right)
+\end{align*}
+
+\justify
+Предположим, что $r=q=0$ и $T=1$. Что такое $N(d_2)$?
+\begin{align*}
+N(d_2) &= \mathbb{P}(\xi \le d_2) = 
+\mathbb{P}(-\xi \le d_2) = \mathbb{P}\left(-\xi \le \dfrac{\ln S_0 - \ln_K}{\sigma} - \frac{\sigma}{2}\right) = \\
+&= \mathbb{P}\left(S_0\exp\left(-\dfrac{\sigma^2}{2} + \xi\sigma\right) \ge K\right),
+\quad \xi \sim \mathcal{N}(0,1)
+\end{align*}
+
+Если представить, что цена базового актива следуют геометрическому броуновскому 
+движению с трендом $r$ и волатильностью $\sigma$, то $N(d_2)$ --- <<вероятнтость>>
+того, что конечная цена окажется выше страйка $K$.
+
+\end{frame}
+
+
+
+
+\begin{frame}{Приближённое вычисление: ATMF-колл}
+\justify
+Рассмотрим \en{at-the-money-forward (ATMF)}\ колл-опцион со страйком $K = F = S_0e^{(r-q)T}$.
+
+\begin{align*}
+d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{S_0e^{(r-q)T}}\right) + \left(r -q + \dfrac{\sigma^2}{2}\right)T\right) = \frac{\sigma \sqrt{T}}{2} \\
+d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{S_0e^{(r-q)T}}\right) + \left(r -q- \dfrac{\sigma^2}{2}\right)T\right) = -\frac{\sigma \sqrt{T}}{2}
+\end{align*}
+
+Тогда:
+\begin{align*}
+C_{atmf} &= S_0e^{-qT}N(d_1) - S_0e^{(r-q)T}e^{-rT}N(d_2) = \\
+&= S_0e^{-qT}\left[
+N\left(\frac{\sigma \sqrt{T}}{2}\right) - N\left(-\frac{\sigma \sqrt{T}}{2}\right)
+\right]
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Приближённое вычисление: ATMF-колл}
+\justify
+Разложим $N(x)$ в ряд Тейлора:
+\begin{align*}
+N(x) \approx \frac{x}{\sqrt{2\pi}} \quad \Rightarrow
+N(x) - N(-x) \approx \frac{2x}{\sqrt{2\pi}}
+\end{align*}
+
+Тогда:
+\begin{align*}
+N\left(\frac{\sigma \sqrt{T}}{2}\right) - N\left(-\frac{\sigma \sqrt{T}}{2}\right)
+\approx
+\frac{\sigma\sqrt{T}}{\sqrt{2\pi}}
+\approx
+0.4\sigma\sqrt{T}
+\end{align*}
+
+Если также предположить, что $q\approx 0\%$ и $e^{-qT} \approx 1$, то
+\begin{align*}
+C_{atmf} \approx 0.4 S_0 \sigma \sqrt{T}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Приближённое вычисление: ATMF-колл}
+\justify
+Пример: спот-курс EURRUB равен $S=80$. Форвард на три месяца стоит $F=81$. Волатильность равна $\sigma=10\%$. Сколько стоит ATMF-колл со страйком $K=81$?
+
+\begin{align*}
+C_{atmf} \approx 0.4 \cdot S_0 \cdot \sigma \cdot \sqrt{T} = \\
+0.4 \cdot 80 \cdot 0.1 \cdot \sqrt{\dfrac{1}{4}} \approx 1.6
+\end{align*}
+
+Единицы измерения --- рубли за право купить 1 евро.
+\end{frame}
+
+
+
+\begin{frame}{Динамическое хеджирование: пример}
+\justify
+Рассмотрим акцию, которая не платит дивидендов, стоит $S_0=\$100$ и следует 
+геометрическому броуновскому движению с трендом $\mu=5\%$ и волатильностью
+$\sigma=5\%$. Безрисковая ставка $r=0\%$.
+
+\justify
+Рассмотрим европейский колл-опцион со страйком $K=100$, сроком исполнения $T=1$ год. 
+Представим, что нам не удалось его купить на рынке и мы занимаемся динамической 
+репликацией.
+
+\justify
+Предположим, что сейчас у нас на счету есть $\$7.97$, и мы можем перебалансировать портфель $N=6$ раз в год (всего раз в два месяца).
+\end{frame}
+
+
+
+\begin{frame}{Динамическое хеджирование: цена акции}
+\centering
+\pgfplotsset{cycle list/Dark2}
+\begin{tikzpicture}
+\begin{axis}[
+	width = \textwidth,
+	height = \textheight - 0.5cm,
+	xlabel = {Время (годы)},
+	ylabel = {Цена базового актива ($S_t$)},
+	xmin = 0, xmax = 1,
+	ymin = 70, ymax = 140,
+	grid = major
+]	
+    \foreach \n in {1,2,...,20} {
+        \addplot+[thick, mark = *]
+        table [col sep=comma, x=t, y=S_\n]
+        {black_scholes_hedging_6_stock.csv};
+    }
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Динамическое хеджирование: дельта}
+\centering
+\pgfplotsset{cycle list/Dark2}
+\begin{tikzpicture}
+\begin{axis}[
+	width = \textwidth,
+	height = \textheight - 0.5cm,
+	xlabel = {Время (годы)},
+	ylabel = {Кол-во акций в портфеле ($\Delta$)},
+	xmin = 0, xmax = 1,
+	ymin = 0, ymax = 1,
+	ytick = {0, 0.1,...,1.1},
+	grid = major
+]	
+    \foreach \n in {1,2,...,20} {
+        \addplot+[thick, mark = *]
+        table [col sep=comma, x=t, y=bs_delta_\n]
+        {black_scholes_hedging_6_delta.csv};
+    }
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Динамическое хеджирование: цена портфеля}
+\centering
+\pgfplotsset{cycle list/Dark2}
+\begin{tikzpicture}
+\begin{axis}[
+	width = \textwidth,
+	height = \textheight - 0.5cm,
+	xlabel = {Время (годы)},
+	ylabel = {Цена портфеля},
+	xmin = 0, xmax = 1,
+	ymin = -5, ymax = 40,
+	grid = major,
+	ytick = {-10, -5, ..., 50}
+]	
+    \foreach \n in {1,2,...,20} {
+        \addplot+[thick, mark = *]
+        table [col sep=comma, x=t, y=balance_\n]
+        {black_scholes_hedging_6_balance.csv};
+    }
+    
+    \addplot[black, very thick, solid, domain = 0:1] {0};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Динамическое хеджирование: цена портфеля}
+\centering
+\pgfplotsset{cycle list/Dark2}
+\begin{tikzpicture}
+\begin{axis}[
+	width = \textwidth,
+	height = \textheight - 0.5cm,
+	xlabel = {Цена базового актива через $T=1$ год ($S_T$)},
+	ylabel = {Цена портфеля},
+	xmin = 70, xmax = 130,
+	ymin = -5, ymax = 30,
+	grid = major,
+	ytick = {-10, -5, ..., 50}
+]	
+
+    \foreach \n in {1,2,...,20} {
+        \addplot+[thick, mark = *, only marks]
+        table [col sep=comma, x=S_\n, y=balance_\n]
+        {black_scholes_hedging_6_summary.csv};
+    }
+    
+    \addplot[black, very thick, solid, domain = 0:150] {0};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Что, если хеджировать чаще?}
+\justify
+Зависимость цены реплицирующего портфеля через $T=1$ год от цены акции очень похожа на функцию выплаты европейского
+колл-опциона. Зависимость неточная, но мы и перебалансировали портфель всего-то раз 2 месяца.
+
+\justify
+Что, если перебалансировать портфель 4 раза в день ($4 \cdot 365$ раз в год)? 
+\end{frame}
+
+
+
+\begin{frame}{Что, если хеджировать чаще?}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	width = \textwidth,
+	height = \textheight - 0.5cm,
+	xlabel = {Цена базового актива через $T=1$ год ($S_T$)},
+	ylabel = {Цена портфеля},
+	xmin = 70, xmax = 130,
+	ymin = -5, ymax = 30,
+	grid = major,
+	ytick = {-10, -5, ..., 50}
+]	
+
+   \addplot[thick, mark = o, only marks, color=Set1-A]
+     table [col sep=comma, x=S, y=balance]
+     {black_scholes_hedging_1420.csv};    
+    
+    \addplot[black, very thick, solid, domain = 0:150] {0};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Динамическое хеджирование: выводы}
+\justify
+Механистическая торговая стратегия, которая регулярно докупает или продаёт базовый актив, может привести к такому же
+результату (итоговой выплате), что и <<настоящий>> европейский колл-опцион.
+
+\justify
+Инвестбанки могли бы продавать клиентам не <<настоящие>> опционы, а правильно настроенных торговых роботов. Захотел
+купить европейский опцион --- настраиваешь торговый робот и отправляешь его на рынок заниматься дельта-хеджированием.
+В мире нулевых транзакционных издержек и идеально ликвидных рынков <<настоящие>> опционы были бы не нужны.
+
+\justify
+Кстати, куда пропали \$7.97, которые были у нас на счёте с самого начала? Они перераспределились: когда они \$0,
+когда-то --- выигрыш по опциону.
+\end{frame}
+
+
+
+\begin{frame}{Кругом обман}
+\centering
+\makebox[\textwidth]{\includegraphics[width=\textwidth]{we_need_to_go_deeper.jpg}}
+\end{frame}
+
+
+
+\begin{frame}{Историческая волатильность -- 1}
+\justify
+Если мы живём в мире Блэка-Шоулза, то нам достаточно знать волатильность базового актива, чтобы посчитать справедливую цену любого опциона. Почему бы не посмотреть на историю?
+
+\justify
+Рассмотрим временной ряд исторических цен базового актива $S_0,S_1,...,S_n$, взятых с фиксированным шагом $\Delta t$. Например, если у нас есть дневные данные, то $\Delta t = 1/250$ (по количеству рабочих дней в году). 
+
+\justify
+Посчитаем логарифмические доходности (\en{log returns}), которые близки к простым процентным доходностям:
+\begin{align*}
+r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
+\ln \left(\dfrac{S_{i}}{S_{i-1}} \right) &= \ln \left[1 + \left(\dfrac{S_{i}}{S_{i-1}} - 1 \right) \right] \approx \dfrac{S_{i}}{S_{i-1}} - 1
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Историческая волатильность -- 2}
+\justify
+В модели Блэка-Шоулза все лог-доходности $r_i$ --- н.о.р.с.в. Их выборочное стандартное отклонение --- историческая (\en{historical}) или реализованная (\en{realized}) волатильность.
+
+\begin{align*}
+\hat{r} &= \frac{1}{n}\sum\limits_{i=1}^{n}r_i \\
+\hat{\sigma} &= \sqrt{\frac{1}{n-1}\sum\limits_{i=1}^{n}(r_i - \hat{r})^2}
+\end{align*}
+
+\justify
+Чтобы перевести <<дневную>> волатильность в проценты годовых, нужно разделить её на $\sqrt{\Delta t}$.
+\end{frame}
+
+
+
+\begin{frame}{Историческая волатильность -- 3}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=2012-01-01,
+  xtick={2012-01-01, 2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01, 2024-01-01},
+  minor xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01, 2023-01-01},
+  ytick={30, 40, ..., 120},
+%  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
+  xticklabel={\year},
+  xmin=2012-01-01,
+  xmax=2024-01-01,
+  ymin=20,
+  ymax=130,
+  grid=both,
+  %yticklabel={\pgfmathprintnumber{\tick}\%},
+  ylabel={\small{Курс USDRUB}},
+  xlabel near ticks,
+  ylabel near ticks
+]
+
+\addplot[color = Set1-B, mark = none, very thick]
+	table[
+		x=date,
+		y=fx_rate,
+		col sep=comma
+	]
+	{cbr.USD.2012.2023.csv};
+
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: ЦБ РФ.
+\end{frame}
+
+
+
+\begin{frame}{Историческая волатильность -- 4}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=2012-01-01,
+  xtick={2012-01-01, 2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01, 2024-01-01},
+  minor xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01, 2023-01-01},
+  ytick={0.1, 0.2, ..., 1},
+%  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
+  xticklabel={\year},
+  xmin=2012-01-01,
+  xmax=2024-01-01,
+  ymin=0,
+  ymax=0.9,
+  grid=both,
+  yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+  ylabel={\small{Реализованная волатильность}},
+  xlabel near ticks,
+  ylabel near ticks
+]
+
+\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=mid_month,
+		y=realized_vol,
+		col sep=comma
+	]
+	{USDRUB_realized_vol.csv};
+
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: ЦБ РФ.
+\end{frame}
+
+
+
+\begin{frame}{Историческая волатильность -- 5}
+\justify
+Историческая волатильность --- не константа, что противоречит модели Блэка-Шоулза. В прошлом мы видели большой разброс в реализованной волатильности. Сложно выбрать репрезентативный период, который хорошо подходил бы тому опциону (скажем, на 3 месяца), который мы пытаемся оценить.
+
+\justify
+Прошлое не предсказывает будущее!
+\end{frame}
+
+
+
+\begin{frame}{<<Ожидаемая>> волатильность}
+\justify
+В модели Блэка-Шоулза цена опциона зависит от волатильности:
+\begin{align*}
+C_K = F(S_0, T, K, \sigma, r, q)
+\end{align*}
+
+\justify
+Мы можем посмотреть на рыночные цены опционов и решить задачу в обратном направлении. 
+
+\justify
+Если участники рынка пользуются моделью Блэка-Шоулза, то какую волатильность они подставляют в формулу, чтобы получить те премии, которые мы наблюдаем?
+\begin{align*}
+\sigma = F^{-1}(S_0, T, K, r, q, C_K)
+\end{align*}
+
+\justify
+Решение этой обратной задачи --- \alert{<<ожидаемая>> (\en{implied})} волатильность.
+\end{frame}
+
+
+
+\begin{frame}{<<Ожидаемая>> волатильность}
+\justify
+Опционы на USDRUB с датой исполнения 15.06.2023.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			%domain=70:130,
+			xtick={55,60,...,95},
+			ytick={0,5,...,40},
+			xmin=55, xmax=95,
+			ymin=0, ymax=20,
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Цена опциона, руб.}
+]
+
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=strike,
+		y=call,
+		col sep=comma
+	]
+	{usdrub_implied_vol.csv};
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=put,
+		col sep=comma
+	]
+	{usdrub_implied_vol.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: Московская биржа.
+\end{frame}
+
+
+
+\begin{frame}{<<Ожидаемая>> волатильность}
+\justify
+Опционы на USDRUB с датой исполнения 15.06.2023.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			%domain=60:84,
+			xtick={55,60,...,95},
+			ytick={0.0,0.05,...,0.65},
+			xmin=55, xmax=95,
+			ymin=0.15, ymax=0.35,
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)}
+]
+
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=iv,
+		col sep=comma
+	]
+	{usdrub_implied_vol.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: Московская биржа.
+\end{frame}
+
+
+
+\begin{frame}{<<Ожидаемая>> волатильность}
+\justify
+Опционы на S\&P\,500 с датой исполнения 16.06.2023.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			domain=3000:5000,
+			xtick={3000,3100,...,5000},
+			ytick={50,100,...,600},
+			xmin=3500, xmax=4500,
+			ymin=0, ymax=500,
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Цена опциона, \$},
+			xticklabel={\pgfmathprintnumber[precision=0, 1000 sep={}]{\tick}}
+]
+
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=strike,
+		y=call,
+		col sep=comma
+	]
+	{sp500_implied_vol.csv};
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=put,
+		col sep=comma
+	]
+	{sp500_implied_vol.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: barchart.com.
+\end{frame}
+
+
+
+\begin{frame}{<<Ожидаемая>> волатильность}
+\justify
+Опционы на S\&P\,500 с датой исполнения 16.06.2023.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			domain=3000:5000,
+			xtick={3000,3100,...,5000},
+			ytick={0.05,0.10,...,0.30},
+			xmin=3500, xmax=4500,
+			ymin=0, ymax=0.30,
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)},
+			xticklabel={\pgfmathprintnumber[precision=0, 1000 sep={}]{\tick}},
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+]
+
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=iv,
+		col sep=comma
+	]
+	{sp500_implied_vol.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: barchart.com.
+\end{frame}
+
+
+
+\begin{frame}{Улыбка волатильности}
+\justify
+Почти на всех рынках наблюдается зависимость <<ожидаемой>> (\en{implied}) волатильности от страйка опциона. Дальние \en{out of the money}\ опционы стоят дороже (в терминах волатильности), чем можно было бы ожидать.
+\begin{itemize}
+\item Улыбка (\en{smile}). Например, на рынке FX.
+\item Ухмылка (\en{skew, smirk}). Например, на рынке акций.
+\end{itemize}
+
+\justify
+Может ли быть так, что базовый актив ведёт себя по-разному в зависимости от того, какой опцион (с каким страйком) сейчас оценивают участники рынка? Нет!
+
+\justify
+Либо все участники опционного рынка сошли с ума, либо модель Блэка-Шоулза не до конца описывает реальность. Предположение о постоянной волатильности и логнормальном распределении будущей цены базового актива выглядит слишком строгим.
+\end{frame}
+
+
+
+\begin{frame}{Опционная бабочка}
+\justify
+Попробуем оценить, какое распределение, если не логнормальное, ожидают участники рынка.
+
+\justify
+Рассмотрим комбинацию опционов <<бабочка>> (\en{butterfly, fly}):
+\begin{itemize}
+\item Купленный колл со страйком $K - \delta$.
+\item Два проданных колла со страйком $K$.
+\item Купленный колл со страйком $K + \delta$.
+\end{itemize}
+
+\justify
+Купленные опционы --- <<крылья>> (\en{wings}), а проданные --- <<тельце>> (\en{belly}).
+\end{frame}
+
+
+
+\begin{frame}{Опционная бабочка}
+\justify
+Пример: бабочка со страйками 98, 100 и 102.
+
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			%axis lines=middle,
+			domain=92:108,
+			xtick={92,94,...,108},
+			ytick={-6,-5,...,6},
+			xmin=92, xmax=108,
+			ymin=-6, ymax=6,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Выплата (payoff)},
+			%scaled x ticks=false
+		]
+		
+	\addplot[Set1-B, very thick, dashed] {(\x > 102)*(\x - 102) + 0.15};
+  	\addplot[Set1-C, very thick, dashed] {(\x > 98)*(\x - 98) + 0.15};
+  	\addplot[Set1-D, very thick, dashed] {2*(\x > 100)*(100 - \x) - 0.15};
+ 
+ 	\addplot[Set1-A, very thick] {(\x > 102)*(\x - 102) + (\x > 98)*(\x - 98) + 2*(\x > 100)*(100 - \x)};
+ 
+   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Опционная бабочка}
+\justify
+Пример: бабочка со стайками 99, 100 и 101.
+
+\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			width = \textheight,
+			height = \textheight*0.5,
+			domain=92:108,
+			%axis lines=middle,
+			xtick={92,94,...,108},
+			ytick={0,...,6},
+			xmin=92, xmax=108,
+			ymin=-1, ymax=3,
+			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
+			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			grid = major,
+			xlabel={Курс в дату экспирации},
+			ylabel={Выплата (payoff)},
+			%scaled x ticks=false
+		]
+		
+ 	\addplot[Set1-A, very thick, samples at={92,92.1,...,108}] {(\x > 99)*(\x - 99) + (\x > 101)*(\x - 101) + 2*(\x > 100)*(100 - \x) + 0.05};
+ 
+   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
+\end{axis}
+\end{tikzpicture}
+
+\justify
+По мере того, как разность между <<крыльями>> уменьшается, бабочка превращается в ставку на то, что цена базового актива остановится вблизи центрального страйка.
+\end{frame}
+
+
+
+\begin{frame}{Опционная бабочка}
+\justify
+Бабочки со страйками $K-1$, $K$ и $K+1$. Экспирация 15.06.2023.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			%domain=60:84,
+			xtick={55,60,...,95},
+			ytick={0.01,0.02,...,0.08},
+			xmin=55, xmax=95,
+			ymin=0, ymax=0.08,
+			scaled y ticks = false,
+			yticklabel={\pgfmathprintnumber[fixed, fixed zerofill, precision=2]{\tick}},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Цена бабочки, руб.}
+]
+
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=fly,
+		col sep=comma
+	]
+	{usdrub_fly.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: Московская биржа.
+\end{frame}
+
+
+
+\begin{frame}{<<Ожидаемое>> распределение}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			xtick={55,60,...,95},
+			ytick={0.01,0.02,...,0.08},
+			xmin=55, xmax=95,
+			ymin=0, ymax=0.08,
+			scaled y ticks = false,
+			yticklabel={\pgfmathprintnumber[fixed, fixed zerofill, precision=2]{\tick}},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Плотность распределения},
+			legend entries = {
+				\small Ожидаемое,
+				\small Логнормальное
+			},
+  			legend cell align={left},
+ 		 	legend style={at={(0.97,0.97)},anchor=north east}
+]
+
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=implied_density,
+		col sep=comma
+	]
+	{usdrub_implied_density.csv};
+	
+	\addplot[color = Set1-A, mark = none, dashed, thick]
+	table[
+		x=strike,
+		y=lognormal_density,
+		col sep=comma
+	]
+	{usdrub_implied_density.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: Московская биржа.
+\end{frame}
+
+
+
+\begin{frame}{<<Ожидаемое>> распределение}
+\justify
+Обычно цены опционов подразумевают распределение, отличное от логнормального. Часто можно видеть толстые хвосты и скошенность влево или вправо.
+
+\justify
+Мы не знаем, как в точности объясняется этот эффект:
+\begin{itemize}
+\item Участники рынка верно оценивают истинную вероятность экстремальных исходов (больших изменений цены базового актив).
+\item Участникам рынка настолько больно от экстремальных исходов, что они готовы переплатить за страховку. Это стремление застраховаться и избежать риска увеличивает рыночную цену опционов относительно <<фундаментально обоснованной>>.
+\end{itemize}
+
+\justify
+Как обычно, если мы можем использовать ликвидные опционы для хеджирования риска и репликации более сложных экзотических продуктов, то нам не важно, какое объяснение верное.
+\end{frame}
+
+
+
+\begin{frame}{Модели волатильности}
+\justify
+Существование улыбки волатильности опровергает гипотезу о геометрическом броуновском движении с постоянной волатильностью. Как можно изменить модель движения базового актива, чтобы новая модель объясняла улыбку волатильности (давала те же премии, которые мы видим на рынке)?
+
+\justify
+\begin{itemize}
+\item Локальная волатильность.
+\item Стохастическая волатильность.
+\item Стохастическая локальная волатильность.
+\item Стохастическая локальная волатильность с прыжками.
+\item ...
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Локальная волатильность}
+\justify
+Геометрическое броуновское движение:
+\begin{align*}
+\frac{dS_t}{S_t} = \mu dt + \sigma\xi\sqrt{dt}, \quad \xi \sim \mathcal{N}(0, 1), \sigma = const
+\end{align*}
+
+\justify
+Локальная волатильность:
+\begin{align*}
+\frac{dS_t}{S_t} = \mu dt + \sigma(S_t, t)\xi\sqrt{dt}, \quad \xi \sim \mathcal{N}(0, 1)
+\end{align*}
+
+\justify
+$\sigma(S_t, t)$ --- зависимость волатильности от цены базового актива и времени. Например, предположим, что если пара доллар-рубль значительно отклонится от текущего уровня (прыгнет до 100), то на рынке начнётся паника и волатильность будет выше, чем в спокойные времена при курсе 75.
+\end{frame}
+
+
+
+\begin{frame}{Стохастическая волатильность}
+\justify
+Геометрическое броуновское движение:
+\begin{align*}
+\frac{dS_t}{S_t} = \mu dt + \sigma\xi\sqrt{dt}, \quad \xi \sim \mathcal{N}(0, 1), \sigma = const
+\end{align*}
+
+\justify
+Модель SABR (\en{Stochastic Alpha-Beta-Rho}):
+\begin{align*}
+dF_t &= \sigma_t(F_t)^\beta \sqrt{dt}\xi, \quad \xi \sim \mathcal{N}(0, 1) \\
+d\sigma_t &= \alpha\sigma_t\sqrt{dt}\psi, \quad \psi \sim \mathcal{N}(0, 1) \\
+Cov(\xi, \psi) &= \rho
+\end{align*}
+
+\justify
+$\alpha$ --- волатильность волатильности.
+
+$\beta$ --- коэффициент скошенности.
+
+$\rho$ --- корреляция между волатильностью и базовым активом.
+\end{frame}
+
+
+
+\begin{frame}{Калибрация моделей}
+\justify
+Все модели волатильности подгоняются (\en{fitted}) или калибруются (\en{calibrated}) к рынку. Мы подбираем такие значения внутренних параметров модели (например, $\alpha$, $\beta$ и $\rho$ в SABR), чтобы модель <<лучше всего>> воспроизводила наблюдаемые цены ликвидных ванильных опционов. После этого модель можно использовать для оценки более сложных экзотических продуктов.
+
+\begin{align*}
+&\text{Рыночные цены} \Rightarrow \\
+&\text{Внутренние параметры} \Rightarrow \\
+&\text{Цены произвольных опционов}
+\end{align*}
+
+\justify
+Объективная реальность, данная нам в ощущении --- рыночные цены ликвидных ванильных опционов. Модели и параметры --- наши предположения, которые позволяют <<интерполировать>> цены неликвидных деривативов.
+\end{frame}
+
+
+\end{document}
+

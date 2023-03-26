@@ -65,7 +65,7 @@ get_central_bank_fx_rate <- function(ccy, from_year, to_year) {
   data
 }
 
-get_central_bank_fx_rate("USD", 2012, 2022) %>% 
+get_central_bank_fx_rate("USD", 2012, 2023) %>% 
   mutate(log_return = log(fx_rate / lag(fx_rate))) %>% 
   filter(!is.na(log_return)) %>% 
   group_by(mid_month = make_date(year(date), month(date), 15)) %>% 
@@ -102,15 +102,15 @@ kernel_density <- density(
 
 density_fun <- approxfun(kernel_density$x, kernel_density$y, yleft=0, yright=0)
 
-implied_mean <- integrate(function(x) {x*density_fun(x)}, lower=60, upper=135)[["value"]]
+implied_mean <- integrate(function(x) {x*density_fun(x)}, lower=min(fly_spreads$strike)-1, upper=max(fly_spreads$strike)+1)[["value"]]
 
-implied_std <- sqrt(integrate(function(x) {density_fun(x) * (x - implied_mean)^2}, lower=60, upper=135)[["value"]])
+implied_std <- sqrt(integrate(function(x) {density_fun(x) * (x - implied_mean)^2}, lower=min(fly_spreads$strike)-1, upper=max(fly_spreads$strike)+1)[["value"]])
 
 # https://en.wikipedia.org/wiki/Log-normal_distribution
 mu <- log(implied_mean^2 / sqrt(implied_mean^2 + implied_std^2))
 sigma <- sqrt(log(1 + implied_std^2 / implied_mean^2))
 
-tibble(strike = seq(60, 135, 0.1)) %>% 
+tibble(strike = seq(min(fly_spreads$strike)-1, max(fly_spreads$strike)+1, 0.1)) %>% 
   mutate(
     implied_density = density_fun(strike),
     lognormal_density = dlnorm(strike, mu, sigma)
