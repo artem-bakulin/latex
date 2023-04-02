@@ -25,7 +25,7 @@ black_scholes_delta <- function(S, K, T, sigma, r, q) {
   pnorm(black_scholes_d1(S, K, T, sigma, r, q))
 }
 
-simulate_stock_and_call <- function(S, mu, sigma, K, T, n_steps, n_scenarios, seed=0) {
+simulate_stock_and_call <- function(S_0, mu, sigma, K, T, n_steps, n_scenarios, seed=0, realized_sigma=sigma) {
   
   set.seed(0)
   
@@ -44,7 +44,7 @@ simulate_stock_and_call <- function(S, mu, sigma, K, T, n_steps, n_scenarios, se
     mutate(
       t = step / n_steps,
       dt = t - lag(t, default=0),
-      log_increment = (mu - sigma^2/2) * dt + sigma * random_norm * sqrt(dt),
+      log_increment = (mu - sigma^2/2) * dt + realized_sigma * random_norm * sqrt(dt),
       S = S_0 * exp(cumsum(log_increment)),
       bs_delta = black_scholes_delta(S, K, T - t, sigma, r, q),
       step_delta_pnl = if_else(step != 0, lag(bs_delta) * (S - lag(S)), 0),
@@ -86,3 +86,8 @@ simulate_stock_and_call(S_0, mu, sigma, K, T, 365*4, 200) %>%
   filter(step == max(step)) %>% 
   select(scenario, t, S, bs_delta, balance) %>% 
   write_csv("black_scholes_hedging_1420.csv")
+
+simulate_stock_and_call(S_0, mu, sigma, K, T, 364*4, 200, realized_sigma=0.25) %>% 
+  filter(step == max(step)) %>% 
+  select(S, balance) %>% 
+  write_csv("black_scholes_hedging_realized_vol.csv")
