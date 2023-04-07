@@ -26,24 +26,143 @@
 \usepackage{tabularx}
 
 \usepackage{enumitem}
-\setitemize{label=\usebeamerfont*{itemize item}%
-  \usebeamercolor[fg]{itemize item}
-  \usebeamertemplate{itemize item}}
-
-% remove navigation bar
-\setbeamertemplate{navigation symbols}{}
-
-\setbeamertemplate{page number in head/foot}[totalframenumber] 
+	\setitemize{label=\usebeamerfont*{itemize item}%
+	  \usebeamercolor[fg]{itemize item}
+	  \usebeamertemplate{itemize item}}
+	
 
 \usepackage{eurosym}
 \renewcommand{\EUR}[1]{\textup{\euro}#1}
 
 \title{Кредитные дефолтные свопы}
 \author{Артём Бакулин}
-\date{11 апреля 2022 г.}
+\date{10 апреля 2023 г.}
 
-\usetheme{Warsaw}
-\usecolortheme{beaver}
+%\def\usebankstyle{1}
+
+\ifdefined\usebankstyle
+
+	% Remove navigation bar from the bottom-right corner
+	\beamertemplatenavigationsymbolsempty
+	
+	% Use black dash rather than blue triangle for each \item
+	\setbeamertemplate{itemize item}{\color{black}\textemdash}
+	
+	\definecolor{bank-light-blue-title}{RGB}{74, 201, 227}
+	\definecolor{bank-light-blue}{RGB}{0, 163, 224}
+	\definecolor{bank-dark-blue}{RGB}{0, 24, 168}
+
+	% In new template slide title is black
+	%\setbeamercolor{frametitle}{fg=bank-light-blue}
+	\setbeamercolor{frametitle}{fg=black}
+	
+	\setbeamertemplate{frametitle}{
+	    \begin{beamercolorbox}[ht=0.9cm]{frametitle}
+	    \strut \insertframetitle \strut
+	    \end{beamercolorbox}
+	}
+	
+	\addtobeamertemplate{frametitle}{}{%
+	\begin{textblock*}{50mm}(\textwidth-0.68cm,-0.68cm)
+	\includegraphics[height=0.68cm,width=0.68cm]{../index-investing/img/1280px_bank_logo.png}
+	\end{textblock*}}
+	
+	\setbeamertemplate{footline}{
+	    \begin{beamercolorbox}[leftskip=1cm, rightskip=1cm]{footline}
+	    		\vspace{0.2cm}
+			\begin{minipage}[t]{\textwidth-2cm}
+				\hrule
+				\vspace{1pt}			
+				{\color{bank-dark-blue} Deutsche Bank}
+				\hfill
+				\insertauthor, \insertdate
+				\hfill
+				\insertpagenumber
+				\newline
+				{\color{bank-light-blue} Technology Center}
+			\end{minipage}
+	    \end{beamercolorbox}
+	}
+
+	\newcommand{\inserttitleframe}{
+		% Background image is defined inside these curly braces
+		{
+			\usebackgroundtemplate{\includegraphics[width=\paperwidth]{../index-investing/img/bank_background.jpg}}
+			\begin{frame}[plain]
+				
+				\vspace{-0.9cm} \hspace{-0.6cm} {\tiny
+					\begin{tabular}{l}
+						 \color{white} Deutsche Bank \\
+						 \color{bank-light-blue-title} Technology Center
+					\end{tabular}
+				}
+
+				\vspace{3.4cm}
+				
+				\hspace{-0.4cm} {\footnotesize \color{white} Математические модели в инвестиционных банках}			
+				\vspace{0.5cm}
+				
+				\hspace{-0.4cm} {\huge \color{white} \inserttitle}
+				
+				\vspace{0.2cm}
+				
+				\hspace{-0.4cm} {\scriptsize \color{black} \#PositiveImpact}
+				
+				\vspace{0.2cm}
+				
+				\hspace{-0.4cm} {\footnotesize \color{white} \insertauthor, \insertdate}
+			\end{frame}
+		}
+	}
+	
+	\newcommand{\insertdisclaimerframe}{
+		\begin{frame}{Disclaimer}
+			\small
+			\justify
+			Данный материал не является предложением или предоставлением
+			какой-либо услуги. Данный материал предназначен исключительно для
+			информационных и иллюстративных целей и не предназначен для
+			распространения в рекламных целях. Любой анализ третьих сторон не 		
+			предполагает какого-либо одобрения или рекомендации. Мнения, 
+			выраженные в	данном материале, являются актуальными на текущий момент,
+			появляются только в этом материале и могут быть изменены без 
+			предварительного уведомления. Эта информация предоставляется с 
+			пониманием того, что в отношении материала, предоставленного здесь, вы
+			будете принимать самостоятельное решение в отношении любых действий в
+			связи с настоящим материалом, и это решение является основанным на 
+			вашем	собственном суждении, и что вы способны понять и оценить 
+			последствия этих действий. ООО <<ТехЦентр Дойче Банка>> не несет 
+			никакой ответственности за любые убытки любого рода, относящихся к
+			 этому материалу.
+		\end{frame}
+	}
+
+\else
+	\usetheme{Warsaw}
+	\usecolortheme{beaver}
+
+	\newcommand{\inserttitleframe}{
+		\begin{frame}
+		\titlepage
+		\end{frame}
+	}
+	
+	\newcommand{\insertdisclaimerframe}{
+	}
+	
+	% remove navigation bar
+	\setbeamertemplate{navigation symbols}{}
+
+	% add page counter
+	\setbeamertemplate{page number in head/foot}[totalframenumber] 
+
+	% remove navigation bar
+	\setbeamertemplate{navigation symbols}{}
+	
+	\setbeamertemplate{page number in head/foot}[totalframenumber] 
+
+\fi
+
 
 \newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
 \newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
@@ -67,9 +186,7 @@
 
 \begin{document}
 
-\begin{frame}
-\titlepage
-\end{frame}
+\inserttitleframe
 
 \begin{frame}{Кредитный дефолтный своп}
 \justify
@@ -375,26 +492,22 @@ Jr. Subordinated Bond	 	& n.a.		& n.a.		&17.10\%	\\
 
 \begin{frame}{Кредитный рейтинг}
 \justify
-Почему бы не использовать кредитный рейтинг эмитента, чтобы оценить вероятность дефолта?
-
-\justify
-Шкала \en{S\&P}\ (от лучшего к худшему):
+Почему бы не использовать кредитный рейтинг эмитента, чтобы оценить вероятность дефолта? Шкала \en{S\&P}\ (от лучшего к худшему):
 \begin{align*}
 \text{Инвестиционный рейтинг}
+\small
 &\begin{cases}
-\text{AAA} \\
-\text{AA+, AA, AA-} \\
-\text{A+, A, A-} \\
-\text{BBB+, BBB, BBB-,}
+\small \text{AAA} \\
+\small \text{AA+, AA, AA-} \\
+\small \text{A+, A, A-} \\
+\small \text{BBB+, BBB, BBB-,}
 \end{cases} \\
 \text{Спекулятивный рейтинг}
 &\begin{cases}
-\text{BB+, BB, BB-,} \\
-\text{B+, B, B-,} \\
-\text{CCC+, CCC, CCC-,} \\
-\text{CC,} \\
-\text{C} \\
-\text{D}
+\small \text{BB+, BB, BB-,} \\
+\small \text{B+, B, B-,} \\
+\small \text{CCC+, CCC, CCC-,} \\
+\small \text{CC,C, D}
 \end{cases}
 \end{align*}
 \end{frame}
@@ -474,7 +587,8 @@ Jr. Subordinated Bond	 	& n.a.		& n.a.		&17.10\%	\\
 Государственная облигация стоит $G=98\%$ номинала, корпоративная стоит $C=95\%$, при дефолте recovery rate составит $R=40\%$.
 
 \justify
-Предположим, что участники рынка риск-нейтральны. При какой вероятности дефолта $p$ математические ожидания доходностей государственной и корпоративной облигаций совпадут?
+%Предположим, что участники рынка риск-нейтральны.
+При какой вероятности дефолта $p$ мат. ожидания доходностей государственной и корпоративной облигаций совпадут?
 
 \centering
 \begin{tabular}{l|c|c|c|c|c}
@@ -518,12 +632,12 @@ p = \frac{1 - \dfrac{(1 + r_g)^T}{(1 + r_c)^T}}{1 - R} \approx \frac{T(r_c - r_g
 \end{equation*}
 
 \justify
-Например, доходность годовой облигации одного крупного немецкого инвестиционного банка из Франкфурта составляет 0.10\%. Доходность аналогичной облигации Германии составляет $-0.45\%$. При банкротстве банка кредиторы могут рассчитывать на recovery rate 40\%.
+Например, доходность годовой облигации одного крупного немецкого инвестиционного банка из Франкфурта составляет 3.5\%. Доходность аналогичной облигации Германии составляет $3.0\%$. При банкротстве банка кредиторы могут рассчитывать на recovery rate 40\%.
 
 \justify
 Какова вероятность дефолта этого банка в течение года?
 \begin{equation*}
-p \approx \frac{r_{Bank} - r_{Germany}}{1-R} = \frac{0.10\% - (-0.45\%)}{1-40\%} = 0.92\%
+p \approx \frac{r_{Bank} - r_{Germany}}{1-R} = \frac{3.5\% - 3.0\%}{1-40\%} = 0.83\%
 \end{equation*}
 \end{frame}
 
@@ -844,8 +958,7 @@ x = \frac{4(1 - R)(1 - e^{-\lambda})}{e^{-\lambda / 4} + e^{-\lambda / 2} + e^{-
 
 \begin{frame}{Премия за кредитный риск - 1}
 \justify
-Премия за кредитный риск (\en{credit premium}) компенсирует инвесторам риск
-того, что иногда случаются дефолты по облигациям. Рискованные облигации должны
+Премия за кредитный риск (\en{credit premium}) компенсирует инвесторам душевные страдания от потерь при дефолтах по облигациям. Рискованные облигации должны
 давать доходность, которая не только компенсирует мат. ожидание потерь от
 дефолтов, но и даёт премию за риск.
 
@@ -886,7 +999,7 @@ AAA    & AA     & A      & BBB    & CCC \\ \hline
   		extra y ticks = {0.5, 2, 3, 4, 5},
  		extra y tick labels = {0.5, 2, 3, 4, 5},
 		xmin = 1986-10-31,
-		xmax = 2021-12-31,
+		xmax = 2023-12-31,
 		ymin = 0.9,
 		ymax = 16,
 		grid = both,
@@ -947,12 +1060,12 @@ AAA    & AA     & A      & BBB    & CCC \\ \hline
 
 \begin{frame}{Риск-нейтральная вероятность и букмекеры}
 \justify
-Котировки букмекеров на матч <<Реал>> --- <<Челси>> завтра:
+Котировки букмекеров на матч <<Сити>> --- <<Бавария>> завтра:
 
 \centering
 \begin{tabular}{c|c|c}
-<<Реал>> & Ничья & <<Челси>> \\
-2.44 & 3.60 & 2.96
+<<Сити>> & Ничья & <<Бавария>> \\
+1.88 & 4.22 & 4.32
 \end{tabular}
 
 \justify
@@ -960,13 +1073,13 @@ AAA    & AA     & A      & BBB    & CCC \\ \hline
 
 \centering
 \begin{tabular}{c|c|c}
-<<Реал>> & Ничья & <<Челси>> \\
-40.0\% & 27.1\% & 32.9\%
+<<Сити>> & Ничья & <<Бавария>> \\
+53.1\% & 23.7\% & 23.2\%
 \end{tabular}
 
 \justify
-Допустим, всего игроки поставили 100 миллионов рублей, из них 27.1 --- на ничью. При 
-ничейном исходе победители заберут $27.1 \cdot 3.60 = 100$ миллионов рублей, то 
+Допустим, всего азартные болельщики поставили \$100 миллионов, из них 23.7 --- на ничью. При 
+ничейном исходе победители заберут $\$23.7 \cdot 4.22 = \$100$ миллионов, то 
 есть весь банк.
 
 \justify
@@ -1066,6 +1179,9 @@ Nth-to-default CDS:
 \item Capital valuation adjustment (KVA)
 \end{itemize}
 \end{frame}
+
+
+\insertdisclaimerframe
 
 \end{document}
 
