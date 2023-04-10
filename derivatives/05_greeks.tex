@@ -295,7 +295,7 @@ dV \approx \Delta \cdot dS = \frac{N}{S_0}dS = \frac{\EUR{1\,000\,000}}{85}\cdot
 \justify
 В модели Блэка-Шоулза дельта ванильного колл-опциона со страйком $K$ и сроком экспирации $T$ лет равна
 \begin{align*}
-\Delta = \frac{\partial C(S, K, T, \sigma, r, q)}{\partial S} = N(d_1)
+\Delta = \frac{\partial C(S, K, T, \sigma, r, q)}{\partial S} = e^{-qT}N(d_1)
 \end{align*}
 
 \justify
@@ -350,7 +350,7 @@ dV \approx \Delta \cdot dS = \frac{N}{S_0}dS = \frac{\EUR{1\,000\,000}}{85}\cdot
 
 \begin{frame}{Дельта ванильного пута}
 \justify
-Вспомним паритет опционов колл и пут:
+Паритет опционов колл и пут, когда актив не платит дивидендов:
 \begin{align*}
 C - P = S - Ke^{-rT}
 \end{align*}
@@ -364,6 +364,12 @@ C - P = S - Ke^{-rT}
 \justify
 Это свойство не зависит от предположений о характере движения базового актива (то есть
 справедливо не только в мире Блэка-Шоулза).
+
+\justify
+Если базовый актив имеет дивидендную доходность $q$:
+\begin{align*}
+\frac{\partial P}{\partial S} = \frac{\partial C}{\partial S} - e^{-qT}
+\end{align*}
 \end{frame}
 
 
@@ -780,7 +786,8 @@ V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sig
 \justify
 В модели Блэка-Шоулза волатильность $\sigma$ --- константа, поэтому странно считать производную. Тем не менее, и для колл-опциона, и для пут-опциона вега равна
 \begin{align*}
-\mathcal{V} = \frac{\partial C}{\partial \sigma} = \frac{\partial P}{\partial \sigma} = SN'(d_1)\sqrt{T}
+\mathcal{V} &= \frac{\partial C}{\partial \sigma} = \frac{\partial P}{\partial \sigma} = Se^{-qT}\sqrt{T}N'(d_1) \\
+N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 \end{align*}
 
 \justify
@@ -831,7 +838,7 @@ V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sig
 \justify
 Тета колл-опциона в модели Блэка-Шоулза:
 \begin{align*}
-\Theta = -\frac{\partial C}{\partial T} = - \frac{SN'(d_1)\sigma}{2\sqrt{T}} -rKe^{-rT}N(d_2)
+\Theta = -\frac{\partial C}{\partial T} = - \frac{S\sigma e^{-qT}N'(d_1)}{2\sqrt{T}} -rKe^{-rT}N(d_2) + qSe^{-qT}N(d_1)
 \end{align*}
 \end{frame}
 
@@ -929,7 +936,7 @@ V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sig
 В модели Блэка-Шоулза гамма колла равна гамме пута:
 \begin{align*}
 \Gamma = \frac{\partial C^2}{\partial^2 S} = \frac{\partial C^2}{\partial^2 S} =
-\frac{N'(d_1)}{S\sigma\sqrt{T}} 
+\frac{e^{-qT}N'(d_1)}{S\sigma\sqrt{T}} 
 \end{align*} 
 \end{frame}
 
@@ -1127,8 +1134,8 @@ V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sig
 \justify
 В модели Блэка-Шоулза гамма и вега отличаются на константный множитель.
 \begin{align*}
-\Gamma &= \frac{N'(d_1)}{S\sigma\sqrt{T}} \\
-\mathcal{V} &= SN'(d_1)\sqrt{T}
+\Gamma &= \frac{e^{-qT}N'(d_1)}{S\sigma\sqrt{T}} \\
+\mathcal{V} &= Se^{-qT}\sqrt{T}N'(d_1)
 \end{align*}
 
 \justify
