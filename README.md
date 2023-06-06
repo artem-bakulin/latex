@@ -5,7 +5,7 @@ LaTeX sources for Habrahabr posts, presentations, and other stuff
 
 [Валютный рынок и финансовая инженерия в Средние века](https://artem-bakulin.github.io/latex/papers/medieval-fx/)
 
-[Современный валютный рынок](https://artem-bakulin.github.io/latex/papers/modern-fx/)
+[Современный валютный рынок](https://artem-bakulin.github.io/latex/papers/modern-fx/) | [Foreign Exchange Market](https://artem-bakulin.github.io/latex/papers/en/foreign-exchange-market/)
 
 [Микроструктура рынка и неблагоприятный отбор](https://artem-bakulin.github.io/latex/papers/market-microstucture/)
 
