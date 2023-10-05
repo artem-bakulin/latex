@@ -512,191 +512,201 @@ The forward contract does not cost anything by itself (you do not pay anything t
 
 
 
-\begin{frame}{Форвардный курс и форвардные пункты}
+\begin{frame}{Forward rate and forward points}
 \justify
-Важнейший параметр, о котором должны сторговаться участники сделки --- будущий курс обмена, который называется \alert{форвардный курс} (\en{forward rate}). Его ещё можно назвать <<ценой>> форварда.
+\alert{Forward rate} is the future exchange rate which sides of the forward contract have to negotiate in advance. Sometimes it is
+referred to as "price" of a forward.
 
 \justify
-Иногда используют не сам форвардный курс, а разность между форвардом и спотом --- \alert{форвардные пункты} (\en{forward points}). Это удобно, потому что спот-курс меняется каждую миллисекунду и тянет за собой форвард, а разность между ними меняется реже и не так сильно.
+Sometimes market participants prefer to use the difference between forward rate and spot rate, which is called \alert{forward points}. This is convenient, because spot rate may be ticking and pulling the forward rate every millisecond, but the difference between the two rates is more stable.
 
 \vspace{\baselineskip}
 \centering
 \begin{tabular}{l|l}
-Спот-курс & 1.091 \\
-Форвардный курс & 1.112 \\
+Spot rate & 1.091 \\
+Forward rate & 1.112 \\
 \hline
-Форвардные пункты & $1.112 - 1.091 = 0.021 = 210$ <<пипов>>
+Forward points & $1.112 - 1.091 = 0.021 = 210$ pips
 \end{tabular}
 
 \justify
-* 1 <<пип>> в паре EURUSD --- 0.0001.
+* By convention, 1 pip in EURUSD is equal to 0.0001.
 \end{frame}
 
 
 
-\begin{frame}{Валютный риск}
+\begin{frame}{Currency risk}
 \justify
-Предположим, что мы --- российский экспортёр рогов и копыт. Мы заключили контракт на поставку рогов в Европу по рогопроводу <<Северный олень 2>>. По контракту мы должны через год поставить 100 кубометров рогов, и тогда же через год нам заплатят 1\,000\,000 евро. Допустим, себестоимость партии рогов 80\,000\,000 рублей. Текущий курс EURRUB 85.0.
+Suppose that we are a natural gas exporter from Russia. We signed a contract to deliver gas to Europe. In 1 year from now we must deliver 100 cubic meters of gas, for which we will be paid 1\,000\,000 EUR. Suppose that production cost for this volume of gas
+is 85\,000\,000 RUB. Current EURRUB spot rate is 85.0.
 
 \justify
 \centering
 \begin{tabular}{r|r|r|r|r|r}
-EURRUB      & Выручка & \multicolumn{2}{c|}{Спот} & Расходы & Прибыль \\
+EURRUB      & Revenue & \multicolumn{2}{c|}{Spot} & Expense & Profit \\
 \cline{3-4}
-через год   & EUR     & EUR    & RUB              & RUB     & RUB   \\ \hline
-75.0        & +1 млн  & -1 млн & +75 млн          & -80 млн & -5 млн \\
-85.0        & +1 млн  & -1 млн & +85 млн          & -80 млн & +5 млн \\
-95.0        & +1 млн  & -1 млн & +95 млн          & -80 млн & +15 млн
+in 1 year   & EUR   & EUR   & RUB & RUB & RUB \\ \hline
+75.0        & $+1$  & $-1$ & $+75$         & $-80$  & $-5$ \\
+85.0        & $+1$ & $-1$ & $+85$         & $-80$  & $+5$ \\
+95.0        & $+1$ & $-1$ & $+95$          & $-80$ & $+15$ 
 \end{tabular}
 
+(all amounts are in millions)
+
 \justify
-Это \alert{валютный риск} (\en{FX risk}) --- риск того, что наша прибыль изменится из-за колебаний валютного курса.
+This is \alert{currency risk}: our profit may change depending on fluctuations of FX spot rate.
 \end{frame}
 
 
 
-\begin{frame}{Хэджирование валютного риска}
+\begin{frame}{Hedging currency risk}
 \justify
-Чтобы избежать риска, можно заключить форвард. Например, крупный немецкий инвестбанк из 
-Франкфурта может купить у нас годовой форвард EURRUB по курсу 90.
+We can avoid currency risk if we enter an FX forward contract. For instance, one large German investment bank from Frankfurt
+could buy EURRUB forward from us at forward rate of 90.0.
 
 \justify
 \centering
 \begin{tabular}{r|r|r|r|r|r}
-EURRUB      & Выручка & \multicolumn{2}{c|}{Форвард} & Расходы & Прибыль \\
+EURRUB      & Revenue & \multicolumn{2}{c|}{Forward} & Expense & Profit \\
 \cline{3-4}
-через год   & EUR     & EUR    & RUB              & RUB     & RUB   \\ \hline
-75.0        & +1 млн  & -1 млн & +90 млн          & -80 млн & +10 млн \\
-85.0        & +1 млн  & -1 млн & +90 млн          & -80 млн & +10 млн \\
-95.0        & +1 млн  & -1 млн & +90 млн          & -80 млн & +10 млн
+in 1 year   & EUR     & EUR    & RUB              & RUB     & RUB   \\ \hline
+75.0        & $+1$  & $-1$ & $+90$  & $-80$ & $+10$  \\
+85.0        & $+1$  & $-1$ & $+90$  & $-80$ & $+10$  \\
+95.0        & $+1$  & $-1$ & $+90$  & $-80$ & $+10$ 
 \end{tabular}
 
 \justify
-Форвард --- обязательный к исполнению контракт. Даже если через год евро укрепится до 
-105 рублей, мы будем обязаны продать евро по 90. Форвард защищает не только от риска 
-потерь (если евро подешевеет), но и от риска неожиданно высокой прибыли (если евро 
-укрепится).
+A forward is our obligation. In case EURRUB will be 105.0 in 1 year time, we will still be obliged to sell EUR at 90.0. A forward protects us both from the risk of a loss (in case EURRUB gets lower) and from the risk of a higher profit (in case EURRUB gets higher).
 
 \justify
-Нужно ли иметь 1\,000\,000 евро сегодня, чтобы продать форвард EURRUB? Нет!
+Do we need to own 1\,000\,000 EUR today in order to sell a forward? No!
 \end{frame}
 
 
 
-\begin{frame}{Спекуляция на валютном риске}
+\begin{frame}{Speculating on currency risk}
 \justify
-Помечтаем, что мы -- экстрасенсы и точно знаем, что за год евро сильно подешевеет. Как мы можем на этом заработать? Простой путь: продать 1 миллион евро сейчас (<<на споте>>). Но что, если под рукой нет свободного миллиона евро?
+Lets dream that we have a crystal ball and we know for sure that in 1 year time EUR will depreciate. How could we monetize our knowledge? Straightforward answer: sell 1 million of EURRUB on the spot. What if we do not have 1 million euro at hand right now?
 
 \justify
-Решение: продадим кому-нибудь годовой форвард EURRUB по 90. Через год нам принесут 90\,000\,000 рублей, а мы купим на них евро по текущему спот-курсу.
+Solution: sell a EURRUB 1 year forward at forward rate 90.0. In 1 year time we will receive 90\,000\,000 RUB. We will buy EUR on the spot at the prevailing spot rate.
 
 \justify
 \centering
 \begin{tabular}{r|r|r|r|r|r}
-EURRUB      & \multicolumn{2}{c|}{Форвард} & \multicolumn{2}{c|}{Спот} & Прибыль \\
+EURRUB      & \multicolumn{2}{c|}{Forward} & \multicolumn{2}{c|}{Spot} & Profit \\
 \cline{2-5}
-через год & EUR     & RUB     & EUR     & RUB      & RUB \\ \hline
-80.0      & -1 млн & +90 млн  & +1 млн  & -80 млн  & +10 млн\\
-90.0      & -1 млн & +90 млн  & +1 млн  & -90 млн  & 0 \\
-100.0     & -1 млн & +90 млн  & +1 млн  & -100 млн & -10 млн \\
+in 1 year & EUR     & RUB     & EUR     & RUB      & RUB \\ \hline
+80.0      & $-1$ & $+90$  & $+1$ & $-80$ & $+10$ \\
+90.0      & $-1$ & $+90$  & $+1$ & $-90$ & 0 \\
+100.0     & $-1$& $+90$  & $+1$ & $-100$ & $-10$ \\
 \end{tabular}
  
 \justify
-* Банк, которому мы продадим форвард, скорее всего потребует от нас залог на случай, если наша ставка не сыграет. Но залог будет меньше, чем миллион евро.
+* A bank which will buy our forward will probably ask for a margin, but this margin will be less than 1\,000\,000 EUR.
 \end{frame}
 
 
 
-\begin{frame}{Честный форвардный курс}
+\begin{frame}{Fair forward rate}
 \justify
-От чего зависит <<справедливый>> форвардный курс, при котором продавец и покупатель будут рады заключить контракт? 
+What factors determine "fair" forward rate, at which both the buyer and the seller will be happy to sign the contract? 
 
 \justify
-Представьте, что вы --- инвестор из Европы. Сейчас у вас есть 1 миллион евро, но через год вам понадобятся рубли для поездки в Сочи. Как вы можете зафиксировать сумму рублей, которой вы будете владеть через год? 
+Suppose that you are a European investor. You have 1 million EUR today. In 1 year time you will need RUB for a holiday trip to Sochi. How could you fix the amount of RUBs which you will own in 1 year time?
 \end{frame}
 
 
 
-\begin{frame}{Честный форвардный курс}
+\begin{frame}{Fair forward rate - 2}
 \justify
-Текущий спот-курс EURRUB $S_{eurrub}=85$, безрисковый депозит в евро 
-приносит $r_{eur}=0.25\%$, а в рублях --- $r_{rub}=6\%$. 
-На рынке форвардов можно заключить контракт по курсу $F_{eurrub}=89.0$.
+Current EURRUB spot rate is $S_{eurrub}=85$, risk-free bank deposit in EUR earns $r_{eur}=0.25\%$, RUB deposit is $r_{rub}=6\%$. 
+Forward market offers forwards at $F_{eurrub}=89.0$.
 
 \justify
+Strategy 1: buy RUB today
+
 \centering
-\begin{tabular}{l|l}
-Стратегия 1 & Стратегия 2 \\ \hline
-1) Продать спот:    & 1) Депозит под 0.25\%: \\
--1\,000\,000 EUR    & -1\,000\,000 EUR \\
-+85\,000\,000 RUB   & 2) Продать форвард по 89.0 \\ \cline{2-2}
-2) Депозит под 6\%: & 3) Закрыть депозит: \\
--85\,000\,000 RUB   & +1\,002\,500 EUR \\ \cline{1-1}
-3) Закрыть депозит: & 4) Поставка по форварду: \\
-+90\,100\,000 RUB   & -1\,002\,500 EUR \\
-                    & +89\,222\,500 RUB \\ \hline
-$1\,000\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
+\begin{tabular}{l|r|r|r|r}
+& \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
+& EUR & RUB & EUR & RUB \\ \hline
+Sell spot & $-1\,000\,000$ & $+85\,000\,000$ & & \\
+Deposit RUB & & $-85\,000\,000$ & & $+90\,100\,000$ \\ \hline
+Total & $-1\,000\,000$ & $0$ & & $+90\,100\,000$
 \end{tabular}
+
+\justify
+Strategy 2: sell a forward
+
+\centering
+\begin{tabular}{l|r|r|r|r}
+& \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
+& EUR & RUB & EUR & RUB \\ \hline
+Deposit EUR & $-1\,000\,000$ & & $+1\,002\,500$ & \\
+Sell a forward & 0 & 0 & $-1\,002\,500$ & $+89\,222\,500$ \\ \hline
+Total & $-1\,000\,000$ & 0 & $0$ & $+89\,222\,500$
+\end{tabular}
+
 \end{frame}
 
 
 
-\begin{frame}{Честный форвардный курс}
+\begin{frame}{Fair forward rate - 3}
 \justify
-Могут ли две стратегии приводить к разным результатам?
+Is it plausible that two strategies yield different results?
 
 \justify
 \centering
 \begin{tabular}{l|l}
-Стратегия 1 & Стратегия 2 \\ \hline
+Strategy 1 & Strategy 2 \\ \hline
 +90\,100\,000 RUB  & +89\,222\,500 RUB \\
 $1\,000\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
 \end{tabular}
 
 \justify
-Стратегия 1 явно лучше, и все будут пользоваться ей. 
+Strategy 1 is clearly better, and everyone will follow it. 
 
-1) Больше желающих продать евро --- курс $S_{eurrub}$ снижается.
+1) More investors sell EURRUB spot --- spot rate $S_{eurrub}$ gets lower.
 
-2) Выше спрос на депозиты в рублях --- ставка $r_{rub}$ снижается.
+2) Demand for RUB deposits is higher --- interest rate $r_{rub}$ gets lower.
 
-3) Никому не нужны депозиты в евро --- ставка $r_{eur}$ растёт. 
+3) Nobody needs deposits in EUR --- interest rate $r_{eur}$ gets higher. 
 
-4) Никто не продаёт форварды --- цена форварда $F_{eurrub}$ растёт.
+4) Nobody is selling forwards --- forward rate $F_{eurrub}$ gets higher.
 \end{frame}
 
 
 
-\begin{frame}{Честный форвардный курс}
+\begin{frame}{Fair forward rate - 4}
 \justify
-Что, если форвардный курс выше, например $F_{eurrub}=91$?
+Suppose that forward rate on the market is higher, e.g. $F_{eurrub}=91$.
 
 
 \justify
 \centering
 \begin{tabular}{l|l}
-Стратегия 1 & Стратегия 2 \\ \hline
+Strategy 1 & Strategy 2 \\ \hline
 +90\,100\,000 RUB  & +91\,227\,500 RUB \\
 $1\,000\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
 \end{tabular}
 
 \justify
-Теперь стратегия 2 лучше. 
+This time strategy 2 is better. 
 
-1) Выше спрос на депозиты в евро --- ставка $r_{eur}$ снижается.
+1) High demand for EUR deposits --- $r_{eur}$ gets lower.
 
-2) Больше продавцов форвардов --- курс $F_{eurrub}$ снижается.
+2) More sellers of forwards --- $F_{eurrub}$ gets lower.
 
-3) Никто не продаёт евро на споте --- курс $S_{eurrub}$ растёт. 
+3) Nobody sells spot --- $S_{eurrub}$ gets higher. 
 
-4) Депозиты в рублях не нужны --- ставка $r_{rub}$ растёт.
+4) RUB deposits are unpopular --- $r_{rub}$ gets higher.
 \end{frame}
 
 
 
-\begin{frame}{Честный форвардный курс}
+\begin{frame}{Fair forward rate - 5}
 \justify
-При каком форвардном курсе $F_{eurrub}$ рынок будет в равновесии, а стратегии 1 и 2 будут приводить к одинаковым результатам?
+At which forward rate $F_{eurrub}$ the market will be in equilibrium, and strategies 1 and 2 will be equivalent?
 
 \begin{align*}
 &1\,000\,000 \cdot S_{eurrub} \cdot (1 + r_{rub}) = 1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub} \Rightarrow \\
@@ -704,129 +714,139 @@ $1\,000\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $1\,000\,000 \cdot (1+r_{eur}
 \end{align*}
 
 \justify
-Вывод: честная цена форварда зависит только от текущего спот-курса и соотношения процентных ставок. Не нужно предсказывать будущее, чтобы торговать форвардами!
+Conclusion: fair forward rate only depends on current spot rate and current interest rates in the two currencies.
+
+\justify
+You do not need to forecast the future to trade forwards!
 \end{frame}
 
 
 
-\begin{frame}{Арбитраж}
+\begin{frame}{Arbitrage}
 \justify
-Где гарантия, что рынок сойдётся к равновесию за конечное время? Вдруг он может пребывать в неравновесном состоянии сколь угодно долго?
+Is there a guarantee that market prices will converge to equilibrium in finite time? Could the market potentially remain imbalanced for a long time?
 
 \justify
-Когда клиент открывает вклад в банке под безрисковую ставку, то банк де-факто берёт у клиента кредит под эту ставку. Что изменится в нашей модели, если допустить, что некоторые участники умеют не только открывать вклады, но и брать кредиты?
+When a client deposits cash to a bank at risk-free rate, the bank borrows the money at risk-free rate. Lets assume that some market participants are able to borrow money at risk-free rate. How does this change our model?
 \end{frame}
 
 
 
-\begin{frame}{Арбитраж}
+\begin{frame}{Arbitrage - 2}
 \justify
-Допустим, что цена форварда ниже равновесной. $S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=89$. 
+Suppose that forward rate is lower than equilibrium rate.
 
-\justify
-Хитрый план:
-
-1) Взять 1\,000\,000 евро в кредит под 0.25\%.
-
-2) Продать евро на споте, получить 85\,000\,000 рублей.
-
-3) Вложить рубли под 6\%.
-
-4) Купить форвард по 89 (согласиться отдать рубли, получить евро).
-
-5) Через год снять $85\,000\,000 \cdot (1+0.06) = 90\,100\,000$ рублей.
-
-6) По форварду обменять рубли на $90\,100\,000 / 89 = 1\,012\,360$ евро.
-
-7) Отдать по кредиту $1\,000\,000 \cdot (1 + 0.0025) = 1\,002\,500$ евро.
-
-8) PROFIT: 9\,860 евро при нулевых начальных инвестициях.
-\end{frame}
-
-
-
-\begin{frame}{Арбитраж}
-\justify
-Пусть цена форварда выше равновесной. $S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=91$. 
-
-\justify
-Второй хитрый план:
-
-1) Взять 85\,000\,000 рублей в кредит под 6\%.
-
-2) Продать рубли на споте, получить 1\,000\,000 евро.
-
-3) Вложить евро под 0.25\%.
-
-4) Продать форвард по 91 (согласиться отдать евро, получить рубли).
-
-5) Через год снять $1\,000\,000 \cdot (1+0.0025) = 1\,002\,500$ евро.
-
-6) По форварду обменять евро на $1\,002\,500 \cdot 91 = 91\,227\,500$ рублей.
-
-7) Отдать по кредиту $85\,000\,000 \cdot (1 + 0.06) = 90\,100\,000$ рублей.
-
-8) PROFIT: 1\,127\,500 рублей. Снова деньги из воздуха!
-\end{frame}
-
-
-
-\begin{frame}{Арбитраж}
-\justify
-Совокупность сделок, в результате которой участник рынка может ничем не рискуя заработать ненулевую прибыль при нулевых начальных вложениях, называется \alert{арбитражем} (\en{arbitrage}). Самого этого участника называют арбитражёром (\en{arbitrageur}).
-
-\justify
-Толпы алчных арбитражёров рыскают по рынку и выискивают малейшие возможности для арбитража. Если рыночная цена форварда отклонится от равновесной хотя бы на мгновение, арбитражёры налетят коршунами и помогут невидимой руке рынка исправить ошибку (\en{mispricing}). Каждый хочет сделать деньги из воздуха! 
-
-\justify
-Мы будем оценивать форварды и другие деривативы так, чтобы цена дериватива не оставляла возможностей для арбитража.
-\end{frame}
-
-
-
-\begin{frame}{Репликация форварда}
-\justify
-Следующие две стратегии приводят к одинаковому результату:
-
-1. Купить форвард EURRUB по 89.87531 на 1\,002\,500 евро.
-
-2. Взять 85\,000\,000 рублей в кредит под 6\%. Купить евро на споте по 85. Положить евро на депозит под 0.25\%.
+$S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=89$. 
 
 \justify
 \centering
-\begin{tabular}{l|l}
-Стратегия 1       & Стратегия 2 \\ \hline
-+1\,002\,500 EUR  & +1\,002\,500 EUR \\
--90\,100\,000 RUB & -90\,100\,000 RUB
+\small{
+\begin{tabular}{l|r|r|r|r}
+& \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
+& EUR & RUB & EUR & RUB \\ \hline
+Borrow EUR     & $+1\,000\,000$ &                                   & $-1\,002\,500$ & \\
+Sell spot            & $-1\,000\,000$ & $+85\,000\,000$ &                               & \\
+Deposit RUB    &                                & $-85\,000\,000$  &                                & $+90\,100\,000$ \\
+Buy a forward & 0                             & 0                               & $+1\,012\,360$ & $-90\,100\,000$ \\ \hline
+Total & 0 & 0 & $+9\,860$ & 0
 \end{tabular}
+}
 
 \justify
-Стратегия 2 полностью \alert{реплицирует} стратегию 1. Представьте, что стратегии спрятали в два чёрных ящика. Всё, что вы видите --- что иногда из чёрных ящиков вылетают евро, а в ящики залетают рубли. Не заглядывая внутрь, вы никогда не угадаете, в каком ящике настоящий форвард, а в каком --- синтетическая стратегия из кредита, депозита и спот-сделки.
+9\,860 EUR in 1 year with zero initial investment. Too good to be true?
 \end{frame}
 
 
 
-\begin{frame}{Оценка деривативов через репликацию}
+\begin{frame}{Arbitrage -  3}
 \justify
-Булочка стоит 30 р., котлетка 200 р., салатик 100 р., майонезик 50 р. Сколько должен стоить бургер на идеальном эффективном рынке? 380 р. плюс стоимость сборки, которая на финансовых рынках близка к нулю.
+Suppose that forward rate is lower than equilibrium rate.
+
+ $S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=91$. 
 
 \justify
-Цена дериватива выводится (derived) из цены базовых инструментов. Оценка дериватива
-не абсолютная (<<какова фундаментально обоснованная цена бургера?>>), а относительная (<<если стоимость ингредиентов X, то сколько стоит их комбинация?>>).
+\centering
+\small{
+\begin{tabular}{l|r|r|r|r}
+& \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
+& EUR & RUB & EUR & RUB \\ \hline
+Borrow RUB     &                               & $+85\,000\,000$  &                            & $-90\,100\,000$  \\
+Buy spot            & $+1\,000\,000$ & $-85\,000\,000$ &                               &   \\
+Deposit EUR    &  $-1\,000\,000$  &                                 & $+1\,002\,500$ &  \\
+Sell a forward & 0                             & 0                               & $-1\,002\,500$ & $+91\,227\,500$ \\ \hline
+Total & 0 & 0 & 0 & $+1\,127\,500$
+\end{tabular}
+}
 
 \justify
-Если мы продали клиенту бургер за 381 р., а сами собрали его из ингредиентов за 380 р., то мы зафиксируем прибыль 1 р., даже если рынок сошёл с ума и фундаментально обоснованная цена бургера 1000 р. или 100 р.
-
-\justify
-Ещё лучше --- купить бургер у одного клиента за 379 р., и через минуту продать
-другом клиенту за 381 р.
+We are making money out of thin air!
 \end{frame}
 
 
 
-\begin{frame}{Безарбитражная цена форварда}
+\begin{frame}{Arbitrage - 4}
 \justify
-На рынке не будет возможностей для арбитража, если форвардный курс будет следовать за спот-курсом и процентными ставками:
+\alert{Arbitrage strategy} is a combination of trades which allows a market participant earn risk-free profit for zero initial investment. This market participant is called \alert{arbitrageur}.
+
+\justify
+Flocks of greedy arbitrageurs watch the market day and night. Should the market forward rate deviate from correct value for a second, they will swoop down on this mispricing and will help the invisible hand of the market restore the equilibrium. Everyone wants to make money out of thin air!
+
+\justify
+We will be pricing forwards and other derivatives in assumption that fair price should leave no opportunities for arbitrage.
+\end{frame}
+
+
+
+\begin{frame}{Replicating a forward}
+\justify
+Consider the following two strategies.
+
+\justify
+\small{
+\begin{tabular}{l|r|r|r|r}
+ & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
+Strategy  1& EUR & RUB & EUR & RUB \\ \hline
+Buy a forward & 0                             & 0                               & $+1\,002\,250$ & $-90\,100\,000$
+\end{tabular}
+}
+
+\justify
+\small{
+\begin{tabular}{l|r|r|r|r}
+& \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
+Strategy 2 & EUR & RUB & EUR & RUB \\ \hline
+Borrow RUB & 0                            & $+85\,000\,000$ &                    & $-90\,100\,000$ \\
+Buy spot        & $+1\,000\,000$ & $-85\,000\,000$  &                     &                                  \\
+Deposit EUR & $-1\,000\,000$  &                                  & $+1\,002\,500$ & \\  \hline
+Total & 0 & 0 &  $+1\,002\,250$ & $-90\,100\,000$
+\end{tabular}
+}
+
+\justify
+Strategy 2 perfectly \alert{replicates} strategy 1. Imagine that these two strategies are hidden inside two black boxes. You can only observe EUR and RUB cash flows produced by the black boxes. You will never be able to find out which black box contains "true" forward and which contains a synthetic strategy.
+\end{frame}
+
+
+
+\begin{frame}{Pricing derivatives via replication}
+\justify
+A bun costs \$0.30, a piece of meat costs \$2.00, salad costs \$1.00, sauce costs \$0.50. What would be fair price of a burger on a perfectly efficient and liquid market? \$3.80 plus assembly cost, which is close to zero on financial markets.
+
+\justify
+Price of a derivative is literally derived from prices of underlying market instruments. It is more like a relative value (if ingredients cost X then what is price of their combination?) rather than absolute (what is fundamentally fair price of a burger?).
+
+\justify
+Suppose that we have sold a burger to a client at \$3.81 and managed to assemble it from ingredients at \$3.80. We have locked in a profit of \$0.01, even if the market went crazy and fundamentally fair price of a burger is \$1.00 or \$10.00.
+
+\justify
+Even better, a market maker can buy a burger from client A at \$3.79 and sell the same burger to client B at \$3.81.
+\end{frame}
+
+
+
+\begin{frame}{Arbitrage-free forward rate}
+\justify
+There will be no arbitrage opportunities on the market if and only if forward rate depends on spot rate and interest rates.
 
 \begin{align*}
 F_{xxxyyy} &= S_{xxxyyy} \frac{1 + r_{yyy}T_{yyy}}{1 + r_{xxx}T_{xxx}} \\
@@ -834,10 +854,10 @@ F_{xxxyyy} &= S_{xxxyyy} \frac{1 + r_{yyy}T_{yyy}}{1 + r_{xxx}T_{xxx}} \\
 %F_{xxxyyy} &= S_{xxxyyy} \frac{\delta_{xxx}(T)}{\delta_{yyy}(T)}%
 \end{align*}
 
-Здесь $r_{xxx}$ --- процентная ставка (проценты годовых), $T_{xxx}$ --- количество лет между сегодня и датой поставки по форварду.
+Here $r_{xxx}$ is interest rate (annualized), $T_{xxx}$ is number of years between today and delivery date.
 
 \justify
-Предсказывает ли форвардный курс будущий спот-курс? Нет!
+Does forward rate predict future spot rate? No!
 \end{frame}
 
 
