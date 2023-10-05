@@ -1,0 +1,1038 @@
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+
+\usepackage{enumitem}
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+% remove navigation bar
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamertemplate{page number in head/foot}[totalframenumber] 
+
+\usepackage{eurosym}
+\renewcommand{\EUR}[1]{\textup{\euro}#1}
+
+\title{Foreign Exchange Market. Forwards}
+\author{Artem Bakulin}
+\date{October 10, 2023}
+
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
+\newcommand{\ruen}[2]{#1 (\en{#2})}
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}{Foreign exchange spot}
+\justify
+\alert{Foreign exchange spot, FX spot} is a trade in which two parties exchange two currencies "almost immediately" ("on the spot"), usually on the second business day.
+
+\justify
+Buying a currency pair, for instance EURUSD, means receiving the first currency (EUR) and paying the second one (USD). For example, buying 1\,000\,000 of EURUSD spot at exchange rate 1.0721 results in the following payments:
+\justify
+
+\centering
+\begin{tabular}{l|r|r}
+Date                          & EUR & USD \\ \hline
+Tue 10.10.2023 (today)  & 0   & 0   \\
+Thu 12.10.2023 (spot)     & +1\,000\,000 & $-1\,072\,100$
+\end{tabular}
+\end{frame}
+
+
+
+\begin{frame}{Figures and pips}
+\justify
+Some market conventions originate from pre-computer era, when people had to negotiate
+over phone.
+
+\begin{align*}
+\underbrace{\text{\Large 1.07}}_{\text{Figures}}\underbrace{\text{\Large 21}}_{\text{Pips}}
+\end{align*}
+\justify
+
+\alert{Big figures} are  the most significant digits which you may not pronounce. \alert{Pips} are the third and the fourth digits after decimal point  (1st and 2nd in USDJPY), which you have to negotiate with your counterpart.
+
+\justify
+---Good morning. Euro (EURUSD), 10 (million), please?
+
+--- 21--23. (We buy at 1.07\underline{21}, we sell at 1.07\underline{23}).
+
+--- Sold (We pay you 1\,000\,000 EUR and receive 1\,072\,100 USD).
+\end{frame}
+
+
+
+\begin{frame}{Over-the-counter market and market-makers}
+\justify
+FX market is largely \alert{over-the-counter, OTC}. There is no single central trading platform
+(an exchange) to which every participant would have to connect.
+
+\justify
+Most companies and people buy currency from market-makers, most of which are large investment banks. \alert{Market-makers}, literally, make buying and selling rates for their customers:
+
+\centering
+\begin{tabular}{c|c|c|c}
+Bid & Mid & Ask/offer & Spread \\ \hline
+1.07\underline{21} & 1.07\underline{22} & 1.07\underline{23} & 2 pips
+\end{tabular}
+
+\justify
+\alert{Bid} is a rate at which customers sell the first currency. \alert{Ask} is a rate at which customers buy the fist currency. \alert{Mid} is average of the bid and the ask. \alert{Spread} is difference between the ask and the bid.
+
+\justify
+When a client is asking for a price (quote), they tell size of a trade, but do not specify whether they are going to buy or to sell!
+\end{frame}
+
+
+
+\begin{frame}{Market-maker's profit}
+\justify
+Suppose that a bank has sold 1\,000\,000 EUR at 1.07\underline{23} to one client, and has managed to buy 1\,000\,000 EUR at 1.07\underline{21} from another client. How much money has the bank made?
+
+\centering
+\begin{tabular}{l|r|r}
+Trade & EUR & USD \\
+\hline
+Sell at 1.07\underline{23} & $-1\,000\,000$ & $+1\,072\,300$ \\
+Buy at 1.07\underline{21} & $+1\,000\,000$ & $-1\,072\,100$ \\
+\hline
+Net & 0 & $+200$
+\end{tabular}
+
+\justify
+Do you have to buy Euros before selling Euros? Not necessarily, because settlement of FX
+spot trades happens on the second business day.
+
+\justify
+This market-maker seems to be making money out of thin air. Where is the catch? Could everyone follow the same strategy?
+\end{frame}
+
+
+
+\begin{frame}{Market risk}
+\justify
+\alert{Market risk} is possibility to end up with a loss due to changes in market prices.
+
+\justify
+1. Client A bought 1\,000\,000 EUR at 1.07\underline{23} from a market-maker.
+
+\justify
+2. For some reason, clients who could be selling are inactive.
+
+\justify
+3. News flash: ECB has hiked interest rates, Euro is strengthening. Other market-makers are now quoting 1.07\underline{51}/1.07\underline{53}.
+
+\justify
+4. Client B who is willing to sell is asking for a quote. The market-maker has to offer at least 1.07\underline{51}, otherwise the client will prefer the competitors' offers.
+
+\justify
+5. Summary: the market-maker has sold EUR at 1.07\underline{23} to client A, and has bought EUR at 1.07\underline{51} from client B. Net loss is \$2\,800.
+\end{frame}
+
+
+
+\begin{frame}{Managing the market risk}
+\justify
+The only way to eliminate the market risk entirely is to shut down all trading systems, fire
+traders, close the bank. What we could do to keep the market risk at an acceptable and reasonable level?
+
+\justify
+1. Widen the spread.
+\justify
+2. Offer skewed quotes.
+
+\justify
+3. Close our position on the market.
+\end{frame}
+
+
+
+\begin{frame}{1. Widen the spread}
+\justify
+Wider bid/ask spread provides a margin of safety and acts as a buffer in case the market moves
+rapidly.
+
+\justify
+Scenario 1 (all trades are 1\,000\,000 EUR) :
+
+1. Quote 1.07\underline{21}/1.07\underline{23} to client A. Client A buys at \underline{23}.
+
+2. The market moves up by 30 pips to 1.07\underline{51}/1.07\underline{53}.
+
+3. Client B sells at 1.07\underline{51}. Loss: $-\$2\,800$.
+
+\justify
+Scenario 2 (all trades are 1\,000\,000 EUR) :
+
+1. Quote 1.06\underline{97}/1.07\underline{47} to client A. Client A buys at \underline{47}.
+
+2. The market moves up by 30 pips to 1.07\underline{51}/1.07\underline{53}.
+
+3. Client B sells at 1.07\underline{27}. Profit: $+\$20\,000$.
+
+\justify
+Bad news: clients do not like excessively wide spreads and will gladly trade with our competitors.
+\end{frame}
+
+
+
+\begin{frame}{2. Skewed quotes}
+\justify
+What if we offer more favorable conditions on trades that reduce our market risk?
+\justify
+1. Quote 1.07\underline{21}/1.07\underline{23} to client A. Client A buys at \underline{23}.
+
+\justify
+2. Client B is asking for a quote, and we quote 1.07\underline{22}/1.07\underline{24}.
+
+\justify
+2a. Bid (left hand side) \underline{22} is more favorable now. In case client B is willing to sell, there is high probability that he will prefer us over competitors.
+We sold at \underline{23} and bought at \underline{22}. Profit $+\$100$. Less risk, less profit.
+
+\justify
+2b. Ask (right hand side) \underline{24} is worse. In case client B is willing to buy, he will probably trade with our competitors. If he still trades with us, we will charge an extra pip for increased risk.
+\end{frame}
+
+
+
+\begin{frame}{3. Trade on the market }
+\justify
+We could potentially ask another market-maker make a quote for us.
+
+\justify
+1. We quoted 1.07\underline{21}/1.07\underline{23} to client A. Client A boght at \underline{23}.
+
+\justify
+2. Lets call our competitors across the street and ask for a quote (we act as a client, and they are a market-maker).
+
+\justify
+3. They quote 1.07\underline{20.5}/1.07\underline{22.5}. We buy at \underline{22.5}.
+
+\justify
+4. We sold at \underline{23}, we bought at \underline{22.5}, we made \$50. This is even less than with strategy 2, and with less risk.
+
+\justify
+Buy the way, why did our competitor skew the price t the left? Presumably they have just bought from client B at \underline{21} and now they are employing strategy 2 themselves --- they offer better price \underline{22.5}.
+
+\justify
+This way two market-makers can lock in a profit and eliminate market risk.
+\end{frame}
+
+
+
+\begin{frame}{Market-maker's Handbook}
+\justify
+So, do you need to be able to predict the future in order to make money by market-making? No!
+
+\justify
+Market-maker's handbook:
+
+\justify
+1. Adjust the spread. Balance the risk of clients trading away with expected volatility of the market (caution vs greed).
+
+\justify
+2. Skew your quotes in case your risk is higher than your comfortable level.
+
+\justify
+3. Keep in mind that you can trade with other market-makers as necessary.
+
+\justify
+Market-making is not risk free. Each single trade may cause a loss. However, in case you make sufficiently large number of trades,
+and your systems work properly, then you can make money on average in the long run.
+\end{frame}
+
+
+
+\begin{frame}{Market-maker and fair price}
+\justify
+How does market-maker know what is \alert{fair} price?
+
+\justify
+Junior trader Artem joined a large bank and was put in charge of market-making EURUSD. Artem is isolated in a bunker with no communication channels with the outside world. The only data available to Artem are clients' requests and trades.
+
+\justify
+09:00 --- Client A requested a quote. Artem quoted 1.07\underline{21}/\underline{23}.
+
+09:00 --- Client A bought at \underline{23}.
+
+\justify
+09:01 --- Client B requested a quote. Artem quoted 1.07\underline{21}/\underline{23}.
+
+09:01 --- Client B bought at \underline{23}.
+
+\justify
+09:02 --- Client C requested a quote. Artem quoted 1.07\underline{21}/\underline{23}.
+
+09:02 --- Client C bought at \underline{23}.
+
+\justify
+Should Artem become worried by now?
+\end{frame}
+
+
+
+\begin{frame}{Market-maker and fair price - 2}
+\justify
+Artem has got a few unidirectional right-hand side trades, which increased his market risk. What is his next step? Artem will have to start skewing his quotes to the right (strategy 2).
+
+\justify
+09:03 ---Client D requested a quote. Artem quoted 1.07\underline{22}/\underline{24}.
+
+09:03 --- Nevertheless, Client D bought at \underline{24}.
+
+\justify
+09:04 ---Client E requested a quote. Artem quoted 1.07\underline{23}/\underline{25}.
+
+09:04 --- At last, client E sold at \underline{23}!
+
+\justify
+09:05 --- Client F requested a quote. Artem quoted 1.07\underline{23}/\underline{25}.
+
+09:05 --- Client F bought at  \underline{25}!
+
+\justify
+Although Artem was isolated from the world, he was able to find an equilibrium price $\underline{23}/\underline{25}$, at which the demand from buyers is approximately equal to the supply from sellers.
+\end{frame}
+
+
+
+\begin{frame}{Market-maker and fair price - 3}
+\justify
+''Fair'' market price balances the supply and demand. In case the clients are only buying or only selling, then the quoted price
+is probably wrong (too low or oo high).
+
+\justify
+A market-maker does not need to know this fundamentally fair exchange rate. It is questionable whether this
+fundamentally fair rate really exists.
+
+\justify
+We need the market, because the market collects information from billions of economic agents (importers, exporters, speculators, investors) and aggregates this information in the form of market price. If it was possible to collect all the relevant information, we would not need the market in the first place.
+
+\justify
+Market-makers merely help the invisible hand of the market find the equilibrium. Market-makers to not attempt to forecast the exchange rate (although some of their clients may be doing this).
+\end{frame}
+
+
+
+\begin{frame}{Do we need market-makers?}
+\justify
+Market-makers are not able to forecast the future, and they just make money by charging the bid/ask spread. In this case, why do we need them at all?
+
+\justify
+What if we let all market participants trade with each other directly and not pay the spread to banksters?
+
+\justify
+1. Difficulties of looking for counterparty for the trade. This could be solved by establishing a centralized exchange, fintech marketplace, etc.
+
+\justify
+2. Counterparty risk. This could be solved by central clearing counterparties.
+
+\justify
+3. Adverse selection and information asymmetry.
+\end{frame}
+
+
+
+\begin{frame}{A natural experiment}
+\justify
+A natural experiment is taking place on the market for index credit default swaps in the U.S.
+
+\justify
+1. The Dodd-Frank Act (2010) tells that trading venues should allow both kinds of trading: via requesting a quote from a market-maker, and via anonymous all-vs-all order book.
+
+\justify
+2. Clients commonly prefer requesting quotes from market-makers.
+
+\justify
+3. In 95\% of cases, market-makers give better spread than spread on the anonymous market.
+
+\justify
+4. The wider was the spread quoted BEFORE a trade, the more the market moves against the market-maker AFTER the same trade.
+
+\justify
+\small{Pierre Collin-Dufresne, Benjamin Junge, and Anders B Trolle. \textit{Market structure and transaction costs of index CDSs}. Swiss Finance Institute Research Paper 18-40. 2018}
+\end{frame}
+
+
+\begin{frame}{Adverse selection}
+\justify
+You are willing to buy 1\,000 GBP to go to holidays. You submit an order to an anonymous Fintech platform: "I will buy 1\,000 GBPEUR at 1.15 or better". Your order was filled in a second. Another user of this platform, an algorithmic hedge fund, has traded with you. Is this good or bad?
+
+\justify
+On one hand, you have done exactly what you were going to do. On the other hand, it is likely that you've been fooled. This hedge fund is probably more informed than you. They had sold you GBPEUR at 1.15 seconds before GBPEUR went lower to 1.14.
+
+\justify
+This is called \alert{adverse selection}: when you place an order you bear the risk that a better informed participant will make money on you.
+\end{frame}
+
+
+
+\begin{frame}{Adverse selection: an example}
+\justify
+You are going to buy an asset. You place an order
+"I will buy the asset at $x$ or cheaper". Once you place an order, an uninformed participant will join the market and will sell the asset to you at this price $x$. Then you will both learn true value of the asset: \$90 or \$110 with 50\%/50\% probability.
+
+\justify
+Suppose you place an order to buy at $x=\$100$.
+
+\centering
+\begin{tabular}{l|l}
+True value & Uninformed seller (100\%)  \\ \hline
+\$90 (50\%) & Trade (loss $-\$10$) \\ \hline
+\$110 (50\%) & Trade (gain $+\$10$) 
+\end{tabular}
+
+\justify
+Which price $x$ allows you neither win nor lose on average?
+\begin{align*}
+0.5\cdot(\$110 - x) + 0.5\cdot(\$90 - x) = 0 \quad \Leftrightarrow \quad x = \$100
+\end{align*}
+
+\justify
+If the market is competitive, then you'll have to submit your order at \$100.00 or perhaps \$99.99. Otherwise you will never be able to trade because your competitors will always bid a higher price. In case sellers are solving a similar problem, they will be submitting orders to sell at \$100.00 or perhaps \$100.01.
+\end{frame}
+
+
+
+\begin{frame}{Adverse selection: an example (cont.)}
+\justify
+Lets add a bit of information asymmetry. Now there is 10\% probability that you will
+have to trade with an \alert{informed} seller, who knows true value of the asset in advance.
+
+\justify
+Suppose you place an order to buy at $x=\$100$.
+
+\centering
+\begin{tabular}{l|l|l}
+True value & Uninformed (90\%) & Informed (10\%) \\ \hline
+\$90 (50\%) & Trade (loss $-\$10$) & Trade (loss $-\$10$) \\ \hline
+\$110 (50\%) & Trade (gain $+\$10$) & No trade (\$0) 
+\end{tabular}
+
+\justify
+What is new equilibrium price $x$ for your order?
+\begin{align*}
+0.5\cdot\alert{0.9}\cdot(\$110 - x) + 0.5(\$90 - x) = 0 \Leftrightarrow x \approx \$99.47
+\end{align*}
+
+\justify
+You have to act first by placing an order. You do not know in advance who will trade with you. To be safe you have to demand a discount of \$0.53. This is the cost of adverse selection and information asymmetry. Bid/ask spread has to be wider, and uninformed sellers have to pay for the existing of informed sellers.
+\end{frame}
+
+
+
+\begin{frame}{Market-makers and adverse selection}
+\justify
+How could you avoid paying the cost of adverse selection? You could introduce yourself to the buyer and explain that you are a 
+harmless retail investor rather than an algorithmic hedge fund.
+
+\justify
+A market-maker knows in advance \alert{who} is requesting a quote, so he can offer different bid/ask spreads to different clients.
+Informed clients face a wider spread (their trades are hazardous), uninformed clients get a more narrow spread.
+
+\justify
+A large number of clients can expect a better spread in case they call a market-maker and introduce themselves. They would face wider bid/ask spread if they chose anonymous market where everyone could trade with everyone.
+
+\justify
+Market-makers accumulate historical data on how their clients trade, and estimate the appropriate bid/ask spread for each client separately. As a result, corporate clients do not have to pay the cost of adverse selection (they can get a more narrow spread than hedge funds).
+\end{frame}
+
+
+
+\begin{frame}{Financial derivatives}
+\justify
+\alert{Financial derivative} is a contract, profit or loss on which depends on (is derived from) behavior of another financial asset (which is called \alert{underlying} asset).
+
+\justify
+Examples of underlying assets: foreign exchange, interest rates, securities, wheat, weather.
+
+\justify
+Examples of derivatives: forwards and futures, options, interest rate swaps, credit default swaps.
+
+\justify
+Market participants can use derivatives for risk-management (hedging) or to make bets on how market prices will change in the future (speculation). 
+\end{frame}
+
+
+
+\begin{frame}{Foreign exchange forwards}
+\justify
+\alert{Foreign exchange forward, outright forward} is a contract, in which two sides assume obligation to exchange pre-determined amounts in two currencies on a pre-determined date in the future at pre-determined rate. 
+
+\justify
+Example: buying 1\,000\,000 of EURUSD 1 year forward at forward rate 1.112:
+
+\centering
+\begin{tabular}{l|r|r}
+Date                          & EUR & USD \\ \hline
+Thu 12.10.2023 (today)  & 0   & 0   \\
+Mon 16.10.2023 (spot) & 0   & 0   \\
+Wed 16.03.2024 (1Y)   & 1\,000\,000 & $-1\,112\,000$
+\end{tabular}
+
+\justify
+The forward contract does not cost anything by itself (you do not pay anything today). To "buy" a forward means to assume obligation to received the first currency and pay the second currency. However you need to negotiate the exchange rate with the seller.
+\end{frame}
+
+
+
+\begin{frame}{Форвардный курс и форвардные пункты}
+\justify
+Важнейший параметр, о котором должны сторговаться участники сделки --- будущий курс обмена, который называется \alert{форвардный курс} (\en{forward rate}). Его ещё можно назвать <<ценой>> форварда.
+
+\justify
+Иногда используют не сам форвардный курс, а разность между форвардом и спотом --- \alert{форвардные пункты} (\en{forward points}). Это удобно, потому что спот-курс меняется каждую миллисекунду и тянет за собой форвард, а разность между ними меняется реже и не так сильно.
+
+\vspace{\baselineskip}
+\centering
+\begin{tabular}{l|l}
+Спот-курс & 1.091 \\
+Форвардный курс & 1.112 \\
+\hline
+Форвардные пункты & $1.112 - 1.091 = 0.021 = 210$ <<пипов>>
+\end{tabular}
+
+\justify
+* 1 <<пип>> в паре EURUSD --- 0.0001.
+\end{frame}
+
+
+
+\begin{frame}{Валютный риск}
+\justify
+Предположим, что мы --- российский экспортёр рогов и копыт. Мы заключили контракт на поставку рогов в Европу по рогопроводу <<Северный олень 2>>. По контракту мы должны через год поставить 100 кубометров рогов, и тогда же через год нам заплатят 1\,000\,000 евро. Допустим, себестоимость партии рогов 80\,000\,000 рублей. Текущий курс EURRUB 85.0.
+
+\justify
+\centering
+\begin{tabular}{r|r|r|r|r|r}
+EURRUB      & Выручка & \multicolumn{2}{c|}{Спот} & Расходы & Прибыль \\
+\cline{3-4}
+через год   & EUR     & EUR    & RUB              & RUB     & RUB   \\ \hline
+75.0        & +1 млн  & -1 млн & +75 млн          & -80 млн & -5 млн \\
+85.0        & +1 млн  & -1 млн & +85 млн          & -80 млн & +5 млн \\
+95.0        & +1 млн  & -1 млн & +95 млн          & -80 млн & +15 млн
+\end{tabular}
+
+\justify
+Это \alert{валютный риск} (\en{FX risk}) --- риск того, что наша прибыль изменится из-за колебаний валютного курса.
+\end{frame}
+
+
+
+\begin{frame}{Хэджирование валютного риска}
+\justify
+Чтобы избежать риска, можно заключить форвард. Например, крупный немецкий инвестбанк из 
+Франкфурта может купить у нас годовой форвард EURRUB по курсу 90.
+
+\justify
+\centering
+\begin{tabular}{r|r|r|r|r|r}
+EURRUB      & Выручка & \multicolumn{2}{c|}{Форвард} & Расходы & Прибыль \\
+\cline{3-4}
+через год   & EUR     & EUR    & RUB              & RUB     & RUB   \\ \hline
+75.0        & +1 млн  & -1 млн & +90 млн          & -80 млн & +10 млн \\
+85.0        & +1 млн  & -1 млн & +90 млн          & -80 млн & +10 млн \\
+95.0        & +1 млн  & -1 млн & +90 млн          & -80 млн & +10 млн
+\end{tabular}
+
+\justify
+Форвард --- обязательный к исполнению контракт. Даже если через год евро укрепится до 
+105 рублей, мы будем обязаны продать евро по 90. Форвард защищает не только от риска 
+потерь (если евро подешевеет), но и от риска неожиданно высокой прибыли (если евро 
+укрепится).
+
+\justify
+Нужно ли иметь 1\,000\,000 евро сегодня, чтобы продать форвард EURRUB? Нет!
+\end{frame}
+
+
+
+\begin{frame}{Спекуляция на валютном риске}
+\justify
+Помечтаем, что мы -- экстрасенсы и точно знаем, что за год евро сильно подешевеет. Как мы можем на этом заработать? Простой путь: продать 1 миллион евро сейчас (<<на споте>>). Но что, если под рукой нет свободного миллиона евро?
+
+\justify
+Решение: продадим кому-нибудь годовой форвард EURRUB по 90. Через год нам принесут 90\,000\,000 рублей, а мы купим на них евро по текущему спот-курсу.
+
+\justify
+\centering
+\begin{tabular}{r|r|r|r|r|r}
+EURRUB      & \multicolumn{2}{c|}{Форвард} & \multicolumn{2}{c|}{Спот} & Прибыль \\
+\cline{2-5}
+через год & EUR     & RUB     & EUR     & RUB      & RUB \\ \hline
+80.0      & -1 млн & +90 млн  & +1 млн  & -80 млн  & +10 млн\\
+90.0      & -1 млн & +90 млн  & +1 млн  & -90 млн  & 0 \\
+100.0     & -1 млн & +90 млн  & +1 млн  & -100 млн & -10 млн \\
+\end{tabular}
+ 
+\justify
+* Банк, которому мы продадим форвард, скорее всего потребует от нас залог на случай, если наша ставка не сыграет. Но залог будет меньше, чем миллион евро.
+\end{frame}
+
+
+
+\begin{frame}{Честный форвардный курс}
+\justify
+От чего зависит <<справедливый>> форвардный курс, при котором продавец и покупатель будут рады заключить контракт? 
+
+\justify
+Представьте, что вы --- инвестор из Европы. Сейчас у вас есть 1 миллион евро, но через год вам понадобятся рубли для поездки в Сочи. Как вы можете зафиксировать сумму рублей, которой вы будете владеть через год? 
+\end{frame}
+
+
+
+\begin{frame}{Честный форвардный курс}
+\justify
+Текущий спот-курс EURRUB $S_{eurrub}=85$, безрисковый депозит в евро 
+приносит $r_{eur}=0.25\%$, а в рублях --- $r_{rub}=6\%$. 
+На рынке форвардов можно заключить контракт по курсу $F_{eurrub}=89.0$.
+
+\justify
+\centering
+\begin{tabular}{l|l}
+Стратегия 1 & Стратегия 2 \\ \hline
+1) Продать спот:    & 1) Депозит под 0.25\%: \\
+-1\,000\,000 EUR    & -1\,000\,000 EUR \\
++85\,000\,000 RUB   & 2) Продать форвард по 89.0 \\ \cline{2-2}
+2) Депозит под 6\%: & 3) Закрыть депозит: \\
+-85\,000\,000 RUB   & +1\,002\,500 EUR \\ \cline{1-1}
+3) Закрыть депозит: & 4) Поставка по форварду: \\
++90\,100\,000 RUB   & -1\,002\,500 EUR \\
+                    & +89\,222\,500 RUB \\ \hline
+$1\,000\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
+\end{tabular}
+\end{frame}
+
+
+
+\begin{frame}{Честный форвардный курс}
+\justify
+Могут ли две стратегии приводить к разным результатам?
+
+\justify
+\centering
+\begin{tabular}{l|l}
+Стратегия 1 & Стратегия 2 \\ \hline
++90\,100\,000 RUB  & +89\,222\,500 RUB \\
+$1\,000\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
+\end{tabular}
+
+\justify
+Стратегия 1 явно лучше, и все будут пользоваться ей. 
+
+1) Больше желающих продать евро --- курс $S_{eurrub}$ снижается.
+
+2) Выше спрос на депозиты в рублях --- ставка $r_{rub}$ снижается.
+
+3) Никому не нужны депозиты в евро --- ставка $r_{eur}$ растёт. 
+
+4) Никто не продаёт форварды --- цена форварда $F_{eurrub}$ растёт.
+\end{frame}
+
+
+
+\begin{frame}{Честный форвардный курс}
+\justify
+Что, если форвардный курс выше, например $F_{eurrub}=91$?
+
+
+\justify
+\centering
+\begin{tabular}{l|l}
+Стратегия 1 & Стратегия 2 \\ \hline
++90\,100\,000 RUB  & +91\,227\,500 RUB \\
+$1\,000\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
+\end{tabular}
+
+\justify
+Теперь стратегия 2 лучше. 
+
+1) Выше спрос на депозиты в евро --- ставка $r_{eur}$ снижается.
+
+2) Больше продавцов форвардов --- курс $F_{eurrub}$ снижается.
+
+3) Никто не продаёт евро на споте --- курс $S_{eurrub}$ растёт. 
+
+4) Депозиты в рублях не нужны --- ставка $r_{rub}$ растёт.
+\end{frame}
+
+
+
+\begin{frame}{Честный форвардный курс}
+\justify
+При каком форвардном курсе $F_{eurrub}$ рынок будет в равновесии, а стратегии 1 и 2 будут приводить к одинаковым результатам?
+
+\begin{align*}
+&1\,000\,000 \cdot S_{eurrub} \cdot (1 + r_{rub}) = 1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub} \Rightarrow \\
+&F_{eurrub} = S_{eurrub} \frac{1 + r_{rub}}{1 + r_{eur}} = 85 \cdot \frac{1 + 0.06}{1 + 0.0025} \approx 89.87531
+\end{align*}
+
+\justify
+Вывод: честная цена форварда зависит только от текущего спот-курса и соотношения процентных ставок. Не нужно предсказывать будущее, чтобы торговать форвардами!
+\end{frame}
+
+
+
+\begin{frame}{Арбитраж}
+\justify
+Где гарантия, что рынок сойдётся к равновесию за конечное время? Вдруг он может пребывать в неравновесном состоянии сколь угодно долго?
+
+\justify
+Когда клиент открывает вклад в банке под безрисковую ставку, то банк де-факто берёт у клиента кредит под эту ставку. Что изменится в нашей модели, если допустить, что некоторые участники умеют не только открывать вклады, но и брать кредиты?
+\end{frame}
+
+
+
+\begin{frame}{Арбитраж}
+\justify
+Допустим, что цена форварда ниже равновесной. $S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=89$. 
+
+\justify
+Хитрый план:
+
+1) Взять 1\,000\,000 евро в кредит под 0.25\%.
+
+2) Продать евро на споте, получить 85\,000\,000 рублей.
+
+3) Вложить рубли под 6\%.
+
+4) Купить форвард по 89 (согласиться отдать рубли, получить евро).
+
+5) Через год снять $85\,000\,000 \cdot (1+0.06) = 90\,100\,000$ рублей.
+
+6) По форварду обменять рубли на $90\,100\,000 / 89 = 1\,012\,360$ евро.
+
+7) Отдать по кредиту $1\,000\,000 \cdot (1 + 0.0025) = 1\,002\,500$ евро.
+
+8) PROFIT: 9\,860 евро при нулевых начальных инвестициях.
+\end{frame}
+
+
+
+\begin{frame}{Арбитраж}
+\justify
+Пусть цена форварда выше равновесной. $S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=91$. 
+
+\justify
+Второй хитрый план:
+
+1) Взять 85\,000\,000 рублей в кредит под 6\%.
+
+2) Продать рубли на споте, получить 1\,000\,000 евро.
+
+3) Вложить евро под 0.25\%.
+
+4) Продать форвард по 91 (согласиться отдать евро, получить рубли).
+
+5) Через год снять $1\,000\,000 \cdot (1+0.0025) = 1\,002\,500$ евро.
+
+6) По форварду обменять евро на $1\,002\,500 \cdot 91 = 91\,227\,500$ рублей.
+
+7) Отдать по кредиту $85\,000\,000 \cdot (1 + 0.06) = 90\,100\,000$ рублей.
+
+8) PROFIT: 1\,127\,500 рублей. Снова деньги из воздуха!
+\end{frame}
+
+
+
+\begin{frame}{Арбитраж}
+\justify
+Совокупность сделок, в результате которой участник рынка может ничем не рискуя заработать ненулевую прибыль при нулевых начальных вложениях, называется \alert{арбитражем} (\en{arbitrage}). Самого этого участника называют арбитражёром (\en{arbitrageur}).
+
+\justify
+Толпы алчных арбитражёров рыскают по рынку и выискивают малейшие возможности для арбитража. Если рыночная цена форварда отклонится от равновесной хотя бы на мгновение, арбитражёры налетят коршунами и помогут невидимой руке рынка исправить ошибку (\en{mispricing}). Каждый хочет сделать деньги из воздуха! 
+
+\justify
+Мы будем оценивать форварды и другие деривативы так, чтобы цена дериватива не оставляла возможностей для арбитража.
+\end{frame}
+
+
+
+\begin{frame}{Репликация форварда}
+\justify
+Следующие две стратегии приводят к одинаковому результату:
+
+1. Купить форвард EURRUB по 89.87531 на 1\,002\,500 евро.
+
+2. Взять 85\,000\,000 рублей в кредит под 6\%. Купить евро на споте по 85. Положить евро на депозит под 0.25\%.
+
+\justify
+\centering
+\begin{tabular}{l|l}
+Стратегия 1       & Стратегия 2 \\ \hline
++1\,002\,500 EUR  & +1\,002\,500 EUR \\
+-90\,100\,000 RUB & -90\,100\,000 RUB
+\end{tabular}
+
+\justify
+Стратегия 2 полностью \alert{реплицирует} стратегию 1. Представьте, что стратегии спрятали в два чёрных ящика. Всё, что вы видите --- что иногда из чёрных ящиков вылетают евро, а в ящики залетают рубли. Не заглядывая внутрь, вы никогда не угадаете, в каком ящике настоящий форвард, а в каком --- синтетическая стратегия из кредита, депозита и спот-сделки.
+\end{frame}
+
+
+
+\begin{frame}{Оценка деривативов через репликацию}
+\justify
+Булочка стоит 30 р., котлетка 200 р., салатик 100 р., майонезик 50 р. Сколько должен стоить бургер на идеальном эффективном рынке? 380 р. плюс стоимость сборки, которая на финансовых рынках близка к нулю.
+
+\justify
+Цена дериватива выводится (derived) из цены базовых инструментов. Оценка дериватива
+не абсолютная (<<какова фундаментально обоснованная цена бургера?>>), а относительная (<<если стоимость ингредиентов X, то сколько стоит их комбинация?>>).
+
+\justify
+Если мы продали клиенту бургер за 381 р., а сами собрали его из ингредиентов за 380 р., то мы зафиксируем прибыль 1 р., даже если рынок сошёл с ума и фундаментально обоснованная цена бургера 1000 р. или 100 р.
+
+\justify
+Ещё лучше --- купить бургер у одного клиента за 379 р., и через минуту продать
+другом клиенту за 381 р.
+\end{frame}
+
+
+
+\begin{frame}{Безарбитражная цена форварда}
+\justify
+На рынке не будет возможностей для арбитража, если форвардный курс будет следовать за спот-курсом и процентными ставками:
+
+\begin{align*}
+F_{xxxyyy} &= S_{xxxyyy} \frac{1 + r_{yyy}T_{yyy}}{1 + r_{xxx}T_{xxx}} \\
+%F_{xxxyyy} &= S_{xxxyyy} e^{r_{yyy}^*T_{yyy} - r_{xxx}^*T_{xxx}} \\
+%F_{xxxyyy} &= S_{xxxyyy} \frac{\delta_{xxx}(T)}{\delta_{yyy}(T)}%
+\end{align*}
+
+Здесь $r_{xxx}$ --- процентная ставка (проценты годовых), $T_{xxx}$ --- количество лет между сегодня и датой поставки по форварду.
+
+\justify
+Предсказывает ли форвардный курс будущий спот-курс? Нет!
+\end{frame}
+
+
+
+\begin{frame}{Биржевые фьючерсы}
+\justify
+\alert{Валютный фьючерс} (\en{FX future}) --- биржевой контракт, по которому можно обменять одну валюту на другую по фиксированному курсу в фиксированную дату в будущем.
+
+\justify
+Отличия фьючерса от форварда:
+\begin{itemize}
+\justifying
+\item Фьючерс торгуется на бирже, форвард --- на внебиржевом рынке.
+\item Фьючерс --- стандартизованный контракт (фиксированный размер лота, стандартные даты поставки --- третья среда каждого третьего месяца). В форвардах стороны могут договориться о чём угодно.
+\item Чтобы торговать фьючерсами, нужно обязательно внести гарантийное обеспечение. В форвардном контракте --- как решат стороны.
+\end{itemize}
+
+\justify
+Справедливый фьючерсный курс вычисляется так же, как и форвардный.
+\end{frame}
+
+
+
+\begin{frame}{Фьючерсы и предсказание будущего курса}
+\center
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=2014-01-01,
+  xtick={2014-02-01,2014-04-01, 2014-06-01, 2014-08-01, 2014-10-01, 2014-12-01},
+  xticklabel={\day.\month.14},
+  xmin=2014-01-01,
+  xmax=2014-12-31,
+  ymin=30,
+  ymax=62,
+  grid=major,
+  ylabel={\small{Курс USDRUB}},
+  xlabel near ticks,
+  ylabel near ticks,
+  legend entries = {
+      Спот-курс ЦБ РФ,
+      Цена фьючерса Si-12.14
+  },
+  legend pos=north west,
+  %legend style={font=\tiny},
+  legend cell align={left}
+]
+\addplot[color=Set1-A, mark=none, thick] table[x=date, y=cbr_spot_rate, col sep=comma]{Si-12.14.csv};
+\addplot[color=Set1-B, mark=none, thick] table[x=date, y=futures_price, col sep=comma]{Si-12.14.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: Московская Биржа.
+\end{frame}
+
+
+
+\begin{frame}{Беспоставочные (расчётные) форварды}
+\justify
+Многие валюты развивающихся стран не являются свободно-конвертируемыми. Кроме того, запрещены деривативы, такие как форварды.
+
+\justify
+Примеры:
+\begin{itemize}
+\item Китай.
+\item Индия.
+\item Корея.
+\item Тайвань.
+\item Бразилия.
+\item ...
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Беспоставочные (расчётные) форварды}
+\justify
+Невозможная троица международных финансов (\en{international finance trilemma}): можно выбрать любые два пункта из трёх.
+\begin{itemize}
+\item Фиксированный курс национальной валюты.
+\item Свободное движение капитала через границу.
+\item Независимая кредитно-денежная политика.
+\end{itemize}
+
+\justify
+Например, мы хотим фиксированный курс 30 рублей за доллар.
+\begin{itemize}
+\justifying
+\item ФРС повышает ставки --- все бегут в доллары
+\item Чтобы удержать курс, ЦБ РФ продаёт доллары
+\item Резервы большие, но конечные. Всё равно придётся либо отпустить курс, либо повысить ставки вслед за ФРС.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Пример: Китай}
+\begin{itemize}
+\justifying
+\item Движение капитала (покупка долга или акций) ограничено и требует предварительного одобрения правительства Китая.
+
+\item Текущие операции (оплата товаров и услуг) не ограничиваются. 
+
+\item Предоставив подтверждающие документы, можно купить или продать юани на бирже CFETS (China Foreign Exchange Trading System)
+
+\item Народный банк Китая выступает контрагентом в 70\% сделок на CFETS и имеет неограниченные возможности для манипулирования курсом.
+
+\item Никаких деривативов!
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Беспоставочный форвард}
+\justify
+Как управлять валютным риском, если форварды запрещены? Нужен \alert{беспоставочный форвард} (\en{non-deliverable forward, NDF}), он же расчётный форвард.
+
+\justify
+Беспоставочный форвард между Citi и Deutsche:
+
+\justify
+\centering
+\begin{tabular}{l|l}
+	Тип контракта 		   & Non-deliverable forward		\\
+	Deutsche <<продаёт>>  & 1\,000\,000 долларов (USD)	\\
+	Deutsche <<покупает>> & 6\,500\,000 юаней (CNY)		\\
+	Курс		 		      & 6.50 						\\
+	Дата поставки		   & 10 апреля 2023 г. (пн) \\
+	Референсный курс	   & Курс Народного банка Китая	\\
+	Дата фиксинга		   & 6 апреля 2023 г. (чт) \\
+	Сегодня (справочно)	& 6 марта 2023 г. (пн) \\
+	Спот-дата (справочно) & 8 марта 2023 г. (ср)
+\end{tabular}
+\end{frame}
+
+
+
+\begin{frame}{Механика беспоставочного форварда}
+\justify
+При заключении контракта (6 марта) никто никому ничего не платит.
+
+\justify
+В дату фиксинга (6 апреля) Народный банк Китая публикует официальный курс, например 6.40.
+
+\justify
+Deutsche угадал, что курс снизится, поэтому:
+\begin{itemize}
+\justifying
+\item Deutsche <<отдаёт>> 1\,000\,000 USD.
+\item Deutsche <<получает>> $6\,500\,000 \text{CNY} = \dfrac{6\,500\,000}{6.40} = 1\,015\,625 \text{USD}$.
+\end{itemize}
+
+\justify
+В дату поставки (10 апреля) Citi переведёт Deutsche выигрыш: 15\,625 USD.
+
+\justify Банки не обязаны сообщать о сделке правительству Китая. Беспоставочный форвард --- мечта спекулянта.
+\end{frame}
+
+
+
+\begin{frame}{Хэджирование валютного риска}
+\justify
+Одна американская фруктовая компания должна заплатить поставщику 6\,500\,000 юаней через месяц.
+\begin{itemize}
+\item Продаём форвард 1\,000\,000 USDCNY по 6.50.
+\item В дату фиксинга покупаем 6\,500\,000 CNY по спот-курсу $S$.
+\item В дату поставки получаем и выплату по форварду, и юани по спот-сделке.
+\end{itemize}
+
+\justify
+\centering
+\begin{tabular}{l|l|l}
+		Платёж 				& $S=6.40$ 			& $S=6.60$ \\
+		\hline
+		Беспоставочный форвард 	& $+15\,625$ USD 		& $-15\,151$ USD \\
+		\hline
+		\multirow{2}{*}{Спот-сделка} & $+6\,500\,000$ CNY 	& $+6\,500\,000$ CNY \\
+				   			& $-1\,015\,625$ USD		& $-984\,849$ USD \\
+		\hline
+		Оплата поставщику 		& $-6\,500\,000$ CNY 	& $-6\,500\,000$ CNY \\ 
+		 \hline
+		Итого				& $-1\,000\,000$ USD 	& $-1\,000\,000$ USD
+\end{tabular}
+\end{frame}
+
+
+
+\begin{frame}{Ценообразование беспоставочного форварда}
+\justify
+Аргументы про рыночное равновесие и отсутствие арбитража не работают, если есть ограничения на движение капитала. Цена беспоставочного форварда может далеко отклониться от <<теоретической>>, и никто не сможет её заарбитражить.
+
+\justify
+Беспоставочный форвард на 1 месяц --- это скорее базовый актив, а не дериватив. Невидимая рука рынка ищет такую цену, при которой спрос (желающие заплатить поставщикам в Китае или поспекулировать на укреплении доллара) и предложение (желающие вывести прибыль из Китая или поспекулировать на укреплении юаня) уравновешиваются.
+\end{frame}
+
+\end{document}
