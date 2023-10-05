@@ -537,8 +537,7 @@ Forward points & $1.112 - 1.091 = 0.021 = 210$ pips
 
 \begin{frame}{Currency risk}
 \justify
-Suppose that we are a natural gas exporter from Russia. We signed a contract to deliver gas to Europe. In 1 year from now we must deliver 100 cubic meters of gas, for which we will be paid 1\,000\,000 EUR. Suppose that production cost for this volume of gas
-is 85\,000\,000 RUB. Current EURRUB spot rate is 85.0.
+Suppose that we are a natural gas exporter from Russia. We signed a contract to deliver gas to Europe. In 1 year from now we must deliver 1\,000\,000 cubic meters of gas, for which we will be paid 1\,000\,000 EUR. Suppose that production cost for this volume of gas is 85\,000\,000 RUB. Current EURRUB spot rate is 85.0.
 
 \justify
 \centering
@@ -862,26 +861,27 @@ Does forward rate predict future spot rate? No!
 
 
 
-\begin{frame}{Биржевые фьючерсы}
+\begin{frame}{Foreign exchange futures}
 \justify
-\alert{Валютный фьючерс} (\en{FX future}) --- биржевой контракт, по которому можно обменять одну валюту на другую по фиксированному курсу в фиксированную дату в будущем.
+\alert{Foreign exchange futures} is an exchange-traded contract, which allows to exchange one currency for another at pre-determined rate on a pre-determined date in the future.
 
 \justify
-Отличия фьючерса от форварда:
-\begin{itemize}
-\justifying
-\item Фьючерс торгуется на бирже, форвард --- на внебиржевом рынке.
-\item Фьючерс --- стандартизованный контракт (фиксированный размер лота, стандартные даты поставки --- третья среда каждого третьего месяца). В форвардах стороны могут договориться о чём угодно.
-\item Чтобы торговать фьючерсами, нужно обязательно внести гарантийное обеспечение. В форвардном контракте --- как решат стороны.
-\end{itemize}
+What is difference between futures and forwards?
+
+1. Futures are traded on an exchange, forwards are traded OTC.
+
+2. Futures are standardized contracts (certain lot size, certain delivery dates). Forwards are customizable.
+
+3. To trade futures one needs to post cash on margin account. This is optional in forward contracts.
+
 
 \justify
-Справедливый фьючерсный курс вычисляется так же, как и форвардный.
+Fair futures rate is the same as fair forward rate.
 \end{frame}
 
 
 
-\begin{frame}{Фьючерсы и предсказание будущего курса}
+\begin{frame}{Futures and predicting future spot rate}
 \center
 \begin{tikzpicture}
 \begin{axis}[
@@ -896,12 +896,12 @@ Does forward rate predict future spot rate? No!
   ymin=30,
   ymax=62,
   grid=major,
-  ylabel={\small{Курс USDRUB}},
+  ylabel={\small{USDRUB rate}},
   xlabel near ticks,
   ylabel near ticks,
   legend entries = {
-      Спот-курс ЦБ РФ,
-      Цена фьючерса Si-12.14
+      Spot rate (Bank of Russia),
+      December 2014 futures (Moscow Exchange)
   },
   legend pos=north west,
   %legend style={font=\tiny},
@@ -912,147 +912,156 @@ Does forward rate predict future spot rate? No!
 \end{axis}
 \end{tikzpicture}
 
-\scriptsize Данные: Московская Биржа.
+\scriptsize Data: Central Bank of Russia, Moscow Exchange.
 \end{frame}
 
 
 
-\begin{frame}{Беспоставочные (расчётные) форварды}
+\begin{frame}{Partially convertible currencies}
 \justify
-Многие валюты развивающихся стран не являются свободно-конвертируемыми. Кроме того, запрещены деривативы, такие как форварды.
+A few currencies are not fully convertible. Moreover, foreign exchange derivatives may be banned.
 
 \justify
-Примеры:
-\begin{itemize}
-\item Китай.
-\item Индия.
-\item Корея.
-\item Тайвань.
-\item Бразилия.
-\item ...
-\end{itemize}
+Examples:
+
+1. Brazilian Real (BRL)
+
+2. Chinese Renminbi (CNY)
+
+3. Indian Rupee (INR)
+
+4. Korean Won (KRW)
+
+5. Taiwan Dollar (TWD)
+
+...
+
 \end{frame}
 
 
 
-\begin{frame}{Беспоставочные (расчётные) форварды}
+\begin{frame}{The impossible trinity}
 \justify
-Невозможная троица международных финансов (\en{international finance trilemma}): можно выбрать любые два пункта из трёх.
-\begin{itemize}
-\item Фиксированный курс национальной валюты.
-\item Свободное движение капитала через границу.
-\item Независимая кредитно-денежная политика.
-\end{itemize}
+International finance trilemma (the impossible trinity): you can choose any two options out of three. 
+
+1. Fixed exchange rate of a national currency
+
+2. Free capital flow across the border.
+
+3. Independent monetary policy.
 
 \justify
-Например, мы хотим фиксированный курс 30 рублей за доллар.
-\begin{itemize}
-\justifying
-\item ФРС повышает ставки --- все бегут в доллары
-\item Чтобы удержать курс, ЦБ РФ продаёт доллары
-\item Резервы большие, но конечные. Всё равно придётся либо отпустить курс, либо повысить ставки вслед за ФРС.
-\end{itemize}
+For example, suppose that Russia decided to peg USDRUB at 24.0 as if today was 2007.
+
+1. U.S. Fed is raising interest rates --- investors buy more dollars
+
+2. To maintain the peg, Central Bank of Russia has to sell dollars from its reserves.
+
+3. The reserves are large but finite. Sooner or later the Central Bank has to either raise RUB interest rates following U.S. Fed move, or let USDRUB fluctuate.
+
 \end{frame}
 
 
 
-\begin{frame}{Пример: Китай}
-\begin{itemize}
-\justifying
-\item Движение капитала (покупка долга или акций) ограничено и требует предварительного одобрения правительства Китая.
+\begin{frame}{Case study: China}
 
-\item Текущие операции (оплата товаров и услуг) не ограничиваются. 
+\justify
+1. Capital flow (buying stocks and bonds) is restricted and requires case by case approval from the Government.
 
-\item Предоставив подтверждающие документы, можно купить или продать юани на бирже CFETS (China Foreign Exchange Trading System)
+\justify
+2. Current operations (paying for goods and services) are not restricted.
 
-\item Народный банк Китая выступает контрагентом в 70\% сделок на CFETS и имеет неограниченные возможности для манипулирования курсом.
+\justify
+3. After submitting documents (e.g. a contract for goods or services) one is allowed to buy or sell CNY on  China Foreign Exchange Trading System (CFETS).
 
-\item Никаких деривативов!
-\end{itemize}
+\justify
+4. People's Bank of China is a counterparty in 70\% of trades on CFETS and has full control over exchange rate.
+
+\justify
+5. Derivatives are banned!
+
 \end{frame}
 
 
 
-\begin{frame}{Беспоставочный форвард}
+\begin{frame}{Non-deliverable forward}
 \justify
-Как управлять валютным риском, если форварды запрещены? Нужен \alert{беспоставочный форвард} (\en{non-deliverable forward, NDF}), он же расчётный форвард.
+How could companies manage currency risk in case forwards are banned? They need a special derivative: a \alert{non-deliverable forward (NDF)}.
 
 \justify
-Беспоставочный форвард между Citi и Deutsche:
+A hypothetical non-deliverable forward between Citi and Deutsche:
 
 \justify
 \centering
 \begin{tabular}{l|l}
-	Тип контракта 		   & Non-deliverable forward		\\
-	Deutsche <<продаёт>>  & 1\,000\,000 долларов (USD)	\\
-	Deutsche <<покупает>> & 6\,500\,000 юаней (CNY)		\\
-	Курс		 		      & 6.50 						\\
-	Дата поставки		   & 10 апреля 2023 г. (пн) \\
-	Референсный курс	   & Курс Народного банка Китая	\\
-	Дата фиксинга		   & 6 апреля 2023 г. (чт) \\
-	Сегодня (справочно)	& 6 марта 2023 г. (пн) \\
-	Спот-дата (справочно) & 8 марта 2023 г. (ср)
+	Contract & Non-deliverable forward		\\
+	Deutsche "sells"  & 1\,000\,000 USD	\\
+	Deutsche "buys" & 6\,500\,000 CNY		\\
+	Rate		 		      & 6.50 						\\
+	Delivery date	   & 16.11.2023 \\
+	Reference rate	   & People's Bank of China rate	\\
+	Fixing date		   & 14.11.2023 \\
+	Today (reference)	& 12.10.2023 \\
+	Spot date (reference) & 16.10.2023
 \end{tabular}
 \end{frame}
 
 
 
-\begin{frame}{Механика беспоставочного форварда}
+\begin{frame}{Mechanics of a non-deliverable forward}
 \justify
-При заключении контракта (6 марта) никто никому ничего не платит.
+There are no payments at inception (on October 12).
 
 \justify
-В дату фиксинга (6 апреля) Народный банк Китая публикует официальный курс, например 6.40.
+On the fixing date (November 14) the PBoC announces its official exchange rate, e.g. 6.40.
 
 \justify
-Deutsche угадал, что курс снизится, поэтому:
-\begin{itemize}
-\justifying
-\item Deutsche <<отдаёт>> 1\,000\,000 USD.
-\item Deutsche <<получает>> $6\,500\,000 \text{CNY} = \dfrac{6\,500\,000}{6.40} = 1\,015\,625 \text{USD}$.
-\end{itemize}
+Deutsche guessed that the rate will be lower, so
+
+A. Deutsche "sells" 1\,000\,000 USD.
+
+B. Deutsche "buys" $6\,500\,000 \text{CNY} = \dfrac{6\,500\,000}{6.40} = 1\,015\,625 \text{USD}$.
 
 \justify
-В дату поставки (10 апреля) Citi переведёт Deutsche выигрыш: 15\,625 USD.
+On delivery date (November 16) Citi will pay Deutsche the net gain 15\,625 USD.
 
-\justify Банки не обязаны сообщать о сделке правительству Китая. Беспоставочный форвард --- мечта спекулянта.
+\justify
+Market participants do not have to report their non-deliverable forwards to the Government of China. A non-deliverable forward is an ideal tool for speculators.
 \end{frame}
 
 
 
-\begin{frame}{Хэджирование валютного риска}
+\begin{frame}{Hedging currency risk with an NDF}
 \justify
-Одна американская фруктовая компания должна заплатить поставщику 6\,500\,000 юаней через месяц.
-\begin{itemize}
-\item Продаём форвард 1\,000\,000 USDCNY по 6.50.
-\item В дату фиксинга покупаем 6\,500\,000 CNY по спот-курсу $S$.
-\item В дату поставки получаем и выплату по форварду, и юани по спот-сделке.
-\end{itemize}
+A fruit company from the U.S. has to pay 6\,500\,000 CNY to its supplier in a month.
+
+1. Sell 1\,000\,000 of USDCNY non-deliverable forward at 6.50.
+
+2. On the fixing date buy 6\,500\,000 CNY at prevailing (and unknown) spot rate  $S$.
+
+3. On the delivery date receive both gain on the NDF and CNY from the spot trade.
 
 \justify
 \centering
-\begin{tabular}{l|l|l}
-		Платёж 				& $S=6.40$ 			& $S=6.60$ \\
-		\hline
-		Беспоставочный форвард 	& $+15\,625$ USD 		& $-15\,151$ USD \\
-		\hline
-		\multirow{2}{*}{Спот-сделка} & $+6\,500\,000$ CNY 	& $+6\,500\,000$ CNY \\
-				   			& $-1\,015\,625$ USD		& $-984\,849$ USD \\
-		\hline
-		Оплата поставщику 		& $-6\,500\,000$ CNY 	& $-6\,500\,000$ CNY \\ 
-		 \hline
-		Итого				& $-1\,000\,000$ USD 	& $-1\,000\,000$ USD
+\small
+\begin{tabular}{l|r|r|r|r}
+& \multicolumn{2}{c|}{In case $S=6.40$} & \multicolumn{2}{c}{In case $S=6.60$} \\ \cline{2-5}
+Transaction & USD & CNY & USD & CNY \\ \hline
+NDF & $+15\,625$ & & $-15\,151$ & \\
+Spot & $-1\,015\,625$ & $+6\,500\,000$ & $-984\,849$ & $+6\,500\,000$ \\
+Pay the supplier & & $-6\,500\,000$ & & $-6\,500\,000$ \\ \hline
+Total & $-1\,000\,000$ & 0 & $-1\,000\,000$ & 0
 \end{tabular}
 \end{frame}
 
 
 
-\begin{frame}{Ценообразование беспоставочного форварда}
+\begin{frame}{Pricing a non-deliverable forward}
 \justify
-Аргументы про рыночное равновесие и отсутствие арбитража не работают, если есть ограничения на движение капитала. Цена беспоставочного форварда может далеко отклониться от <<теоретической>>, и никто не сможет её заарбитражить.
+Capital controls make void arguments of market equilibrium and no arbitrage opportunities. Price of a non-deliverable forward may deviate from "theoretical" forward rate, and nobody will be able to arbitrage it away.
 
 \justify
-Беспоставочный форвард на 1 месяц --- это скорее базовый актив, а не дериватив. Невидимая рука рынка ищет такую цену, при которой спрос (желающие заплатить поставщикам в Китае или поспекулировать на укреплении доллара) и предложение (желающие вывести прибыль из Китая или поспекулировать на укреплении юаня) уравновешиваются.
+A non-deliverable forward for 1 month is closer to an underlying asset (i.e. spot) although technically it is a derivative. The invisible hand of the market is looking for such a NDF rate at which the demand (those willing to pay to suppliers in China or to make bet on USD strengthening) is equal to the supply (those willing to repatriate profit from China or to speculate on CNY strengthening).
 \end{frame}
 
 \end{document}
