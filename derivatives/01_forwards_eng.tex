@@ -461,7 +461,7 @@ Market-makers accumulate historical data, asses individual trading patterns and 
 
 \begin{frame}{Financial derivatives}
 \justify
-\alert{Financial derivative} is a contract, profit or loss on which depends on (is derived from) behavior of another financial asset (which is called \alert{underlying} asset).
+A \alert{financial derivative} is a contract whose profit or loss depends on, or is derived from, the behavior of another financial asset known as the \alert{underlying} asset.
 
 \justify
 Examples of underlying assets: foreign exchange, interest rates, securities, wheat, weather.
@@ -470,14 +470,14 @@ Examples of underlying assets: foreign exchange, interest rates, securities, whe
 Examples of derivatives: forwards and futures, options, interest rate swaps, credit default swaps.
 
 \justify
-Market participants can use derivatives for risk-management (hedging) or to make bets on how market prices will change in the future (speculation). 
+Market participants can use derivatives for risk-management (hedging) or to make bets on future changes in market prices (speculation). 
 \end{frame}
 
 
 
 \begin{frame}{Foreign exchange forwards}
 \justify
-\alert{Foreign exchange forward, outright forward} is a contract, in which two sides assume obligation to exchange pre-determined amounts in two currencies on a pre-determined date in the future at pre-determined rate. 
+\alert{Foreign exchange forward, or outright forward} is a contract, in which two parties commit to exchanging pre-determined amounts in two currencies on a pre-determined future date in at a pre-determined rate. 
 
 \justify
 Example: buying 1\,000\,000 of EURUSD 1 year forward at forward rate 1.112:
@@ -487,22 +487,22 @@ Example: buying 1\,000\,000 of EURUSD 1 year forward at forward rate 1.112:
 Date                          & EUR & USD \\ \hline
 Thu 12.10.2023 (today)  & 0   & 0   \\
 Mon 16.10.2023 (spot) & 0   & 0   \\
-Wed 16.03.2024 (1Y)   & 1\,000\,000 & $-1\,112\,000$
+Wed 16.10.2024 (1Y)   & 1\,000\,000 & $-1\,112\,000$
 \end{tabular}
 
 \justify
-The forward contract does not cost anything by itself (you do not pay anything today). To "buy" a forward means to assume obligation to received the first currency and pay the second currency. However you need to negotiate the exchange rate with the seller.
+The forward contract does not cost anything by itself (you do not pay anything today). To "buy" a forward means to accept an obligation to receive the first currency and pay the second currency. However you need to negotiate the exchange rate with the seller.
 \end{frame}
 
 
 
 \begin{frame}{Forward rate and forward points}
 \justify
-\alert{Forward rate} is the future exchange rate which sides of the forward contract have to negotiate in advance. Sometimes it is
-referred to as "price" of a forward.
+\alert{Forward rate} is the future exchange rate which parties of the forward contract negotiate in advance. Occasionally it is
+referred to as the "price" of a forward.
 
 \justify
-Sometimes market participants prefer to use the difference between forward rate and spot rate, which is called \alert{forward points}. This is convenient, because spot rate may be ticking and pulling the forward rate every millisecond, but the difference between the two rates is more stable.
+Sometimes market participants prefer to use the difference between the forward rate and the spot rate, which is called \alert{forward points}. This is convenient, because the spot rate may be fluctuating and pulling the forward rate every millisecond. The difference between the two rates is more stable.
 
 \vspace{\baselineskip}
 \centering
@@ -521,7 +521,7 @@ Forward points & $1.112 - 1.091 = 0.021 = 210$ pips
 
 \begin{frame}{Currency risk}
 \justify
-Suppose that we are a natural gas exporter from Russia. We signed a contract to deliver gas to Europe. In 1 year from now we must deliver 1\,000\,000 cubic meters of gas, for which we will be paid 1\,000\,000 EUR. Suppose that production cost for this volume of gas is 85\,000\,000 RUB. Current EURRUB spot rate is 85.0.
+Suppose that we are a natural gas exporter from Russia. We signed a contract to deliver gas to Europe. In 1 year, we must deliver 1\,000\,000 cubic meters of gas, for which we will be paid 1\,000\,000 EUR. The production cost for this volume of gas is 85\,000\,000 RUB. Current EURRUB spot rate is 85.0.
 
 \justify
 \centering
@@ -537,15 +537,14 @@ in 1 year   & EUR   & EUR   & RUB & RUB & RUB \\ \hline
 (all amounts are in millions)
 
 \justify
-This is \alert{currency risk}: our profit may change depending on fluctuations of FX spot rate.
+This is \alert{currency risk}: our profit is subject to change depending on fluctuations of the FX spot rate.
 \end{frame}
 
 
 
 \begin{frame}{Hedging currency risk}
 \justify
-We can avoid currency risk if we enter an FX forward contract. For instance, one large German investment bank from Frankfurt
-could buy EURRUB forward from us at forward rate of 90.0.
+We can mitigate currency risk by entering into an FX forward contract. For instance, one large German investment bank from Frankfurt might buy EURRUB forward from us at a forward rate of 90.0.
 
 \justify
 \centering
@@ -559,20 +558,20 @@ in 1 year   & EUR     & EUR    & RUB              & RUB     & RUB   \\ \hline
 \end{tabular}
 
 \justify
-A forward is our obligation. In case EURRUB will be 105.0 in 1 year time, we will still be obliged to sell EUR at 90.0. A forward protects us both from the risk of a loss (in case EURRUB gets lower) and from the risk of a higher profit (in case EURRUB gets higher).
+A forward is our obligation. Even if EURRUB rises to 105.0 in 1 year, we remain committed to selling EUR at 90.0. The forward contract protects us from the risk of a loss (in case EURRUB declines) and caps the potential profit (in case EURRUB rises).
 
 \justify
-Do we need to own 1\,000\,000 EUR today in order to sell a forward? No!
+Do we need to possess 1\,000\,000 EUR today in order to sell a forward? No!
 \end{frame}
 
 
 
 \begin{frame}{Speculating on currency risk}
 \justify
-Lets dream that we have a crystal ball and we know for sure that in 1 year time EUR will depreciate. How could we monetize our knowledge? Straightforward answer: sell 1 million of EURRUB on the spot. What if we do not have 1 million euro at hand right now?
+Lets dream that we have a crystal ball and we know for sure that EUR will depreciate in 1 year. How could we monetize our knowledge? Straightforward answer: sell 1 million of EURRUB on the spot. What if we do not have 1 million euro at hand?
 
 \justify
-Solution: sell a EURRUB 1 year forward at forward rate 90.0. In 1 year time we will receive 90\,000\,000 RUB. We will buy EUR on the spot at the prevailing spot rate.
+Solution: sell a EURRUB 1 year forward at forward rate of 90.0. In 1 year  we will receive 90\,000\,000 RUB. We will buy EUR on the spot at the prevailing spot rate.
 
 \justify
 \centering
@@ -593,10 +592,10 @@ in 1 year & EUR     & RUB     & EUR     & RUB      & RUB \\ \hline
 
 \begin{frame}{Fair forward rate}
 \justify
-What factors determine "fair" forward rate, at which both the buyer and the seller will be happy to sign the contract? 
+What factors determine the "fair" forward rate, at which both the buyer and the seller will be happy to sign the contract? 
 
 \justify
-Suppose that you are a European investor. You have 1 million EUR today. In 1 year time you will need RUB for a holiday trip to Sochi. How could you fix the amount of RUBs which you will own in 1 year time?
+Suppose that you are a European investor. You have 1 million EUR today. In 1 year you will require RUB for a holiday trip to Sochi. How could you secure the amount of RUBs which you will possess in 1 year?
 \end{frame}
 
 
@@ -626,8 +625,8 @@ Strategy 2: sell a forward
 & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 & EUR & RUB & EUR & RUB \\ \hline
 Deposit EUR & $-1\,000\,000$ & & $+1\,002\,500$ & \\
-Sell a forward & 0 & 0 & $-1\,002\,500$ & $+89\,222\,500$ \\ \hline
-Total & $-1\,000\,000$ & 0 & $0$ & $+89\,222\,500$
+Sell a forward &   &   & $-1\,002\,500$ & $+89\,222\,500$ \\ \hline
+Total & $-1\,000\,000$ &   & $0$ & $+89\,222\,500$
 \end{tabular}
 
 \end{frame}
@@ -710,14 +709,14 @@ You do not need to forecast the future to trade forwards!
 Is there a guarantee that market prices will converge to equilibrium in finite time? Could the market potentially remain imbalanced for a long time?
 
 \justify
-When a client deposits cash to a bank at risk-free rate, the bank borrows the money at risk-free rate. Lets assume that some market participants are able to borrow money at risk-free rate. How does this change our model?
+When a client deposits cash with a bank at the risk-free rate, the bank borrows the money at the risk-free rate. Let's assume that some market participants are able to borrow money at the risk-free rate. How does this change our model?
 \end{frame}
 
 
 
 \begin{frame}{Arbitrage - 2}
 \justify
-Suppose that forward rate is lower than equilibrium rate.
+Suppose that the forward rate is lower than the equilibrium rate.
 
 $S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=89$. 
 
@@ -730,7 +729,7 @@ $S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=89$.
 Borrow EUR     & $+1\,000\,000$ &                                   & $-1\,002\,500$ & \\
 Sell spot            & $-1\,000\,000$ & $+85\,000\,000$ &                               & \\
 Deposit RUB    &                                & $-85\,000\,000$  &                                & $+90\,100\,000$ \\
-Buy a forward & 0                             & 0                               & $+1\,012\,360$ & $-90\,100\,000$ \\ \hline
+Buy a forward &                               &                                 & $+1\,012\,360$ & $-90\,100\,000$ \\ \hline
 Total & 0 & 0 & $+9\,860$ & 0
 \end{tabular}
 }
@@ -743,7 +742,7 @@ Total & 0 & 0 & $+9\,860$ & 0
 
 \begin{frame}{Arbitrage -  3}
 \justify
-Suppose that forward rate is lower than equilibrium rate.
+Suppose that the forward rate is higher than the equilibrium rate.
 
  $S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=91$. 
 
@@ -756,7 +755,7 @@ Suppose that forward rate is lower than equilibrium rate.
 Borrow RUB     &                               & $+85\,000\,000$  &                            & $-90\,100\,000$  \\
 Buy spot            & $+1\,000\,000$ & $-85\,000\,000$ &                               &   \\
 Deposit EUR    &  $-1\,000\,000$  &                                 & $+1\,002\,500$ &  \\
-Sell a forward & 0                             & 0                               & $-1\,002\,500$ & $+91\,227\,500$ \\ \hline
+Sell a forward &                               &                                & $-1\,002\,500$ & $+91\,227\,500$ \\ \hline
 Total & 0 & 0 & 0 & $+1\,127\,500$
 \end{tabular}
 }
@@ -769,13 +768,13 @@ We are making money out of thin air!
 
 \begin{frame}{Arbitrage - 4}
 \justify
-\alert{Arbitrage strategy} is a combination of trades which allows a market participant earn risk-free profit for zero initial investment. This market participant is called \alert{arbitrageur}.
+An \alert{arbitrage strategy} is a combination of trades which allows a market participant to earn risk-free profit with zero initial investment. This market participant is known as an \alert{arbitrageur}.
 
 \justify
-Flocks of greedy arbitrageurs watch the market day and night. Should the market forward rate deviate from correct value for a second, they will swoop down on this mispricing and will help the invisible hand of the market restore the equilibrium. Everyone wants to make money out of thin air!
+Flocks of greedy arbitrageurs watch the market day and night. If the market forward rate deviates from the correct value for just a second, they will swoop down on this mispricing and help the invisible hand of the market restore equilibrium. Everyone wants to make money out of thin air!
 
 \justify
-We will be pricing forwards and other derivatives in assumption that fair price should leave no opportunities for arbitrage.
+We will be pricing forwards and other derivatives with the assumption that a fair price should leave no opportunities for arbitrage.
 \end{frame}
 
 
@@ -789,7 +788,7 @@ Consider the following two strategies.
 \begin{tabular}{l|r|r|r|r}
  & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 Strategy  1& EUR & RUB & EUR & RUB \\ \hline
-Buy a forward & 0                             & 0                               & $+1\,002\,250$ & $-90\,100\,000$
+Buy a forward &                              &                                & $+1\,002\,250$ & $-90\,100\,000$
 \end{tabular}
 }
 
@@ -806,20 +805,20 @@ Total & 0 & 0 &  $+1\,002\,250$ & $-90\,100\,000$
 }
 
 \justify
-Strategy 2 perfectly \alert{replicates} strategy 1. Imagine that these two strategies are hidden inside two black boxes. You can only observe EUR and RUB cash flows produced by the black boxes. You will never be able to find out which black box contains "true" forward and which contains a synthetic strategy.
+Strategy 2 perfectly \alert{replicates} strategy 1. Imagine that these two strategies are hidden inside two black boxes. You can only observe EUR and RUB cash flows produced by the black boxes. You will never be able to find out which black box contains the "true" forward and which contains the synthetic strategy.
 \end{frame}
 
 
 
 \begin{frame}{Pricing derivatives via replication}
 \justify
-A bun costs \$0.30, a piece of meat costs \$2.00, salad costs \$1.00, sauce costs \$0.50. What would be fair price of a burger on a perfectly efficient and liquid market? \$3.80 plus assembly cost, which is close to zero on financial markets.
+A bun costs \$0.30, a piece of meat costs \$2.00, salad costs \$1.00, sauce costs \$0.50. What would be the fair price of a burger on a perfectly efficient and liquid market? \$3.80 plus assembly cost, which is close to zero on financial markets.
 
 \justify
-Price of a derivative is literally derived from prices of underlying market instruments. It is more like a relative value (if ingredients cost X then what is price of their combination?) rather than absolute (what is fundamentally fair price of a burger?).
+The price of a derivative is literally derived from the prices of underlying market instruments. It is more like a relative value (if ingredients cost X then what is the price of their combination?) rather than absolute (what is the fundamentally fair price of a burger?).
 
 \justify
-Suppose that we have sold a burger to a client at \$3.81 and managed to assemble it from ingredients at \$3.80. We have locked in a profit of \$0.01, even if the market went crazy and fundamentally fair price of a burger is \$1.00 or \$10.00.
+Suppose that we have sold a burger to a client at \$3.81 and managed to assemble it from ingredients at \$3.80. We have locked in a profit of \$0.01, even if the market went crazy and the fundamentally fair price of a burger is \$1.00 or \$10.00.
 
 \justify
 Even better, a market maker can buy a burger from client A at \$3.79 and sell the same burger to client B at \$3.81.
@@ -847,17 +846,19 @@ Does forward rate predict future spot rate? No!
 
 \begin{frame}{Foreign exchange futures}
 \justify
-\alert{Foreign exchange futures} is an exchange-traded contract, which allows to exchange one currency for another at pre-determined rate on a pre-determined date in the future.
+\alert{Foreign exchange futures} are exchange-traded contracts, which allow to exchange one currency for another at a pre-determined rate on a pre-determined future date.
 
 \justify
 What is difference between futures and forwards?
 
+\justify
 1. Futures are traded on an exchange, forwards are traded OTC.
 
-2. Futures are standardized contracts (certain lot size, certain delivery dates). Forwards are customizable.
+\justify
+2. Futures are standardized contracts with a specific lot size and specific delivery dates. Forwards are customizable.
 
-3. To trade futures one needs to post cash on margin account. This is optional in forward contracts.
-
+\justify
+3. Trading futures requires posting cash on a margin account. This is optional in forward contracts.
 
 \justify
 Fair futures rate is the same as fair forward rate.
