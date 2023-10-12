@@ -22,7 +22,7 @@ LaTeX sources for Habrahabr posts, presentations, and other stuff
 
 [Индексное инвестирование (декабрь 2021)](https://artem-bakulin.github.io/latex/papers/index-investing-presentation-dec-2021/)
 
-## Derivatives at New Economic School (Spring 2023)
+## Derivatives (Spring 2023, Russian)
 
 [1. Валютный рынок. Валютные форварды](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/01-fx-market-and-fx-forwards/)
 
@@ -39,3 +39,7 @@ LaTeX sources for Habrahabr posts, presentations, and other stuff
 [7. Метод Монте-Карло](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/07-monte-carlo-method/) \| [Пример в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/07-monte-carlo-example/)
 
 [Бонус. Value at Risk](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/08-value-at-risk/) \| [Пример в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/08-value-at-risk-example/)
+
+## Derivatives (Autumn 2023, English)
+
+[1. FX Market and FX Forwards](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/01-fx-market-and-fx-forwards/)
