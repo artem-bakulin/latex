@@ -107,7 +107,7 @@ N = N_0e^{rT}
 
 \begin{frame}{Continuously compounded interest rate}
 \justify
-Suppose that we add a tiny interest to the deposit every hour, every minute, every seconds. Compounding frequency $f$ goes to infinity.
+Suppose that we add a tiny interest to the deposit every hour, every minute, every second. Compounding frequency $f$ goes to infinity.
 
 \begin{align*}
 N &= N_0 \lim_{f \to +\infty} \left(1 + \frac{r}{f}\right)^{fT} = 
@@ -123,7 +123,7 @@ Continuously compounded interest rates are very uncommon in real life, but they 
 
 \begin{frame}{Compound interest  - 1}
 \justify
-Consider deposits of 1\,000\,000 RUB each at the interest rate of 12\% with terms of 1 and 5 years. How does terminal amount on the account depend on compounding frequency?
+Consider deposits of 1\,000\,000 at the interest rate of 12\% with terms of 1 and 5 years. How does terminal amount on the account depend on compounding frequency?
 
 
 \begin{table}
@@ -196,7 +196,7 @@ BUS/252 & $23/252 \approx 0.09127$
 ACT --- count calendar days. 30 --- assume there are 30 days in each month. BUS --- count only business days.
 
 \justify
-Which method should you choose? Usually there is a market convention. Rule of thumb: ACT/365 in the British Commonwealth, ACT/360 is most other countries, BUS/252 in Brazil. 
+Which method should you choose? Usually there is a market convention. Rule of thumb: ACT/365 in the British Commonwealth, ACT/360 in most other countries, BUS/252 in Brazil. 
 \end{frame}
 
 
@@ -212,7 +212,7 @@ T = \frac{360(Y_2-Y_1) + 30(M_2-M_1) + (D_2-D_1)}{360}
 The 30/360 convention originated in pre-computer era, because it allows for quick mental math. It is still being used, for example, on the bond market.
 \begin{itemize}
 \item Backward compatibility
-\item The size of interest rate payments does not fluctuate during the year
+\item The size of interest payments does not fluctuate during the year
 \end{itemize}
 
 \vspace{\baselineskip}
@@ -251,190 +251,193 @@ r &= \frac{e^{r^*T}-1}{T}
 How much USD you would be willing to pay today (present value, PV) to be entitled to receive 1\,050\,000 USD in one year (future value, FV)? Suppose that the market offers and ideal risk-free deposit at 5\% with zero compounding.
 
 \begin{align*}
-PV = \frac{FV}{1+rT} = \frac{1\,120\,000}{1 + 12\%} = 1\,000\,000
+PV = \frac{FV}{1+rT} = \frac{1\,050\,000}{1 + 5\%} = 1\,000\,000
 \end{align*}
 
 \justify
-Никто не захочет платить больше, чем 1\,000\,000 сегодняшних рублей за 1\,120\,000 будущих рублей, потому что выгоднее будет вложить 1\,000\,000 под 12\% на год. Никто не захочет продавать 1\,120\,000 будущих рублей дешевле, чем за 1\,000\,000 сегодняшних, потому что выгоднее будет взять в кредит 1\,000\,000 под 12\% и погасить его через год.
+Nobody will be willing to pay more than 1\,000\,000 current dollars for 1\,050\,000 future dollars. It would be more profitable to deposit current dollars at 5\%.
+
+\justify
+There is no sense in selling 1\,050\,000 future dollars cheaper than 1\,000\,000 today, because one could borrow dollars today at 5\% and pay the debt in 1 year.
 \end{frame}
 
 
 
-\begin{frame}{Коэффициент дисконтирования}
+\begin{frame}{Discount factor}
 \justify
-\alert{Коэффициент дисконтирования} (\en{discount factor}) для будущей даты $T$ --- текущая стоимость права получить 1 единицу валюты в день $T$. Другая формулировка: сколько рублей нужно иметь сегодня, чтобы сделать из них 1 рубль к моменту $T$?
+\alert{Discount factor} for a future date $T$ is present value of a cashflow of 1 unit of a currency on date $T$. How many units of a currency one needs to posses today in order to make 1 unit of a currency by time $T$?
 
 \justify
-Ответ зависит от того, какая безрисковая ставка $r$ нам доступна:
+The answer depends on risk-free interest rate:
 \begin{align*}
-\delta_T &= \frac{1}{1 + rT} \quad \text{(простые проценты)} \\
-\delta_T &= \frac{1}{e^{r^*T}} = e^{-r^*T} \quad \text{(непрерывные проценты)}
+\delta_T &= \frac{1}{1 + rT} \quad \text{(simple interest)} \\
+\delta_T &= \frac{1}{e^{r^*T}} = e^{-r^*T} \quad \text{(continuously compounded interest)}
 \end{align*}
 
 \justify
-Например, если безрисковая процентная ставка равна 12\%, то коэффициент дисконтирования на 1 год равен
+For example, suppose that risk-free interest rate is 5\%.  Discount factor for 1 year us then
 \begin{align*}
-\delta_1 = \frac{1}{1.12} \approx 0.8929
+\delta_1 = \frac{1}{1.05} \approx 0.9524
 \end{align*}
 \end{frame}
 
 
 
-\begin{frame}{Отложенный депозит}
+\begin{frame}{Deferred deposit}
 \justify
-Предположим, что на рынке доступны два депозита с <<нулевой>> капитализацией:
+The market offers two deposits (simple interest)
 \begin{itemize}
-\item На $T_1=1$ год под ставку $r_1=12\%$ 
-\item На $T_2=2$ года под ставку $r_2=8\%$ 
+\item Term $T_1=1$ year, interest rate $r_1=5\%$ 
+\item Term $T_2=2$ years, interest rate $r_2=4\%$ 
 \end{itemize}
 
-Банк предлагает <<отложенный>> депозит: вы обязаны принести деньги через год на 1 год, а банк обязан зафиксировать ставку по депозиту $x$ уже сегодня. На какую ставку вы согласитесь?
+A bank offers a  "deferred" deposit. You are obliged to deposit the cash in 1 year for 1 year. The bank is obliged to tell you the interest rate $x$ today. What would be fair rate for this deposit?
 
 \centering
 \begin{tikzpicture}
 		\draw [->,>=triangle 90] (0, 0) -- (8.5, 0);
 
-		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1=12\%$};
+		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1=5\%$};
 
 		\draw [->,>=triangle 45] (4,0) .. controls (4.5, 1) and (6.5, 1) .. (7,0) node[anchor=north west]{$T_2=2$} node[pos=0.5,anchor=south]{$x$};
 
-		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2=8\%$};
+		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2=4\%$};
 	\end{tikzpicture}
 \end{frame}
 
 
 
-\begin{frame}{Отложенный депозит}
+\begin{frame}{Deferred deposit - 2}
 \centering
 \begin{tikzpicture}
 		\draw [->,>=triangle 90] (0, 0) -- (8.5, 0);
 
-		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1=12\%$};
+		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1=5\%$};
 
 		\draw [->,>=triangle 45] (4,0) .. controls (4.5, 1) and (6.5, 1) .. (7,0) node[anchor=north west]{$T_2=2$} node[pos=0.5,anchor=south]{$x$};
 
-		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2=8\%$};
+		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2=4\%$};
 	\end{tikzpicture}
 	
 \justifying
-Не должно быть разницы между депозитом на два года и цепочкой из двух депозитов:
+The should be no difference between a longer deposit and a chain of two shorter deposits.
 \begin{align*}
 (1 + r_1T_1)\Big(1+x(T_2-T_1)\Big) = 1 + r_2T_2
 \end{align*}
 \begin{align*}
-x = \frac{\dfrac{1+r_2T_2}{1+r_1T_1} - 1}{T_2-T_1} = \frac{\dfrac{1 + 0.08 \cdot 2}{1 + 0.12} - 1}{2-1} \approx 3.57\%
+x = \frac{\dfrac{1+r_2T_2}{1+r_1T_1} - 1}{T_2-T_1} = \frac{\dfrac{1 + 0.04 \cdot 2}{1 + 0.05} - 1}{2-1} \approx 2.86\%
 \end{align*}
 
-При любой другой ставке <<отложенный>> депозит будет не выгоден либо вкладчикам (и они не будут им пользоваться), либо банку (и он не будет его предлагать).
+At any other "deferred" rate $x$ the deferred deposit would be unfavorable for the bank or for clients.
 \end{frame}
 
 
 
-\begin{frame}{Непрерывная капитализация процентов}
+\begin{frame}{Continuous compounding}
 \justify
-Пересчитаем простые проценты в непрерывные:
+Convert simple interest rate into continuously compounded rates:
 \begin{align*}
-r_1^* &= \frac{\ln(1+r_1T_1)}{T_1} = \frac{\ln 1.12}{1} \approx 11.333\% \\
-r_2^* &= \frac{\ln(1+r_2T_2)}{T_2} = \frac{\ln 1.14}{2} \approx 7.421\%
+r_1^* &= \frac{\ln(1+r_1T_1)}{T_1} = \frac{\ln 1.05}{1} \approx 4.879\% \\
+r_2^* &= \frac{\ln(1+r_2T_2)}{T_2} = \frac{\ln 1.08}{2} \approx 3.848\%
 \end{align*}
 
 \centering
 \begin{tikzpicture}
 		\draw [->,>=triangle 90] (0, 0) -- (8.5, 0);
 
-		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1^*=11.333\%$};
+		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1^*=4.879\%$};
 
 		\draw [->,>=triangle 45] (4,0) .. controls (4.5, 1) and (6.5, 1) .. (7,0) node[anchor=north west]{$T_2=2$} node[pos=0.5,anchor=south]{$x^*$};
 
-		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2^*=7.421\%$};
+		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2^*=3.848\%$};
 	\end{tikzpicture}
 \end{frame}
 
 
 
-\begin{frame}{Непрерывная капитализация процентов}
+\begin{frame}{Continuous compounding - 2}
 \centering
 \begin{tikzpicture}
 		\draw [->,>=triangle 90] (0, 0) -- (8.5, 0);
 
-		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1^*=11.333\%$};
+		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1^*=4.879\%$};
 
 		\draw [->,>=triangle 45] (4,0) .. controls (4.5, 1) and (6.5, 1) .. (7,0) node[anchor=north west]{$T_2=2$} node[pos=0.5,anchor=south]{$x^*$};
 
-		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2^*=7.421\%$};
+		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2^*=3.848\%$};
 	\end{tikzpicture}
 
 \justifying
-Не должно быть разницы между цепочкой из <<непрерывных>> годовых депозитов и двухгодовым депозитом:
+There should be no difference between a 2 year deposit and a combination of two shorter deposits.
 \begin{align*}
 e^{r_1^*T_1}e^{x^*(T_2-T_1)} = e^{r_2^*T_2}
 \end{align*}
 \begin{align*}
-x^* = \frac{r_2^*T_2-r_1^*T_1}{T_2-T_1} = \frac{7.421\%\cdot2 - 11.333\%}{2 - 1} \approx 3.509\%
+x^* = \frac{r_2^*T_2-r_1^*T_1}{T_2-T_1} = \frac{3.848\%\cdot2 - 4.879\%}{2 - 1} \approx 2.817\%
 \end{align*}
 
-Пересчитаем <<непрерывные>> обратно в простые:
+Covert continuously compounded rate back into simple interest rate:
 \begin{align*}
-x = \frac{e^{x^*(T_2-T_1)} - 1}{T_2 - T_1} = e^{0.03509} - 1 \approx 3.57\% 
+x = \frac{e^{x^*(T_2-T_1)} - 1}{T_2 - T_1} = e^{0.02817} - 1 \approx 2.86\% 
 \end{align*}
 \end{frame}
 
 
 
-\begin{frame}{Непрерывные проценты}
+\begin{frame}{Continuous compounding - 3}
 \justify
-Наблюдаемая действительность --- то, что люди готовы вложить $100$ рублей, чтобы получить $112$ рублей через год. Это можно интерпретировать и как <<простую>> ставку 12\% , и как <<непрерывную>> ставку 11.33\%, и как коэффициент дисконтирования $1/1.12 = 0.8929$. Это разные точки зрения (или разные единицы измерения) на одно и то же явление.
+People are willing to invest $100$ dollars in order to receive $105$ in one year. This is observable reality. We can interpret this as "simple" interest rate 5\%, as continuously compounded interest rate 4.879\%, as discount factor of 0.9524. These are all equivalent views (using different units of measurement) on one and the same situation.
 
 \justify 
-В зависимости от контекста может быть удобнее пользоваться разными абстракциями. Можно показывать пользователям <<простые>> проценты, математику будущих ставок программировать в терминах <<непрерывных>> ставок, а \en{present value}\ будущих выплат вычислять с помощью коэффициентов дисконтирования.
+Depending on the context it may be more convenient to prefer one abstraction over the other. Human beings like simple interest. Continuously compounded rates simplify mathematics and source code. Discount factors help in case we know future cashflows and need to know their value in todays money.
 \end{frame}
 
 
 
 \begin{frame}{European Interbank Offered Rate}
 \justify
-\alert{EURIBOR} --- индикативная процентная ставка (\en{interest rate benchmark}) по беззалоговым кредитам в евро среди банков Еврозоны. Публикуется \en{European Money Market Institute (EMMI)}.
+\alert{EURIBOR} is benchmark interest rate for unsecured Euro loans among European bank. It is published by European Money Market Institute (EMMI).
 
 \justify
-По какой ставке сферический крупный банк может занять евро у другого банка или финансовой организации на открытом рынке? 
+At which rate a large bank could borrow Euro on the market (from another bank or financial organization)?
 
 \justify
 \centering
 \begin{tabular}{l|r}
-Срок (tenor)     & EURIBOR 08.03.2023 \\ \hline
-1W (1 неделя)    & $2.382\%$ \\
-1M (1 месяц)     & $2.565\%$ \\
-3M (3 месяца)    & $2.944\%$ \\
-6M (6 месяцев)   & $3.451\%$ \\
-12M (12 месяцев) & $3.944\%$ 
+Term (tenor)     & EURIBOR 13.10.2023 \\ \hline
+1W (1 week)    & $3.874\%$ \\
+1M (1 month)     & $3.860\%$ \\
+3M (3 months)    & $3.985\%$ \\
+6M (6 months)   & $4.121\%$ \\
+12M (12 months) & $4.171\%$ 
 \end{tabular}
 
 \justify
-*EURIBOR --- ставка без капитализации в конвенции ACT/360.
+*EURIBOR is simple rate (no compounding) in ACT/360 convention.
 \end{frame}
 
 
 
-\begin{frame}{Вычисление EURIBOR}
+\begin{frame}{Computing EURIBOR}
 \justify
-В вычислении EURIBOR участвуют 18 крупных банков Еврозоны и UK. Каждый банк ежедневно отправляет свою ставку по каждому из пяти сроков (от недели до года). Банки обязаны следовать методологии, которая определяет 3 <<уровня>>:
+19 banks from the Eurozone and the UK take part in determining the EURIBOR. Every day each bank submits its interest rate for each of 5 terms (from 1 week to 1 year). The banks follow a methodology which defines 3 "levels":
 
 \justify 
-1) Cредневзвешенная ставка реальных сделок банка в этот день и на этот срок. Каждая сделка должна быть не меньше 20 млн.
+1) Weighted average interest rate of actual transactions which the bank executed on this day on this term. Each transaction should not be smaller than 20mm.
 
 \justify
-2) Интерполяция ставок реальных сделок на соседние сроки (например, вычисление 6M из 3M и 12M), либо экстраполяция сделок предыдущих дней на данный срок.
+2) Interpolation of actual transactions from different terms (e.g. interpolate 1M from 1W and 3M) or extrapolating older transactions of the same term.
 
 \justify
-3) Ставки сделок по похожим инструментам, сделки менее 20 миллионов, котировки деривативов, сделки с нефинансовыми организациями, экспертное суждение. 
+3) Interest rates from similar instruments, transactions smaller than 20mm, derivatives, deals with non-financial parties, expert judgment. 
 
 \justify
-15\% самых больших и 15\% самых маленьких котировок отбрасываются. Арифметическое среднее оставшихся 70\%, округлённое до третьего знака --- EURIBOR.
+15\% highest quotes and 15\% lowest quotes are truncated. Arithmetic average of the remaining 70\%, rounded to the third decical digit, is proclaimed the EURIBOR.
 \end{frame}
 
 
 
-\begin{frame}{Вычисление EURIBOR}
+\begin{frame}{Computing EURIBOR - 2}
 \centering
 \begin{tikzpicture}
 		\draw [->,>=triangle 90] (0, 0) -- (9.5, 0);
@@ -452,59 +455,60 @@ x = \frac{e^{x^*(T_2-T_1)} - 1}{T_2 - T_1} = e^{0.03509} - 1 \approx 3.57\%
 	\end{tikzpicture}
 	
 \justify
-T--1 (вчера):  банки заключали сделки и собирали статистику.
+T--1 (yesterday):  banks were borrowing Euro and gathering data.
 
-T (сегодня): в 11:00 опубликовано среднее арифметическое вчерашних сделок --- EURIBOR на три месяца за дату T.
+T (today): at 11:00 the EMMI announces the average of yesterdays transactions --- 3 months EURIBOR on date $T$.
 
-T+1 (завтра): кредиты, о которых договорились вчера, вступят в силу (банки-заёмщики получат евро).
+T+1 (tomorrow): the transactions will be settled (borrowers will receive their Euros).
 
-T+1+3M (через три месяца): кредиты истекут (банки-заёмщики вернут деньги).
+T+1+3M (in 3 months): the loans will expire (lenders will receive their money back).
 
 \justify
-EURIBOR публикуется в дни, когда работает платёжная система Европейского Центробанка TARGET2. Три месяца прибавляются по конвенции \en{modified following business day}.
+EURIBOR is published on every TARGET2 business day (this is the ECB's payment system). Three months term is computed under "modified following business day" convention.
 \end{frame}
 
 
 
-\begin{frame}{Конвенция о переносе дней}
+\begin{frame}{Date rolling convention}
 \justify
-Кредит на три месяца начался 31 марта 2023 года (пт). Когда он закончится: 30 июня (пт) или 3 июля (пн)?
+A 3-months loan began on Friday March 31, 2023. When is it going to end: on Friday June 30 or on Monday July 3?
 
 \justify
-Конвенция \en{modified following / business month end}:
+Modified following / business month end convention:
 
 \justify
-1) Если дата начала --- последний рабочий день текущего месяца, то дата окончания --- тоже последний рабочий день месяца. Пример: 31.03.2022 (пт) --- 30.06.2023 (пт).
+1) In case the start date is the last business day of a month, then the end date is also last business day of the corresponding month. Example: 31.03.2022 (Friday) --- 30.06.2023 (Friday).
 
 \justify
-2) Если дата окончания выпала на выходной, то она сдвигается вперёд на ближайший 
-рабочий день, если только ближайший рабочий день --- не в следующем месяце. Пример: 
-17.03.2023 (пт) --- 19.06.2023 (пн).
+2) In case end date has fallen on a non-business day, then it is rolled forwards, unless the nearest business day is in the following month. Example: 17.03.2023 (Friday) --- 19.06.2023 (Monday).
 
 \justify
-3) В противном случае дата окончания сдвигается назад. Пример: 29.11.2022 (вт) --- 28.02.2023 (вт).
+3) Otherwise the end date is rolled backwards. Example: 29.11.2022 (Tuesday) --- 28.02.2023 (Tuesday).
 \end{frame}
 
 
 
 \begin{frame}{Euro short-term rate}
 \justify
-\alert{ESTER} --- индикативная ставка по беззалоговым кредитам сроком на один день (\en{overnight}) среди банков Еврозоны. Публикуется Европейским центральным банком (ЕЦБ).
+\alert{ESTER} is bencmark interest rate for unsecured overnight loans among banks of the Eurozone. It is published by the ECB.
 
 \justify
 \centering
 \begin{tabular}{l|r}
-Срок   & ESTER 08.03.2023 \\ \hline
-1 день & $2.399\%$
+Term  & ESTER 12.10.2023 \\ \hline
+1 day & $3.901\%$
 \end{tabular}
 
 \justify
-В определении ESTER участвует панель из 48-ми банков. Каждый банк в течение дня сообщает ЕЦБ обо всех своих сделках (когда банк берёт кредит на 1 день). ЕЦБ отбрасывает 25\% самых маленьких и 25\% самых больших значений и вычисляет средневзвешенную ставку.
+A panel of 48 banks determine ESTER. Each bank informs the ECB about its transactions when it borrows Euro on the market. The ECB discard the lower 25\%  and the 25\% higher values and then computes the weighed average.
+
+\justify
+ESTER is simple interest rate (no compounding) in ACT/360 convention.
 \end{frame}
 
 
 
-\begin{frame}{Вычисление ESTER}
+\begin{frame}{Computing ESTER}
 \justify
 \centering
 \begin{tikzpicture}
@@ -514,12 +518,12 @@ EURIBOR публикуется в дни, когда работает платё
 \end{tikzpicture}
 
 \justify
-T (сегодня): банки берут кредиты (получают евро) и сообщают о сделках в ЕЦБ.
+T (today): banks borrow Euro overnight and communicate their transactions to the ECB.
 
-T+1 (завтра): ЕЦБ опубликует среднюю ставку вчерашних сделок --- ESTER за вчера. Кредиты банков истекают (банки отдают евро).
+T+1 (tomorrow): the ECB announces the weighted average rate --- ESTER for the date T. The loans expire and banks pay Euro back to the lenders.
 
 \justify
-Как и EURIBOR, ESTER определяется в те дни, когда работает платёжная система TARGET2.
+Similarly to EURIBOR, ESTER is computed on TARGET2 business days.
 \end{frame}
 
 
@@ -541,7 +545,7 @@ T+1 (завтра): ЕЦБ опубликует среднюю ставку вч
 
 
 
-\begin{frame}{ESTER и EURIBOR}
+\begin{frame}{ESTER and EURIBOR}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -557,7 +561,7 @@ T+1 (завтра): ЕЦБ опубликует среднюю ставку вч
   xmin=2012-01-01,
   xmax=2024-01-01,
   ymin=-1,
-  ymax=4,
+  ymax=4.5,
   grid=both,
   yticklabel={\pgfmathprintnumber{\tick}\%},
 %  ylabel={\small{Курс USDRUB}},
@@ -580,134 +584,129 @@ T+1 (завтра): ЕЦБ опубликует среднюю ставку вч
 \end{axis}
 \end{tikzpicture}
 
-\scriptsize Данные: Banco de Espana.
+\scriptsize Data: Bundesbank.
 \end{frame}
 
 
 
-\begin{frame}{Фьючерсы на EURIBOR}
+\begin{frame}{EURIBOR futures}
 \justify
-Биржа \en{ICE Futures Europe}\ (бывшая LIFFE) предлагает фьючерсы на трёхмесячный EURIBOR. Например, \alert{FEIM3} --- фьючерс на июнь 2023 года*.
+ICE Futures Europe exchange (former LIFFE) offers three months EURIBOR futures. For examples, \alert{FEIZ3} is December 2023 futures.
 
 \justify
 \centering
 \begin{tabular}{r|r}
-Покупка & Продажа \\ \hline
-96.29 & 96.30
+Bid & Offer \\ \hline
+95.99 & 96.00
 \end{tabular}
 
 \justify
-Если мы <<купим>> 10 фьючерсов по 96.30, то:
+Suppose that we blindly click "buy 10 lots at 96.00".
 \begin{itemize}
 \justifying
-\item Прямо сейчас мы ничего не платим.
-\item 19 июня 2023 года** биржа установит финальную цену фьючерса $F = 100 - X$, где 
-$X$ --- трёхмесячный EURIBOR, опубликованный в этот день.
-\item Мы заработаем $10 \cdot (F - 96.30) \cdot \EUR{2\,500}$, где \EUR{2\,500} --- 
-константа из спецификации фьючерса.
+\item No initial cost to be paid today.
+\item On December 18 2023** the exchange will set final price for the futures at $F = 100 - X$, where 
+$X$ is the EURIOBOR which will be announced on that day.
+\item We will earn $10 \cdot (F - 96.00) \cdot \EUR{2\,500}$, where \EUR{2\,500} is a constant from the futures' specification.
 \end{itemize}
 
 \justify
-*FEI --- код контракта. M --- код месяца (H --- март, M --- июнь, U --- сентябрь, Z --- 
-декабрь). 3 --- последняя цифра года.
+*FEI is contract code. Z is month code (H for March, M for June, U for September, Z for December). 3 is last digit of the year.
 
 \justify
-**Третья среда месяца минус два рабочих дня.
+**Two business days prior to the third Wednesday of the month.
 \end{frame}
 
 
 
-\begin{frame}{Фьючерсы на EURIBOR}
+\begin{frame}{EURIBOR futures - 2}
 \justify
-Я заранее знаю, что в июне я разбогатею на \EUR{1\,000\,000}. Я планирую положить деньги на депозит в надёжном банке примерно под EURIBOR, чтобы в сентябре поехать в отпуск. У меня есть \alert{процентный риск} (\en{interest rate risk}): я не знаю, сколько денег у меня будет к сентябрю.
+I know in advance that in December I will become richer by \EUR{1\,000\,000}. I plan to deposit the money for three months, collect it in March and go on holiday. I face \alert{interest rate risk}: I do not know how  much money I will have by March.
+\justify
+Solution: buy one lot of EURIBOR December futures at 96.00.
 
 \justify
-Решение: купить один фьючерс на EURIBOR по 96.30.
-
-\justify
-Допустим, к 19 июня EURIBOR снизится до $2.50\%$.
+Suppose that by December 18 the EURIBOR will drop to $3.50\%$.
 \begin{itemize}
 \justifying
-\item Биржа установит финальную цену $100 - 2.50 = 97.50$.
-\item Прибыль по фьючерсу $(97.50-96.30)\cdot\EUR{2\,500} = \EUR{3\,000}$.
-\item Депозит под EURIBOR $2.50\%$ на три месяца принесёт
+\item The exchange will set final price at $100 - 3.50 = 96.50$.
+\item Gain on the futures is $(96.50-96.00)\cdot\EUR{2\,500} = \EUR{1\,250}$.
+\item Three months deposit at EURIBOR $3.50\%$ will earn
 
-$\EUR{1\,000\,000} \cdot 0.025 / 4 = \EUR{6\,250}$.
-\item Итого, я заработаю $\EUR{3\,000} + \EUR{6\,250} = \EUR{9\,250}$.
+$\EUR{1\,000\,000} \cdot 0.035 / 4 = \EUR{8\,750}$.
+\item In total, I will earn $\EUR{1\,250} + \EUR{8\,750} = \EUR{10\,000}$.
 \end{itemize} 
 
 \justify
-Я заработал бы столько же, если бы EURIBOR был $3.70\%$: $\EUR{1\,000\,000} \cdot 0.037/4 =\EUR{9\,250}$.
+I would have earned the same amount if EURBOR was $4.00\%$:
+
+$\EUR{1\,000\,000} \cdot 0.04/4 =\EUR{10\,000}$.
 \end{frame}
 
 
 
-\begin{frame}{Фьючерсы на EURIBOR}
+\begin{frame}{EURIBOR futures - 3}
 \justify
-Допустим, мы купили июньский фьючерс по 96.30 в марте. В июне мы открыли депозит под
-EURIBOR, каким бы он ни был, до сентября. Сколько мы заработаем?
-
+We bought the December futures in October at 96.00. In December we deposited cash at the prevailing EURIBOR. How much money are we going to make?\
 \justify
 \centering
 \begin{tabular}{r|r|r|r|r}
-EURIBOR   & Цена фьючерса & Фьючерс         & Депозит & Итого \\ \hline
-$2.50\%$ & 97.50        & $\EUR{3\,000}$ & $\EUR{6\,250}$  & $\EUR{9\,250}$ \\
-$3.00\%$ & 97.00        & $\EUR{1\,750}$ & $\EUR{7\,500}$  & $\EUR{9\,250}$ \\
-$3.50\%$ & 96.50        & $\EUR{500}$    & $\EUR{8\,750}$  & $\EUR{9\,250}$ \\
-$3.70\%$ & 96.30        & $\EUR{0}$       & $\EUR{9\,250}$  & $\EUR{9\,250}$ \\
-$4.00\%$ & 96.00        & $-\EUR{750}$    & $\EUR{10\,000}$ & $\EUR{9\,250}$ \\
-$4.50\%$ & 95.50        & $-\EUR{2\,000}$ & $\EUR{11\,250}$ & $\EUR{9\,250}$
+EURIBOR   & Final price & Futures         & Deposit & Total \\ \hline
+$2.50\%$ & 97.50        & $\EUR{3\,750}$      &   $\EUR{6\,250}$  & $\EUR{10\,000}$ \\
+$3.00\%$ & 97.00        & $\EUR{2\,500}$      &   $\EUR{7\,500}$  & $\EUR{10\,000}$ \\
+$3.50\%$ & 96.50        & $\EUR{1\,250}$      & $\EUR{8\,750}$  & $\EUR{10\,000}$ \\
+$4.00\%$ & 96.00        & $\EUR{0}$                & $\EUR{10\,000}$  & $\EUR{10\,000}$ \\
+$4.50\%$ & 95.50        & $-\EUR{1\,250}$    & $\EUR{11\,250}$ & $\EUR{10\,000}$ \\
+$5.00\%$ & 95.00        & $-\EUR{2\,500}$    & $\EUR{12\,500}$ & $\EUR{10\,000}$
 \end{tabular}
 
 \justify
-Покупая фьючерс по цене $100-X$, мы фиксируем ставку будущего депозита на \EUR{1\,000\,000} под EURIBOR. Если мы продаём фьючерс по цене $100-X$, то мы фиксируем будущую выплату по кредиту под плавающую ставку EURIBOR.
+When we buy 1 futures lot at $100-X$ we secure interest rate for a future deposit of \EUR{1\,000\,000} at EURIBOR. When we sell we secure a future loan of \EUR{1\,000\,000} at EURIBOR.
 \end{frame}
 
 
 
-\begin{frame}{Процентный своп}
+\begin{frame}{Interest rate swap}
 \justify
-\alert{Процентный своп} (\en{interest rate swap}) --- дериватив, в котором две стороны 
-обмениваются процентными платежами по фиксированной ставке и по плавающей (референсной) 
-ставке. 
+\alert{Interest rate swap} is a derivative in which two parties exchange interest payments at a fixed rate and a floating (reference) rate.
 
 \justify
-Параметры свопа:
+Parameters of a swap:
 \begin{itemize}
 \justifying
-\item Срок (\en{term, maturity}) --- дата последнего платежа. Например, 1 год.
-\item Размер (\en{notional amount, principal amount}) --- сумма, с которой платятся проценты. Например, \EUR{1} миллион.
-\item Купон (\en{coupon}) или ставка свопа (\en{swap rate}) --- фиксированная ставка, которую платит одна сторона. Например, $3.0\%$ годовых.
-\item Референсная ставка (\en{reference rate}) --- тип плавающей ставки, которую платит вторая сторона. Например, 3M EURIBOR.
+\item Term or maturity. For example, 1 year.
+\item Notional amount or principal amount --- an amount that accrues interest. For example, \EUR{1} million.
+\item Coupon or swap rate --- fixed interest rate which is paid by one f the parties. For example, $3.0\%$ per annum.
+\item Reference rate --- particular interest rate benchmark which is paid by the other party. For example, 3M EURIBOR.
 \end{itemize}
 
 \justify
-Купить своп --- согласиться получать плавающую ставку и платить за неё фиксированную ставку. Продать своп --- согласиться платить плавающую ставку и получать за неё фиксированную.
+Buying a swap means receiving the floating rate and paying the fixed rate. Selling a swap means paying the floating rate and receiving the fixed rate..
 \end{frame}
 
 
 
-\begin{frame}{Процентный своп}
+\begin{frame}{Interest rate swap - 2}
 \centering
 \begin{tikzpicture}[thick, scale=0.75]
-		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -7);
-		\draw (9.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (9.5, -7);
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company A} -- (0, -7);
+		\draw (9.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company B} -- (9.5, -7);
 
 		\draw [dashed,->,>=triangle 90] (0, -1) node[label=left:{$T_0$}]{} -- (4.5, -1) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000}$};
 
-		\draw [dashed,->,>=triangle 90] (9.5, -1) node[label=right:{\text{фиксинг $E_1$}}]{} -- (5, -1) node[pos=0.5,anchor=south]{\euro 1\,000\,000};
+		\draw [dashed,->,>=triangle 90] (9.5, -1) node[label=right:{\text{$E_1$ fixing}}]{} -- (5, -1) node[pos=0.5,anchor=south]{\euro 1\,000\,000};
 
 		\draw [->,>=triangle 90] (0, -2.5) node[label=left:{$T_1 = \text{3M}$}]{} -- (4.5, -2.5) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{3.0\%}{4}$};
 
-		\draw [snake=snake,->,>=triangle 90] (9.5, -2.5)  node[label=right:{\text{фиксинг $E_2$}}]{} -- (5, -2.5) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_1}{4}$};
+		\draw [snake=snake,->,>=triangle 90] (9.5, -2.5)  node[label=right:{\text{$E_2$ fixing}}]{} -- (5, -2.5) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_1}{4}$};
 
 		\draw [->,>=triangle 90] (0, -4) node[label=left:{$T_2 = \text{6M}$}]{} -- (4.5, -4) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{3.0\%}{4}$};
 
-		\draw [snake=snake,->,>=triangle 90] (9.5, -4)  node[label=right:{\text{фиксинг $E_3$}}]{} -- (5, -4) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_2}{4}$};
+		\draw [snake=snake,->,>=triangle 90] (9.5, -4)  node[label=right:{\text{$E_3$ fixing}}]{} -- (5, -4) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_2}{4}$};
 
 		\draw [->,>=triangle 90] (0, -5.5) node[label=left:{$T_3 = \text{9M}$}]{} -- (4.5, -5.5) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{3.0\%}{4}$};
 
-		\draw [snake=snake,->,>=triangle 90] (9.5, -5.5)  node[label=right:{\text{фиксинг $E_4$}}]{} -- (5, -5.5) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_3}{4}$};
+		\draw [snake=snake,->,>=triangle 90] (9.5, -5.5)  node[label=right:{\text{$E_4$} fixing}]{} -- (5, -5.5) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_3}{4}$};
 		\draw [->,>=triangle 90] (0, -7) node[label=left:{$T_4 = \text{12M}$}]{} -- (4.5, -7) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{3.0\%}{4}$};
 
 		\draw [snake=snake,->,>=triangle 90] (9.5, -7) -- (5, -7) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_4}{4}$};
@@ -716,9 +715,9 @@ $4.50\%$ & 95.50        & $-\EUR{2\,000}$ & $\EUR{11\,250}$ & $\EUR{9\,250}$
 
 
 
-\begin{frame}{Управление процентным риском}
+\begin{frame}{Managing interest rate risk}
 \justify
-Процентный своп позволяет превратить кредит под плавающую ставку (например, EURIBOR+1\%) в кредит под фиксированную ставку (например, 4.0\%) и наоборот.
+An interest rate swap turns a loan at floating rate (for example EURIBOR+1\%) into a loan at fixed rate (for example, 4.0\%), and vice versa..
 
 \justify
 \centering
@@ -728,8 +727,8 @@ $4.50\%$ & 95.50        & $-\EUR{2\,000}$ & $\EUR{11\,250}$ & $\EUR{9\,250}$
 		\tikzstyle{fixed}=[->,>=triangle 90];
 		\tikzstyle{floating}=[snake=snake,->,>=triangle 90];
 
-		\node (A) at (0, 0) [company] {Компания A};
-		\node (B) at (7, 0) [company] {Компания B};
+		\node (A) at (0, 0) [company] {Company A};
+		\node (B) at (7, 0) [company] {Company B};
 		\node (Deutsche) at (0, -3) [company] {Deutsche};
 		\node (Citi) at (7, -3) [company] {Citi};
 
@@ -743,46 +742,43 @@ $4.50\%$ & 95.50        & $-\EUR{2\,000}$ & $\EUR{11\,250}$ & $\EUR{9\,250}$
 	\end{tikzpicture}
 
 \justify
-Итого: A платит 4.0\%, B платит EURIBOR + 0.5\%.
+Company A pays 4.0\%, company B pays EURIBOR + 0.5\%.
 \end{frame}
 
 
 
-\begin{frame}{Кредиты под плавающую ставку}
+\begin{frame}{Loans at floating rate}
 \justify
-Предположим, что мы --- компания с невысоким кредитным рейтингом. Нам нужен кредит на 5 лет на постройку свечного заводика.
+Suppose that we are a small company with low credit rating. We need a loan for 5 years.
 
 \begin{itemize}
 \justifying
-\item Занять деньги на 3 месяца стоит EURIBOR + 1\%. 
-\item Занять деньги на 5 лет стоит 7.0\%.
-\item Процентный своп на 5 лет стоит $3.0\%$.
+\item It costs EURIBOR + 2\% to borrow the money for 3 months. 
+\item It costs 7.0\% to borrow them money for 5 years from a bank.
+\item 5 years swap rate is 4.0\%.
 \end{itemize}
 
 \justify
-Банки закладывают риск дефолта в стоимость кредита, причём чем дольше срок, тем дороже кредит. Вероятность того, что мы разоримся в ближайшие три месяца не такая высокая (в конце концов, мы же дожили до сегодня). Банк готов нам дать деньги на 1\% дороже, чем занимает деньги сам.
+We can make a bet we will be able to borrow at EURIBOR+2\% in the future just like today. Then we can start a chain of 3 months loans (we borrow at time $T$ to repay the debt which we borrowed at time $T-1$). Then buy a swap to hedge interest rate risk.
+
+\begin{itemize}
+\justifying
+\item Loans: pay EURIBOR+2\%.
+\item Bought swap: pay 4\%, receive EURIBOR.
+\item Net: pay 6\%.
+\end{itemize}
 
 \justify
-Чем дальше в будущее, чем выше неопределённость. Никто не может предсказать, что случится с нашей компанией за 5 лет. Поэтому банк даёт кредит на 5 лет под более высокую ставку --- фактически, под EURIBOR + 4\%.
+Is there a catch? Our credit quality may deteriorate in future. One day we may have to renew the loan at EURIBOR+10\% and the strategy will blow up.
 \end{frame}
 
 
 
-\begin{frame}{Кредиты под плавающую ставку}
-\justify
-Мы можем понадеяться, что сможем и в будущем занимать деньги под EURIBOR + 1\%. Если раз в три месяца заново брать кредит на 3 месяца под EURIBOR+1\%, и продать процентный своп на 5 лет по $3.0\%$, то можно зафиксировать стоимость кредита 4.0\%.
-
-\justify
-Минус такой стратегии: если в будущем наше кредитное качество снизится (банки будут опасаться, что наш проект не взлетает), то стоимость трёхмесячных кредитов вырастет. Например, в какой-то день придётся занять деньги под EURIBOR+10\%, и вся экономия сломается.
-\end{frame}
-
-
-
-\begin{frame}{Честная цена свопа}
+\begin{frame}{Fair swap rate}
 \centering
 \begin{tikzpicture}[thick, scale=0.7]
-		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -3);
-		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (7.5, -3);
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company A} -- (0, -3);
+		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company B} -- (7.5, -3);
 
 		\draw [->,>=triangle 90] (0, -1) node[label=left:{$T_1$}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$N \cdot x \cdot t_1$};
 
@@ -801,25 +797,25 @@ $4.50\%$ & 95.50        & $-\EUR{2\,000}$ & $\EUR{11\,250}$ & $\EUR{9\,250}$
 \end{tikzpicture}
 
 \justify
-$N$ --- notional, или размер свопа.
+$N$ --- notional amount.
 
-$T_i$ --- количество лет до $i$-го платежа.
+$T_i$ --- number of years till the $i$-th payment.
 
-$E_i$ --- ожидаемые значения EURIBOR.
+$E_i$ --- expected EURIBOR on date $T_{i-1}$.
 
-$t_i = T_i - T_{i-1}$ --- количество лет, на которое начисляется EURIBOR.
+$t_i = T_i - T_{i-1}$ --- year fractions for interest accrual.
 
-$\delta_i$ --- коэффициент дисконтирования для момент времени $T_i$.
+$\delta_i$ --- discount factor from date $T_i$ to today.
 
 \justify
-Какой должна быть честная цена свопа (купон) $x$?
+What should be fair swap rate (fair coupon) $x$?
 \end{frame}
 
 
 
-\begin{frame}{Честная цена свопа}
+\begin{frame}{Fair swap rate - 2}
 \justify
-Текущие стоимости (PV) платежей компаний A и B должны совпадать. В противном случае одна из компаний подарила другой деньги просто так.
+Present values of company A's payments and company B's payments should match. Otherwise one of the parties is just giving the money away.
 
 \justify
 \begin{align*}
@@ -831,17 +827,17 @@ x = \frac{\sum\limits_{i=1}^{n} E_i t_i \delta_i}{\sum\limits_{i=1}^{n} t_i \del
 \end{align*}
 
 \justify
-Если кто-то сообщит нам будущие значения EURIBOR $E_i$ и коэффициенты дисконтирования $\delta_i$, то мы сможем посчитать цену любого процентного свопа.
+If someone tells us future values of the EURIBOR $E_i$ and discount factors $\delta_i$ we will be able to compute fair coupon for any interest rate swap.
 \end{frame}
 
 
 
-\begin{frame}{Честная цена свопа}
+\begin{frame}{Fair swap rate - 3}
 \justify
-Предположим, что ставка дисконтирования равна нулю, поэтому все коэффициенты дисконтирования близки к 1, т.е. $\delta_i \approx1$.
+Suppose that the discount rate is close to zero, and all discount factors are close to zero. $\delta_i \approx1$.
 
 \justify
-Также будем игнорировать особенности календаря и будем считать, что все интервалы между платежами равны. Например, $t_i = t = 1/4$ для свопа с ежеквартальными платежами.
+Lets ignore peculiarities of the Gregorian calendar and assume that all intervals between interest rate payments are equal. For example, $t_i = t = 1/4$ in a swap with quarterly payments.
 
 \begin{align*}
 x = \frac{\sum\limits_{i=1}^{n} E_i t_i \delta_i}{\sum\limits_{i=1}^{n} t_i \delta_i}
@@ -852,36 +848,36 @@ x = \frac{\sum\limits_{i=1}^{n} E_i t_i \delta_i}{\sum\limits_{i=1}^{n} t_i \del
 \end{align*}
 
 \justify
-Вывод от Капитана Очевидность: цена свопа --- среднее будущих значений EURIBOR за время жизни свопа.
+Captain Obvious is reporting: swap rate is average of EURIBOR's during the swap's lifetime.
 \end{frame}
 
 
 
-\begin{frame}{Вычисление ожидаемых значений EURIBOR}
+\begin{frame}{Computing expected EURIBOR values}
 \justify
-Предположим, что рыночный терминал Reuters или Bloomberg показывает нам следующую информацию о рынке свопов на EURIBOR 3M.
+Bloomberg and Reuters terminals broadcast the following quotes from the market for three months EURIBOR swaps. This is our observable reality.
 
 \justify
 \centering
 \begin{tabular}{l|r}
-Инструмент        & Цена (купон) \\ \hline
-Последний фиксинг & 3.00\% \\
-Своп 6M           & 3.40\% \\
-Своп 9M           & 3.60\% \\
-Своп 1Y           & 3.70\% \\
-Своп 18M          & 3.75\% \\
-Своп 2Y           & 3.60\%
+Instrument        & Swap rate (coupon) \\ \hline
+Last fixing & 3.00\% \\
+6M swap           & 3.40\% \\
+9M swap           & 3.60\% \\
+1Y swap           & 3.70\% \\
+18M swap          & 3.75\% \\
+2Y swap           & 3.60\%
 \end{tabular}
 
 \end{frame}
 
 
 
-\begin{frame}{Вычисление ожидаемых значений EURIBOR}
+\begin{frame}{Computing expected EURIBOR values - 2}
 \centering
 \begin{tikzpicture}[thick, scale=0.7]
-		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -2.5);
-		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (7.5, -2.5);
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company A} -- (0, -2.5);
+		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company B} -- (7.5, -2.5);
 
 		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$3.40\%$};
 
@@ -893,7 +889,7 @@ x = \frac{\sum\limits_{i=1}^{n} E_i t_i \delta_i}{\sum\limits_{i=1}^{n} t_i \del
 \end{tikzpicture}
 
 \justify
-Мы знаем цену свопа на 6 месяцев ($3.40\%$). Также мы знаем и текущее значение EURIBOR ($3.00\%$), которое будет использовано для первого плавающего платежа. Отсюда мы можем вычислить <<ожидаемое>> значение $E_2$.
+We know 6 months swap rate ($3.40\%$). We also know the most recent EURIBOR fxing ($3.00\%$) which defines the very first floating payment. We can derive "implied"\ value of $E_2$.
 \begin{align*}
 3.40\% + 3.40\% &= 3.00\% + E_2 \Rightarrow \\
 E_2 &= 3.80\%
@@ -903,46 +899,47 @@ E_2 &= 3.80\%
 
 
 
-\begin{frame}{Отступление об <<ожиданиях>> рынка}
+\begin{frame}{Musings on "implied"\ values}
 \justify
-Можем ли мы быть уверены, что <<ожидаемое>> рынком значение $E_2=3.80\%$ --- правильное? Нет не можем. Скорее всего, в реальности значение EURIBOR будет другим. В среднем, процентные ставки оказываются чуть ниже, чем <<ожидаемые>> ставки, которые можно было вычислить из котировок свопов.
+Can we hope that the implied value $E_2=3.80\%$ is correct? No, we cannot. Most probably, the prevailing EURIBOR in three months will be different. On average, interest rates tend to be lower than "implied"\ rates which one could derive from the market swap rates.
 
 \justify
-<<Ожидаемая>> рынком ставка --- это всего-навсего ставка, которая соответствует текущим ценам свопов. Это два эквивалентных взгляда на одно и то же явление:
+Implied interest rate is just a rate that corresponds to current market swap rates. These are two equivalent views on the same reality:
 
-1) Текущий фиксинг $3.00\%$, своп на 6 месяцев $3.40\%$.
+1) The latest fixing is $3.00\%$, 6 months swap rate is $3.40\%$.
 
-2) Текущий фиксинг $3.00\%$, ставка через 3 месяца $3.80\%$.
+2) The latest fixing is $3.00\%$, EURIBOR in 3 months is $3.80\%$.
 \end{frame}
 
 
 
-\begin{frame}{Отступление об <<ожиданиях>> рынка}
+\begin{frame}{Musings on "implied"\ values - 2}
 \justify
-Не так важно, ошибается ли рынок или нет, когда оценивает будущее значение $E_2$. Важно, что в нашем распоряжении есть ликвидные инструменты, которые позволяют захеджировать процентный риск и избавиться от всей неопределённости, связанной с $E_2$.
+It does not matter whether the market is correct when it estimates the future value of $E_2$. It is important that the market offers liquid instruments which allow us hedge interest rate risk.
 
 \justify
-Допустим, мы должны будем заплатить кому-то за кредит по ставке $E_2$. Купим процентный своп на 6 месяцев.
+Suppose we will have to pay interest of $E_2$ on  a floating-rate loan. Then lets buy a 6 months swap.
 
 \centering
 \begin{tabular}{l|r|r|r}
-Дата    & \multicolumn{2}{c|}{Своп} & Кредит \\ \hline
-Сегодня &          0  &  0            & 0 \\
+    & \multicolumn{2}{c|}{Swap} & Loan \\ \hline
+Today &          0  &  0            & 0 \\
 3M      & $-3.40\%$  &  $+3.00\%$   & 0 \\
-6M      & $-3.40\%$  &  $+E_2$       & $-E_2$
+6M      & $-3.40\%$  &  $+E_2$       & $-E_2$ \\ \hline
+PV       & \multicolumn{3}{c}{-3.80\%}
 \end{tabular}
 
 \justify
-Всего по всем платежам мы заплатим $3.80\%$ вне зависимости от будущего значения EURIBOR $E_2$. Процентный своп позволяет нам жить в мире, в котором EURIBOR $E_2$ всегда оказывается равен $3.80\%$.
+With a swap we can eliminate all the uncertainty and live in a world where the future EURIBOR $E_2$ is always 3.80\%.
 \end{frame}
 
 
 
-\begin{frame}{Вычисление ожидаемых значений EURIBOR}
+\begin{frame}{Computing expected EURIBOR values - 3}
 \centering
 \begin{tikzpicture}[thick, scale=0.7]
-		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -4);
-		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (7.5, -4);
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company A} -- (0, -4);
+		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company B} -- (7.5, -4);
 
 		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$3.60\%$};
 
@@ -958,7 +955,7 @@ E_2 &= 3.80\%
 \end{tikzpicture}
 
 \justify
-Знание цены свопа на 9 месяцев (3.60\%) и двух первых значений EURIBOR (3.00\% и 3.80\%) позволяет вычислить <<ожидаемое>> значение $E_3$.
+We know 9 months swap rate (3.60\%) and the first two EURIBORs (3.00\% и 3.80\%). We can compute implied value of $E_3$.
 \begin{align*}
 3.60\% + 3.60\% + 3.60\% &= 3.0\% + 3.80\% + E_3 \Rightarrow \\
 E_3 &= 4.00\%
@@ -967,11 +964,11 @@ E_3 &= 4.00\%
 
 
 
-\begin{frame}{Вычисление ожидаемых значений EURIBOR}
+\begin{frame}{Computing expected EURIBOR values - 4}
 \centering
 \begin{tikzpicture}[thick, scale=0.7]
-		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -5.5);
-		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (7.5, -5.5);
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company A} -- (0, -5.5);
+		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company B} -- (7.5, -5.5);
 
 		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$3.70\%$};
 
@@ -991,7 +988,7 @@ E_3 &= 4.00\%
 \end{tikzpicture}
 
 \justify
-Знание цены свопа на 12 месяцев (3.70\%) и трёх первых значений EURIBOR (3.00\%, 3.80\% и 4.00\%) позволяет вычислить <<ожидаемое>> значение $E_4$.
+We know 12 months swap rate (3.70\%) and the first three EURIBORs (3.00\%, 3.80\% и 4.00\%). We can compute implied value of $E_4$.
 \begin{align*}
 3.70\%+3.70\%+3.70\%+3.70\% &= 3.00\% + 3.80\% + 4.00\% + E_4 \Rightarrow \\
 E_4 &= 4.00\%
@@ -1000,11 +997,11 @@ E_4 &= 4.00\%
 
 
 
-\begin{frame}{Вычисление ожидаемых значений EURIBOR}
+\begin{frame}{Computing expected EURIBOR values - 5}
 \centering
 \begin{tikzpicture}[thick, scale=0.7]
-		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -8.5);
-		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (7.5, -8.5);
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company A} -- (0, -8.5);
+		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company B} -- (7.5, -8.5);
 
 		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$3.75\%$};
 
@@ -1034,15 +1031,15 @@ E_4 &= 4.00\%
 
 
 
-\begin{frame}{Вычисление ожидаемых значений EURIBOR}
+\begin{frame}{Computing expected EURIBOR values - 6}
 \justify
-У нас нет котировки свопа на 15 месяцев, есть только своп на 18 месяцев. Это даёт нам одно уравнение и два неизвестных значения EURIBOR $E_5$ и $E_6$.
+There is no observable quote for a 15 months swap, we only have 18 months swap rate. This leaves us with single equation and two unknown EURIBORs $E_5$ и $E_6$.
 \begin{align*}
 3.00\%+3.80\%+4.00\%+4.00\%+E_5+E_6 = 6\cdot3.75\%
 \end{align*}
 
 \justify
-Предположим, что будущие ставки изменяются линейно: на сколько $E_5$ больше $E_4$, на столько же $E_6$ больше, чем $E_5$.
+Suppose that there is linear dependence between interest rates. $E_5$ is higher than $E_4$ by the same amount as $E_6$ is higher than $E_5$.
 \begin{align*}
 \begin{cases}
 3.00\%+3.80\%+4.00\%+4.00\%+E_5+E_6 = 6\cdot3.75\% \\
@@ -1050,7 +1047,7 @@ E_5 - 4.00\% = E_6 - E_5
 \end{cases}
 \end{align*}
 
-С учётом предположения о линейной интерполяции:
+Therefore, if we assume linear interpolation, we can compute
 \begin{align*}
 \begin{cases}
 E_5 = 3.90\% \\
@@ -1479,61 +1476,4 @@ $\overline{E_1}$ и $\overline{E_2}$ --- средние ставки ESTER ($e_i
 Подробности в \en{Marc Henrard, Interest Rate Modelling in the Multi-Curve Framework (2014)}.
 \end{frame}
 
-
-
-\begin{frame}{Бонус: LIBOR}
-\justify
-В 2023 году прекратит существование ставка LIBOR (\en{London Interbank Offered Rate}). Она определяется по результатам опроса панели банков. Каждый рабочий день банки-участники отвечают на следующий вопрос:
-
-\justify
-\en{At what rate could you borrow funds, were you to do so by asking for and then accepting inter-bank offers in a reasonable market size just prior to 11am London time?}
-
-\justify
-25\% ответов снизу и сверху отбрасываются. По оставшимся считается средняя арифметическая ставка.
-
-\justify
-Когда-то LIBOR считали для 10 валют и 15 различных сроков от овернайта до 1 года. Сейчас --- на 5 валют и 7 сроков.
-\end{frame}
-
-
-
-\begin{frame}{Бонус: LIBOR}
-\justify
-Значения LIBOR на 11.10.2021 (базисные пункты):
-\justify
-\centering
-\begin{tabular}{l|r|r|r|r|r}
-Срок & CHF       & EUR       & GBP      & JPY      & USD \\ \hline
-ON   & $-78.120$ & $-58.957$ & $4.025$  & $-9.883$ & $7.263$ \\
-1W   & $-81.540$ & $-58.142$ & $4.425$  & $-8.400$ & $7.613$ \\
-1M   & $-78.280$ & $-57.229$ & $6.413$  & $-7.050$ & $8.538$ \\
-2M   & $-76.000$ & $-55.943$ & $9.175$  & $-5.050$ & $10.175$ \\
-3M   & $-76.300$ & $-56.914$ & $11.363$ & $-7.933$ & $12.175$ \\
-6M   & $-71.480$ & $-53.829$ & $24.325$ & $-4.483$ & $15.650$ \\
-12M  & $-58.200$ & $-48.657$ & $51.938$ & $6.317$  & $25.663$
-\end{tabular}
-\end{frame}
-
-
-
-\begin{frame}{Бонус: LIBOR}
-\justify
-LIBOR --- результат экспертного опроса. Методология, вообще говоря, не требует, чтобы банки называли свои процентные ставки исходя из реально заключённых сделок.
-
-\justify
-В начале 2010-х выяснилось, что сотрудники нескольких банков вошли в сговор и заранее договаривались отправлять чуть заниженные или завышенные показания. Так банки манипулировали значением LIBOR и зарабатывали дополнительные деньги на процентных свопах, привязанных к LIBOR.
-
-\justify
-Итоги скандала: миллиардные штрафы, тюремные сроки, коренная реформа всего института референсных ставок.
-\end{frame}
-
-
-
-\begin{frame}{Бонус: LIBOR}
-\justify
-Долларовый LIBOR уступит место новой ставке \alert{SOFR} (\en{Secured Overnight Funding Rate}). Это ставка однодневных кредитов под залог ценных бумаг. В отличие от LIBOR, этот индикатор усредняет реальные сделки на огромном рынке.
-
-\justify
-SOFR заменит LIBOR во всех контрактах. Там, где нужна была одна ставка трёхмесячного LIBOR, появится средняя ставка SOFR за три месяца (по аналогии с OIS свопами) плюс откалиброванная константа 0.26\%. Начиная с 01.01.2022 все новые контракты должны использовать SOFR, а не LIBOR.
-\end{frame}
 \end{document}
