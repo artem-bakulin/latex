@@ -262,46 +262,6 @@ r &= \frac{e^{r^*T}-1}{T}
 
 
 
-\begin{frame}{Present value}
-\justify
-\alert{Present value} of a cashflow of $N$ units of currency in $T$ years is the price which market participants would be willing to pay today to be entitled for this future cashflow.
-
-\justify
-How much USD you would be willing to pay today (present value, PV) to be entitled to receive 1\,050\,000 USD in one year (future value, FV)? Suppose that the market offers and ideal risk-free deposit at 5\% with zero compounding.
-
-\begin{align*}
-PV = \frac{FV}{1+rT} = \frac{1\,050\,000}{1 + 5\%} = 1\,000\,000
-\end{align*}
-
-\justify
-Nobody will be willing to pay more than 1\,000\,000 current dollars for 1\,050\,000 future dollars. It would be more profitable to deposit current dollars at 5\%.
-
-\justify
-There is no sense in selling 1\,050\,000 future dollars cheaper than 1\,000\,000 today, because one could borrow dollars today at 5\% and pay the debt in 1 year.
-\end{frame}
-
-
-
-\begin{frame}{Discount factor}
-\justify
-\alert{Discount factor} for a future date $T$ is present value of a cashflow of 1 unit of a currency on date $T$. How many units of a currency one needs to posses today in order to make 1 unit of a currency by time $T$?
-
-\justify
-The answer depends on risk-free interest rate:
-\begin{align*}
-\delta_T &= \frac{1}{1 + rT} \quad \text{(simple interest)} \\
-\delta_T &= \frac{1}{e^{r^*T}} = e^{-r^*T} \quad \text{(continuously compounded interest)}
-\end{align*}
-
-\justify
-For example, suppose that risk-free interest rate is 5\%.  Discount factor for 1 year us then
-\begin{align*}
-\delta_1 = \frac{1}{1.05} \approx 0.9524
-\end{align*}
-\end{frame}
-
-
-
 \begin{frame}{Deferred deposit}
 \justify
 The market offers two deposits (simple interest)
