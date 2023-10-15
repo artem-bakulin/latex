@@ -3,7 +3,7 @@
 \usepackage{cmap}				% To be able to copy-paste russian text from pdf
 \usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[russian]{babel}
+\usepackage[english]{babel}
 \usepackage{textpos}
 \usepackage{ragged2e}
 \usepackage{amssymb}
@@ -73,7 +73,10 @@
 Why do we need banks? Banks offer \alert{maturity transformation}.
 
 \justify
-Typically savers prefer short-term investments due to liquidity.  Borrowers often need long-term loans. Banks act as intermediaries: they borrow short-term and lend long-term. Think of taking deposits for 1 year and lending 30-years mortgages.
+Typically savers prefer short-term investments due to liquidity.  Borrowers often need long-term loans.
+
+\justify
+Banks act as intermediaries: they borrow short-term and lend long-term. Think of taking deposits for 1 year and lending 30-years mortgages.
 
 \justify
 Banking according to the folklore 3-6-3 rule:
@@ -107,7 +110,7 @@ Term risk premium adds a safety buffer in case future borrowing costs will be hi
 
 \begin{frame}{Term risk premium - 2}
 \justify
-How large is the term risk premium? This variable is unobservable and, probably, time-varying, so we have to estimate it from historical data and models.
+How large is the term risk premium? This variable is unobservable, so we have to estimate it from historical data and models.
 
 \justify
  Adrian-Crump-Moench (ACM) model, US Treasury, 1990--2023:
@@ -117,8 +120,6 @@ How large is the term risk premium? This variable is unobservable and, probably,
 0.31\% & 0.71\% & 1.16\% 
 \end{tabular}
 
-Data: New York Fed.
-
 \justify
 Kim-Wright model, US Treasury, 1990--2023:
 
@@ -127,7 +128,6 @@ Kim-Wright model, US Treasury, 1990--2023:
 0.30\% & 0.43\% & 0.77\%
 \end{tabular}
 
-Data: St. Louis Fed
 \end{frame}
 
 
@@ -164,7 +164,7 @@ Data: St. Louis Fed
 
 
 
-\begin{frame}{Borrowing at floating rate}
+\begin{frame}{Borrowing at floating interest rate}
 \justify
 Term risk premium is not negligible, especially at times of high uncertainty regarding future inflation and future interest rates. How could we avoid paying the premium (borrow cheaper)?
 
@@ -195,7 +195,7 @@ As of 2023 the LIBOR has been discontinued and replaced with other reference int
 
 \begin{frame}{European Interbank Offered Rate}
 \justify
-\alert{EURIBOR} is benchmark interest rate for unsecured Euro loans among European bank. It is published by European Money Market Institute (EMMI).
+\alert{EURIBOR} is benchmark interest rate for unsecured Euro loans among European banks. It is published by European Money Market Institute (EMMI).
 
 \justify
 At which rate a large bank could borrow Euro on the market (from another bank or financial organization)?
@@ -217,7 +217,7 @@ Term (tenor)     & EURIBOR 13.10.2023 \\ \hline
 
 
 
-\begin{frame}{Computing EURIBOR}
+\begin{frame}{Computing the EURIBOR}
 \justify
 19 banks from the Eurozone and the UK take part in determining the EURIBOR. Every day each bank submits its interest rate for each of 5 terms (from 1 week to 1 year). The banks follow a methodology which defines 3 "levels":
 
@@ -236,7 +236,7 @@ Term (tenor)     & EURIBOR 13.10.2023 \\ \hline
 
 
 
-\begin{frame}{Computing EURIBOR - 2}
+\begin{frame}{Computing the EURIBOR - 2}
 \centering
 \begin{tikzpicture}
 		\draw [->,>=triangle 90] (0, 0) -- (9.5, 0);
@@ -280,7 +280,7 @@ Term  & ESTER 12.10.2023 \\ \hline
 \end{tabular}
 
 \justify
-A panel of 48 banks determine ESTER. Each bank informs the ECB about its transactions when it borrows Euro on the market. The ECB discard the lower 25\%  and the 25\% higher values and then computes the weighed average.
+A panel of 48 banks determine ESTER. Each bank informs the ECB about its transactions when it borrows Euro on the market. The ECB discards the lower 25\%  and the 25\% higher values and then computes the weighted average.
 
 \justify
 ESTER is simple interest rate (no compounding) in ACT/360 convention.
@@ -288,7 +288,7 @@ ESTER is simple interest rate (no compounding) in ACT/360 convention.
 
 
 
-\begin{frame}{Computing ESTER}
+\begin{frame}{Computing the ESTER}
 \justify
 \centering
 \begin{tikzpicture}
@@ -371,7 +371,7 @@ Similarly to EURIBOR, ESTER is computed on TARGET2 business days.
 
 \begin{frame}{EURIBOR futures}
 \justify
-ICE Futures Europe exchange (former LIFFE) offers three months EURIBOR futures. For examples, \alert{FEIZ3} is December 2023 futures.
+ICE Futures Europe exchange (former LIFFE) offers three-months EURIBOR futures. For examples, \alert{FEIZ3} is December 2023 futures.
 
 \justify
 \centering
@@ -409,7 +409,7 @@ Solution: buy one lot of EURIBOR December futures at 96.00.
 Suppose that by December 18 the EURIBOR will drop to $3.50\%$.
 \begin{itemize}
 \justifying
-\item The exchange will set final price at $100 - 3.50 = 96.50$.
+\item The exchange will set the final price at $100 - 3.50 = 96.50$.
 \item Gain on the futures is $(96.50-96.00)\cdot\EUR{2\,500} = \EUR{1\,250}$.
 \item Three months deposit at EURIBOR $3.50\%$ will earn
 
@@ -456,12 +456,12 @@ Parameters of a swap:
 \justifying
 \item Term or maturity. For example, 1 year.
 \item Notional amount or principal amount --- an amount that accrues interest. For example, \EUR{1} million.
-\item Coupon or swap rate --- fixed interest rate which is paid by one f the parties. For example, $3.0\%$ per annum.
-\item Reference rate --- particular interest rate benchmark which is paid by the other party. For example, 3M EURIBOR.
+\item Coupon or swap rate --- fixed interest rate which one of the parties pays. For example, $3.0\%$ per annum.
+\item Reference rate --- particular interest rate benchmark which the second party pays. For example, 3M EURIBOR.
 \end{itemize}
 
 \justify
-Buying a swap means receiving the floating rate and paying the fixed rate. Selling a swap means paying the floating rate and receiving the fixed rate..
+Buying a swap means receiving the floating rate and paying the fixed rate. Selling a swap means paying the floating rate and receiving the fixed rate.
 \end{frame}
 
 
@@ -497,7 +497,7 @@ Buying a swap means receiving the floating rate and paying the fixed rate. Selli
 
 \begin{frame}{Managing interest rate risk}
 \justify
-An interest rate swap turns a loan at floating rate (for example EURIBOR+1\%) into a loan at fixed rate (for example, 4.0\%), and vice versa..
+An interest rate swap turns a loan at a floating rate (for example EURIBOR+1\%) into a loan at a fixed rate (for example, 4.0\%), and vice versa.
 
 \justify
 \centering
@@ -556,10 +556,10 @@ Company A pays 4.0\%, company B pays EURIBOR + 0.5\%.
 
 \begin{frame}{Present value}
 \justify
-\alert{Present value} of a cashflow of $N$ units of currency in $T$ years is the price which market participants would be willing to pay today to be entitled for this future cashflow.
+\alert{Present value} of a cash flow of $N$ units of currency in $T$ years is the price which market participants would be willing to pay today to be entitled for this future cash flow.
 
 \justify
-How much USD you would be willing to pay today (present value, PV) to be entitled to receive 1\,050\,000 USD in one year (future value, FV)? Suppose that the market offers and ideal risk-free deposit at 5\% (no interest compounding).
+How much USD you would be willing to pay today (present value, PV) to be entitled to receive 1\,050\,000 USD in one year (future value, FV)? Suppose that the market offers an ideal risk-free deposit at 5\% (no interest compounding).
 
 \begin{align*}
 PV = \frac{FV}{1+rT} = \frac{1\,050\,000}{1 + 5\%} = 1\,000\,000
@@ -576,7 +576,7 @@ There is no sense in selling 1\,050\,000 future dollars cheaper than 1\,000\,000
 
 \begin{frame}{Discount factor}
 \justify
-\alert{Discount factor} for a future date $T$ is present value of a cashflow of 1 unit of a currency on date $T$. How many units of a currency you need to posses today in order to turn it into 1 unit of a currency by time $T$?
+A \alert{discount factor} for a future date $T$ is present value of a cash flow of 1 unit of a currency on date $T$. How many units of a currency you need to posses today in order to turn it into 1 unit of a currency by time $T$?
 
 \justify
 The answer depends on risk-free interest rate:
@@ -653,7 +653,7 @@ If someone tells us future values of the EURIBOR $E_i$ and discount factors $\de
 
 \begin{frame}{Fair swap rate - 3}
 \justify
-Suppose that the discount rate is close to zero, and all discount factors are close to zero. $\delta_i \approx1$.
+Suppose that the discount rate is close to zero, and all discount factors are close to 1. $\delta_i \approx1$.
 
 \justify
 Lets ignore peculiarities of the Gregorian calendar and assume that all intervals between interest rate payments are equal. For example, $t_i = t = 1/4$ in a swap with quarterly payments.
@@ -667,14 +667,14 @@ x = \frac{\sum\limits_{i=1}^{n} E_i t_i \delta_i}{\sum\limits_{i=1}^{n} t_i \del
 \end{align*}
 
 \justify
-Captain Obvious is reporting: swap rate is average of EURIBORs during the swap's lifetime.
+Captain Obvious is reporting: swap rate is an average of EURIBORs during the swap's lifetime.
 \end{frame}
 
 
 
 \begin{frame}{Computing expected EURIBOR values}
 \justify
-Bloomberg and Reuters terminals broadcast the following quotes from the market for three months EURIBOR swaps. This is our observable reality.
+Bloomberg and Reuters terminals broadcast the following quotes from the market for three-months EURIBOR swaps. This is our observable reality.
 
 \justify
 \centering
@@ -708,7 +708,7 @@ Last fixing & 3.00\% \\
 \end{tikzpicture}
 
 \justify
-We know 6 months swap rate ($3.40\%$). We also know the most recent EURIBOR fxing ($3.00\%$) which defines the very first floating payment. We can derive "implied"\ value of $E_2$.
+We know the 6 months swap rate ($3.40\%$). We also know the most recent EURIBOR fxing ($3.00\%$) which defines the very first floating payment. We can derive "implied"\ value of $E_2$.
 \begin{align*}
 3.40\% + 3.40\% &= 3.00\% + E_2 \Rightarrow \\
 E_2 &= 3.80\%
@@ -736,7 +736,7 @@ Implied interest rate is just a rate that corresponds to current market swap rat
 
 \begin{frame}{Musings on "implied"\ values - 2}
 \justify
-It does not matter whether the market is correct when it estimates the future value of $E_2$. It is important that the market offers liquid instruments which allow us hedge interest rate risk.
+It does not matter whether the market is correct when it estimates the future value of $E_2$. It is important that the market offers liquid instruments which help us hedge the interest rate risk.
 
 \justify
 Suppose we will have to pay interest of $E_2$ on  a floating-rate loan. Then lets buy a 6 months swap.
@@ -747,7 +747,7 @@ Suppose we will have to pay interest of $E_2$ on  a floating-rate loan. Then let
 Today &          0  &  0            & 0 \\
 3M      & $-3.40\%$  &  $+3.00\%$   & 0 \\
 6M      & $-3.40\%$  &  $+E_2$       & $-E_2$ \\ \hline
-PV       & \multicolumn{3}{c}{-3.80\%}
+PV       & \multicolumn{3}{c}{$-3.80\%$}
 \end{tabular}
 
 \justify
@@ -776,7 +776,7 @@ With a swap we can eliminate all the uncertainty and live in a world where the f
 \end{tikzpicture}
 
 \justify
-We know 9 months swap rate (3.60\%) and the first two EURIBORs (3.00\% и 3.80\%). We can compute implied value of $E_3$.
+We know the 9 months swap rate (3.60\%) and the first two EURIBORs (3.00\% и 3.80\%). We can compute the implied value of $E_3$.
 \begin{align*}
 3.60\% + 3.60\% + 3.60\% &= 3.0\% + 3.80\% + E_3 \Rightarrow \\
 E_3 &= 4.00\%
@@ -809,7 +809,7 @@ E_3 &= 4.00\%
 \end{tikzpicture}
 
 \justify
-We know 12 months swap rate (3.70\%) and the first three EURIBORs (3.00\%, 3.80\% и 4.00\%). We can compute implied value of $E_4$.
+We know the 12 months swap rate (3.70\%) and the first three EURIBORs (3.00\%, 3.80\% и 4.00\%). We can compute the implied value of $E_4$.
 \begin{align*}
 3.70\%+3.70\%+3.70\%+3.70\% &= 3.00\% + 3.80\% + 4.00\% + E_4 \Rightarrow \\
 E_4 &= 4.00\%
@@ -854,7 +854,7 @@ E_4 &= 4.00\%
 
 \begin{frame}{Computing expected EURIBOR values - 6}
 \justify
-There is no observable quote for a 15 months swap, we only have 18 months swap rate. This leaves us with single equation and two unknown EURIBORs $E_5$ и $E_6$.
+There is no observable quote for a 15 months swap, we only have the 18 months swap rate. This leaves us with single equation and two unknown EURIBORs $E_5$ и $E_6$.
 \begin{align*}
 3.00\%+3.80\%+4.00\%+4.00\%+E_5+E_6 = 6\cdot3.75\%
 \end{align*}
@@ -896,7 +896,7 @@ E_6 = 3.80\%
 
 \justify
 Lets get back to reality and include discounting into our model. We need discount factors for 3 months and 6 months,
-$\delta_1$ и $\delta_2$. Usually we do not know then beforehand, so we end up with a single equation and three unknown variables. 
+$\delta_1$ и $\delta_2$. We do not know these factors beforehand, so we end up with a single equation and three unknown variables. 
 \begin{align*}
 S_{6M}t_1\alert{\delta_1} + S_{6M}t_2\alert{\delta_2} = E_1t_1\delta_1 + \alert{E_2}t_2\alert{\delta_2}
 \end{align*}
@@ -909,16 +909,16 @@ What shall we do?
 
 \begin{frame}{Risk-free investment at EURIBOR}
 \justify
-Suppose that the three-month EURIBOR interest rate is risk-free. This is reasonable assumption, because usually we hear concerns about a bank's creditworthiness in advance.
+Suppose that the three-months EURIBOR interest rate is risk-free. This is a reasonable assumption, because usually we hear concerns about a bank's creditworthiness in advance.
 
 \justify
-We can construct a chain of risk-free deposits at EURIBOR
+We can construct a sequence of risk-free deposits at EURIBOR
 
 1) Pick a solid bank and deposit our money at the current EURIBOR.
 
-2) Wait for three months
+2) Wait for three months.
 
-3) Collect the money and return to step 1..
+3) Collect the money and return to step 1.
 
 \justify
 \centering
@@ -935,8 +935,6 @@ We can construct a chain of risk-free deposits at EURIBOR
 		
 		\draw [->,>=triangle 45] (8.5,0) node[anchor=north]{$T_{n-1}$} .. controls (9, 0.5) and (10, 0.5) .. (10.5,0) node[anchor=north]{$T_n$} node[pos=0.5,anchor=south]{$E_n$};
 	\end{tikzpicture}
-%\justify
-%Каждый раз на шаге 1 мы можем (но не обязаны) выбирать новый банк, если кредитный рейтинг предыдущего банка нам больше не нравится.
 \end{frame}
 
 
@@ -1106,7 +1104,7 @@ Maturity & Swap rate & Maturity & Swap rate \\ \hline
 Consider a non-standard ("forward-forward") interest rate swap which will begin in 2.5 years from now and will end in 5 years from now ("30M x 5Y").
 
 \justify
-We know future EURIBOR values and discount factors, so we can pick a swap rate which makes the swap have zero initial present value.
+We know future EURIBOR values and discount factors, so we can pick a swap rate at which the swap has initial present value of zero.
 
 \justify
 \centering
@@ -1202,26 +1200,25 @@ $0.1\%$ is called "basis" or "price" of the swap
 
 \begin{frame}{Overnight interest rates}
 \justify
-Если даже депозит в банке по EURIBOR на 3 или 6 месяцев --- слишком рискованная инвестиция, как можно уменьшить риск? Можно размещать деньги не на квартал, а на день (точнее, на ночь). Придётся каждое утро следить за новостями и выбирать наиболее надёжный банк на следующие сутки, зато получится очень надёжно.
+In case 3-months and 6-months deposit feel too risky, how could we reduce the risk? We can deposit our money for just one day (overnight). We will have to read the news each morning and pick the most creditworthy bank for the following day.
 
 \justify
-Под какую ставку мы сможем вкладывать деньги на день? Скорее всего --- близко к ESTER, средней ставке по депозитам овернайт в крупных банках.
+At which rate we will be depositing our money? At ESTER, probably.
 
 \justify
-Осталось только разобраться с процентным риском. Начиная цепочку депозитов сейчас, при ESTER $2.40\%$, мы не знаем, по какой ставке будем открывать вклады через год. Вдруг ставки упадут ещё ниже?
+How do we handle interest rate risk? When we start a sequence of ESTER deposits, we do not know the values of ESTER.
 \end{frame}
 
 
 
 \begin{frame}{Overnight index swap}
 \justify
-Своп на индекс овернайт (\en{overnight index swap, OIS}) --- контракт, в котором одна сторона платит фиксированную ставку, а другая --- <<среднюю>> ставку овернайт (например, ESTER) за период.
-
+An \alert{overnight index swap (OIS)} is a contract in which on party pays a fixed interest rate and the other pays average overnight rate over a period of time.
 \justify
 \centering
 \begin{tikzpicture}[thick, scale=0.75]
-		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -2.5);
-		\draw (10.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (10.5, -2.5);
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company A} -- (0, -2.5);
+		\draw (10.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company B} -- (10.5, -2.5);
 
 		\draw [->,>=triangle 90] (0, -1) node[label=left:{1Y}]{} -- (5, -1) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot (2.55\%)$};
 
@@ -1234,7 +1231,7 @@ $0.1\%$ is called "basis" or "price" of the swap
 \end{tikzpicture}
 
 \justify
-$\overline{E_1}$ и $\overline{E_2}$ --- средние ставки ESTER ($e_i$) за первый и второй год:
+$\overline{E_1}$ and $\overline{E_2}$ are average ESTERs ($e_i$) over the 1st and the 2nd year:
 \begin{align*}
 \overline{E_1} &= \left(1 + \dfrac{e_1}{360}\right)
 \left(1 + \dfrac{e_2}{360}\right)
@@ -1246,59 +1243,42 @@ $\overline{E_1}$ и $\overline{E_2}$ --- средние ставки ESTER ($e_i
 \end{align*}
 
 \justify
-Фиксированная ставка $2.55\%$ --- цена свопа.
+Fixed rate $2.55\%$ is the swap rate or "price" of the swap which has to be negotiated.
 \end{frame}
 
 
 
-\begin{frame}{Дисконтирование OIS}
+\begin{frame}{Discounting at OIS}
 \justify
-Цепочка из однодневных депозитов под ESTER, в которой процентный риск захеджирован OIS свопом --- лучшее приближение теоретической безрисковой процентной ставки. Текущий рыночный консенсус --- использовать дисконтирование по OIS для оценки деривативов.
+A chain of overnight deposits at ESTER, where interest rate risk is hedged with a swap, is a good practical approximation
+of the theoretical risk-free rate.
 
 \justify
-Дело в шляпе! У нас есть котировки OIS свопов, из которых методом bootstrap можно вычислить и будущие значения ESTER, и связанные с ними коэффициенты дисконтирования. Потом эти коэффициенты дисконтирования можно использовать для вычисления значений EURIBOR из свопов на EURIBOR.
+OIS discounting is current consensus among market participants.
+
+\justify
+Bootstrapping a yield curve becomes a complex optimization problem which takes multiple inputs
+\begin{itemize}
+\item Overnight index swaps to derive expected overnight rates and discount factors
+\item 3M EURIBOR swaps and 3M-ESTER basis swaps to derive future three-months EURIBOR rates
+\item 6M EURIBOR swaps and 6M-3M basis swaps to derive six-months EURIBOR  rates
+\end{itemize}
 \end{frame}
 
 
 
-\begin{frame}{Дисконтирование OIS}
+\begin{frame}{If this is not enough}
 \justify
-К сожалению, рынок OIS ликвиден только для свопов на сроки до одного-двух лет. Дальше участники предпочитают свопы EURIBOR-OIS (одна сторона платит трёхмесячный EURIBOR, другая --- среднюю ESTER плюс базис). Нужно одновременно вычислять и значения EURIBOR, и значения ESTER, и коэффициенты дисконтирования.
-
-\justify
-<<До кучи>> можно добавить в модель и шестимесячный EURIBOR. Его тоже обычно восстанавливают не из простых свопов, а из базисных свопов 3M-6M.
+Discount factors that are suitable to discount cash flows in a derivative depend on collateral agreement (credit support annex, CSA) that covers this derivative.
 
 \justify
-Получается одна огромная задача оптимизации, которая одновременно подбирает будущие значения ESTER, трёхмесячного EURIBOR и шестимесячного EURIBOR.
-\end{frame}
-
-
-
-%\begin{frame}{Демонстрация}
-%\begin{itemize}
-%\item Калибрация кривых ESTER и EURIBOR.
-%\item Вычисление цены свопа на шестимесячный EURIBOR.
-%\end{itemize}
-%\end{frame}
-
-
-
-\begin{frame}{Кругом обман}
-\centering
-\makebox[\textwidth]{\includegraphics[width=\textwidth]{we_need_to_go_deeper.jpg}}
-\end{frame}
-
-
-
-\begin{frame}{Если всего этого мало}
-\justify
-Коэффициенты дисконтирования, которые нужно применять к платежам по сделке, зависят от соглашения о гарантийном обеспечении (\en{credit support annex, CSA}). Начисление процентов на гарантийное обеспечение по ставке овернайт --- стандартная рыночная практика. Поэтому дисконтирование по OIS работает довольно часто, не не всегда.
+Paying interest on the posted collateral at OIS rate is standard market practice. Hence the OIS discounting is correct in many cases, but there are exceptions.
 
 \justify
-Кроме того, кривые OIS в двух валютах не воспроизводят цены форвардов, потому что не являются идеальными безрисковыми ставками. Существует валютный базис (\en{cross-currency basis}), который тоже нужно учитывать при оценке деривативов.
+Moreover, there is cross-currency basis, because OIS discounting does not reproduce the observed FX forward rates precisely.
 
 \justify
-Подробности в \en{Marc Henrard, Interest Rate Modelling in the Multi-Curve Framework (2014)}.
+Refer to Marc Henrard, Interest Rate Modelling in the Multi-Curve Framework (2014).
 \end{frame}
 
 \end{document}
