@@ -73,7 +73,7 @@
 Why do we need banks? Banks offer \alert{maturity transformation}.
 
 \justify
-Typically savers prefer short-term investments due to liquidity.  Borrowers often need long-term loans. Banks act as intermediaries: they borrow short-term and lend long-term. Think of taking deposits for 1 year and lending 30-year mortgages.
+Typically savers prefer short-term investments due to liquidity.  Borrowers often need long-term loans. Banks act as intermediaries: they borrow short-term and lend long-term. Think of taking deposits for 1 year and lending 30-years mortgages.
 
 \justify
 Banking according to the folklore 3-6-3 rule:
@@ -94,7 +94,7 @@ A bank is going to lend some money for 10 years at a fixed interest rate. What f
 \justifying
 \item Expected average short-term borrowing cost over 10 years.
 \item Term risk premium.
-\item Expected losses due to lender's default (credit risk).
+\item Expected losses due to the client's default (credit risk).
 \item Credit risk premium.
 \item Profit margin.
 \end{itemize}
@@ -725,8 +725,10 @@ Can we hope that the implied value $E_2=3.80\%$ is correct? No, we cannot. Most 
 \justify
 Implied interest rate is just a rate that corresponds to current market swap rates. These are two equivalent views on the same reality:
 
+\justify
 1) The latest fixing is $3.00\%$, 6 months swap rate is $3.40\%$.
 
+\justify
 2) The latest fixing is $3.00\%$, EURIBOR in 3 months is $3.80\%$.
 \end{frame}
 
@@ -877,11 +879,11 @@ E_6 = 3.80\%
 
 
 
-\begin{frame}{Вычисление ожидаемых значений EURIBOR}
+\begin{frame}{Adding discount factors}
 \centering
 \begin{tikzpicture}[thick, scale=0.7]
-		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -2.5);
-		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (7.5, -2.5);
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company A} -- (0, -2.5);
+		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company B} -- (7.5, -2.5);
 
 		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$S_{6M}t_1\alert{\delta_1}$};
 
@@ -893,29 +895,30 @@ E_6 = 3.80\%
 \end{tikzpicture}
 
 \justify
-Вернёмся в реальность и добавим в модель коэффициенты дисконтирования на 3 и 6 месяцев $\delta_1$ и $\delta_2$. Обычно они не известны заранее, поэтому у нас получается одно уравнение с тремя неизвестными.
+Lets get back to reality and include discounting into our model. We need discount factors for 3 months and 6 months,
+$\delta_1$ и $\delta_2$. Usually we do not know then beforehand, so we end up with a single equation and three unknown variables. 
 \begin{align*}
 S_{6M}t_1\alert{\delta_1} + S_{6M}t_2\alert{\delta_2} = E_1t_1\delta_1 + \alert{E_2}t_2\alert{\delta_2}
 \end{align*}
 
 \justify
-Как быть?
+What shall we do?
 \end{frame}
 
 
 
-\begin{frame}{Вычисление ожидаемых значений EURIBOR}
+\begin{frame}{Risk-free investment at EURIBOR}
 \justify
-Предположим, что ставки трёхмесячного EURIBOR являются безрисковыми. Это разумное предположение, потому что о проблемах у банка обычно становится известно заранее.
+Suppose that the three-month EURIBOR interest rate is risk-free. This is reasonable assumption, because usually we hear concerns about a bank's creditworthiness in advance.
 
 \justify
-Мы можем построить цепочку из безрисковых депозитов под EURIBOR:
+We can construct a chain of risk-free deposits at EURIBOR
 
-1) Выбрать надёжный банк и вложить деньги на три месяца под EURIBOR.
+1) Pick a solid bank and deposit our money at the current EURIBOR.
 
-2) Подождать три месяца.
+2) Wait for three months
 
-3) Снять деньги и вернуться к пункту 1.
+3) Collect the money and return to step 1..
 
 \justify
 \centering
@@ -938,7 +941,7 @@ S_{6M}t_1\alert{\delta_1} + S_{6M}t_2\alert{\delta_2} = E_1t_1\delta_1 + \alert{
 
 
 
-\begin{frame}{Вычисление ожидаемых значений EURIBOR}
+\begin{frame}{Risk-free investment at EURIBOR - 2}
 \centering
 \begin{tikzpicture}
 		\draw [->,>=triangle 90] (0.5, 0) -- (11, 0);
@@ -960,13 +963,13 @@ S_{6M}t_1\alert{\delta_1} + S_{6M}t_2\alert{\delta_2} = E_1t_1\delta_1 + \alert{
 	\end{tikzpicture}
 	
 \justify
-Если мы вложили $N_0$ евро в цепочку депозитов, то сколько евро будет на счету к моменту времени $T_n$?
+We invested $N_0$ euro into a chain of deposits. How many Euros we will accumulate by the time $T_n$?
 \begin{align*}
 N_n = N_0(1 + E_1t_1)(1 + E_2t_2) ... (1 + E_nt_n)
 \end{align*}
 
 \justify
-Чему равен коэффициент дисконтирования на дату окончания цепочки $T_n$?
+What is the discount factor for the terminal date of the chain $T_n$?
 \begin{align*}
 \delta_n = \frac{1}{(1 + E_1t_1)(1 + E_2t_2) ... (1 + E_nt_n)}
 \end{align*}
@@ -974,11 +977,11 @@ N_n = N_0(1 + E_1t_1)(1 + E_2t_2) ... (1 + E_nt_n)
 
 
 
-\begin{frame}{Вычисление ожидаемых значений EURIBOR}
+\begin{frame}{Adding discount factors - 2}
 \centering
 \begin{tikzpicture}[thick, scale=0.7]
-		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -2.5);
-		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (7.5, -2.5);
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company A} -- (0, -2.5);
+		\draw (7.5, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company B} -- (7.5, -2.5);
 
 		\draw [->,>=triangle 90] (0, -1) node[label=left:{3M}]{} -- (3.5, -1) node[pos=0.5,anchor=south]{$S_{6M}t_1\alert{\delta_1}$};
 
@@ -990,7 +993,7 @@ N_n = N_0(1 + E_1t_1)(1 + E_2t_2) ... (1 + E_nt_n)
 \end{tikzpicture}
 
 \justify
-Мы только что связали будущие значения EURIBOR $E_i$ с коэффициентами дисконтирования $\delta_i$. Теперь у нас столько уже уравнений, сколько и неизвестных.
+We have just established a link between future EURIBOR values $E_i$ and discount factors $\delta_i$. Now we have a system of three variables and three equations.
 \begin{align*}
 \begin{cases}
 S_{6M}t_1\alert{\delta_1} + S_{6M}t_2\alert{\delta_2} = E_1t_1\delta_1 + \alert{E_2}t_2\alert{\delta_2} \\
@@ -1003,27 +1006,30 @@ S_{6M}t_1\alert{\delta_1} + S_{6M}t_2\alert{\delta_2} = E_1t_1\delta_1 + \alert{
 
 
 
-\begin{frame}{Метод bootstrap}
+\begin{frame}{Bootstrapping the yield curve}
 \justify
-Если рассматривать EURIBOR как безрисковую ставку, то удобно представлять кривую будущих значений как совокупность коэффициентов дисконтирования $\delta_i$. Будущее значение EURIBOR для депозита, который начнётся через $T_1$ лет и закончится через $T_2 = T_1 + 0.25$ лет равно
+If we consider EURIBOR a risk-free rate, it is convenient to represent the future values as a set of discount factors $\delta_i$. 
+
+\justify
+Future EURIBOR value for a deposit which will begin in $T_1$ years and will end in $T_2 = T_1 + 0.25$ years is
 \begin{align*}
 E(T_1, T_2) = \frac{\dfrac{\delta_{T_1}}{\delta_{T_2}} - 1}{T_2 - T_1}
 \end{align*}
 
 \justify
-Алгоритм пошагового расчёта коэффициентов дисконтирования и будущих ставок из котировок рыночных инструментов называется \alert{\en{bootstrap}}. Он реализован во многих финансовых библиотеках, таких как QuantLib и tf-quant-finance. 
+The step-by-step algorithm to compute discount factors and future interest rates from market swap rates is called the \alert{bootstrap} method. A few financial mathematics libraries, such as QuantLib and tf-quant-finance, implement this method.
 \end{frame}
 
 
 
-\begin{frame}{Пример: bootstrap}
+\begin{frame}{Bootstrapping the yield curve: an example}
 \justify
-Рассмотрим котировки свопов на трёхмесячный EURIBOR: 
+Consider the following market quotes (swap rates) for interest rate swaps referencing the three-months EURIBOR: 
 
 \justify
 \centering
 \begin{tabular}{l|r|l|r}
-Срок & Купон & Срок & Купон \\ \hline
+Maturity & Swap rate & Maturity & Swap rate \\ \hline
 3m   & 3.00\% & 4y   & 3.25\% \\
 6m   & 3.40\% & 5y   & 3.15\% \\
 9m   & 3.60\% & 6y   & 3.10\% \\
@@ -1036,7 +1042,7 @@ E(T_1, T_2) = \frac{\dfrac{\delta_{T_1}}{\delta_{T_2}} - 1}{T_2 - T_1}
 
 
 
-\begin{frame}{Пример: интерполяция}
+\begin{frame}{Interpolation: an example}
 \begin{tikzpicture}
 \begin{axis}[
   width=\textwidth,
@@ -1053,12 +1059,12 @@ E(T_1, T_2) = \frac{\dfrac{\delta_{T_1}}{\delta_{T_2}} - 1}{T_2 - T_1}
   %ymin=-0.75,
   %ymax=1.5,
   grid=major,
-  ylabel={\small{EURIBOR, б.п.}},
+  ylabel={\small{EURIBOR, basis points}},
   xlabel near ticks,
   ylabel near ticks,
   legend entries = {	
-  	   Линейная,
-  	   Сплайн
+  	   Linear,
+  	   Spline
   },
   legend cell align={left},
   legend pos = north east
@@ -1095,14 +1101,12 @@ E(T_1, T_2) = \frac{\dfrac{\delta_{T_1}}{\delta_{T_2}} - 1}{T_2 - T_1}
 
 
 
-\begin{frame}{Пример: нестандартный своп}
+\begin{frame}{Forward-forward swap}
 \justify
-Рассмотрим нестандартный своп, который начнётся через 2.5 года и закончится чрез 5 лет 
-(30M--5Y).
+Consider a non-standard ("forward-forward") interest rate swap which will begin in 2.5 years from now and will end in 5 years from now ("30M x 5Y").
 
 \justify
-Поскольку мы знаем будущие значения EURIBOR и коэффициентов дисконтирования, мы можем 
-подобрать такой купон, что PV свопа было равно 0.
+We know future EURIBOR values and discount factors, so we can pick a swap rate which makes the swap have zero initial present value.
 
 \justify
 \centering
@@ -1119,82 +1123,84 @@ Basis          & ACT/360           & ACT/360
 
 
 
-\begin{frame}{Пример: риск}
+\begin{frame}{Market risk: an example}
 \justify
-PV01 (present value of 1 bp) или DV01 (dollar value of 1 bp): на сколько изменится
-PV, если процентная ставка изменится на 1 базисный пункт.
+PV01 (present value of 1 bp) or DV01 (dollar value of 1 bp) is measure of interest rate risk. Suppose that market rate moves higher by 0.01\% (1 basis point). How will it change PV of our position?
 
 \justify
 \centering
 \begin{tabular}{l|r|r}
-Срок  & PV01 & Размер хэджа \\ \hline
-18m   & $-23$  евро/б.п. & $+\EUR{158\,000}$ \\
-2y    & $+129$ евро/б.п. & $-\EUR{668\,000}$ \\
-3y    & $+155$ евро/б.п. & $-\EUR{545\,000}$ \\
-4y    & $-23$  евро/б.п. & $+\EUR{62\,000}$ \\
-5y    & $-455$ евро/б.п. & $+\EUR{989\,000}$ \\ \hline
-Итого & $-217$ евро/б.п. & $-\EUR{4\,000}$
+Maturity  & PV01 & Hedge size \\ \hline
+18m   & $-23$  euro/bp & $+\EUR{158\,000}$ \\
+2y    & $+129$ euro/bp & $-\EUR{668\,000}$ \\
+3y    & $+155$ euro/bp & $-\EUR{545\,000}$ \\
+4y    & $-23$  euro/bp & $+\EUR{62\,000}$ \\
+5y    & $-455$ euro/bp & $+\EUR{989\,000}$ \\ \hline
+Total & $-217$ euro/bp & $-\EUR{4\,000}$
 \end{tabular}
 
 \justify
-Правило большого пальца для PV01: размер * срок / 10\,000.
+Rule of thumb for PV01: notional amount * term in years * 10\,000.
 \end{frame}
 
 
 
-\begin{frame}{Кругом обман}
+\begin{frame}{We need to go deeper}
 \centering
 \makebox[\textwidth]{\includegraphics[width=\textwidth]{we_need_to_go_deeper.jpg}}
 \end{frame}
 
 
 
-\begin{frame}{Дисконтирование по EURIBOR}
+\begin{frame}{Discounting at EURIBOR}
 \justify
-Мы использовали трёхмесячный EURIBOR для дисконтирования будущих платежей. Но есть же, например, шестимесячный EURIBOR и свопы на шестимесячный EURIBOR. По аналогии, чтобы забутсрапить кривую шестимесячного EURIBOR мы должны были бы дисконтировать платежи по этой ставке (притвориться, что строим цепочку из шестимесячных депозитов).
+We used the three-months EURIBOR to discount future cash flows.
 
 \justify
-Ещё хуже: есть базисные свопы (\en{tenor basis swap}), в которых одна сторона платит шестимесячный EURIBOR, а другая --- трёхмесячный с доплатой (базисом). По какой ставке  дисконтировать платежи в этих свопах? Хотелось бы, чтобы коэффициент дисконтирования на дату $T$ не зависел от того, в какой задаче мы его используем.
+There is six-months EURIBOR and interest rate swaps which reference the six-months EURIBOR. By analogy, to bootstrap a curve of future six-months EURIBORs we'd have to discount cash flows at the six-months EURIBOR.
 
 \justify
-Кроме того, в определении EURIBOR участвуют банки с кредитным рейтингом BBB. Действительно ли это безрисковая ставка?
+Moreover, there are "tenor basis swaps"\ where one party pays the six-months EURIBOR and another pays three-months EURIBOR plus spread. How do we discount cash flows in this case?
+
+\justify
+Finally, the EURIBOR panel of 19 banks includes banks which have credit rating of BBB. Is this really a risk-free investment?
 \end{frame}
 
 
 
-\begin{frame}{Базисный процентный своп}
+\begin{frame}{Tenor basis swap}
 \justify
 \begin{tikzpicture}[thick, scale=0.75]
-		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания A} -- (0, -7);
-		\draw (10, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Компания B} -- (10, -7);
+		\draw (0, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company A} -- (0, -7);
+		\draw (10, 0) node[rectangle,draw,rounded corners,anchor=south,minimum height=1cm] {Company B} -- (10, -7);
 
 		\draw [dashed,->,>=triangle 90] (0, -1) node[label=left:{$T_0$}]{} -- (4, -1) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000}$};
 
-		\draw [dashed,->,>=triangle 90] (10, -1) node[label=right:{\setlength\tabcolsep{1pt}\begin{tabular}{l}фиксинг\\$E_1^{3M}$ и $E_1^{6M}$\end{tabular}}]{} -- (4.5, -1) node[pos=0.5,anchor=south]{\euro 1\,000\,000};
+		\draw [dashed,->,>=triangle 90] (10, -1) node[label=right:{\setlength\tabcolsep{1pt}\begin{tabular}{l}fixing\\$E_1^{3M}$ and $E_1^{6M}$\end{tabular}}]{} -- (4.5, -1) node[pos=0.5,anchor=south]{\euro 1\,000\,000};
 
 		\node [label=left:{$3M$}] at (0, -2.5) {};
 
-		\draw [snake=snake,->,>=triangle 90] (10, -2.5)  node[label=right:{\text{фиксинг $E_2^{3M}$}}]{} -- (4.5, -2.5) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_1^{3M} + 0.1\%}{4}$};
+		\draw [snake=snake,->,>=triangle 90] (10, -2.5)  node[label=right:{\text{fixing $E_2^{3M}$}}]{} -- (4.5, -2.5) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_1^{3M} + 0.1\%}{4}$};
 
 		\draw [snake=snake,->,>=triangle 90] (0, -4) node[label=left:{$6M$}]{} -- (4, -4) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{E_1^{6M}}{2}$};
 
-		\draw [snake=snake,->,>=triangle 90] (10, -4)  node[label=right:{\setlength\tabcolsep{1pt}\begin{tabular}{l}фиксинг\\$E_3^{3M}$ и $E_2^{6M}$\end{tabular}}]{} -- (4.5, -4) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_2^{3M} + 0.1\%}{4}$};
+		\draw [snake=snake,->,>=triangle 90] (10, -4)  node[label=right:{\setlength\tabcolsep{1pt}\begin{tabular}{l}fixing\\$E_3^{3M}$ and $E_2^{6M}$\end{tabular}}]{} -- (4.5, -4) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_2^{3M} + 0.1\%}{4}$};
 
 		\node [label=left:{$9M$}] at (0, -5.5) {};
 		
-		\draw [snake=snake,->,>=triangle 90] (10, -5.5)  node[label=right:{\text{фиксинг $E_4^{3M}$}}]{} -- (4.5, -5.5) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_3^{3M} + 0.1\%}{4}$};
+		\draw [snake=snake,->,>=triangle 90] (10, -5.5)  node[label=right:{\text{fixing $E_4^{3M}$}}]{} -- (4.5, -5.5) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_3^{3M} + 0.1\%}{4}$};
 		\draw [snake=snake,->,>=triangle 90] (0, -7) node[label=left:{$12M$}]{} -- (4, -7) node[pos=0.5,anchor=south]{$\EUR{1\,000\,000} \cdot \dfrac{E_2^{6M}}{2}$};
 
 		\draw [snake=snake,->,>=triangle 90] (10, -7) -- (4.5, -7) node[pos=0.5,anchor=south] {$\EUR{1\,000\,000} \cdot \dfrac{E_4^{3M} + 0.1\%}{4}$};
 \end{tikzpicture}
 
 \justify
-$0.1\%$ --- базис или цена свопа.
+$0.1\%$ is called "basis" or "price" of the swap
 \end{frame}
 
 
 
-\begin{frame}{Ставки овернайт}
+\begin{frame}{Overnight interest rates}
 \justify
 Если даже депозит в банке по EURIBOR на 3 или 6 месяцев --- слишком рискованная инвестиция, как можно уменьшить риск? Можно размещать деньги не на квартал, а на день (точнее, на ночь). Придётся каждое утро следить за новостями и выбирать наиболее надёжный банк на следующие сутки, зато получится очень надёжно.
 
