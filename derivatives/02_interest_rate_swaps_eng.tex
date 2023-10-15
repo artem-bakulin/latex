@@ -86,7 +86,7 @@ Banking according to the folklore 3-6-3 rule:
 
 
 
-\begin{frame}{Risk premium}
+\begin{frame}{Term risk premium}
 \justify
 A bank is going to lend some money for 10 years at a fixed interest rate. What factors it should consider when determining the rate of interest for this loan? Should it be 4\% or 10\%?
 
@@ -101,47 +101,94 @@ A bank is going to lend some money for 10 years at a fixed interest rate. What f
 
 \justify
 Term risk premium adds a safety buffer in case future borrowing costs will be higher than expected. This is the bank's compensation for holding interest rate risk and performing maturity transformation.
-
 \end{frame}
 
 
 
-\begin{frame}{Present value}
+\begin{frame}{Term risk premium - 2}
 \justify
-\alert{Present value} of a cashflow of $N$ units of currency in $T$ years is the price which market participants would be willing to pay today to be entitled for this future cashflow.
+How large is the term risk premium? This variable is unobservable and, probably, time-varying, so we have to estimate it from historical data and models.
 
 \justify
-How much USD you would be willing to pay today (present value, PV) to be entitled to receive 1\,050\,000 USD in one year (future value, FV)? Suppose that the market offers and ideal risk-free deposit at 5\% with zero compounding.
+ Adrian-Crump-Moench (ACM) model, US Treasury, 1990--2023:
 
-\begin{align*}
-PV = \frac{FV}{1+rT} = \frac{1\,050\,000}{1 + 5\%} = 1\,000\,000
-\end{align*}
+\begin{tabular}{r|r|r}
+2 years & 5 years & 10 years \\ \hline
+0.31\% & 0.71\% & 1.16\% 
+\end{tabular}
+
+Data: New York Fed.
 
 \justify
-Nobody will be willing to pay more than 1\,000\,000 current dollars for 1\,050\,000 future dollars. It would be more profitable to deposit current dollars at 5\%.
+Kim-Wright model, US Treasury, 1990--2023:
 
-\justify
-There is no sense in selling 1\,050\,000 future dollars cheaper than 1\,000\,000 today, because one could borrow dollars today at 5\% and pay the debt in 1 year.
+\begin{tabular}{r|r|r}
+2 years & 5 years & 10 years \\ \hline
+0.30\% & 0.43\% & 0.77\%
+\end{tabular}
+
+Data: St. Louis Fed
 \end{frame}
 
 
 
-\begin{frame}{Discount factor}
+\begin{frame}{Term risk premium - 3}
+\center
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=1960-01-01,
+  xtick={1960-01-01, 1970-01-01, 1980-01-01, 1990-01-01, 2000-01-01, 2010-01-01, 2020-01-01},
+  xticklabel={\year},
+  xmin=1960-01-01,
+  xmax=2025-01-01,
+  ymin=-2,
+  ymax=5,
+  grid=major,
+  ylabel={\small{ACM 10Y Term Premium, \%}},
+  xlabel near ticks,
+  ylabel near ticks,
+  legend pos=north west,
+  %legend style={font=\tiny},
+  legend cell align={left}
+]
+\addplot[color=Set1-A, mark=none, thick] table[x=date, y=acmtp10, col sep=comma]{acm_term_premium.csv};
+\draw[thick, color=black] (axis cs: 1960-01-01, 0) -- (axis cs: 2030-01-01, 0);
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Data: Federal Reserve Bank of New York.
+\end{frame}
+
+
+
+\begin{frame}{Borrowing at floating rate}
 \justify
-\alert{Discount factor} for a future date $T$ is present value of a cashflow of 1 unit of a currency on date $T$. How many units of a currency one needs to posses today in order to make 1 unit of a currency by time $T$?
+Term risk premium is not negligible, especially at times of high uncertainty regarding future inflation and future interest rates. How could we avoid paying the premium (borrow cheaper)?
 
 \justify
-The answer depends on risk-free interest rate:
-\begin{align*}
-\delta_T &= \frac{1}{1 + rT} \quad \text{(simple interest)} \\
-\delta_T &= \frac{1}{e^{r^*T}} = e^{-r^*T} \quad \text{(continuously compounded interest)}
-\end{align*}
+We could borrow at floating interest rate which is linked to the bank's short-term funding cost. I.e. shift interest rate risk from the bank to us. On average we will end up paying less interest on our loan.
 
 \justify
-For example, suppose that risk-free interest rate is 5\%.  Discount factor for 1 year us then
-\begin{align*}
-\delta_1 = \frac{1}{1.05} \approx 0.9524
-\end{align*}
+How do we measure the short-term funding cost?
+\end{frame}
+
+
+
+\begin{frame}{London Interbank Offered Rate (LIBOR)}
+\justify
+In 1969 the Shah of Iran (gentleman on the photo) borrowed \$80mm from a syndicate of London-based banks.
+
+\justify
+Members of the syndicate agreed to report their individual short-term borrowing costs. Arithmetic average of the reported rates, rounded to 1/8 of percentage point, would determine the following interest rate payment on the Shah's loan.
+
+\justify
+This arithmetic average was called the \alert{London Interbank Offered Rate (LIBOR)}. 
+ 
+\justify
+As of 2023 the LIBOR has been discontinued and replaced with other reference interest rates. Nevertheless it paved the way for the market for floating-rate loans and interest rate derivatives.
 \end{frame}
 
 
@@ -216,33 +263,14 @@ T+1 (tomorrow): the transactions will be settled (borrowers will receive their E
 T+1+3M (in 3 months): the loans will expire (lenders will receive their money back).
 
 \justify
-EURIBOR is published on every TARGET2 business day (this is the ECB's payment system). Three months term is computed under "modified following business day" convention.
-\end{frame}
-
-
-
-\begin{frame}{Date rolling convention}
-\justify
-A 3-months loan began on Friday March 31, 2023. When is it going to end: on Friday June 30 or on Monday July 3?
-
-\justify
-Modified following / business month end convention:
-
-\justify
-1) In case the start date is the last business day of a month, then the end date is also last business day of the corresponding month. Example: 31.03.2022 (Friday) --- 30.06.2023 (Friday).
-
-\justify
-2) In case end date has fallen on a non-business day, then it is rolled forwards, unless the nearest business day is in the following month. Example: 17.03.2023 (Friday) --- 19.06.2023 (Monday).
-
-\justify
-3) Otherwise the end date is rolled backwards. Example: 29.11.2022 (Tuesday) --- 28.02.2023 (Tuesday).
+EURIBOR is published on every TARGET2 business day (this is the ECB's payment system). Three months term is computed under "modified following business day"\ convention.
 \end{frame}
 
 
 
 \begin{frame}{Euro short-term rate}
 \justify
-\alert{ESTER} is bencmark interest rate for unsecured overnight loans among banks of the Eurozone. It is published by the ECB.
+\alert{ESTER} is benchmark interest rate for unsecured overnight loans among banks of the Eurozone. It is published by the ECB.
 
 \justify
 \centering
@@ -390,7 +418,7 @@ $\EUR{1\,000\,000} \cdot 0.035 / 4 = \EUR{8\,750}$.
 \end{itemize} 
 
 \justify
-I would have earned the same amount if EURBOR was $4.00\%$:
+I would have earned the same amount if EURIBOR was $4.00\%$:
 
 $\EUR{1\,000\,000} \cdot 0.04/4 =\EUR{10\,000}$.
 \end{frame}
@@ -499,29 +527,68 @@ Company A pays 4.0\%, company B pays EURIBOR + 0.5\%.
 
 
 
-\begin{frame}{Loans at floating rate}
+%\begin{frame}{Loans at floating rate}
+%\justify
+%Suppose that we are a small company with low credit rating. We need a loan for 5 years.
+%
+%\begin{itemize}
+%\justifying
+%\item It costs EURIBOR + 2\% to borrow the money for 3 months. 
+%\item It costs 7.0\% to borrow them money for 5 years from a bank.
+%\item 5 years swap rate is 4.0\%.
+%\end{itemize}
+%
+%\justify
+%We can make a bet we will be able to borrow at EURIBOR+2\% in the future just like today. Then we can start a chain of 3 months loans (we borrow at time $T$ to repay the debt which we borrowed at time $T-1$). Then buy a swap to hedge interest rate risk.
+%
+%\begin{itemize}
+%\justifying
+%\item Loans: pay EURIBOR+2\%.
+%\item Bought swap: pay 4\%, receive EURIBOR.
+%\item Net: pay 6\%.
+%\end{itemize}
+%
+%\justify
+%Is there a catch? Our credit quality may deteriorate in future. One day we may have to renew the loan at EURIBOR+10\% and the strategy will blow up.
+%\end{frame}
+
+
+
+\begin{frame}{Present value}
 \justify
-Suppose that we are a small company with low credit rating. We need a loan for 5 years.
-
-\begin{itemize}
-\justifying
-\item It costs EURIBOR + 2\% to borrow the money for 3 months. 
-\item It costs 7.0\% to borrow them money for 5 years from a bank.
-\item 5 years swap rate is 4.0\%.
-\end{itemize}
+\alert{Present value} of a cashflow of $N$ units of currency in $T$ years is the price which market participants would be willing to pay today to be entitled for this future cashflow.
 
 \justify
-We can make a bet we will be able to borrow at EURIBOR+2\% in the future just like today. Then we can start a chain of 3 months loans (we borrow at time $T$ to repay the debt which we borrowed at time $T-1$). Then buy a swap to hedge interest rate risk.
+How much USD you would be willing to pay today (present value, PV) to be entitled to receive 1\,050\,000 USD in one year (future value, FV)? Suppose that the market offers and ideal risk-free deposit at 5\% (no interest compounding).
 
-\begin{itemize}
-\justifying
-\item Loans: pay EURIBOR+2\%.
-\item Bought swap: pay 4\%, receive EURIBOR.
-\item Net: pay 6\%.
-\end{itemize}
+\begin{align*}
+PV = \frac{FV}{1+rT} = \frac{1\,050\,000}{1 + 5\%} = 1\,000\,000
+\end{align*}
 
 \justify
-Is there a catch? Our credit quality may deteriorate in future. One day we may have to renew the loan at EURIBOR+10\% and the strategy will blow up.
+Nobody will be willing to pay more than 1\,000\,000 current dollars for 1\,050\,000 future dollars. It would be more profitable to deposit current dollars at 5\%.
+
+\justify
+There is no sense in selling 1\,050\,000 future dollars cheaper than 1\,000\,000 today, because one could borrow dollars today at 5\% and pay the debt in 1 year.
+\end{frame}
+
+
+
+\begin{frame}{Discount factor}
+\justify
+\alert{Discount factor} for a future date $T$ is present value of a cashflow of 1 unit of a currency on date $T$. How many units of a currency you need to posses today in order to turn it into 1 unit of a currency by time $T$?
+
+\justify
+The answer depends on risk-free interest rate:
+\begin{align*}
+\delta_T = \frac{1}{1 + rT} \quad \text{(simple interest)}
+\end{align*}
+
+\justify
+For example, suppose that risk-free interest rate is 5\%.  Discount factor for 1 year is then
+\begin{align*}
+\delta_1 = \frac{1}{1.05} \approx 0.9524
+\end{align*}
 \end{frame}
 
 
@@ -600,7 +667,7 @@ x = \frac{\sum\limits_{i=1}^{n} E_i t_i \delta_i}{\sum\limits_{i=1}^{n} t_i \del
 \end{align*}
 
 \justify
-Captain Obvious is reporting: swap rate is average of EURIBOR's during the swap's lifetime.
+Captain Obvious is reporting: swap rate is average of EURIBORs during the swap's lifetime.
 \end{frame}
 
 

@@ -222,6 +222,25 @@ The 30/360 convention originated in pre-computer era, because it allows for quic
 
 
 
+\begin{frame}{Date rolling convention}
+\justify
+A 3-months loan began on Friday March 31, 2023. When is it going to end: on Friday June 30 or on Monday July 3?
+
+\justify
+Modified following / business month end convention:
+
+\justify
+1) In case the start date is the last business day of a month, then the end date is also last business day of the corresponding month. Example: 31.03.2022 (Friday) --- 30.06.2023 (Friday).
+
+\justify
+2) In case end date has fallen on a non-business day, then it is rolled forwards, unless the nearest business day is in the following month. Example: 17.03.2023 (Friday) --- 19.06.2023 (Monday).
+
+\justify
+3) Otherwise the end date is rolled backwards. Example: 29.11.2022 (Tuesday) --- 28.02.2023 (Tuesday).
+\end{frame}
+
+
+
 \begin{frame}{Converting between methods of compounding}
 \justify
 Suppose that you know a continuously compounded interest rate $r^*$, and you need a rate $r$ at frequency $f$ or vice versa. Then you can convert between conventions.
