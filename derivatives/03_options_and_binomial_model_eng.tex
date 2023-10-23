@@ -38,7 +38,7 @@
 
 \title{Options and the Binomial Model}
 \author{Artem Bakulin}
-\date{October 24, 2023}
+\date{October 26, 2023}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -140,7 +140,7 @@ Russian state television about Societe General's losses (2008):
 
 \begin{frame}{Example: call options}
 \justifying
-Owning 100 of EURUSD call options at strike 1.06.
+Owning 100 EURUSD call options at strike 1.06.
 
 \justifying
 \centering
@@ -174,7 +174,7 @@ Owning 100 of EURUSD call options at strike 1.06.
 
 \begin{frame}{Buying call options}
 \justifying
-Buying 100 of EURUSD call options: strike 1.06, premium 2 USD.
+Buying 100 EURUSD call options: strike 1.06, premium 2 USD.
 
 \justifying
 \centering
@@ -208,7 +208,7 @@ Buying 100 of EURUSD call options: strike 1.06, premium 2 USD.
 
 \begin{frame}{Buying put options}
 \justifying
-Buying 100 of EURUSD put options: strike 1.06, premium 2 USD.
+Buying 100 EURUSD put options: strike 1.06, premium 2 USD.
 
 \justifying
 \centering
@@ -242,7 +242,7 @@ Buying 100 of EURUSD put options: strike 1.06, premium 2 USD.
 
 \begin{frame}{Selling call options}
 \justifying
-Selling 100 of EURUSD call options: strike 1.06, premium 2 USD.
+Selling 100 EURUSD call options: strike 1.06, premium 2 USD.
 
 \justifying
 \centering
@@ -276,7 +276,7 @@ Selling 100 of EURUSD call options: strike 1.06, premium 2 USD.
 
 \begin{frame}{Selling put options}
 \justifying
-Selling 100 of EURUSD put options: strike 1.06, premium 2 USD.
+Selling 100 EURUSD put options: strike 1.06, premium 2 USD.
 
 \justifying
 \centering
@@ -313,7 +313,7 @@ Selling 100 of EURUSD put options: strike 1.06, premium 2 USD.
 In 3 months we will need 1\,000 EUR. Forward rate for the 3 months maturity is 1.06. We could buy a forward, but we wary about EUR possibly depreciating to 1.00. It will be a disappointment to buy EURUSD at 1.06 when the market will be trading at 1.00.
 
 \justify
-Solution: we can buy 1\,000 of call options with the strike of 1.06 for the premium of 20 USD. In the event of EURUSD appreciation we can exercise our option and buy at 1.06. If the EUR suddenly weakens, we let the option expire and buy EURUSD at the prevailing market rate of 1.00.
+Solution: we can buy 1\,000 call options at the strike of 1.06 for the premium of 20 USD. In the event of EURUSD appreciation we can exercise our option and buy at 1.06. If the EUR suddenly weakens, we let the option expire and buy EURUSD at the prevailing market rate of 1.00.
 
 \justify
 Pros: we do not suffer from EURUSD depreciation. Cons: we have to pay a premium upfront. This option is our insurance against EURUSD rising higher than 1.06.
@@ -324,10 +324,10 @@ Pros: we do not suffer from EURUSD depreciation. Cons: we have to pay a premium 
 
 \begin{frame}{Hedging with put options}
 \justify
-In 3 months we will receive 1\,000 EUR. Forward rate for the 3 months maturity is 1.06. If we sell a forward we secure the exchange rate, but expose ourselves to EUR appreciating to 1.12 or higher. We will have to sell EURUSD at 1.06 when everyone around will be happily trading at 1.12.
+In 3 months we will receive 1\,000 EUR. Forward rate for the 3 months maturity is 1.06. If we sell a forward we secure the exchange rate, but expose ourselves to the EUR appreciating to 1.12 or higher. We will have to sell EURUSD at 1.06 when everyone around will be happily trading at 1.12.
 
 \justify
-Solution: we can buy 1\,000 of put options with the strike of 1.06 for the premium of 20 USD. In case EUR depreciates to 1.00 we exercise the options and sell at 1.06. In case EURUSD jumps to 1.12 we let the options expire and sell at the prevailing rate of 1.12
+Solution: we can buy 1\,000 put options with the strike of 1.06 for the premium of 20 USD. In case the EUR depreciates to 1.00 we exercise the option and sell at 1.06. In case EURUSD jumps to 1.12 we let the option expire and sell at the prevailing rate of 1.12
 
 \justify
 Pros: we will not be disappointed in the event of the EUR appreciation. Cons: we have to pay a premium upfront. The option protects us from the EURUSD dropping below 1.06.
