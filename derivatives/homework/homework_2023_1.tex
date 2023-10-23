@@ -1,0 +1,105 @@
+\documentclass[a4paper,14pt]{extarticle}
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf			
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage[english]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage[hyphens]{url}
+\urlstyle{same}
+\usepackage{hyperref}
+
+\usepackage{libertine}
+\usepackage{libertinust1math}
+
+\begin{document}
+
+\section{Artem and Aluminum}
+
+Trader Artem is studying the base metals market. He noticed that the spot price of aluminum is $S=\$2\,500$ per ton (for delivery today), and the forward price for 6 months ($T=0.5$) is $F=\$2\,600$ per ton. Risk-free interest rate in dollars is $r=5\%$ (continuous compounding). What storage cost for aluminum (continuously compounded interest rate) $a$ are market participants  embedding into the forward price?
+
+Artem estimated that he can store a ton of aluminum in the basement of his rented home for $c=\$2$ per month. Let's assume that Artem can also borrow dollars and deposit dollars at the same interest rate $r=5\%$. Propose an arbitrage strategy that allows Artem to make a risk-free profit. What will be Artem's profit?
+
+Hint: Imagine that you are dealing with a foreign exchange forward on the currency pair XALUSD.
+
+\section{Non-Deliverable Forward}
+
+An Indian electronics importer has negotiated the delivery of a batch of iPhones. According to the contract, it must pay \$10\,000\,000 to its U.S. supplier in 2 months. Currently, the importer has neither dollars nor the required amount of Indian rupees to buy dollars. Therefore, the importer plans to buy dollars in the spot market in 2 months at an unknown exchange rate.
+
+A non-deliverable forward on the USDINR (dollar-rupee) pair is priced at $F=85$ (85 rupees per dollar). Should the importer buy or sell the non-deliverable forward to hedge its currency risk? Make sure the hedge works in three scenarios: the spot rate in 2 months is $S_1=75$, $S_2=85$, $S_3=95$. In each of these scenarios, calculate how much dollars the importer will earn or lose on the non-deliverable forward, how many dollars it will need to buy from the market, and how many rupees it will ultimately spend.
+
+\section{Deferred Deposit}
+
+A risk-free zero-coupon government bond with a maturity of $T_1=3$ years is currently priced at $P_1=95\%$ of its face value. Another risk-free zero-coupon bond with a maturity of $T_2=6$ years is priced at $P_2=92\%$ of its face value. What is the fair continuously compounded interest rate for a deferred deposit that will start in 3 years and end in 6 years?
+
+\section{Artem and Imperfect Hedging of a Forward}
+
+Artem works in a commercial bank but has always dreamed of working in investment banking. Therefore, he came up with the idea of selling forward contracts on the USDRUB currency pair to corporate clients and hedging with futures on Moscow Exchange. To keep it simple, let's ignore the details that futures on the exchange require margin and are non-deliverable (cash-settled).
+
+Suppose the current USDRUB spot rate is $S_0=75$. The interest rates are $u_0=4\%$ in dollars and $r_0=8\%$ in rubles (both rates are continuously compounded). Artem sold a forward contract to a client to deliver $N=\$1\,000$ in May 2024 (in $T_1 = 8/12$ years). Artem, being smart, hedged the currency risk by buying a June 2024 futures contract (expiring in $T_2 = 9/12$ years) in the same amount \$1\,000.
+
+Artem believes he did everything right, because today May and June seem equally distant. If the current spot rate rises, the loss on the May forward is roughly offset by the profit on the June futures contract.
+
+Calculate the fair rates for the May forward $F_1$ and the June futures $F_2$. Let's assume that Artem executed transactions at the fair mid-rate without bid/ask spread and exchange commissions.
+
+Suppose it's now May, and the spot rate $S_1$ is exactly equal to the forward rate $F_1$. The profit on the client's forward is zero: Artem sold a forward to the client at the same rate at which he can buy dollars in the spot market.
+
+After settling with the client, Artem needs to close the position on the exchange because otherwise it will fluctuate with the movement of the spot (since there's no compensating forward anymore). Calculate the fair rate of the same June futures in May when there is 1 month left until expiration, interest rates are the same as at the beginning, and the spot rate $S_1$ equals the May forward rate $F_1$, which we calculated earlier.
+
+Assume that interest rates have changed. Suppose that by May, the Federal Reserve increased the dollar interest rate by 1\% to $u_1=5\%$, and the Central Bank of Russia, on the contrary, decreased the ruble interest rate by 2\% to $r_1=6\%$. How much will the June futures cost in May (find futures rate $F_3$)? How many rubles did Artem lose on the movement of interest rates and on buying the futures at $F_2$ and selling at $F_3$? For simplicity, ignore discounting of future rubles from June to May.
+
+Calculate the PV01 (price of one basis point): how many rubles Artem earns or loses in May for each 1 basis point (0.01\%) increase in the ruble interest rate relative to the initial level $r_0$?
+
+Moral of the story: trading forwards involves interest rate risk, and one should be prepared for it.
+
+\section{Forward Rate Agreement (3 points)}
+
+A Forward Rate Agreement (FRA) is an over-the-counter derivative similar to exchange-traded interest rate futures. For instance, a 6x9 FRA depends on the three-month EURIBOR which will be fixed in six months from today (hence the 6 in the name) and is relevant for deposits maturing in nine months from today (hence the 9 in the name).
+
+The parties involved in an FRA must agree on the "price", which is an interest rate (let's say, 2\%), the notional amount (let's say, 10\,000\,000 euro), the reference rate (e.g., three-month EURIBOR), and the term (e.g., 6x9). Let's assume we "bought" a 6x9 FRA at a price of $K=2\%$ for a notional amount of $N=10\,000\,000$. In six months from today, an unknown value of the three-month EURIBOR $L_6$ will be published. As the buyer, in six months from today we will receive the following amount from the seller:
+\begin{align*}
+P = N\dfrac{(L_6 - K)/4}{1 + L_6/4}
+\end{align*}
+In other words, we make a profit if the future $L_6$ turns out to be higher than the "price" $K$ which we negotiated today. For the seller, the situation is reversed --- they profit if $L_6$ turns out to be lower than $K$. The current market price of the FRA $K$ is the market's consensus on the future EURIBOR rate.
+
+The treasurer of a certain bank borrowed 1\,000\,000 euro for 3 months ($T_3 = 0.25$) at the current three-month EURIBOR rate $L_0=2.5\%$. He deposited the funds for 9 months ($T_9 = 0.75$) at a rete of $r=3.5\%$ (simple interest without compounding). The treasurer took on the interest rate risk: in 3 months, the first loan will mature, and he will have to borrow again at the EURIBOR rate prevailing at that time. If the future EURIBOR is very high, the cost of borrowing at the EURIBOR will exceed the gain on the deposit.
+
+To hedge this risk, the treasurer entered the over-the-counter FRA market. He found the following data on Bloomberg:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|c|c}
+FRA & Bid & Ask \\ \hline
+3x6 & 2.9\% & 3.1\% \\ 
+6x9 & 3.4\% & 3.6\% \\
+\end{tabular}
+\end{table}
+
+To hedge the interest rate risk, should the treasurer buy the FRA (at the ask price) or sell it (at the bid price)? What should be the size of each transaction for 3x6 and 6x9? If the treasurer entered into 3x6 and 6x9 contracts in the right size and at the right prices, what profit will he secure: how many euros will he have in 9 months when the deposit and loans mature?
+
+Calculate the breakeven point. Assuming the price of 3x6 does not change, what could be the price of the 6x9 contract for the treasurer to at least break even on his deposit and FRA?
+
+\section{Tenor Basis Swap}
+
+The table below presents market quotes for swaps on the three-month EURIBOR (one side pays a fixed coupon once a quarter, and the other side pays the three-months EURIBOR), and swaps on the six-months EURIBOR (one side pays a fixed coupon every six months, and the other side pays the six-months EURIBOR).
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|r|r}
+Instrument & 3M EURIBOR & 6M EURIBOR \\ \hline
+Last Fixing & 2.50\% & 2.80\% \\
+1-Year Swap & 3.00\% & 3.20\% \\
+2-Year Swap & 3.50\% & 3.60\%
+\end{tabular}
+\end{table}
+
+Neglecting discounting and using the assumption of linear interpolation, calculate the "expected" values of the three-months and six-months EURIBORs.
+
+A Tenor Basis Swap (3M-6M) is an interest rate swap where both parties make payments that are linked to floating rates. The first party pays the six-months EURIBOR every six months. The second party pays the three-months EURIBOR plus $x\%$ every quarter, where $x$ is the swap rate that the parties need to agree upon. This $x$ is also known as the "basis". An example of such a swap is available in the lecture slides. The swap allows, for instance, transform a loan based on the three-months EURIBOR into a loan based on the six-months EURIBOR.
+
+Using the previously calculated "expected" values of EURIBOR, compute the fair basis for a two-year 3M-6M basis swap. Discounting can still be neglected. Do you see a more straightforward way to calculate the basis?
+
+\end{document}
