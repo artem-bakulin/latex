@@ -47,3 +47,5 @@ LaTeX sources for Habrahabr posts, presentations, and other stuff
 2\. [Interest Rate Swaps](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/02-interest-rate-swaps/) \| [Technical Notes on Interest Rates](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/02-technical-notes-on-interest-rates/)
 
 Homework 1. [Problems](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/homework/01-problems) \| [Solutions in Excel](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/homework/01-solutions)
+
+3\. [Options and the Binomial Model](<https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/03-options-and-binomial-model/)
