@@ -3,7 +3,7 @@
 \usepackage{cmap}				% To be able to copy-paste russian text from pdf
 \usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[russian]{babel}
+\usepackage[english]{babel}
 \usepackage{textpos}
 \usepackage{ragged2e}
 \usepackage{amssymb}
@@ -44,11 +44,6 @@
 \usecolortheme{beaver}
 
 \setbeamertemplate{page number in head/foot}[totalframenumber] 
-
-\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
-\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
-\newcommand{\ruen}[2]{#1 (\en{#2})}
-
 \begin{document}
 
 
@@ -140,7 +135,7 @@ Russian state television about Societe General's losses (2008):
 
 \begin{frame}{Example: call options}
 \justifying
-Owning 100 EURUSD call options at strike 1.06.
+Owning a EURUSD call option to buy 100 EUR at strike 1.06.
 
 \justifying
 \centering
@@ -327,7 +322,7 @@ Pros: we do not suffer from EURUSD depreciation. Cons: we have to pay a premium 
 In 3 months we will receive 1\,000 EUR. Forward rate for the 3 months maturity is 1.06. If we sell a forward we secure the exchange rate, but expose ourselves to the EUR appreciating to 1.12 or higher. We will have to sell EURUSD at 1.06 when everyone around will be happily trading at 1.12.
 
 \justify
-Solution: we can buy 1\,000 put options with the strike of 1.06 for the premium of 20 USD. In case the EUR depreciates to 1.00 we exercise the option and sell at 1.06. In case EURUSD jumps to 1.12 we let the option expire and sell at the prevailing rate of 1.12
+Solution: we can buy 1\,000 put options at the strike of 1.06 for the premium of 20 USD. In case the EUR depreciates to 1.00 we exercise the option and sell at 1.06. In case EURUSD jumps to 1.12 we let the option expire and sell at the prevailing rate of 1.12
 
 \justify
 Pros: we will not be disappointed in the event of the EUR appreciation. Cons: we have to pay a premium upfront. The option protects us from the EURUSD dropping below 1.06.
@@ -337,23 +332,23 @@ Pros: we will not be disappointed in the event of the EUR appreciation. Cons: we
 
 \begin{frame}{Speculating with call options}
 \justify
-A crystal ball shows that in 3 months the EURUSD will significantly \alert{appreciate} from the current level of 1.06. We are willing to monetize this forecast. However \sout{the wife} shareholders in our hedge fund allocated the budget of just 20 USD.
+A crystal ball shows that in 3 months EURUSD will significantly \alert{appreciate} from the current level of 1.06. We are willing to monetize this forecast. However \sout{the wife} shareholders in our hedge fund allocated the budget of just 20 USD.
 
 \justify
-Solution: we can buy 1\,000 of EURUSD \alert{call} options with the strike of 1.06 for the premium of 20 USD. In case the EURUSD appreciates to 1.16 we can make $(1.16 - 1.06) \cdot 1\,000 - 20 = 80$ USD. If this does not happen we just lose our bet of 20 USD which is within our risk budget.
+Solution: we can buy 1\,000 EURUSD \alert{call} options at the strike of 1.06 for the premium of 20 USD. In case EURUSD appreciates to 1.16 we can make $(1.16 - 1.06) \cdot 1\,000 - 20 = 80$ USD. If this does not happen we just lose our bet of 20 USD which is within our risk budget.
 
 \justify
-An option acts as a leverage. It magnifies both the profit in positive scenarios (as if we had 1000 EUR to bet) and the loss in negative scenarios (we can lose the whole premium). Good news is that the loss is floored at the premium, but the gain is potentially unlimited.
+An option acts as a leverage. It magnifies both the profit in positive scenarios (as if we had 1\,000 EUR to bet) and the loss in negative scenarios (we can lose the whole premium). Good news is that the loss is floored at the premium, but the gain is potentially unlimited.
 \end{frame}
 
 
 
 \begin{frame}{Speculating with put options}
 \justify
-A crystal ball suggests that in 3 months the EURUSD will \alert{depreciate} relative to the current forward rate of 1.06. Our shareholders allocated a budget of 20 USD to let us monetize this forecast.
+A crystal ball suggests that in 3 months EURUSD will \alert{depreciate} relative to the current forward rate of 1.06. Our shareholders allocated a budget of 20 USD to let us monetize this forecast.
 
 \justify
-Solution: we can buy 1\,000 of EURUSD \alert{put} options with the strike of 1.06 for the premium of 20 USD. If we are right and the EURUSD depreciates to 0.96 we can make $(1.06 - 0.96)\cdot1\,000 - 20 = 80$ USD. If this does not happen we simply lose the paid premium.
+Solution: we can buy 1\,000 EURUSD \alert{put} options at the strike of 1.06 for the premium of 20 USD. If we are right and EURUSD depreciates to 0.96 we can make $(1.06 - 0.96)\cdot1\,000 - 20 = 80$ USD. If this does not happen we simply lose the premium.
 
 \justify
 A put option allows betting on depreciation of the underlying asset (of the EUR).
@@ -380,7 +375,7 @@ There are symmetrical terms for put option.
 
 \begin{frame}{Combinations: a collar}
 \justifying
-A \alert{collar} consists of a sold put with a lower strike and a bought call with a higher strike.
+A \alert{collar} consists of a sold put at a lower strike and a bought call at a higher strike.
 
 \justifying
 \centering
@@ -416,7 +411,7 @@ A \alert{collar} consists of a sold put with a lower strike and a bought call wi
 
 \begin{frame}{Combinations: a call spread}
 \justifying
-A \alert{call spread} consists of a bought call with a lower strike and a sold call with a higher strike.
+A \alert{call spread} consists of a bought call at a lower strike and a sold call at a higher strike.
 
 \justifying
 \centering
@@ -452,7 +447,7 @@ A \alert{call spread} consists of a bought call with a lower strike and a sold c
 
 \begin{frame}{Combinations: a straddle}
 \justifying
-A \alert{straddle} is a bought call and a bought put with equal strikes.
+A \alert{straddle} is a bought call and a bought put at equal strikes.
 
 \justifying
 \centering
@@ -488,7 +483,7 @@ A \alert{straddle} is a bought call and a bought put with equal strikes.
 
 \begin{frame}{Combinations: a call and a put}
 \justifying
-Buying a call and selling a put with the same strike.
+Buying a call and selling a put at the same strike.
 
 \justifying
 \centering
@@ -561,19 +556,18 @@ Buying a call and selling a put with the same strike.
 The following two portfolios yield identical payoffs on the expiration date $T$:
 \begin{itemize}
 \justifying
-\item Bought call with strike $K$ and sold put with strike $K$.
+\item Bought call at strike $K$ and sold put at strike $K$.
 \item Underlying asset at price $S(T)$ and debt of $K$ units of cash.
 \end{itemize}
 
 \justify
-Consequently, on any day $t$ prior to the expiration date ($t<T$) these portfolios should be priced equally, taking the discount rate $t$ into account::
+Consequently, on any day $t$ prior to the expiration date ($t<T$) these portfolios should be priced equally, taking the discount rate $r$ into account:
 \begin{align*}
 C_K(t) - P_K(t) = S(t) - Ke^{-r(T-t)}
 \end{align*}
 
 \justify
-This equation is called the \alert{call-put parity}. We can derive fair value of a put from fair value of a call, and vice versa..
-\end{frame}
+This equation is called the \alert{call-put parity}. We can derive fair value of a put from fair value of a call, and vice versa.\end{frame}
 
 
 
@@ -582,7 +576,7 @@ This equation is called the \alert{call-put parity}. We can derive fair value of
 A European \alert{digital call [put]} option is a contract that entitles the buyer receive a fixed payment in case the price of the underlying asset on the expiration date is higher [lower] than the specified strike.
 
 \justify
-An example: a European digital call option with strike of 1.06, expiration in 3 months, and notional amount of 100 USD. 
+An example: a European digital call option at strike of 1.06, expiration in 3 months, and notional amount of 100 USD. 
 
 \justify
 The buyer will receive 100 USD from the seller in 3 months if the prevailing EURUSD spot rate will be higher than 1.06.
@@ -771,7 +765,7 @@ A payoff on a \alert{barrier options} depends on whether the price of the underl
 \justify
 - \alert{Knock-in (KI)} barrier: an option begins to exist in case the spot price reaches the certain level.
 
-- \alert{Kock-out (KO)} barrier: an option ceases to exist in case the spot price reaches the certain level.
+- \alert{Knock-out (KO)} barrier: an option ceases to exist in case the spot price reaches the certain level.
 
 \justify
 - European barrier is only observed on the expiration date.
@@ -787,7 +781,7 @@ Usually investors add barriers to their options to make the options cheaper.
 
 \begin{frame}{European knock-out (EKO)}
 \justify
-A call with strike 1.06 and a European knock-out barrier at 1.10.
+A call at strike 1.06 with a European knock-out barrier at 1.10.
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
@@ -819,7 +813,7 @@ A call with strike 1.06 and a European knock-out barrier at 1.10.
 
 \begin{frame}{Replicating European options}
 \justify
-Payoff of a European-style derivative depends only on the price of the underlying asset on the expiration date. we can replicate any derivative of this kind with a combination of vanilla options and/or digital options.
+Payoff of a European-style derivative depends only on the price of the underlying asset on the expiration date. We can replicate any derivative of this kind with a combination of vanilla options and/or digital options.
 
 \justify
 1. Add a vanilla option at each point where the payoff chart bends.
@@ -828,7 +822,7 @@ Payoff of a European-style derivative depends only on the price of the underlyin
 2. Add a digital option at each point of discontinuity.
 
 \justify
-How do we replicate a European knock-out option with the strike at 1.06 and the barrier at 1.10?
+How do we replicate a European knock-out option at the strike at 1.06 with the barrier at 1.10?
 \end{frame}
 
 
@@ -883,10 +877,10 @@ Buy 100 vanilla calls-1.06
 
 \begin{frame}{Who is selling options?}
 \justify
-Options are convenient both for hedging and for speculation. Potential losses are floored, because one cannot lose more than the premium. Potential gain is unlimited for the call options.
+Options are convenient both for hedging and for speculation. Potential losses are floored, because a buyer cannot lose more than the premium. Potential gain of a call option is unlimited.
 
 \justify
-Who is selling the options then? Who is ready to receive the limited gain in exchange for the unlimited losses?
+Who is selling options then? Who is ready to receive limited gain in exchange for unlimited losses?
 \end{frame}
 
 
@@ -904,7 +898,7 @@ In the past several option strategies resulted in positive average return in the
 \end{itemize}
 
 \justify
-All three strategies are "selling the volatility". They bet that the market will not be fluctuating as much as the option buyers anticipate. Options are similar to insurance. They are priced high enough so that sellers of the insurance may make money in the long run.
+All three strategies are "selling the volatility". They bet that the market will not be fluctuating as much as option buyers anticipate. Options are similar to insurance. They are priced high enough so that sellers of the insurance may make money in the long run.
 \end{frame}
 
 
@@ -964,7 +958,7 @@ All three strategies are "selling the volatility". They bet that the market will
 Price of a non-dividend paying stock is $\$100$. Tomorrow it may be either $\$120$ with $90\%$ probability, or $\$80$ with  $10\%$ probability. Risk-free interest rate is $r=0\%$.
 
 \justify
-What is fair value of a European vanilla call option with strike $K=\$100$ which expires tomorrow?
+What is fair value of a European vanilla call option at strike $K=\$100$ which expires tomorrow?
 
 \justify
 Expected value of the payoff:
