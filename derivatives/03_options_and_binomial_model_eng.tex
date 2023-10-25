@@ -561,13 +561,20 @@ The following two portfolios yield identical payoffs on the expiration date $T$:
 \end{itemize}
 
 \justify
-Consequently, on any day $t$ prior to the expiration date ($t<T$) these portfolios should be priced equally, taking the discount rate $r$ into account:
+Consequently, on any day $t$ prior to the expiration date ($t<T$) these portfolios should be priced equally, taking the discount rate $r$ into account (*):
 \begin{align*}
 C_K(t) - P_K(t) = S(t) - Ke^{-r(T-t)}
 \end{align*}
 
 \justify
-This equation is called the \alert{call-put parity}. We can derive fair value of a put from fair value of a call, and vice versa.\end{frame}
+This equation is called the \alert{call-put parity}. We can derive fair value of a put from fair value of a call, and vice versa.
+
+\justify
+(*) In case the underlying asset pays continuously compounded dividend yield $q$ (e.g. interest rate in EUR):
+\begin{align*}
+C_K(t) - P_K(t) = S(t)e^{-q(T-t)} - Ke^{-r(T-t)}
+\end{align*}
+\end{frame}
 
 
 
@@ -857,14 +864,14 @@ Buy 100 vanilla calls-1.06
   \addplot[Set1-B, very thick, dashed] {-100*(\x > 1.10)*(\x - 1.10) - 0.03};
 }
 \only<2>{
-  \addplot[Set1-C, very thick] {-100*(\x > 1.10)*(\x - 1.10) - 0.03 + 100*(\x > 1.06)*(\x - 1.06) + 0.06};
+  \addplot[Set1-C, very thick, samples=200] {-100*(\x > 1.10)*(\x - 1.10) - 0.03 + 100*(\x > 1.06)*(\x - 1.06) + 0.06};
 }
 \only<3->{
 	\addplot[Set1-E, very thick, dashed, domain=1:1.10] {-0.06};
 	\addplot[Set1-E, very thick, dashed, domain=1.10:1.14] {-4};
 }
 \only<3>{
-	\addplot[Set1-C, very thick, domain=1:1.10] {-100*(\x > 1.10)*(\x - 1.10) - 0.03 + 100*(\x > 1.06)*(\x - 1.06) + 0.06};
+	\addplot[Set1-C, very thick, domain=1:1.10, samples=200] {-100*(\x > 1.10)*(\x - 1.10) - 0.03 + 100*(\x > 1.06)*(\x - 1.06) + 0.06};
 	\addplot[Set1-C, very thick, domain=1.10:1.14] {0.03};
 }
 
