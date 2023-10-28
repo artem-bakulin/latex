@@ -910,6 +910,155 @@ All three strategies are "selling the volatility". They bet that the market will
 
 
 
+\begin{frame}{Selling out-of-the money put}
+\justify
+S\&P\,500 index is currently at \$4\,120 (October 27, 2023). A put option at strike \$2\,700 which expires on December 15 is worth \$2 on Chicago Mercantile Exchange.
+
+\justify
+If you sell 1\,000 put options you collect the premium \$2\,000 with virtually no risk. Last time S\&P\,500 dropped by 35\% in 7 weeks in 1929 during the Great Depression.
+
+\justify
+Caveat: if the Great Depression comes back and the index drops to \$2\,600 you lose \$1\,000\,000.
+
+\justify
+Will you be brave enough to sell this insurance policy?
+
+\justify
+Could we do something less frightening?
+\end{frame}
+
+
+
+\begin{frame}{PUTY Index}
+\justify
+The Chicago Board of Option Exchange  (CBOE) S\&P\,500 2\% OTM PutWrite Index (PUTY) tracks the following investment strategy.
+
+\justify
+1. Sell (write) a 1 month put option on S\&P\,500 index at a strike $K$ which is 2\% lower than current level. E.g. sell at strike \$4\,040 in case current level is \$4\,120.
+
+\justify
+2. Put aside $K$ dollars in risk-free one-month Treasury bills. Thus you will have cash at hand in case the index drops by 2\% and the buyer exercises the option.
+
+\justify
+3. In good case you just collect the premium. In bad case you lose some money ($K-S$ where $S$ is index price), but you can never go below zero.
+
+\justify
+4. Repeat every month.
+\end{frame}
+
+
+
+\begin{frame}{PUTY Index - 2}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+ 	width=\textwidth,
+	height=\textheight - 1cm,
+	date coordinates in=x,
+	date ZERO=1987-01-01,
+  	xtick={1990-01-01, 2000-01-01, 2010-01-01, 2020-01-01},
+  	minor xtick={1995-01-01, 2005-01-01, 2015-01-01, 2025-01-01},
+  	xticklabel={\year},
+  	xmin=1987-01-01,
+  	xmax=2025-01-01,
+	 ymode = log,
+ 	grid=both,
+   	log ticks with fixed point,
+  	ylabel={\small{Growth of \$1 investment}},
+  	xlabel near ticks,
+  	ylabel near ticks,
+	legend entries = {
+		S\&P\,500 Total Return,
+		CBOE PUTY,
+		Risk-free T-bill
+	},
+	legend pos=north west,
+	legend style={font=\scriptsize},
+	legend cell align={left}
+]
+
+\addplot[color = Set1-A, mark = none, very thick]
+	table[
+		x=month,
+		y=sp500_growth,
+		col sep=comma
+	]
+	{cboe_puty.csv};
+
+\addplot[color = Set1-B, mark = none, very thick]
+	table[
+		x=month,
+		y=puty_growth,
+		col sep=comma
+	]
+	{cboe_puty.csv};
+
+\addplot[color = Set1-C, mark = none, very thick, dashed]
+	table[
+		x=month,
+		y=rf_growth,
+		col sep=comma
+	]
+	{cboe_puty.csv};
+
+   \draw[thick, color=black] (axis cs: 1985-01-01, 1) -- (axis cs: 2025-01-01, 1);
+\end{axis}
+\end{tikzpicture}
+\small Data: CBOE, Robert Shiller, Kenneth French.
+\end{frame}
+
+
+
+\begin{frame}{PUTY Index - 3}
+\centering
+\begin{tabular}{l|r|r|r}
+& PUTY & S\&P\,500 & T-bill \\ \hline
+Geom. Mean & 7.1\% & 10.6\% & 2.8\% \\
+Excess Return & 4.2\% & 7.6\% & 0.0\% \\
+Std. Dev & 8.4\% & 16.2\% & 0.0\% \\
+Share Ratio & 0.50 & 0.47 & 0.0 \\
+Monthly Beta & 0.36 & 1.00 & 0.00
+\end{tabular}
+
+\small Sample period: 1988--2022. All figures except Beta are annualized.
+
+\justify
+PUTY has better return to risk ratio (the Sharpe ratio). Insuring others from a stock market crash seems to be a better strategy than investing in the stock market?
+
+\justify
+Is this the Holy Grail of investing? Or is there a catch?
+\end{frame}
+
+
+
+\begin{frame}{PUTY Index - 4}
+\centering
+\begin{tabular}{l|r|r|r}
+& PUTY & S\&P\,500 & T-bill \\ \hline
+Geom. Mean & 6.5\% & 10.3\% & 2.9\% \\
+Excess Return & \alert{3.5\%} & 7.2\% & 0.0\% \\
+Std. Dev & \alert{9.1\%} & 16.2\% & 0.0\% \\
+Share Ratio & \alert{0.38} & 0.45 & 0.0 \\
+Monthly Beta & 0.39 & 1.00 & 0.00
+\end{tabular}
+
+\small Sample period: \alert{1987}--2022. All figures except Beta are annualized.
+
+\justify
+Black Monday October 19, 1987 was the worst day in history both for PUTY and for S\&P\,500
+
+\centering
+\begin{tabular}{l|r|r}
+& PUTY & S\&P\,500 \\ \hline
+October 19, 1987 & $-29.8\%$ & $-20.5\%$ \\
+October 1987 & $-22.1\%$ & $-11.9\%$ \\
+1987 & $-13.8\%$ & $-0.1\%$ 
+\end{tabular}
+
+\justify
+This is \alert{tail risk}. On average, selling insurance is profitable business, because people don't like risk and are ready to pay for insurance. You may try collecting the risk premium in case you are ready to bear this risk.
+\end{frame}
+
 \newcommand{\drawStockNode}[5]{
 
 	\node (#5)

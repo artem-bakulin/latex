@@ -1,0 +1,270 @@
+library(dplyr)
+library(readr)
+library(curl)
+library(lubridate)
+library(xlsx)
+library(tidyr)
+
+last_day_of_month <- function(x) {
+  make_date(year(x), month(x), days_in_month(x))
+}
+
+
+string_to_date <- function(x) {
+  
+  yyyymm_or_yyyy <- as.numeric(x)
+  res <- rep(make_date(), length(x))
+  
+  year_indices <- yyyymm_or_yyyy <= 10000
+  res[year_indices] <- make_date(
+    yyyymm_or_yyyy[year_indices],
+    1, 
+    1)
+  
+  month_indices <- !year_indices
+  res[month_indices] <- make_date(
+    yyyymm_or_yyyy[month_indices] %/% 100,
+    yyyymm_or_yyyy[month_indices] %% 100, 
+    1
+  )
+  
+  res
+}
+
+
+download_generic_fama_french_data <- function(url, skip_rows, category=NA) {
+  
+  file_name <- basename(url)
+  curl_download(url, file_name)
+  
+  raw_data <- read_csv(file_name, skip=skip_rows)
+  
+  category_and_tail <- if(is.na(category)) {
+    raw_data
+  } else {
+    category_index <- match(category,  raw_data$`...1`)
+    raw_data %>% tail(-category_index-1)
+  }
+  
+  na_index <- match(TRUE, is.na(as.numeric(category_and_tail$`...1`)))
+  category <- if(!is.na(na_index)) {
+    category_and_tail %>% head(na_index - 1)
+  } else {
+    category_and_tail
+  }
+  
+  category <- category %>% 
+    mutate(`...1` = string_to_date(`...1`))
+  
+  category <- if (all(month(category$`...1`) == 1)) {
+    category %>% 
+      rename(year = `...1`)
+  } else {
+    category %>% 
+      rename(month = `...1`)
+  }
+  
+  file.remove(file_name)
+  
+  category
+}
+
+
+download_fama_french_factors_data <- function() {
+  
+  data <- download_generic_fama_french_data(
+    "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip",
+    skip_rows = 3
+  )
+  
+  data %>% 
+    transmute(
+      month = month,
+      mkt_rf = `Mkt-RF` / 100,
+      smb = SMB / 100,
+      hml = HML / 100,
+      rf = RF / 100
+    )
+}
+
+download_from_cboe <- function(index_name) {
+
+  full_url <- sprintf("https://cdn.cboe.com/api/global/us_indices/daily_prices/%s_History.csv", index_name)
+  curl_download(full_url, "tmp.csv")
+  data <- read_csv("tmp.csv")
+  file.remove("tmp.csv")
+  
+  colnames(data) <- c("date", "index_level")
+  data %>% 
+    mutate(
+      date = as.Date(date, "%m/%d/%Y"),
+      index_name = index_name
+    )
+}
+
+
+download_shiller_data <- function() {
+  
+  full_url <- "http://www.econ.yale.edu/~shiller/data/ie_data.xls"
+  curl_download(full_url, "ie_data.xls")
+  raw_data <- xlsx::read.xlsx("ie_data.xls", sheetName="Data", startRow=8)
+  file.remove("ie_data.xls")
+  
+  raw_data %>% 
+    as_tibble() %>%
+    transmute(
+      month = last_day_of_month(make_date((Date*100) %/% 100, (Date*100) %% 100, 1)),
+      sp500 = as.numeric(P),
+      dividend = as.numeric(D)
+    ) %>% 
+    filter(!is.na(month))
+}
+
+puty_data <- download_from_cboe("PUTY")
+
+puty_monthly <- puty_data %>% 
+  group_by(month = last_day_of_month(date)) %>% 
+  summarise(puty = last(index_level)) %>% 
+  filter(month >= '1986-12-31', month <= '2022-12-31') %>% 
+  mutate(puty_return = puty / lag(puty) - 1) %>% 
+  mutate(puty_return = if_else(is.na(puty_return), 0, puty_return)) %>% 
+  mutate(puty_growth = cumprod(1 + puty_return))
+
+
+shiller_data <- download_shiller_data()
+
+sp500_monthly <- shiller_data %>% 
+  filter(
+    month >= "1986-12-31",
+    month <= "2022-12-31"
+  ) %>% 
+  mutate(
+    sp500_return = (sp500 + dividend/12) / lag(sp500) - 1,
+    sp500_return = if_else(is.na(sp500_return), 0, sp500_return),
+    sp500_growth = cumprod(1 + sp500_return)
+  )
+
+
+ff_data <- download_fama_french_factors_data()
+
+rf_monthly <- ff_data %>% 
+  transmute(
+    month = last_day_of_month(month),
+    rf_return = rf
+  ) %>% 
+  filter(
+    month >= '1986-12-31',
+    month <= '2022-12-31'
+  ) %>% 
+  mutate(
+    rf_growth = cumprod(1 + rf_return)
+  )
+
+
+merged_data <- puty_monthly %>% 
+  inner_join(sp500_monthly, by="month") %>% 
+  inner_join(rf_monthly, by="month")
+
+merged_data %>% write_csv("cboe_puty.csv")
+
+
+merged_data %>% 
+  tail(-1) %>% 
+  filter(month >= "1988-01-01") %>% 
+  lm(puty_return - rf_return ~ sp500_return - rf_return, data=.) %>% 
+  summary()
+
+merged_data %>% 
+  tail(-1) %>% # Remove the fist dummy row
+  group_by(
+    year = year(month)
+  ) %>% 
+  filter(year >= 1988) %>% 
+  summarise(
+    sp500 = prod(1 + sp500_return) - 1,
+    puty = prod(1 + puty_return) - 1,
+    rf = prod(1 + rf_return) - 1,
+    sp500_excess = (1 + sp500) / (1 + rf) - 1,
+    puty_excess = (1 + puty) / (1 + rf) - 1
+  ) %>% 
+  summarise(
+    from = min(year),
+    to = max(year),
+    sp500_mean = prod(1 + sp500) ^ (1/n()) - 1,
+    puty_mean = prod(1 + puty) ^ (1/n()) - 1,
+    rf_mean = prod(1 + rf) ^ (1/n()) - 1,
+    sp500_excess_mean = prod(1 + sp500_excess) ^ (1/n())- 1,
+    puty_excess_mean = prod(1 + puty_excess) ^ (1/n())- 1,
+    sp500_std = sd(sp500_excess),
+    puty_std = sd(puty_excess),
+    sp500_sharpe = sp500_excess_mean / sp500_std,
+    puty_sharpe = puty_excess_mean / puty_std
+  )
+
+merged_data %>% 
+  tail(-1) %>% # Remove the fist dummy row
+  group_by(
+    year = year(month)
+  ) %>% 
+  filter(year >= 1987) %>% 
+  summarise(
+    sp500 = prod(1 + sp500_return) - 1,
+    puty = prod(1 + puty_return) - 1,
+    rf = prod(1 + rf_return) - 1,
+    sp500_excess = (1 + sp500) / (1 + rf) - 1,
+    puty_excess = (1 + puty) / (1 + rf) - 1
+  ) %>% 
+  summarise(
+    from = min(year),
+    to = max(year),
+    sp500_mean = prod(1 + sp500) ^ (1/n()) - 1,
+    puty_mean = prod(1 + puty) ^ (1/n()) - 1,
+    rf_mean = prod(1 + rf) ^ (1/n()) - 1,
+    sp500_excess_mean = prod(1 + sp500_excess) ^ (1/n())- 1,
+    puty_excess_mean = prod(1 + puty_excess) ^ (1/n())- 1,
+    sp500_std = sd(sp500_excess),
+    puty_std = sd(puty_excess),
+    sp500_sharpe = sp500_excess_mean / sp500_std,
+    puty_sharpe = puty_excess_mean / puty_std
+  )
+
+puty_data %>% 
+  filter(date %in% as.Date(c("1987-10-16", "1987-10-19"))) %>% 
+  mutate(one_day_return = index_level / lag(index_level) - 1)
+
+puty_monthly %>% 
+  filter(month == "1987-10-31")
+
+merged_data %>% 
+  tail(-1) %>% # Remove the fist dummy row
+  group_by(
+    year = year(month)
+  ) %>% 
+  filter(year == 1987) %>% 
+  summarise(
+    sp500 = prod(1 + sp500_return) - 1,
+    puty = prod(1 + puty_return) - 1,
+    rf = prod(1 + rf_return) - 1,
+    sp500_excess = (1 + sp500) / (1 + rf) - 1,
+    puty_excess = (1 + puty) / (1 + rf) - 1
+  )
+
+sp500_index <- yahoofinancer::Index$new("^GSPC")
+sp500_data <- sp500_index$get_history(start="1927-12-30", end="2023-10-27", interval="1d")
+
+sp500_data %>% 
+  as_tibble() %>% 
+  transmute(
+    date = as.Date(date, tz="UTC"),
+    sp500 = close
+  ) %>% 
+  mutate(return_35 = sp500 / lag(sp500, 35) - 1) %>% 
+  arrange(return_35)
+
+sp500_data %>% 
+  as_tibble() %>% 
+  filter(date >= '1987-10-14') %>% 
+  mutate(return = close / lag(close) - 1)
+
+sp500_monthly %>% 
+  filter(month == "1987-10-31")
