@@ -32,12 +32,12 @@ black_scholes_price <- function(S, K, T, sigma, r, q) {
 }
 
 tibble(
-  S = seq(64, 80, 0.05)
+  S = seq(80, 120, 0.05)
 ) %>% 
   mutate(
-    C_5 = black_scholes_price(S, 72, 0.25,  0.05, 0.06, 0),
-    C_10 = black_scholes_price(S, 72, 0.25,  0.1,  0.06, 0),
-    C_25 = black_scholes_price(S, 72, 0.25, 0.25, 0.06, 0)
+    C_5 = black_scholes_price(S, 100, 0.25,  0.05, 0.05, 0),
+    C_10 = black_scholes_price(S, 100, 0.25,  0.1,  0.05, 0),
+    C_25 = black_scholes_price(S, 100, 0.25, 0.25, 0.05, 0)
   ) %>% 
   write_csv("call_price.csv")
 

@@ -617,31 +617,32 @@ Thus the stock price follows a log-normal distribution.
 
 
 
-\begin{frame}{Модель Блэка-Шоулза}
+\begin{frame}{The Black-Scholes model}
 \justify
-1. Базовый актив не платит дивидендов, его цена $S_0$.
+1. An underlying asset at price $S_0$. The asset does not pay dividends.
 
 \justify
-2. Цена актива следует геометрическому броуновскому движению с трендом $\mu$ и волатильностью $\sigma$:
+2. The asset price follows geometric Brownian motion with trend $\mu$ and volatility $\sigma$:
 \begin{align*}
 \dfrac{dS}{S} = \mu dt + \sigma\xi\sqrt{dt}, \quad \xi \sim \mathcal{N}(0,1)
 \end{align*}
 
 \justify
-3. Безрисковая процентная ставка $r$ постоянна.
+3. Risk-free rate $r$ is constant.
 
 \justify
-4. Идеальный ликвидный рынок без транзакционных издержек и без возможностей для арбитража, на котором мы можем заниматься дельта-хеджированием сколь угодно часто.
+4. Ideal liquid market. No transaction costs, no arbitrage opportunities. We can delta-hedge as frequently as we'd like to.
 \end{frame}
 
 
 
-\begin{frame}{Формула Блэка-Шоулза}
-Цена европейского колл-опциона со страйком $K$ задается формулой:
+\begin{frame}{The Black-Scholes formula}
+\justify
+Fair price of a European call at strike $K$:
 \begin{align*}
 C_{BS} &= S_0N(d_1) - Ke^{-rT}N(d_2)
 \end{align*}
-где
+where
 \begin{align*}
 d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r + \dfrac{\sigma^2}{2}\right)T\right) \\
 d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r - \dfrac{\sigma^2}{2}\right)T\right) \\
@@ -649,18 +650,18 @@ N(x) &= \dfrac{1}{\sqrt{2\pi}}\int\limits_{-\infty}^x e^{-\frac{t^2}{2}}dt
 \end{align*}
 
 \justify
-Цена не зависит от тренда $\mu$!
+The price does not depend on the trend  $\mu$!
 \end{frame}
 
 
 
-\begin{frame}{Формула Блэка-Шоулза с дивидендами}
+\begin{frame}{The Black-Scholes formula with dividends}
 \justify
-Если базовый актив имеет дивидендную доходность $q$  и дивиденды выплачиваются непрерывно (валюта, индекс акций, нефть в хранилище):
+Suppose that the underlying asset pays continuous dividend yield $q$ (examples: a currency, stock index, oil in tanks).
 \begin{align*}
 C_{BS} &= S_0e^{-qT}N(d_1) - Ke^{-rT}N(d_2)
 \end{align*}
-где
+where
 \begin{align*}
 d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q + \dfrac{\sigma^2}{2}\right)T\right) \\
 d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q- \dfrac{\sigma^2}{2}\right)T\right)
@@ -669,21 +670,21 @@ d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r 
 
 
 
-\begin{frame}{Модель Блэка-Шоулза}
+\begin{frame}{Black-Scholes Formula: an example}
 \justify
-Пример: колл-опцион со страйком $K=72$, сроком $T=0.25$ лет, $r=6\%$, $q=0\%$.
+Call option at strike $K=\$100$, maturity $T=0.25$ years, $r=5\%$, $q=0\%$.
 
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-			domain=64:80,
-			xtick={64,66,...,80},
+			domain=80:120,
+			xtick={90,92,...,110},
 			ytick={0,1,2,...,10},
-			xmin=64, xmax=80,
+			xmin=92, xmax=108,
 			ymin=0, ymax=10,
 			grid = major,
-			xlabel={Курс сегодня ($S_0$)},
-			ylabel={Цена опциона},
+			xlabel={Current stock price ($S_0$)},
+			ylabel={Fair option price},
   legend entries = {
   	   $\sigma=25\%$,
   	   $\sigma=10\%$,
@@ -718,46 +719,47 @@ d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r 
 	]
 	{call_price.csv};
 	
-	\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
+	\addplot[Set1-D, very thick, dashed] {(\x >= 100)*(\x - 100) + 0.05};
 \end{axis}
 \end{tikzpicture}
 \end{frame}
 
 
 
-\begin{frame}{Временная и внутренняя стоимость}
+\begin{frame}{Time value and intrinsic value}
 \justify
-Величину $\max(S - K, 0)$ называют внутренней стоимостью колл-опциона (\en{intrinsic value}). Столько денег мы бы заработали на опционе, если бы могли исполнить его прямо сейчас.
+The value $\max(S - K, 0)$ is called \alert{intrinsic value} of a call option. How much money we would have earned if we could exercise the option immediately?
 
 \justify
-Если $C$ --- цена колл-опциона, то величина $C - \max(S - K, 0)$ называется временной стоимостью (\en{time value}). Она показывает, насколько опцион дороже, чем простая внутренняя стоимость. Чем выше волатильность, и чем больше времени осталось до экспирации, тем выше временная стоимость.
+Let $C$ be price of a call option. The difference $C - \max(S - K, 0)$ is called \alert{time value}. The option is worth more than its simple intrinsic value. Higher the volatility and longer the expiration term, the higher the time value.
 \end{frame}
 
 
-\begin{frame}{Формула Блэка-Шоулза: интерпретация}
+
+\begin{frame}{Interpreting the Black-Scholes formula}
 \begin{align*}
 C_{BS} &= S_0e^{-qT}N(d_1) - Ke^{-rT}N(d_2)
 \end{align*}
 
 \justify
-$S_0e^{-qT}N(d_1)$ --- цена опциона <<актив или ничего>> (\en{asset-or-nothing call}). Этот опцион выплачивает 1 единицу базового актива, если цена выше страйка.
+$S_0e^{-qT}N(d_1)$ is price of a "asset-or-nothing"\ call option. This option pays 1 unit of the underlying asset in case the asset price at expiration is higher than the strike.
 
 \justify
-$e^{-rT}N(d_2)$ --- цена опциона <<деньги или ничего>> (\en{cash-or-nothing call}). Этот опцион выплачивает 1 единицу денег, если цена актива выше страйка.
+$e^{-rT}N(d_2)$ is price of a "cash-or-nothing"\ call option. This option pays 1 unit of cash in case the asset price at expiration is higher than the strike.
 \end{frame}
 
 
 
-\begin{frame}{Цифровые опционы}
+\begin{frame}{Digital options}
 \justify
-Цифровые колл и пут со страйком $K$:
+Consider a digital call and a digital put at strike $K$:
 \begin{align*}
 C_K = e^{-rT}N(d_2), \quad P_K = e^{-rT}N(-d_2) \\
 d_2 = \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{K}\right) + \left(r -q- \dfrac{\sigma^2}{2}\right)T\right)
 \end{align*}
 
 \justify
-Предположим, что $r=q=0$ и $T=1$. Что такое $N(d_2)$?
+Suppose that $r=q=0$ and $T=1$. What is $N(d_2)$ in this case?
 \begin{align*}
 N(d_2) &= \mathbb{P}(\xi \le d_2) = 
 \mathbb{P}(-\xi \le d_2) = \mathbb{P}\left(-\xi \le \dfrac{\ln S_0 - \ln_K}{\sigma} - \frac{\sigma}{2}\right) = \\
@@ -765,25 +767,24 @@ N(d_2) &= \mathbb{P}(\xi \le d_2) =
 \quad \xi \sim \mathcal{N}(0,1)
 \end{align*}
 
-Если представить, что цена базового актива следуют геометрическому броуновскому 
-движению с трендом $r$ и волатильностью $\sigma$, то $N(d_2)$ --- <<вероятнтость>>
-того, что конечная цена окажется выше страйка $K$.
+\justify
+Imagine that the asset price follows the GBM with trend $r$ and volatility $\sigma$. Then $N(d_2)$ is "probability"\ that the asset price will end up higher than the strike $K$.
 
 \end{frame}
 
 
 
 
-\begin{frame}{Приближённое вычисление: ATMF-колл}
+\begin{frame}{Approximate calculation: ATMF-call}
 \justify
-Рассмотрим \en{at-the-money-forward (ATMF)}\ колл-опцион со страйком $K = F = S_0e^{(r-q)T}$.
+Consider an at-the-money-forward (ATMF) call option at strike $K = F = S_0e^{(r-q)T}$.
 
 \begin{align*}
 d_1 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{S_0e^{(r-q)T}}\right) + \left(r -q + \dfrac{\sigma^2}{2}\right)T\right) = \frac{\sigma \sqrt{T}}{2} \\
 d_2 &= \dfrac{1}{\sigma\sqrt{T}}\left( \ln\left(\dfrac{S_0}{S_0e^{(r-q)T}}\right) + \left(r -q- \dfrac{\sigma^2}{2}\right)T\right) = -\frac{\sigma \sqrt{T}}{2}
 \end{align*}
 
-Тогда:
+Then:
 \begin{align*}
 C_{atmf} &= S_0e^{-qT}N(d_1) - S_0e^{(r-q)T}e^{-rT}N(d_2) = \\
 &= S_0e^{-qT}\left[
@@ -794,15 +795,15 @@ N\left(\frac{\sigma \sqrt{T}}{2}\right) - N\left(-\frac{\sigma \sqrt{T}}{2}\righ
 
 
 
-\begin{frame}{Приближённое вычисление: ATMF-колл}
+\begin{frame}{Approximate calculation: ATMF-call - 2}
 \justify
-Разложим $N(x)$ в ряд Тейлора:
+Expand $N(x)$ into Taylor series:
 \begin{align*}
 N(x) \approx \frac{x}{\sqrt{2\pi}} \quad \Rightarrow
 N(x) - N(-x) \approx \frac{2x}{\sqrt{2\pi}}
 \end{align*}
 
-Тогда:
+Consequently:
 \begin{align*}
 N\left(\frac{\sigma \sqrt{T}}{2}\right) - N\left(-\frac{\sigma \sqrt{T}}{2}\right)
 \approx
@@ -811,54 +812,50 @@ N\left(\frac{\sigma \sqrt{T}}{2}\right) - N\left(-\frac{\sigma \sqrt{T}}{2}\righ
 0.4\sigma\sqrt{T}
 \end{align*}
 
-Если также предположить, что $q\approx 0\%$ и $e^{-qT} \approx 1$, то
+Suppose that $q\approx 0\%$ and $e^{-qT} \approx 1$. In this case:
 \begin{align*}
-C_{atmf} \approx 0.4 S_0 \sigma \sqrt{T}
+C_{atmf} \approx 0.4 \cdot S_0 \sigma \sqrt{T}
 \end{align*}
 \end{frame}
 
 
 
-\begin{frame}{Приближённое вычисление: ATMF-колл}
+\begin{frame}{Approximate calculation: ATMF-call - 3}
 \justify
-Пример: спот-курс EURRUB равен $S=80$. Форвард на три месяца стоит $F=81$. Волатильность равна $\sigma=10\%$. Сколько стоит ATMF-колл со страйком $K=81$?
+EURUSD spot rate is $S=1.06$. Three months forward rate is $F=1.065$. Volatility is $\sigma=10\%$. What is fair value of an ATMF call at strike $K=1.065$?
 
 \begin{align*}
 C_{atmf} \approx 0.4 \cdot S_0 \cdot \sigma \cdot \sqrt{T} = \\
-0.4 \cdot 80 \cdot 0.1 \cdot \sqrt{\dfrac{1}{4}} \approx 1.6
+0.4 \cdot 1.06 \cdot 0.1 \cdot \sqrt{\dfrac{1}{4}} \approx \$0.021
 \end{align*}
 
-Единицы измерения --- рубли за право купить 1 евро.
+Units of measurement: dollars per an option to buy 1 euro.
 \end{frame}
 
 
 
-\begin{frame}{Динамическое хеджирование: пример}
+\begin{frame}{Dynamic hedging: an example}
 \justify
-Рассмотрим акцию, которая не платит дивидендов, стоит $S_0=\$100$ и следует 
-геометрическому броуновскому движению с трендом $\mu=5\%$ и волатильностью
-$\sigma=5\%$. Безрисковая ставка $r=0\%$.
+Consider a non-dividend paying stock. Its current price is $S_0=\$100$. The stock price is $S_0=\$100$. The stock price follows a geometric Brownian motion with trend $\mu=5\%$ and volatility $\sigma=5\%$. Risk-free rate is $r=0\%$.
 
 \justify
-Рассмотрим европейский колл-опцион со страйком $K=100$, сроком исполнения $T=1$ год. 
-Представим, что нам не удалось его купить на рынке и мы занимаемся динамической 
-репликацией.
+Consider a European call option at strike $K=100$ that expires in $T=1$ year. Imagine that we were unable to buy this option on the market, so we have to replicate it dynamically ourselves.
 
 \justify
-Предположим, что сейчас у нас на счету есть $\$7.97$, и мы можем перебалансировать портфель $N=6$ раз в год (всего раз в два месяца).
+Suppose that we have $\$7.97$ in  a bank account today. We can rebalance our replicating portfolio $N=6$ times a year (just once in every two months).
 \end{frame}
 
 
 
-\begin{frame}{Динамическое хеджирование: цена акции}
+\begin{frame}{Dynamic hedging: stock price}
 \centering
 \pgfplotsset{cycle list/Dark2}
 \begin{tikzpicture}
 \begin{axis}[
 	width = \textwidth,
 	height = \textheight - 0.5cm,
-	xlabel = {Время (годы)},
-	ylabel = {Цена базового актива ($S_t$)},
+	xlabel = {Time (years)},
+	ylabel = {Stock price ($S_t$)},
 	xmin = 0, xmax = 1,
 	ymin = 70, ymax = 140,
 	grid = major
@@ -874,15 +871,15 @@ $\sigma=5\%$. Безрисковая ставка $r=0\%$.
 
 
 
-\begin{frame}{Динамическое хеджирование: дельта}
+\begin{frame}{Dynamic hedging: Delta}
 \centering
 \pgfplotsset{cycle list/Dark2}
 \begin{tikzpicture}
 \begin{axis}[
 	width = \textwidth,
 	height = \textheight - 0.5cm,
-	xlabel = {Время (годы)},
-	ylabel = {Кол-во акций в портфеле ($\Delta$)},
+	xlabel = {Time (years)},
+	ylabel = {Number of shares in the portfolio ($\Delta$)},
 	xmin = 0, xmax = 1,
 	ymin = 0, ymax = 1,
 	ytick = {0, 0.1,...,1.1},
@@ -899,15 +896,15 @@ $\sigma=5\%$. Безрисковая ставка $r=0\%$.
 
 
 
-\begin{frame}{Динамическое хеджирование: цена портфеля}
+\begin{frame}{Dynamic hedging: portfolio value}
 \centering
 \pgfplotsset{cycle list/Dark2}
 \begin{tikzpicture}
 \begin{axis}[
 	width = \textwidth,
 	height = \textheight - 0.5cm,
-	xlabel = {Время (годы)},
-	ylabel = {Цена портфеля},
+	xlabel = {Time (years)},
+	ylabel = {Portfolio value},
 	xmin = 0, xmax = 1,
 	ymin = -5, ymax = 40,
 	grid = major,
@@ -926,15 +923,15 @@ $\sigma=5\%$. Безрисковая ставка $r=0\%$.
 
 
 
-\begin{frame}{Динамическое хеджирование: цена портфеля}
+\begin{frame}{Dynamic hedging: portfolio value - 2}
 \centering
 \pgfplotsset{cycle list/Dark2}
 \begin{tikzpicture}
 \begin{axis}[
 	width = \textwidth,
 	height = \textheight - 0.5cm,
-	xlabel = {Цена базового актива через $T=1$ год ($S_T$)},
-	ylabel = {Цена портфеля},
+	xlabel = {Stock price in $T=1$ year ($S_T$)},
+	ylabel = {Portfolio value},
 	xmin = 70, xmax = 130,
 	ymin = -5, ymax = 30,
 	grid = major,
@@ -954,25 +951,24 @@ $\sigma=5\%$. Безрисковая ставка $r=0\%$.
 
 
 
-\begin{frame}{Что, если хеджировать чаще?}
+\begin{frame}{Hedge more frequently?}
 \justify
-Зависимость цены реплицирующего портфеля через $T=1$ год от цены акции очень похожа на функцию выплаты европейского
-колл-опциона. Зависимость неточная, но мы и перебалансировали портфель всего-то раз 2 месяца.
+The link between value of the replicating portfolio in 1 year and the stock price resembles payoff chart of a European-call option. The match is not perfect. However, we were hedging just once in 2 every months.
 
 \justify
-Что, если перебалансировать портфель 4 раза в день ($4 \cdot 365$ раз в год)? 
+What if we will rebalance the portfolio 4 times a day ($4 \cdot 365$ times a year)? 
 \end{frame}
 
 
 
-\begin{frame}{Что, если хеджировать чаще?}
+\begin{frame}{Hedge more frequently - 2?}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
 	width = \textwidth,
 	height = \textheight - 0.5cm,
-	xlabel = {Цена базового актива через $T=1$ год ($S_T$)},
-	ylabel = {Цена портфеля},
+	xlabel = {Stock price in $T=1$ year ($S_T$)},
+	ylabel = {Portfolio value},
 	xmin = 70, xmax = 130,
 	ymin = -5, ymax = 30,
 	grid = major,
@@ -990,24 +986,20 @@ $\sigma=5\%$. Безрисковая ставка $r=0\%$.
 
 
 
-\begin{frame}{Динамическое хеджирование: выводы}
+\begin{frame}{Dynamic hedging: summary}
 \justify
-Механистическая торговая стратегия, которая регулярно докупает или продаёт базовый актив, может привести к такому же
-результату (итоговой выплате), что и <<настоящий>> европейский колл-опцион.
+A mechanistic trading strategy, which regularly buys or sells the underlying asset, can lead to the same result (final payoff) as a "true"\ European call option.
 
 \justify
-Инвестбанки могли бы продавать клиентам не <<настоящие>> опционы, а правильно настроенных торговых роботов. Захотел
-купить европейский опцион --- настраиваешь торговый робот и отправляешь его на рынок заниматься дельта-хеджированием.
-В мире нулевых транзакционных издержек и идеально ликвидных рынков <<настоящие>> опционы были бы не нужны.
+Investment banks could be selling well-configured trading robots instead of "true"\ options. If you want to buy a European option, you configure a trading robot and send it to the market to engage in delta hedging. In a world of zero transaction costs and perfectly liquid markets, "true" options would be redundant.
 
 \justify
-Кстати, куда пропали \$7.97, которые были у нас на счёте с самого начала? Они перераспределились: когда они \$0,
-когда-то --- выигрыш по опциону.
+By the way, where did the initial \$7.97 disappear? They were redistributed: sometimes they turn into \$0, sometimes into the option payoff.
 \end{frame}
 
 
 
-\begin{frame}{Кругом обман}
+\begin{frame}{We need to go deeper}
 \centering
 \makebox[\textwidth]{\includegraphics[width=\textwidth]{we_need_to_go_deeper.jpg}}
 \end{frame}
