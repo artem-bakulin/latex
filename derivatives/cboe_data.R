@@ -87,6 +87,37 @@ download_fama_french_factors_data <- function() {
     )
 }
 
+
+download_put_from_wbarchive <- function() {
+  
+  full_url <- "https://web.archive.org/web/20141013031827/http://www.cboe.com/micro/put/PUT_86-06.xls"
+  curl_download(full_url, "put.xls")
+  data <- read.xlsx("put.xls", sheetIndex=1, startRow=7, colIndex=c(1, 2), header=FALSE)
+  file.remove("put.xls")
+  
+  data <- as_tibble(data)
+  colnames(data) <- c("date", "put")
+  data %>% 
+    filter(!is.na(date), !is.na(put))
+}
+
+
+download_put_from_webarchive_2007 <- function() {
+  
+  full_url <- "https://web.archive.org/web/20150604222217/http://www.cboe.com/publish/scheduledtask/mktdata/datahouse/putdailyprice.csv"
+  curl_download(full_url, "put.csv")
+  data <- read_csv("put.csv", skip=7, col_names=c("date_mmddyyy", "put")) 
+  file.remove("put.csv")
+  
+  data %>% 
+    transmute(
+      date = as.Date(date_mmddyyy, "%m/%d/%Y"),
+      put = put
+    ) %>% 
+    filter(!is.na(date), !is.na(put))
+}
+
+
 download_from_cboe <- function(index_name) {
 
   full_url <- sprintf("https://cdn.cboe.com/api/global/us_indices/daily_prices/%s_History.csv", index_name)
@@ -119,6 +150,24 @@ download_shiller_data <- function() {
     ) %>% 
     filter(!is.na(month))
 }
+
+put_data_current <- download_from_cboe("PUT")
+put_data_1986_2006 <- download_put_from_wbarchive()
+put_data_2007 <- download_put_from_webarchive_2007()
+put_data <- bind_rows(
+  put_data_1986_2006 %>% filter(date <= "2006-12-31"),
+  put_data_2007 %>% filter(date >= "2007-01-01", date <= "2007-06-19"),
+  put_data_current %>% filter(date >= "2007-06-20") %>% transmute(date = date, put = index_level)
+)
+put_monthly <- put_data %>% 
+  group_by(month = last_day_of_month(date)) %>% 
+  summarise(put = last(put)) %>% 
+  filter(month >= "1986-12-31", month <= "2022-12-31") %>% 
+  mutate(
+    put_return = put / lag(put) - 1,
+    put_return = if_else(is.na(put_return), 0, put_return),
+    put_growth = cumprod(1 + put_return)
+  )
 
 puty_data <- download_from_cboe("PUTY")
 
@@ -162,16 +211,16 @@ rf_monthly <- ff_data %>%
 
 
 merged_data <- puty_monthly %>% 
+  inner_join(put_monthly, by="month") %>% 
   inner_join(sp500_monthly, by="month") %>% 
   inner_join(rf_monthly, by="month")
 
 merged_data %>% write_csv("cboe_puty.csv")
 
-
 merged_data %>% 
   tail(-1) %>% 
-  filter(month >= "1988-01-01") %>% 
-  lm(puty_return - rf_return ~ sp500_return - rf_return, data=.) %>% 
+  filter(month >= "1987-01-01") %>% 
+  lm(put_return - rf_return ~ sp500_return - rf_return, data=.) %>% 
   summary()
 
 merged_data %>% 
@@ -179,25 +228,31 @@ merged_data %>%
   group_by(
     year = year(month)
   ) %>% 
-  filter(year >= 1988) %>% 
+  filter(year >= 2010) %>% 
   summarise(
     sp500 = prod(1 + sp500_return) - 1,
+    put = prod(1 + put_return) - 1,
     puty = prod(1 + puty_return) - 1,
     rf = prod(1 + rf_return) - 1,
     sp500_excess = (1 + sp500) / (1 + rf) - 1,
+    put_excess = (1 + put) / (1 + rf) - 1,
     puty_excess = (1 + puty) / (1 + rf) - 1
   ) %>% 
   summarise(
     from = min(year),
     to = max(year),
     sp500_mean = prod(1 + sp500) ^ (1/n()) - 1,
+    put_mean = prod(1 + put) ^ (1/n()) - 1,
     puty_mean = prod(1 + puty) ^ (1/n()) - 1,
     rf_mean = prod(1 + rf) ^ (1/n()) - 1,
     sp500_excess_mean = prod(1 + sp500_excess) ^ (1/n())- 1,
+    put_excess_mean = prod(1 + put_excess) ^ (1/n())- 1,
     puty_excess_mean = prod(1 + puty_excess) ^ (1/n())- 1,
     sp500_std = sd(sp500_excess),
+    put_std = sd(put_excess),
     puty_std = sd(puty_excess),
     sp500_sharpe = sp500_excess_mean / sp500_std,
+    put_sharpe = put_excess_mean / put_std,
     puty_sharpe = puty_excess_mean / puty_std
   )
 
@@ -209,22 +264,28 @@ merged_data %>%
   filter(year >= 1987) %>% 
   summarise(
     sp500 = prod(1 + sp500_return) - 1,
+    put = prod(1 + put_return) - 1,
     puty = prod(1 + puty_return) - 1,
     rf = prod(1 + rf_return) - 1,
     sp500_excess = (1 + sp500) / (1 + rf) - 1,
+    put_excess = (1 + put) / (1 + rf) - 1,
     puty_excess = (1 + puty) / (1 + rf) - 1
   ) %>% 
   summarise(
     from = min(year),
     to = max(year),
     sp500_mean = prod(1 + sp500) ^ (1/n()) - 1,
+    put_mean = prod(1 + put) ^ (1/n()) - 1,
     puty_mean = prod(1 + puty) ^ (1/n()) - 1,
     rf_mean = prod(1 + rf) ^ (1/n()) - 1,
     sp500_excess_mean = prod(1 + sp500_excess) ^ (1/n())- 1,
+    put_excess_mean = prod(1 + put_excess) ^ (1/n())- 1,
     puty_excess_mean = prod(1 + puty_excess) ^ (1/n())- 1,
     sp500_std = sd(sp500_excess),
+    put_std = sd(put_excess),
     puty_std = sd(puty_excess),
     sp500_sharpe = sp500_excess_mean / sp500_std,
+    put_sharpe = put_excess_mean / put_std,
     puty_sharpe = puty_excess_mean / puty_std
   )
 
@@ -232,7 +293,11 @@ puty_data %>%
   filter(date %in% as.Date(c("1987-10-16", "1987-10-19"))) %>% 
   mutate(one_day_return = index_level / lag(index_level) - 1)
 
-puty_monthly %>% 
+put_data %>% 
+  filter(date %in% as.Date(c("1987-10-12", "1987-10-19"))) %>% 
+  summarise(one_day_return = last(put) / first(put) - 1)
+
+merged_data %>% 
   filter(month == "1987-10-31")
 
 merged_data %>% 
@@ -244,9 +309,7 @@ merged_data %>%
   summarise(
     sp500 = prod(1 + sp500_return) - 1,
     puty = prod(1 + puty_return) - 1,
-    rf = prod(1 + rf_return) - 1,
-    sp500_excess = (1 + sp500) / (1 + rf) - 1,
-    puty_excess = (1 + puty) / (1 + rf) - 1
+    put = prod(1 + put_return) - 1
   )
 
 sp500_index <- yahoofinancer::Index$new("^GSPC")
@@ -266,5 +329,10 @@ sp500_data %>%
   filter(date >= '1987-10-14') %>% 
   mutate(return = close / lag(close) - 1)
 
+sp500_data %>% 
+  as_tibble() %>% 
+  filter(as.Date(date) %in% as.Date(c("1987-10-12", "1987-10-19"))) %>% 
+  summarise(week_return = last(close) / first(close) - 1)
+         
 sp500_monthly %>% 
   filter(month == "1987-10-31")
