@@ -1006,15 +1006,15 @@ By the way, where did the initial \$7.97 disappear? They were redistributed: som
 
 
 
-\begin{frame}{Историческая волатильность -- 1}
+\begin{frame}{Historic volatility}
 \justify
-Если мы живём в мире Блэка-Шоулза, то нам достаточно знать волатильность базового актива, чтобы посчитать справедливую цену любого опциона. Почему бы не посмотреть на историю?
+If we really live in the Black-Scholes world, then we can price any option if we know volatility of the underlying asset. Shall we look at the history then?
 
 \justify
-Рассмотрим временной ряд исторических цен базового актива $S_0,S_1,...,S_n$, взятых с фиксированным шагом $\Delta t$. Например, если у нас есть дневные данные, то $\Delta t = 1/250$ (по количеству рабочих дней в году). 
+Consider historical time series of the underlying asset's price $S_0,S_1,...,S_n$, observed at regular time intervals $\Delta t$. For example, if we have a daily series, then $\Delta t = 1/250$ (number of trading days in a year). 
 
 \justify
-Посчитаем логарифмические доходности (\en{log returns}), которые близки к простым процентным доходностям:
+Lets compute logarithmic returns $r_i$, which are approximately the same as simple percentage returns:
 \begin{align*}
 r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
 \ln \left(\dfrac{S_{i}}{S_{i-1}} \right) &= \ln \left[1 + \left(\dfrac{S_{i}}{S_{i-1}} - 1 \right) \right] \approx \dfrac{S_{i}}{S_{i-1}} - 1
@@ -1023,9 +1023,9 @@ r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
 
 
 
-\begin{frame}{Историческая волатильность -- 2}
+\begin{frame}{Historic volatility - 2}
 \justify
-В модели Блэка-Шоулза все лог-доходности $r_i$ --- н.о.р.с.в. Их выборочное стандартное отклонение --- историческая (\en{historical}) или реализованная (\en{realized}) волатильность.
+All log-returns $r_i$ are i.i.d. random variables in the Black-Scholes model. Sample standard deviation of the historical log-returns is  \alert{historical}, or \alert{realized} volatility.
 
 \begin{align*}
 \hat{r} &= \frac{1}{n}\sum\limits_{i=1}^{n}r_i \\
@@ -1033,12 +1033,12 @@ r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
 \end{align*}
 
 \justify
-Чтобы перевести <<дневную>> волатильность в проценты годовых, нужно разделить её на $\sqrt{\Delta t}$.
+In order to convert the daily volatility to percentage points per annum, we need to divide it by $\sqrt{\Delta t}$.
 \end{frame}
 
 
 
-\begin{frame}{Историческая волатильность -- 3}
+\begin{frame}{Historic volatility - 3}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -1057,7 +1057,7 @@ r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
   ymax=130,
   grid=both,
   %yticklabel={\pgfmathprintnumber{\tick}\%},
-  ylabel={\small{Курс USDRUB}},
+  ylabel={\small{USDRUB spot rate}},
   xlabel near ticks,
   ylabel near ticks
 ]
@@ -1073,12 +1073,12 @@ r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
 \end{axis}
 \end{tikzpicture}
 
-\scriptsize Данные: ЦБ РФ.
+\scriptsize Date: Central Bank of Russia.
 \end{frame}
 
 
 
-\begin{frame}{Историческая волатильность -- 4}
+\begin{frame}{Historical volatility - 4}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -1097,7 +1097,7 @@ r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
   ymax=0.9,
   grid=both,
   yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
-  ylabel={\small{Реализованная волатильность}},
+  ylabel={\small{Realized monthly volatility}},
   xlabel near ticks,
   ylabel near ticks
 ]
@@ -1113,7 +1113,7 @@ r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
 \end{axis}
 \end{tikzpicture}
 
-\scriptsize Данные: ЦБ РФ.
+\scriptsize Date: Central Bank of Russia.
 \end{frame}
 
 
