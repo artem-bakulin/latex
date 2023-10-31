@@ -1113,46 +1113,46 @@ In order to convert the daily volatility to percentage points per annum, we need
 \end{axis}
 \end{tikzpicture}
 
-\scriptsize Date: Central Bank of Russia.
+\scriptsize Data: Central Bank of Russia.
 \end{frame}
 
 
 
-\begin{frame}{Историческая волатильность -- 5}
+\begin{frame}{Historical volatility - 5}
 \justify
-Историческая волатильность --- не константа, что противоречит модели Блэка-Шоулза. В прошлом мы видели большой разброс в реализованной волатильности. Сложно выбрать репрезентативный период, который хорошо подходил бы тому опциону (скажем, на 3 месяца), который мы пытаемся оценить.
+Contrary to Black-Scholes model, historical volatility is not constant. We observed huge dispersion of the realized volatility. If we use history to price new options, our pricing will heavily depend on the choice of reference historical period.
 
 \justify
-Прошлое не предсказывает будущее!
+The past does not predict the future!
 \end{frame}
 
 
 
-\begin{frame}{<<Ожидаемая>> волатильность}
+\begin{frame}{Implied volatility}
 \justify
-В модели Блэка-Шоулза цена опциона зависит от волатильности:
+According to the Black-Scholes model, fair value of an option depends on the volatility:
 \begin{align*}
-C_K = F(S_0, T, K, \sigma, r, q)
+C_K = F(S_0, T, K, \alert{\sigma}, r, q)
 \end{align*}
 
 \justify
-Мы можем посмотреть на рыночные цены опционов и решить задачу в обратном направлении. 
+We could have a look at current market price of an option and solve the inverse problem.
 
 \justify
-Если участники рынка пользуются моделью Блэка-Шоулза, то какую волатильность они подставляют в формулу, чтобы получить те премии, которые мы наблюдаем?
+Suppose that market participants are using the Black-Scholes model. Which volatility $\sigma$ they must have plugged into the formula to get those premiums (prices) that we observe on the market?
 \begin{align*}
-\sigma = F^{-1}(S_0, T, K, r, q, C_K)
+\alert{\sigma} = F^{-1}(S_0, T, K, r, q, C_K)
 \end{align*}
 
 \justify
-Решение этой обратной задачи --- \alert{<<ожидаемая>> (\en{implied})} волатильность.
+\alert{Implied} volatility is the solution of this inverse problem.
 \end{frame}
 
 
 
-\begin{frame}{<<Ожидаемая>> волатильность}
+\begin{frame}{Implied volatility - 2}
 \justify
-Опционы на USDRUB с датой исполнения 15.06.2023.
+USDRUB options: expiration date 15.06.2023, data as of 24.03.2023.
 
 \centering
 \begin{tikzpicture}
@@ -1165,8 +1165,8 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			xmin=55, xmax=95,
 			ymin=0, ymax=20,
 			grid = major,
-			xlabel={Страйк ($K$)},
-			ylabel={Цена опциона, руб.}
+			xlabel={Strike ($K$)},
+			ylabel={Option price, RUB}
 ]
 
 	\addplot[color = Set1-A, mark = none, thick]
@@ -1187,14 +1187,14 @@ C_K = F(S_0, T, K, \sigma, r, q)
 \end{axis}
 \end{tikzpicture}
 
-\scriptsize Данные: Московская биржа.
+\scriptsize Data: Moscow Exchange.
 \end{frame}
 
 
 
-\begin{frame}{<<Ожидаемая>> волатильность}
+\begin{frame}{Implied volatility - 3}
 \justify
-Опционы на USDRUB с датой исполнения 15.06.2023.
+USDRUB options: expiration date 15.06.2023, data as of 24.03.2023.
 
 \centering
 \begin{tikzpicture}
@@ -1208,8 +1208,8 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			ymin=0.15, ymax=0.35,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
 			grid = major,
-			xlabel={Страйк ($K$)},
-			ylabel={Волатильность ($\sigma$)}
+			xlabel={Strike ($K$)},
+			ylabel={Implied volatility ($\sigma$)}
 ]
 
 	\addplot[color = Set1-B, mark = none, thick]
@@ -1222,14 +1222,14 @@ C_K = F(S_0, T, K, \sigma, r, q)
 \end{axis}
 \end{tikzpicture}
 
-\scriptsize Данные: Московская биржа.
+\scriptsize Data: Moscow Exchange.
 \end{frame}
 
 
 
-\begin{frame}{<<Ожидаемая>> волатильность}
+\begin{frame}{Implied volatility - 4}
 \justify
-Опционы на S\&P\,500 с датой исполнения 16.06.2023.
+S\&P\,500 options: expiration date 16.06.2023, as of 24.03.2023.
 
 \centering
 \begin{tikzpicture}
@@ -1242,8 +1242,8 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			xmin=3500, xmax=4500,
 			ymin=0, ymax=500,
 			grid = major,
-			xlabel={Страйк ($K$)},
-			ylabel={Цена опциона, \$},
+			xlabel={Strike ($K$)},
+			ylabel={Option price, \$},
 			xticklabel={\pgfmathprintnumber[precision=0, 1000 sep={}]{\tick}}
 ]
 
@@ -1265,14 +1265,14 @@ C_K = F(S_0, T, K, \sigma, r, q)
 \end{axis}
 \end{tikzpicture}
 
-\scriptsize Данные: barchart.com.
+\scriptsize Data: barchart.com.
 \end{frame}
 
 
 
-\begin{frame}{<<Ожидаемая>> волатильность}
+\begin{frame}{Implied volatility - 5}
 \justify
-Опционы на S\&P\,500 с датой исполнения 16.06.2023.
+S\&P\,500 options: expiration date 16.06.2023, as of 24.03.2023.
 
 \centering
 \begin{tikzpicture}
@@ -1285,8 +1285,8 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			xmin=3500, xmax=4500,
 			ymin=0, ymax=0.30,
 			grid = major,
-			xlabel={Страйк ($K$)},
-			ylabel={Волатильность ($\sigma$)},
+			xlabel={Strike ($K$)},
+			ylabel={Implied volatility ($\sigma$)},
 			xticklabel={\pgfmathprintnumber[precision=0, 1000 sep={}]{\tick}},
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
 ]
@@ -1301,49 +1301,50 @@ C_K = F(S_0, T, K, \sigma, r, q)
 \end{axis}
 \end{tikzpicture}
 
-\scriptsize Данные: barchart.com.
+\scriptsize Data: barchart.com.
 \end{frame}
 
 
 
-\begin{frame}{Улыбка волатильности}
+\begin{frame}{Volatility smile}
 \justify
-Почти на всех рынках наблюдается зависимость <<ожидаемой>> (\en{implied}) волатильности от страйка опциона. Дальние \en{out of the money}\ опционы стоят дороже (в терминах волатильности), чем можно было бы ожидать.
+Most markets display a dependency between implied volatility and option strike. Out-of-the-money options are priced higher (in terms of volatility) than one could expect from a Black Scholes model.
+
 \begin{itemize}
-\item Улыбка (\en{smile}). Например, на рынке FX.
-\item Ухмылка (\en{skew, smirk}). Например, на рынке акций.
+\item Volatility "smile" is typical for FX.
+\item Volatility "skew" or "smirk" is often observed on the stock market.
 \end{itemize}
 
 \justify
-Может ли быть так, что базовый актив ведёт себя по-разному в зависимости от того, какой опцион (с каким страйком) сейчас оценивают участники рынка? Нет!
+Is it plausible that the underlying asset behaves differently, depending which option the market participants are pricing at this moment? No!
 
 \justify
-Либо все участники опционного рынка сошли с ума, либо модель Блэка-Шоулза не до конца описывает реальность. Предположение о постоянной волатильности и логнормальном распределении будущей цены базового актива выглядит слишком строгим.
+Either all the market participants have gone mad, or the Black-Scholes model does not perfectly match the reality. The assumptions of constant volatility and log-normal distribution are unrealistic.
 \end{frame}
 
 
 
-\begin{frame}{Опционная бабочка}
+\begin{frame}{Butterfly}
 \justify
-Попробуем оценить, какое распределение, если не логнормальное, ожидают участники рынка.
+If market participants are not assuming the log-normal distribution, then what is that distribution which they assume?
 
 \justify
-Рассмотрим комбинацию опционов <<бабочка>> (\en{butterfly, fly}):
+Consider a combination called a butterfly:
 \begin{itemize}
-\item Купленный колл со страйком $K - \delta$.
-\item Два проданных колла со страйком $K$.
-\item Купленный колл со страйком $K + \delta$.
+\item Buy a call at strike $K - \delta$.
+\item Sell two calls at strike $K$.
+\item Buy a call at strike $K + \delta$.
 \end{itemize}
 
 \justify
-Купленные опционы --- <<крылья>> (\en{wings}), а проданные --- <<тельце>> (\en{belly}).
+The two bought options are called "wings" and two sold options are the "belly".
 \end{frame}
 
 
 
-\begin{frame}{Опционная бабочка}
+\begin{frame}{Butterfly - 2}
 \justify
-Пример: бабочка со страйками 98, 100 и 102.
+An example: a butterfly at strikes 98, 100 and 102.
 
 \centering
 	\begin{tikzpicture}
@@ -1357,8 +1358,8 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
 			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
 			grid = major,
-			xlabel={Курс в дату экспирации},
-			ylabel={Выплата (payoff)},
+			xlabel={Stock price at expiration date},
+			ylabel={Payoff},
 			%scaled x ticks=false
 		]
 		
@@ -1375,9 +1376,9 @@ C_K = F(S_0, T, K, \sigma, r, q)
 
 
 
-\begin{frame}{Опционная бабочка}
+\begin{frame}{Butterfly - 3}
 \justify
-Пример: бабочка со стайками 99, 100 и 101.
+An example: a butterfly at strikes 99, 100 and 101.
 
 \centering
 	\begin{tikzpicture}
@@ -1393,8 +1394,8 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
 			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
 			grid = major,
-			xlabel={Курс в дату экспирации},
-			ylabel={Выплата (payoff)},
+			ylabel={Payoff},
+			xlabel={Stock price at expiration date},
 			%scaled x ticks=false
 		]
 		
@@ -1405,14 +1406,14 @@ C_K = F(S_0, T, K, \sigma, r, q)
 \end{tikzpicture}
 
 \justify
-По мере того, как разность между <<крыльями>> уменьшается, бабочка превращается в ставку на то, что цена базового актива остановится вблизи центрального страйка.
+As we reduce the distance between the wings, the butterfly becomes closer to a bet that the underlying asset price will end up around the central strike.
 \end{frame}
 
 
 
-\begin{frame}{Опционная бабочка}
+\begin{frame}{Butterfly - 4}
 \justify
-Бабочки со страйками $K-1$, $K$ и $K+1$. Экспирация 15.06.2023.
+USDRUB butterflies at strikes $K-1$, $K$ and $K+1$..
 
 \centering
 \begin{tikzpicture}
@@ -1427,8 +1428,8 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			scaled y ticks = false,
 			yticklabel={\pgfmathprintnumber[fixed, fixed zerofill, precision=2]{\tick}},
 			grid = major,
-			xlabel={Страйк ($K$)},
-			ylabel={Цена бабочки, руб.}
+			xlabel={Central strike ($K$)},
+			ylabel={Butterfly price, RUB}
 ]
 
 	\addplot[color = Set1-B, mark = none, thick]
@@ -1441,12 +1442,12 @@ C_K = F(S_0, T, K, \sigma, r, q)
 \end{axis}
 \end{tikzpicture}
 
-\scriptsize Данные: Московская биржа.
+\scriptsize Data: Moscow Exchange.
 \end{frame}
 
 
 
-\begin{frame}{<<Ожидаемое>> распределение}
+\begin{frame}{Implied distribution}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -1459,11 +1460,11 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			scaled y ticks = false,
 			yticklabel={\pgfmathprintnumber[fixed, fixed zerofill, precision=2]{\tick}},
 			grid = major,
-			xlabel={Страйк ($K$)},
-			ylabel={Плотность распределения},
+			xlabel={Strike ($K$)},
+			ylabel={Probability density},
 			legend entries = {
-				\small Ожидаемое,
-				\small Логнормальное
+				\small Implied,
+				\small Log-normal
 			},
   			legend cell align={left},
  		 	legend style={at={(0.97,0.97)},anchor=north east}
@@ -1487,72 +1488,72 @@ C_K = F(S_0, T, K, \sigma, r, q)
 \end{axis}
 \end{tikzpicture}
 
-\scriptsize Данные: Московская биржа.
+\scriptsize Data: Moscow Exchange.
 \end{frame}
 
 
 
-\begin{frame}{<<Ожидаемое>> распределение}
+\begin{frame}{Implied distribution - 2}
 \justify
-Обычно цены опционов подразумевают распределение, отличное от логнормального. Часто можно видеть толстые хвосты и скошенность влево или вправо.
+Usually option prices imply a distribution that is different from the log-normal distribution. Quite often we observe fat tails and skewness to the left or to the right.
 
 \justify
-Мы не знаем, как в точности объясняется этот эффект:
+There are two probable explanations to this fact:
 \begin{itemize}
-\item Участники рынка верно оценивают истинную вероятность экстремальных исходов (больших изменений цены базового актив).
-\item Участникам рынка настолько больно от экстремальных исходов, что они готовы переплатить за страховку. Это стремление застраховаться и избежать риска увеличивает рыночную цену опционов относительно <<фундаментально обоснованной>>.
+\item Market participants correctly anticipate higher probability of extreme outcomes.
+\item Market participants are so scared of extreme outcomes that they are willing to pay for insurance. Risk-averse investors create additional demand for insurance and pull option premiums higher than the "fundamentally fair"\ level.
 \end{itemize}
 
 \justify
-Как обычно, если мы можем использовать ликвидные опционы для хеджирования риска и репликации более сложных экзотических продуктов, то нам не важно, какое объяснение верное.
+As long as we can trade in liquid options to hedge more complex illiquid derivatives, we don't need to know which explanation is correct.
 \end{frame}
 
 
 
-\begin{frame}{Модели волатильности}
+\begin{frame}{Volatility models}
 \justify
-Существование улыбки волатильности опровергает гипотезу о геометрическом броуновском движении с постоянной волатильностью. Как можно изменить модель движения базового актива, чтобы новая модель объясняла улыбку волатильности (давала те же премии, которые мы видим на рынке)?
+The existence of volatility smiles refutes the hypothesis of geometric Brownian motion with constant volatility. How should we change the model so that it explains the smile, i.e. yields the same premiums that we observe in the market?
 
 \justify
 \begin{itemize}
-\item Локальная волатильность.
-\item Стохастическая волатильность.
-\item Стохастическая локальная волатильность.
-\item Стохастическая локальная волатильность с прыжками.
+\item Local volatility.
+\item Stochastic volatility.
+\item Stochastic local volatility.
+\item Stochastic local volatility with jumps.
 \item ...
 \end{itemize}
 \end{frame}
 
 
 
-\begin{frame}{Локальная волатильность}
+\begin{frame}{Local volatility}
 \justify
-Геометрическое броуновское движение:
+Geometric Brownian motion:
 \begin{align*}
 \frac{dS_t}{S_t} = \mu dt + \sigma\xi\sqrt{dt}, \quad \xi \sim \mathcal{N}(0, 1), \sigma = const
 \end{align*}
 
 \justify
-Локальная волатильность:
+Local volatility:
 \begin{align*}
 \frac{dS_t}{S_t} = \mu dt + \sigma(S_t, t)\xi\sqrt{dt}, \quad \xi \sim \mathcal{N}(0, 1)
 \end{align*}
 
 \justify
-$\sigma(S_t, t)$ --- зависимость волатильности от цены базового актива и времени. Например, предположим, что если пара доллар-рубль значительно отклонится от текущего уровня (прыгнет до 100), то на рынке начнётся паника и волатильность будет выше, чем в спокойные времена при курсе 75.
+Volatility $\sigma(S_t, t)$ now depends on the underlying price and on time. For example, suppose that the EURUSD currency pair will dramatically from the current level 1.06 to 0.86. This drop will probably trigger a panic on the market, and the exchange rate will be more volatile than usual.
 \end{frame}
 
 
 
-\begin{frame}{Стохастическая волатильность}
+\begin{frame}{Stochastic volatility}
 \justify
-Геометрическое броуновское движение:
+Geometric Brownian motion:
 \begin{align*}
 \frac{dS_t}{S_t} = \mu dt + \sigma\xi\sqrt{dt}, \quad \xi \sim \mathcal{N}(0, 1), \sigma = const
 \end{align*}
 
 \justify
-Модель SABR (\en{Stochastic Alpha-Beta-Rho}):
+Stochastic Alpha-Beta-Rho (SABR) model:
 \begin{align*}
 dF_t &= \sigma_t(F_t)^\beta \sqrt{dt}\xi, \quad \xi \sim \mathcal{N}(0, 1) \\
 d\sigma_t &= \alpha\sigma_t\sqrt{dt}\psi, \quad \psi \sim \mathcal{N}(0, 1) \\
@@ -1560,27 +1561,27 @@ Cov(\xi, \psi) &= \rho
 \end{align*}
 
 \justify
-$\alpha$ --- волатильность волатильности.
+$\alpha$ is volatility of volatility.
 
-$\beta$ --- коэффициент скошенности.
+$\beta$ is skewness coefficient.
 
-$\rho$ --- корреляция между волатильностью и базовым активом.
+$\rho$ --- correlation between volatility and asset price.
 \end{frame}
 
 
 
-\begin{frame}{Калибрация моделей}
+\begin{frame}{Model calibration}
 \justify
-Все модели волатильности подгоняются (\en{fitted}) или калибруются (\en{calibrated}) к рынку. Мы подбираем такие значения внутренних параметров модели (например, $\alpha$, $\beta$ и $\rho$ в SABR), чтобы модель <<лучше всего>> воспроизводила наблюдаемые цены ликвидных ванильных опционов. После этого модель можно использовать для оценки более сложных экзотических продуктов.
+All volatility models are calibrated or fitted to the market. We tune internal model parameters, such as $\alpha$, $\beta$ and $\rho$ in SABR model. We search for those values that make the model replicate market prices of liquid options. The we can use this calibrated model to price something that is not observable on the market.
 
 \begin{align*}
-&\text{Рыночные цены} \Rightarrow \\
-&\text{Внутренние параметры} \Rightarrow \\
-&\text{Цены произвольных опционов}
+&\text{Market prices} \Rightarrow \\
+&\text{Internal parameters} \Rightarrow \\
+&\text{Premiums for arbitrary exotic and illiquid options}
 \end{align*}
 
 \justify
-Объективная реальность, данная нам в ощущении --- рыночные цены ликвидных ванильных опционов. Модели и параметры --- наши предположения, которые позволяют <<интерполировать>> цены неликвидных деривативов.
+Market prices of liquid vanilla options are part of the observed reality. Models are parameters are our assumptions. We use these assumptions to price exotic or illiquid derivatives.
 \end{frame}
 
 
