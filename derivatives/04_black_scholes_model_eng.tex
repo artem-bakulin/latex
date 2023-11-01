@@ -4,7 +4,7 @@
 \usepackage{cmap}				% To be able to copy-paste russian text from pdf
 \usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[russian]{babel}
+\usepackage[english]{babel}
 \usepackage{textpos}
 \usepackage{ragged2e}
 \usepackage{amssymb}
@@ -466,7 +466,7 @@ This is the Central Limit Theorem (CLT). Arithmetic mean of a large sample of i.
 Consider an option that expires in $T$ years. Lets split this interval into $N$ equal time steps, so that each sub-interval has duration of $dt = T/N$ years.
 
 \justify
-Suppose that during each sub-interval the stock price $S$ grows by $\mu$ percent annualized on average, and fluctuates around this average which the standard deviation (volatility) of $\sigma$.
+Suppose that during each sub-interval the stock price $S$ grows by $\mu$ percent per annum on average, and fluctuates around this average with the standard deviation (volatility) of $\sigma$.
 \begin{align*}
 \frac{S_{i+1} - S_i}{S_i} = \mu dt + \sigma\xi_i\sqrt{dt}, \quad \xi_i \sim \mathcal{N}(0, 1)
 \end{align*}
@@ -548,7 +548,7 @@ Suppose that $\sigma=0$. There are no random factors, we just have a determinist
 \end{align*}
 
 \justify
-At each time step $dt$ the stock price grows by $\mu$ percent (simple interest rate without compounding). What will be the stock price in $T$ years after $N$ steps, if each step is $dt=T/N$ years?
+At each time step $dt$ the stock price grows by $\mu$ percent per annum (simple interest rate without compounding). What will be the stock price in $T$ years after $N$ steps, if each step is $dt=T/N$ years?
 \begin{align*}
 S_T &= S_N = S_{N-1}\left(1+\mu\dfrac{T}{N}\right) 
 = S_{N-2}\left(1+\mu\dfrac{T}{N}\right)\left(1+\mu\dfrac{T}{N}\right) = \\
@@ -563,7 +563,7 @@ This is the same familiar formula for continuously compounded interest rate.
 
 \begin{frame}{Adding some randomness}
 \justify
-Let the stock price fluctuate at each step randomly around the deterministic trend $\mu$
+Let the stock price randomly fluctuate  around the deterministic trend $\mu$ at each step.
 
 \justify
 How do we define randomness? Suppose that the fluctuations reflect incoming bits of information ("shocks"), and that these shocks are independent. Then we can hope that these shocks add up to a normal distribution.
@@ -571,14 +571,14 @@ How do we define randomness? Suppose that the fluctuations reflect incoming bits
 \frac{S_{i+1} - S_i}{S_i} = \mu dt + \sigma\xi_i\sqrt{dt}, \quad \xi_i \sim \mathcal{N}(0, 1)
 \end{align*}
 
-Here $\xi_i$ are random shocks, $\sigma$ is volatility or the scaling factor. Usually we express the volatility $\sigma$ in percent per annum, just like interest rates or the trend $\mu$.
+Here $\xi_i$ are random shocks, $\sigma$ is volatility or the scaling factor. Usually we measure the volatility $\sigma$ in percent per annum, just like interest rates or the trend $\mu$.
 \end{frame}
 
 
 
 \begin{frame}{Geometric Brownian motion and log-normal distribution}
 \justify
-Suppose that a GBM starts at the stock price $S_0$ and follows a trend $\mu$ with volatility $\sigma$. Then the stock price in $T$ years ($S_T$) is random variable:
+Suppose that a GBM starts at the stock price $S_0$ and follows a trend $\mu$ with volatility $\sigma$. Then the stock price in $T$ years ($S_T$) is a random variable:
 \begin{align*}
 S_T = S_0\cdot \exp\left[\left(\mu - \frac{\sigma^2}{2}\right)T + \sigma\xi\sqrt{T}\right], \quad \xi \sim \mathcal{N}(0, 1)
 \end{align*} 
@@ -631,7 +631,7 @@ Thus the stock price follows a log-normal distribution.
 3. Risk-free rate $r$ is constant.
 
 \justify
-4. Ideal liquid market. No transaction costs, no arbitrage opportunities. We can delta-hedge as frequently as we'd like to.
+4. An ideal liquid market. No transaction costs, no arbitrage opportunities. We can delta-hedge as frequently as we'd like to.
 \end{frame}
 
 
@@ -742,7 +742,7 @@ C_{BS} &= S_0e^{-qT}N(d_1) - Ke^{-rT}N(d_2)
 \end{align*}
 
 \justify
-$S_0e^{-qT}N(d_1)$ is price of a "asset-or-nothing"\ call option. This option pays 1 unit of the underlying asset in case the asset price at expiration is higher than the strike.
+$S_0e^{-qT}N(d_1)$ is price of an "asset-or-nothing"\ call option. This option pays 1 unit of the underlying asset in case the asset price at expiration is higher than the strike.
 
 \justify
 $e^{-rT}N(d_2)$ is price of a "cash-or-nothing"\ call option. This option pays 1 unit of cash in case the asset price at expiration is higher than the strike.
@@ -836,13 +836,13 @@ Units of measurement: dollars per an option to buy 1 euro.
 
 \begin{frame}{Dynamic hedging: an example}
 \justify
-Consider a non-dividend paying stock. Its current price is $S_0=\$100$. The stock price is $S_0=\$100$. The stock price follows a geometric Brownian motion with trend $\mu=5\%$ and volatility $\sigma=5\%$. Risk-free rate is $r=0\%$.
+Consider a non-dividend paying stock. Its current price is $S_0=\$100$. The stock price follows a geometric Brownian motion with trend $\mu=5\%$ and volatility $\sigma=20\%$. Risk-free rate is $r=0\%$.
 
 \justify
-Consider a European call option at strike $K=100$ that expires in $T=1$ year. Imagine that we were unable to buy this option on the market, so we have to replicate it dynamically ourselves.
+Consider a European call option at strike $K=100$ that expires in $T=1$ year. Imagine that we were unable to buy this option in the market, so we have to replicate it dynamically ourselves.
 
 \justify
-Suppose that we have $\$7.97$ in  a bank account today. We can rebalance our replicating portfolio $N=6$ times a year (just once in every two months).
+Suppose that we have $\$7.97$ in  a bank account today. We are allowed to rebalance our replicating portfolio $N=6$ times a year (just once in every two months).
 \end{frame}
 
 
@@ -1006,7 +1006,7 @@ By the way, where did the initial \$7.97 disappear? They were redistributed: som
 
 
 
-\begin{frame}{Historic volatility}
+\begin{frame}{Historical volatility}
 \justify
 If we really live in the Black-Scholes world, then we can price any option if we know volatility of the underlying asset. Shall we look at the history then?
 
@@ -1023,7 +1023,7 @@ r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
 
 
 
-\begin{frame}{Historic volatility - 2}
+\begin{frame}{Historical volatility - 2}
 \justify
 All log-returns $r_i$ are i.i.d. random variables in the Black-Scholes model. Sample standard deviation of the historical log-returns is  \alert{historical}, or \alert{realized} volatility.
 
@@ -1038,7 +1038,7 @@ In order to convert the daily volatility to percentage points per annum, we need
 
 
 
-\begin{frame}{Historic volatility - 3}
+\begin{frame}{Historical volatility - 3}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -1316,7 +1316,7 @@ Most markets display a dependency between implied volatility and option strike. 
 \end{itemize}
 
 \justify
-Is it plausible that the underlying asset behaves differently, depending which option the market participants are pricing at this moment? No!
+Is it plausible that the underlying asset behaves differently, depending on which option the market participants are pricing at this moment? No!
 
 \justify
 Either all the market participants have gone mad, or the Black-Scholes model does not perfectly match the reality. The assumptions of constant volatility and log-normal distribution are unrealistic.
@@ -1540,7 +1540,7 @@ Local volatility:
 \end{align*}
 
 \justify
-Volatility $\sigma(S_t, t)$ now depends on the underlying price and on time. For example, suppose that the EURUSD currency pair will dramatically from the current level 1.06 to 0.86. This drop will probably trigger a panic on the market, and the exchange rate will be more volatile than usual.
+Volatility $\sigma(S_t, t)$ now depends on the underlying price and on time. For example, suppose that EURUSD will drop dramatically from the current level 1.06 to 0.86. This drop will probably trigger a panic in the market, and the exchange rate will be more volatile than usual.
 \end{frame}
 
 
@@ -1565,14 +1565,14 @@ $\alpha$ is volatility of volatility.
 
 $\beta$ is skewness coefficient.
 
-$\rho$ --- correlation between volatility and asset price.
+$\rho$ is correlation between volatility and asset price.
 \end{frame}
 
 
 
 \begin{frame}{Model calibration}
 \justify
-All volatility models are calibrated or fitted to the market. We tune internal model parameters, such as $\alpha$, $\beta$ and $\rho$ in SABR model. We search for those values that make the model replicate market prices of liquid options. The we can use this calibrated model to price something that is not observable on the market.
+All volatility models are calibrated or fitted to the market. We tune internal model parameters, such as $\alpha$, $\beta$ and $\rho$ in SABR model. We search for those values that make the model replicate market prices of liquid options. Then we can use this calibrated model to price something that is not observable in the market.
 
 \begin{align*}
 &\text{Market prices} \Rightarrow \\
@@ -1581,7 +1581,7 @@ All volatility models are calibrated or fitted to the market. We tune internal m
 \end{align*}
 
 \justify
-Market prices of liquid vanilla options are part of the observed reality. Models are parameters are our assumptions. We use these assumptions to price exotic or illiquid derivatives.
+Market prices of liquid vanilla options are part of the observed reality. Models and parameters are our assumptions. We use these assumptions to price exotic or illiquid derivatives.
 \end{frame}
 
 
