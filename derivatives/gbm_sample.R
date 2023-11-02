@@ -31,14 +31,20 @@ black_scholes_price <- function(S, K, T, sigma, r, q) {
   S*exp(-q*T)*pnorm(d1) - K*exp(-r*T)*pnorm(d2)
 }
 
+T <- 0.25
+r <- 0.05
+q <- 0.00
+K <- 100
+
 tibble(
   S = seq(80, 120, 0.05)
 ) %>% 
   mutate(
-    C_5 = black_scholes_price(S, 100, 0.25,  0.05, 0.05, 0),
-    C_10 = black_scholes_price(S, 100, 0.25,  0.1,  0.05, 0),
-    C_25 = black_scholes_price(S, 100, 0.25, 0.25, 0.05, 0)
-  ) %>% 
+    C_0  = black_scholes_price(S, K, T,    0, r, q),
+    C_5  = black_scholes_price(S, K, T, 0.05, r, q),
+    C_10 = black_scholes_price(S, K, T,  0.1, r, q),
+    C_25 = black_scholes_price(S, K, T, 0.25, r, q)
+  ) %>%
   write_csv("call_price.csv")
 
 tibble(
