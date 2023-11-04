@@ -1582,5 +1582,123 @@ Market prices of liquid vanilla options are part of the observed reality. Models
 \end{frame}
 
 
+
+\begin{frame}{Bonus: variance swap}
+\justify
+A \alert{variance swap} is a financial derivative whose payoff depends on realized variance of an underlying asset during a specified period. It allows betting on (or hedging against) future volatility.
+
+\justify
+Consider a variance swap at strike $\sigma_K^2$ (volatility squared). Notional amount is $N$ dollars, and reference period contains $n$ trading days. The buyer's payoff at maturity is then
+\begin{align*}
+P = N(\sigma_R^2 - \sigma_K^2)
+\end{align*}
+
+where $\sigma_R^2$ is realized daily variance of the underlying asset,
+\begin{align*}
+\sigma_R^2 = \frac{252}{n-1}\sum\limits_{i=1}^{n}\left(\ln\frac{S_i}{S_{i-1}}\right)^2
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Bonus: pricing a variance swap}
+\justify
+Fun fact: it is possible to replicate a variance swap of maturity $T$ with a portfolio of vanilla calls and puts of the same maturity. Each vanilla option in the replicating portfolio has a weight of $1/K^2$.
+
+\begin{align*}
+\sigma^2_K &= \frac{2e^{rT}}{T}\left(
+\int\limits_{0}^{F}\frac{P(K)}{K^2}dK + 
+\int\limits_{F}^{\infty}\frac{C(K)}{K^2}dK
+\right) \\
+F &= Se^{rT}
+\end{align*}
+
+\justify
+This formula does not depend on Black-Scholes assumptions, it is model-independent. We can derive fair strike of a variance swap (market expectation of future variance) from market premiums for vanilla calls and puts.
+\end{frame}
+
+
+
+\begin{frame}{Bonus: VIX index}
+\justify
+The Chicago Board Options Exchange Volatility Index (\alert{VIX}) measures volatility of 30-days S\&P\,500 options. This is not Black-Scholes implied volatility (which would depend on an option strike). The index is derived as a price of a variance swap from all liquid vanilla options (i.e. across a range of strikes).
+
+\justify
+VIX is often referred to as "fear gauge" in the press. When investors are nervous, they rush to buy insurance, bid option prices higher, and hence increase the VIX.
+
+\justify
+VIX his a twin named RVOL, which measures realized volatility.
+\end{frame}
+
+
+
+\begin{frame}{Bonus: VIX and realized volatility}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\textwidth,
+  height=\textheight - 1cm,
+  date coordinates in=x,
+  date ZERO=2012-01-01,
+  xtick={2002-01-01, 2005-01-01, 2010-01-01, 2015-01-01, 2020-01-01},
+  minor xtick={2003-01-01, 2004-01-01, 2006-01-01, 2007-01-01, 2008-01-01, 2009-01-01, 2011-01-01, 2012-01-01, 2013-01-01, 2014-01-01, 2016-01-01, 2017-01-01, 2018-01-01, 2019-01-01, 2021-01-01, 2022-01-01, 2023-01-01},
+  ytick={10, 20, ..., 100},
+%  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
+  xticklabel={\year},
+  xmin=2002-01-01,
+  xmax=2024-01-01,
+  ymin=0,  ymax=100,
+  grid=both,
+  yticklabel={\pgfmathprintnumber{\tick}\%},
+  xlabel near ticks,
+  ylabel near ticks,
+legend entries = {
+				\small VIX,
+				\small RVOL
+			},
+  			legend cell align={left},
+			legend pos=north west
+]
+
+\addplot[color = Set1-A, mark = none,  thick]
+	table[
+		x=date,
+		y=vix,
+		col sep=comma
+	]
+	{vix_and_rvol.csv};
+
+\addplot[color = Set1-B, mark = none, dotted, very thick]
+	table[
+		x=date,
+		y=rvol,
+		col sep=comma
+	]
+	{vix_and_rvol.csv};
+\end{axis}
+\end{tikzpicture}
+\small Data: CBOE
+\end{frame}
+
+
+
+\begin{frame}{Bonus: how deep is the rabbit hole?}
+\justify
+1. There is the U.S. stock market.
+
+\justify
+2. There is S\&P\,500 stock market index.
+
+\justify
+3. There are S\&P\,500 futures and options.
+
+\justify
+4. There is VIX index to measure volatility of  S\&P\,500 options.
+
+\justify
+5. There are VIX futures and options. Underlying asset of a VIX option is volatility of S\&P\,500 options.
+\end{frame}
+
+
 \end{document}
 
