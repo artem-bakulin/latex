@@ -1,0 +1,1247 @@
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+
+\usepackage{enumitem}
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+% remove navigation bar
+\setbeamertemplate{navigation symbols}{} 
+
+\usepackage{eurosym}
+\renewcommand{\EUR}[1]{\textup{\euro}#1}
+
+\title{Present Value, Risk and Greeks}
+\author{Artem Bakulin}
+\date{November 9, 2023}
+
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
+\newcommand{\ruen}[2]{#1 (\en{#2})}
+
+\setbeamertemplate{page number in head/foot}[totalframenumber] 
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}{Present value}
+\justify
+\alert{Present value (PV)} of payment of $N$ dollars in $T$ years is the amount which market participants would be willing to pay to be entitled for this payment.
+
+\justify
+\alert{Present value} of a derivative or a portfolio of derivatives is the amount that market participants would hypothetically be willing to pay for these trades or the portfolio. How much would they pay us if we were to erase our name from all contracts and replace it with the buyer's name?
+
+\end{frame}
+
+
+
+\begin{frame}{Derivatives and IFRS}
+\justify
+From the financial report of a major German Frankfurt-based investment bank:
+
+\justify
+Assets (billions):
+
+\en{Positive market values from derivative financial instruments}: \EUR{287.6}
+
+\justify
+Liabilities (billions):
+
+\en{Negative market values from derivative financial instruments}: \EUR{271.3}
+
+\justify
+According to IFRS, the change in the present value (PV) of the derivative portfolio should be accounted for in the profits (or losses) of the current year, even if the payments on derivatives are scheduled to occur 100 years from now.
+\end{frame}
+
+
+
+\begin{frame}{Present value of a spot trade}
+\justify
+We have bought $N=1\,000\,000$ of EURUSD spot at the rate of $S_0 = 1.05$. Current market rate is $S=1.06$. What is our PV PV?
+
+\justify
+\centering
+\begin{tabular}{c|c|c}
+Date & EUR  & USD \\ \hline
+T+2 & $+N$ & $-NS_0$
+\end{tabular}
+
+\justify
+$N$ euro are worth $N$ euro (we ignore discounting from T+2 to T+0).
+
+\justify
+$NS_0$ dollats are worth $NS_0/S$ euro.
+
+\begin{align*}
+\text{PV} = N - N\frac{S_0}{S} = N\frac{S - S_0}{S} = \EUR{1\,000\,000} \cdot \frac{1.06 - 1.05}{1.06} = \EUR{9\,434}
+\end{align*}
+
+\justify
+Calculating the present value (PV) from market prices (in this case, the spot rate) is called \alert{marking-to-market (MtM)}.
+\end{frame}
+
+
+
+\begin{frame}{Present value of a spot trade - 2}
+\justify
+We have bought $N=1\,000\,000$ of EURUSD spot at the rate of $S_0 = 1.05$. Current market rate is $S=1.06$. What is our PV PV?
+
+\justify
+\centering
+\begin{tabular}{r|r|r}
+         & EUR               & USD \\ \hline
+Trade   & $+1\,000\,000$ & $-1\,050\,000$ \\
+Close-out &    $-990\,566$ & $+1\,050\,000$ \\ \hline
+Total    &      $+9\,434$ & $0$
+\end{tabular}
+
+\justify
+If we decided to close the position in the market, we could nullify all payments in dollars and be left with a guaranteed fixed payment of \EUR{9\,434}. This is the present value (PV) of the transaction.
+\end{frame}
+
+
+
+\begin{frame}{Present value and market spread}
+\justify
+On the real market, there is a spread between buying and selling. Let's say the euro can be sold for 1.04 dollars and bought for 1.06. Two companies have agreed with each other on a transaction for 1 million euros at the exchange rate of 1.05.
+
+\justify
+The buyer:
+
+\centering
+\begin{tabular}{r|r|r}
+                & EUR                   & USD \\ \hline
+Buying at 1.05 & $+1\,000\,000$ & $-1\,050\,000$ \\
+Closing at 1.04 & $-1\,009\,615$ & $+1\,050\,000$ \\ \hline
+Total PV      &      $-9\,615$ & $0$
+\end{tabular}
+
+\justify
+The seller:
+
+\centering
+\begin{tabular}{r|r|r}
+                & EUR                   & USD \\ \hline
+Selling at 1.05 & $-1\,000\,000$ & $+1\,050\,000$ \\
+Closing at 1.06 & $+990\,566$ & $-1\,050\,000$ \\ \hline
+Total PV      &      $-9\,434$ & $0$
+\end{tabular} 
+\end{frame}
+
+
+
+\begin{frame}{Present value and market spread}
+\justify
+Can all market participants be required to calculate PV and profit, taking into account the bid/ask spread? No, because in that case, a newly executed deal would be unprofitable for both parties.
+
+\justify
+Usually, PV is calculated either from the "fair" mid price between the bid and the ask prices or from the price of the last deal on the market.
+
+\justify
+Implication: if the transaction occurred at the mid price between the bid and the ask, then its PV is zero.
+\end{frame}
+
+
+
+\begin{frame}{Presetn value}
+\justify
+We sold a call option to the client for a premium of 100 euros. Similar options are priced at 90 euros on the market. We know this because it is either a liquid option, or the calibrated model informed us of such prices based on market prices of other options
+
+\justify
+The PV of our position is $+10$ euro.
+\begin{itemize}
+\item Sold option: $-90$ euro.
+\item Received premium: $+100$ euro.
+\end{itemize}
+
+\justify
+In an ideal liquid market, other participants would be willing to pay 10 euros for our portfolio. If the price is lower, say 9.90, someone might offer 9.95, hoping to earn 0.05 euro.
+
+\justify
+Another interpretation: we can enter the market and buy the option for 90 euros. In that case, we would have 10 euros remaining, and the option position would disappear.
+\end{frame}
+
+
+
+\begin{frame}{Risk}
+\justify
+\alert{Risk} is the possibility that something will not go as planned, and the profit will turn out to be different from what we anticipated.
+
+\justify
+You cannot earn anything more than the risk-free interest rate if you don't take any risks. Financial companies deliberately take numerous risks:
+
+\begin{itemize}
+\item Market
+\item Credit
+\item Liquidity
+\item Regulatory
+\item Technical
+\item Legal
+\item Political
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Market risk}
+\justify
+\alert{Market risk} is the possibility that our present value (PV) will change (upward or downward) due to changes in market prices.
+
+\justify
+How could we  measure market risk? The standard approach is to calculate the sensitivities of present value (PV) to changes in market variables. By how much will the PV of the portfolio change if the price of Brent futures increases by \$1?
+
+\justify
+There are standard sensitivities or the Greeks:
+\begin{itemize}
+\item Delta ($\Delta$) is sensitivity to the underlying asset price.
+\item Vega ($\mathcal{V}$) is sensitivity to implied volatility.
+\item Rho ($\rho$) is sensitivity to interest rates.
+\item Theta ($\Theta$) is sensitivity to the passage of time.
+\item Gamma ($\Gamma$) is sensitivity of the Delta to the underlying asset price.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Delta}
+\justify
+Delta is the sensitivity of the present value of the portfolio $V$ to changes in the price of the underlying asset (for example, the spot rate of the currency) S$.$
+\begin{align*}
+\Delta = \frac{\partial V}{\partial S}
+\end{align*}
+
+\justify
+With a small change in the underlying asset price $dS$, present value of a portfolio changes by
+\begin{align*}
+dV \approx \Delta\cdot dS
+\end{align*}
+
+\justify
+This follows from the definition of a derivative:
+\begin{align*}
+F'(x_0) = \lim_{dx \to 0} \frac{F(x_0+dx) - F(x_0)}{dx} = \lim_{dx \to 0} \frac{dF}{dx}
+\end{align*}
+Consequently, if $dx$ is small then
+\begin{align*}
+F'(x_0) \approx \frac{dF}{dx} \quad \Leftrightarrow \quad dF \approx F'(x_0)dx
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Delta of a spot trade}
+\justify
+Consider a spot trade: buying $N=1\,000\,000$ euro at the fair mid rate of $S_0=1.05$.
+\begin{align*}
+V = N - N\frac{S_0}{S} \quad \Rightarrow \quad \Delta(S) = \frac{\partial V}{\partial S} = N\frac{S_0}{S^2}
+\end{align*}
+
+\justify
+Suppose that spot rate has not moved after the trade yet, i.e. $S_0=S$:
+\begin{align*}
+\Delta(S_0) = N\frac{S_0}{S_0^2} = \frac{N}{S_0}
+\end{align*}
+
+\justify
+With every 1 pip ($dS=0.0001$) change in the spot rate, PV of the trade changes by 
+\begin{align*}
+dV \approx \Delta \cdot dS = \frac{N}{S_0}dS = \frac{\EUR{1\,000\,000}}{1.05}\cdot 0.0001 = \EUR{95.24}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Delta of a vanilla call}
+\justify
+In the Black-Scholes model, Delta of a vanilla call option at strike $K$ expiring in $T$ years is equal to:
+\begin{align*}
+\Delta = \frac{\partial C(S, K, T, \sigma, r, q)}{\partial S} = e^{-qT}N(d_1)
+\end{align*}
+
+\justify
+If we have a complex option pricing model for which an analytical formula cannot be derived, Delta can be estimated numerically as the finite difference:
+\begin{align*}
+\Delta \approx \frac{C(S+\delta,...) - C(S,...)}{\delta} \approx \frac{C(S+\delta,...) - C(S-\delta,...)}{2\delta}
+\end{align*}
+
+\justify
+Delta of an option is the number of units of the underlying asset that needs to be bought to replicate the option for the next small time interval.
+\end{frame}
+
+
+
+\begin{frame}{Delta of a vanilla call - 2}
+\justify
+Example: a call option at strike $K=100$, expiration in $T=0.25$ years. $r=5\%$, $\sigma=10\%$.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			domain=92:108,
+			xtick distance=2,
+			ytick distance=1,
+			xmin=94, xmax=106,
+			ymin=0, ymax=6,
+			grid = major,
+			xlabel={Underling asset price today ($S_0$)},
+			ylabel={Option price}
+]
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=S,
+		y=C_10,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	%\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
+	
+	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 100, 2.6648) {};
+	
+	\addplot[color=Set1-A, dashed, thick] {0.6083 * \x - 58.1936};
+	
+	\node[anchor=south west] at (axis cs: 96.5, 0) {$\Delta = 0.61$};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Delta of a vanilla put}
+\justify
+Call-put parity in case the underlying asset does not pay dividends:
+\begin{align*}
+C - P = S - Ke^{-rT}
+\end{align*}
+
+\justify
+Differentiate both parts of the equation:
+\begin{align*}
+\frac{\partial C}{\partial S} - \frac{\partial P}{\partial S} = \frac{\partial S}{\partial S} \quad \Leftrightarrow \quad \frac{\partial P}{\partial S} = \frac{\partial C}{\partial S} - 1
+\end{align*}
+
+\justify
+This property is independent of assumptions about the stochastic process for the underlying asset. I.e. holds true not only in the Black-Scholes world.
+
+\justify
+In case the underlying asset offers dividend yield  $q$:
+\begin{align*}
+\frac{\partial P}{\partial S} = \frac{\partial C}{\partial S} - e^{-qT}
+\end{align*}
+\end{frame}
+
+
+\begin{frame}{Delta of vanilla options}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			xtick={0.5},
+			xticklabel={$K$},
+			ytick={-1,-0.75,...,1},
+			xmin=0, xmax=1,
+			ymin=-1, ymax=1,
+			grid = major,
+			xlabel={Underlying asset price ($S$)},
+			ylabel={Option delta},
+			legend entries = {
+  	   Call,
+  	   Put
+  },
+  legend cell align={left},
+  legend style={at={(0.03,0.97)},anchor=north west}
+]
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=S,
+		y=call_delta,
+		col sep=comma
+	]
+	{black_scholes_delta.csv};
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=S,
+		y=put_delta,
+		col sep=comma
+	]
+	{black_scholes_delta.csv};
+
+   \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 1, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Delta and the replicating portfolio}
+\justify
+How much of the asset and debt are needed to replicate the option?
+
+\justify
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			domain=92:108,
+			xtick=\empty,
+			ytick={-2.23, 0},
+			yticklabels={$L$, 0},
+			xmin=92, xmax=108,
+			ymin=-3, ymax=6,
+			xlabel={Underling asset price ($S_0$)},
+			ylabel={Option price}
+]
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=S,
+		y=C_10,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	%\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
+	
+	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 100, 2.6648) {};
+	
+	\addplot[color=Set1-A, dashed, thick] {0.6083 * \x - 58.1936};
+	
+   \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 200, 0);
+	
+	\node[anchor=south west] at (axis cs: 96.5, 0) {$\Delta$};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Котирование опционов}
+\justify
+Несмотря на то, что модель Блэка-Шоулза не работает (не описывает реальность), все продолжают её использовать, чтобы договариваться о ценах опционов. В разговоре удобнее оперировать волатильностью, чем премиями, чтобы понимать, что дорого, а что дёшево.
+
+\justify
+Вместо такого диалога:
+
+--- Сколько стоит колл со страйком 110 на 3 месяца на \$1\,000?
+
+--- 800 рублей.
+
+\justify
+Получается такой:
+
+--- Сколько стоит колл со страйком 110 на 3 месяца на \$1\,000?
+
+--- 45\%.
+
+\justify
+Предполагается, что каждый может подставить волатильность в формулу Блэка-Шоулза и вычислить премию.
+\end{frame}
+
+
+
+\begin{frame}{Дельта и страйки}
+\justify
+Что происходит с улыбкой волатильности, когда цена базового актива растёт? Обычно она смещается в ту же сторону.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			domain=90:114,
+			xtick={90,92,...,114},
+			ytick={0.05,0.1,...,0.5},
+			xmin=90, xmax=114,
+			ymin=0, ymax=0.50,
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)},
+			legend entries = {
+  	   $S=98$,
+  	   $S=104$
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.03)},anchor=south east}
+]
+
+	\addplot[color = Set1-B, mark = none, thick, dashed] {0.002*(\x - 98)^2 + 0.2};
+	
+	\addplot[color = Set1-B, mark = none, thick] {0.002*(\x - 104)^2 + 0.2};
+	
+	\draw[->, >= triangle 45, thick] (98, 0.175) -- (104, 0.175);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Дельта и страйки}
+\justify
+Так как улыбка волатильности следует за движениями спота, нужно очень быстро договариваться о сделках. Сейчас страйку 68 соответствует волатильность 10\%, а через полминуты из-за движения спота --- уже 11\%.
+
+\justify
+На внебиржевом рынке принято оперировать следующим страйками, которые привязаны к дельтам:
+\begin{itemize}
+\item DN (delta neutral) --- такой страйк $K_{DN}$, что стрэддл из колла и пута имеет дельту 0.
+\item 25C --- такой страйк $K_{25C}$, что колл имеет дельту 0.25.
+\item 25P --- такой страйк $K_{25P}$, что пут имеет дельту $-0.25$.
+\item 10C, 10P --- аналогично 25C и 25P.
+\end{itemize}
+
+\justify
+Эмпирически, implied волатильность таких страйков более стабильная (эффект sticky delta).
+\end{frame}
+
+
+
+\newcommand{\drawVolNode}[4] {
+
+	\node[
+		circle,
+		color=Set1-B,
+		fill,
+		inner sep=2pt
+	] at (#1, #2) {};
+	
+	\node[anchor=#4] at (#1, #2) {$\sigma_{#3}$};
+}
+
+\begin{frame}{Дельта и страйки}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			xtick={0.10, 0.25, 0.5, 0.75, 0.90},
+			xticklabels={10P, 25P, DN, 25C, 10C},
+			ytick={0,0.05,0.1,...,0.4},
+			xmin=0, xmax=1,
+			ymin=0, ymax=0.4,
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)}
+]
+
+	\addplot[color = Set1-B, mark = none, thick, samples at={0,0.01,...,1}] {0.75*(\x - 0.5)^2 + 0.2};
+	
+	\drawVolNode{0.10}{0.320}{10P}{south west}
+	\drawVolNode{0.25}{0.247}{25P}{south west}
+	\drawVolNode{0.50}{0.200}{DN }{south}
+	\drawVolNode{0.75}{0.247}{25C}{south east}
+	\drawVolNode{0.90}{0.320}{10C}{south east}
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Параметризация улыбки волатильности}
+\justify
+Волатильности опционов со страйками 10P, 25P, DN, 25C и 10C хорошо описывают форму улыбки волатильности, но с ними тоже есть неудобство. Когда волатильность на рынке повышается, более-менее равномерно повышаются все пять волатильностей (<<прилив поднимает все лодки>>).
+
+\justify
+Риск-реверсал (\en{risk-reversal, risky}): RR25 --- купленный колл 25C и проданный пут 25P.
+\begin{align*}
+\sigma_{RR25} = \sigma_{25C} - \sigma_{25P}
+\end{align*}
+
+\justify
+Бабочка (\en{butterfly, fly}): FLY25 --- купленные колл 25C и пут 25P, проданные колл и пут $DN$
+\begin{align*}
+\sigma_{FLY25} = 0.5\cdot(\sigma_{25P} - 2\sigma_{DN} + \sigma_{25C})
+\end{align*}
+
+\justify
+Формулы RR и FLY похожи на первую и вторую разностную производную.
+\end{frame}
+
+
+
+\begin{frame}{Параметризация улыбки волатильности}
+\justify
+Волатильность стрэддла DN задаёт общий уровень улыбки. Выше $\sigma_{DN}$ --- выше дисперсия распределения цены базового актива.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			xtick={0.10, 0.25, 0.5, 0.75, 0.90},
+			xticklabels={10P, 25P, DN, 25C, 10C},
+			ytick={0,0.02,0.04,...,0.24},
+			xmin=0, xmax=1,
+			ymin=0, ymax=0.24,
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)},
+			legend entries = {
+  	   $\sigma_{DN}=6\%$,
+  	   $\sigma_{DN}=10\%$
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.03)},anchor=south east}
+]
+
+	\addplot[color = Set1-B, mark = none, thick, dashed, samples at={0,0.01,...,1}] {0.5*(\x - 0.5)^2 + 0.06};
+	
+
+	\addplot[color = Set1-B, mark = none, thick, samples at={0,0.01,...,1}] {0.5*(\x - 0.5)^2 + 0.1};
+	
+	\draw[<->, >= triangle 45, thick] (0.5, 0.0) -- (0.5, 0.1);
+	
+	\drawVolNode{0.5}{0.1}{DN}{south}
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Параметризация улыбки волатильности}
+\justify
+Риск-реверсал задаёт наклон улыбки, или скошенность распределения базового актива влево или вправо.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			xtick={0.10, 0.25, 0.5, 0.75, 0.90},
+			xticklabels={10P, 25P, DN, 25C, 10C},
+			ytick={0,0.02,0.04,...,0.24},
+			xmin=0, xmax=1,
+			ymin=0, ymax=0.24,
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)},
+			legend entries = {
+  	   $\sigma_{RR25}=0\%$,
+  	   $\sigma_{RR25}=4\%$
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.03)},anchor=south east}
+]
+
+	\addplot[color = Set1-B, mark = none, thick, dashed, samples at={0,0.01,...,1}] {0.5*(\x - 0.5)^2 + 0.1};
+	
+
+	\addplot[color = Set1-B, mark = none, thick, samples at={0,0.01,...,0.5}] {0.32*(\x - 0.5)^2 + 0.1};
+	
+	\addplot[color = Set1-B, mark = none, thick, samples at={0.5,0.51,...,1}] {0.96*(\x - 0.5)^2 + 0.1};
+	
+	
+	\drawVolNode{0.25}{0.12}{25P}{north east}
+	
+	\drawVolNode{0.75}{0.16}{25C}{south east}
+	
+	\draw (0.25, 0.12) -- (0.75, 0.16);
+	
+	\draw (0.25, 0.12) -- (0.9, 0.12);
+	\draw (0.75, 0.16) -- (0.9, 0.16);
+	
+	\draw[<->, >= triangle 45, thick] (0.87, 0.16) -- (0.87, 0.12) node[pos=0.5, anchor=west] {$\sigma_{RR25}$};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Параметризация улыбки волатильности}
+\justify
+Бабочка задаёт вогнутость улыбки, или толщину хвостов распределения базового актива.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			xtick={0.10, 0.25, 0.5, 0.75, 0.90},
+			xticklabels={10P, 25P, DN, 25C, 10C},
+			ytick={0,0.02,0.04,...,0.24},
+			xmin=0, xmax=1,
+			ymin=0, ymax=0.24,
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Волатильность ($\sigma$)},
+			legend entries = {
+  	   $\sigma_{FLY25}=1\%$,
+  	   $\sigma_{FLY25}=4\%$
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.03)},anchor=south east}
+]
+
+	\addplot[color = Set1-B, mark = none, thick, dashed, samples at={0,0.01,...,1}] {0.16*(\x - 0.5)^2 + 0.1};
+
+	\addplot[color = Set1-B, mark = none, thick, samples at={0.0,0.01,...,1}] {0.64*(\x - 0.5)^2 + 0.1};
+	
+	
+	\drawVolNode{0.25}{0.14}{25P}{south west}
+	
+	\drawVolNode{0.75}{0.14}{25C}{south east}
+	
+	\drawVolNode{0.50}{0.10}{DN}{north}
+	
+	\draw (0.25, 0.14) -- (0.75, 0.14);
+
+	\draw[<->, >= triangle 45, thick] (0.5, 0.10) -- (0.5, 0.14) node[pos=0.5, anchor=west] {$\sigma_{FLY25}$};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Поверхность волатильности}
+\justify
+Рыночная поверхность волатильности --- котировки DN, RR и FLY для разных сроков экспирации.
+
+\justify
+\centering
+\begin{tabular}{l|r|r|r|r|r}
+Срок & DN     & RR25   & RR10   & FLY25  & FLY10  \\ \hline
+1M   & 6.00\% & 0.50\% & 0.90\% & 0.25\% & 0.70\% \\
+2M   & 6.40\% & 0.60\% & 1.10\% & 0.30\% & 0.70\% \\
+3M   & 6.50\% & 0.65\% & 1.15\% & 0.30\% & 0.75\% 
+\end{tabular}
+
+\justify
+Это --- наблюдаемая действительность. Дальше мы должны откалибровать модель, например SABR, то есть подобрать внутренние параметры, при которых модель будет выдавать такие же цены на DN, RR и FLY.
+
+\justify
+Если нам это удалось, то можно надеяться, что модель будет выдавать разумные цены не только на ликвидные ванильные опционы, но и на более сложные и менее ликвидные продукты, цены которых мы не видим.
+\end{frame}
+
+
+
+\begin{frame}{Вега}
+\justify
+Предположим, что мы умеем магическим образом подбирать вектор параметров SABR функцией $f$:
+\begin{align*}
+(\alpha, \beta, \rho) = f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sigma_{3M,FLY10})
+\end{align*}
+
+\justify
+Также у нас есть численный метод, который умеет при помощи SABR оценивать PV нашего портфеля $V$ --- функция $g$.
+\begin{align*}
+V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sigma_{3M,FLY10})\Big)
+\end{align*}
+
+\justify
+Резонно задать вопрос: что будет с портфелем, если рыночные котировки изменятся? На этот вопрос отвечает производная PV портфеля по волатильности --- <<вега>>.
+\begin{align*}
+\mathcal{V}_{1M,RR25} &= \frac{\partial V}{\partial \sigma_{1M,RR25}} \approx \\
+&\approx \frac{g\Big(f(...,\sigma_{1M,RR25}+\delta,...)\Big) - g\Big(f(...,\sigma_{1M,RR25},...)\Big)}{\delta}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Вега опциона}
+\justify
+В модели Блэка-Шоулза волатильность $\sigma$ --- константа, поэтому странно считать производную. Тем не менее, и для колл-опциона, и для пут-опциона вега равна
+\begin{align*}
+\mathcal{V} &= \frac{\partial C}{\partial \sigma} = \frac{\partial P}{\partial \sigma} = Se^{-qT}\sqrt{T}N'(d_1) \\
+N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
+\end{align*}
+
+\justify
+Обычные единицы измерения --- доллары или евро на процентный пункт изменения волатильности.
+
+\justify
+Вега положительная и для колла, и для пута. <<Опционы любят волатильность>>.
+\end{frame}
+
+
+
+\begin{frame}{Вега опциона}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			xtick={0.5},
+			xticklabel={$K$},
+			ytick={\empty},
+			xmin=0, xmax=1,
+			ymin=0, ymax=0.25,
+			grid = none,
+			xlabel={Цена базового актива ($S$)},
+			ylabel={Вега опциона}
+]
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=S,
+		y=vega,
+		col sep=comma
+	]
+	{black_scholes_vega.csv};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Тета}
+\justify
+Тета --- чувствительность PV к течению времени. На сколько подешевеет купленный опцион, когда он станет на один день ближе к экспирации?
+
+\begin{align*}
+\Theta = -\frac{\partial V}{\partial T}
+\end{align*}
+Обычные единицы измерения --- доллары или евро на календарный или торговый день.
+
+\justify
+Тета колл-опциона в модели Блэка-Шоулза:
+\begin{align*}
+\Theta = -\frac{\partial C}{\partial T} = - \frac{S\sigma e^{-qT}N'(d_1)}{2\sqrt{T}} -rKe^{-rT}N(d_2) + qSe^{-qT}N(d_1)
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Тета колл-опциона}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			xtick={0.5},
+			xticklabels={$K$},
+			ytick={0},
+			scaled y ticks = false,
+			xmin=0, xmax=1,
+			ymax=0,
+			grid = none,
+			xlabel={Цена базового актива ($S$)},
+			ylabel={Тета опциона}
+]
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=S,
+		y=theta,
+		col sep=comma
+	]
+	{black_scholes_theta.csv};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Тета колл-опциона}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			xtick={\empty},
+			ytick={0},
+			xmin=0, xmax=1,
+			ymin=-0.15, ymax=0,
+			grid = major,
+			xlabel={Срок экспирации ($T$)},
+			ylabel={Тета опциона},
+			legend entries = {
+  	   Out of the money,
+  	   In the money,
+  	   At the money
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.03)},anchor=south east}
+]
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=T,
+		y=theta_otm,
+		col sep=comma
+	]
+	{black_scholes_theta_by_money.csv};
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=T,
+		y=theta_itm,
+		col sep=comma
+	]
+	{black_scholes_theta_by_money.csv};
+
+
+	\addplot[color = Set1-C, mark = none, thick]
+	table[
+		x=T,
+		y=theta_atm,
+		col sep=comma
+	]
+	{black_scholes_theta_by_money.csv};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Гамма}
+\justify
+Гамма --- чувствительность дельты к изменению цены базового актива. Другое определение --- вторая производная PV по цене базового актива.
+\begin{align*}
+\Gamma = \frac{\partial V^2}{\partial^2 S} = \frac{\partial \Delta}{\partial S}
+\end{align*}
+
+\justify
+Чем больше по модулю гамма, тем хуже дериватив приближается линейной комбинацией базового актива и долга, и тем чаще нужно ребалансировать реплицирующий портфель.
+
+\justify
+В модели Блэка-Шоулза гамма колла равна гамме пута:
+\begin{align*}
+\Gamma = \frac{\partial C^2}{\partial^2 S} = \frac{\partial C^2}{\partial^2 S} =
+\frac{e^{-qT}N'(d_1)}{S\sigma\sqrt{T}} 
+\end{align*} 
+\end{frame}
+
+
+
+\begin{frame}{Гамма и дельта-хеджирование}
+\justify
+Гамма отражает степень вогнутости функции. Чем более вогнута функция, тем больше потери на неточном хеджировании.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			domain=64:80,
+			xtick={64,66,...,80},
+			ytick={0,1,2,...,10},
+			xmin=64, xmax=76,
+			ymin=0, ymax=6,
+			grid = major,
+			xlabel={Курс сегодня ($S$)},
+			ylabel={Цена опциона}
+]
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=S,
+		y=C_10,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	%\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
+	
+	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 70, 0.9898) {};
+	
+	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 74, 3.472) {};
+	
+	\addplot[color=Set1-A, dashed, thick] {0.4058 * \x - 27.4147};
+	
+	\node[anchor=south west] at (axis cs: 68.5, 0) {$\Delta = 0.41$};
+	
+	\draw[<->, >= triangle 45, thick] (74, 3.472) -- (74, 2.615);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Гамма опциона}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			xtick={0.5},
+			xticklabels={$K$},
+			ytick={0},
+			scaled y ticks = false,
+			xmin=0, xmax=1,
+			ymin=0,
+			grid = none,
+			xlabel={Цена базового актива ($S$)},
+			ylabel={Гамма опциона}
+]
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=S,
+		y=gamma,
+		col sep=comma
+	]
+	{black_scholes_gamma.csv};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Гамма опциона}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			xtick={\empty},
+			ytick={0},
+			xmin=0, xmax=1,
+			ymin=0, ymax=15,
+			grid = major,
+			xlabel={Срок экспирации ($T$)},
+			ylabel={Гамма опциона},
+			legend entries = {
+		At the money,
+  	   Out of the money,
+  	   In the money
+  },
+  legend cell align={left},
+  legend style={at={(0.97,0.97)},anchor=north east}
+]
+	
+	\addplot[color = Set1-C, mark = none, thick]
+	table[
+		x=T,
+		y=gamma_atm,
+		col sep=comma
+	]
+	{black_scholes_gamma_by_money.csv};
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=T,
+		y=gamma_otm,
+		col sep=comma
+	]
+	{black_scholes_gamma_by_money.csv};
+	
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=T,
+		y=gamma_itm,
+		col sep=comma
+	]
+	{black_scholes_gamma_by_money.csv};
+
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Гамма и тета}
+\justify
+Рассмотрим портфель из базового актива и опциона. В модели Блэка-Шоулза выполняется условие на цену $V$ этого портфеля:
+\begin{align*}
+\frac{\partial V}{\partial t} + rS\frac{\partial V}{\partial S} + \frac{1}{2}\sigma^2S^2\frac{\partial^2 V}{\partial S^2} = rV
+\end{align*}
+\begin{align*}
+-\Theta + rS\Delta + \frac{1}{2}\sigma^2S^2\Gamma = rV
+\end{align*}
+
+Если мы регулярно дельта-хеджируем портфель, то $\Delta=0$.
+\begin{align*}
+-\Theta + \frac{1}{2}\sigma^2S^2\Gamma = rV
+\end{align*}
+
+\justify
+Большим значениям $\Gamma$ обычно соответствуют большие значения $\Theta$. Если мы купили опцион ($\Gamma > 0$), то мы зарабатываем на больших движениях базового актива, но теряем тету с течением времени (time value опциона уменьшается). Если мы продали опцион ($\Gamma < 0$), то мы теряем деньги из-за неточности хеджирования, но зарабатываем тету.
+\end{frame}
+
+
+
+\begin{frame}{Гамма и тета: пример}
+\justify
+Предположим, что в мире Блэка-Шоулза $S=\$100$, $r=0\%$, $q=0\%$, $\sigma=20\%$. Мы 
+\alert{продали} клиенту колл-опцион со страйком $K=\$100$ и сроком исполнения $T=0.25$ 
+лет.
+
+\justify
+Справедливая премия за опцион $\$3.99$, дельта 0.52. Мы захеджировали риск: купили
+0.52 акции и взяли \$48.01 в долг. PV нашей позиции 0, дельта 0. 
+
+\justify
+Прошло время $dt = 1/252$ (один рабочий день). Цена акции изменилась. Сколько мы потеряли или заработали на нашей дельта-нейтральной позиции?
+\end{frame}
+
+
+
+\begin{frame}{Гамма и тета: пример}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	height = \textheight,
+	xmin = 96, xmax = 104,
+	ymin = -0.3, ymax = 0.05,
+	grid = major,
+	xlabel = {Цена акции завтра ($S$)},
+	ylabel = {PV позиции, доллары},
+	y tick label style={
+        /pgf/number format/.cd,
+            fixed,
+            fixed zerofill,
+            precision=2,
+        /tikz/.cd}
+]
+
+	\addplot[color=Set1-A, thick] table[x=S, y=full_pnl, col sep=comma] {gamma_pnl_example.csv};
+	
+	\draw[<->, >= triangle 45, thick] (100, 0.0) -- (100, 0.032) node[pos=0.5, anchor=west] {$\theta$};
+	
+	\draw[<->, >= triangle 45, thick] (103, 0.0) -- (103, -0.145) node[pos=0.5, anchor=west] {$\Gamma$};
+	
+   \draw[thick, color=black] (axis cs: 95, 0) -- (axis cs: 105, 0);
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Гамма и вега}
+\justify
+В модели Блэка-Шоулза гамма и вега отличаются на константный множитель.
+\begin{align*}
+\Gamma &= \frac{e^{-qT}N'(d_1)}{S\sigma\sqrt{T}} \\
+\mathcal{V} &= Se^{-qT}\sqrt{T}N'(d_1)
+\end{align*}
+
+\justify
+В некотором смысле обе производные показывают нашу зависимость от разброса будущих значений $S$.
+
+\justify
+Гамма --- главный риск для коротких опционов ($\sqrt{T}$ в знаменателе), вега --- для длинных ($\sqrt{T}$ в числителе). 
+\end{frame}
+
+
+
+\begin{frame}{Дельта-хеджирование волатильность}
+
+\justify
+Рассмотрим акцию, которая не платит дивидендов, стоит $S_0=\$100$ и следует 
+геометрическому броуновскому движению с трендом $\mu=5\%$ и волатильностью
+$\sigma=20\%$. Безрисковая ставка $r=0\%$.
+
+\justify
+Рассмотрим европейский колл-опцион со страйком $K=100$, сроком исполнения $T=1$ год. 
+Представим, что нам не удалось его купить на рынке и мы занимаемся динамической 
+репликацией.
+
+\justify
+Предположим, что сейчас у нас на счету есть $\$7.97$, и мы можем 
+перебалансировать портфель $N=4\cdot365$ раз в год.
+
+\end{frame}
+
+
+
+
+\begin{frame}{Дельта-хеджирование и волатильность}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	width = \textwidth,
+	height = \textheight - 0.5cm,
+	xlabel = {Цена базового актива через $T=1$ год ($S_T$)},
+	ylabel = {Цена портфеля},
+	xmin = 70, xmax = 130,
+	ymin = -5, ymax = 30,
+	grid = major,
+	ytick = {-10, -5, ..., 50}
+]	
+
+   \addplot[thick, mark = o, only marks, color=Set1-A]
+     table [col sep=comma, x=S, y=balance]
+     {black_scholes_hedging_1420.csv};    
+    
+    \addplot[black, very thick, solid, domain = 0:150] {0};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Дельта-хеджирование и волатильность}
+\justify
+Как мы считаем $\Delta$ для хеджа? Из формулы Блэка-Шоулза. Но в ней участвует 
+\alert{implied} волатильность! Вдруг реализованная волатильность окажется выше?
+
+\justify
+Предположим, что на каждом шаге волатильность броуновском движении оказывается $\sigma_{realized}=25\%$. Мы не знаем этого заранее, поэтому подбираем размер хеджа,
+исходя из $\sigma_{implied}=20\%$. 
+\end{frame}
+
+
+
+\begin{frame}{Дельта-хеджирование и волатильность}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	width = \textwidth,
+	height = \textheight - 0.5cm,
+	xlabel = {Цена базового актива через $T=1$ год ($S_T$)},
+	ylabel = {Цена портфеля},
+	xmin = 70, xmax = 130,
+	ymin = -5, ymax = 30,
+	grid = major,
+	ytick = {-10, -5, ..., 50}
+]	
+
+	\addplot[very thick, dashed, color=Set1-A, domain=70:130] {(\x > 100) * (\x - 100) + 0.1};
+
+   \addplot[thick, mark = o, only marks, color=Set1-A]
+     table [col sep=comma, x=S, y=balance]
+     {black_scholes_hedging_realized_vol.csv};    
+    
+    
+    \addplot[black, very thick, solid, domain = 0:150] {0};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Заключение}
+\justify
+Можно считать, что премия за опцион --- ожидаемая рынком прибыль по гамме (сколько в 
+сумме заработает владелец опциона, если будет его дельта-хеджировать). С другой 
+стороны, премия за опцион --- компенсация потерь продавца (он будет терять деньги на дельта-хеджировании).
+
+\justify
+Если реализовавшаяся волатильность окажется выше, чем \en{implied}, то продавец опциона
+потеряет деньги на хеджировании, а покупатель --- заработает.
+
+\justify
+В среднем, на длинной дистанции, выгоднее скорее продавать гамму (продавать опционы, то
+есть продавать остальным страховку от кризиса). Иногда такая стратегия даёт сбой: 
+движение рынка такое сильное, что потери на гамме превосходят полученную премию. 
+\end{frame}
+
+\end{document}
+
+
