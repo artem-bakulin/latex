@@ -3,7 +3,7 @@
 \usepackage{cmap}				% To be able to copy-paste russian text from pdf
 \usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[russian]{babel}
+\usepackage[english]{babel}
 \usepackage{textpos}
 \usepackage{ragged2e}
 \usepackage{amssymb}
@@ -450,33 +450,33 @@ How much of the asset and debt are needed to replicate the option?
 
 
 
-\begin{frame}{Котирование опционов}
+\begin{frame}{Option quoting conventions}
 \justify
-Несмотря на то, что модель Блэка-Шоулза не работает (не описывает реальность), все продолжают её использовать, чтобы договариваться о ценах опционов. В разговоре удобнее оперировать волатильностью, чем премиями, чтобы понимать, что дорого, а что дёшево.
-
-\justify
-Вместо такого диалога:
-
---- Сколько стоит колл со страйком 110 на 3 месяца на \$1\,000?
-
---- 800 рублей.
+Despite the fact that the Black-Scholes model doesn't work (doesn't describe reality), everyone continues to use it to negotiate option prices. It is more convenient to negotiate volatility than premiums to understand what is expensive and what is cheap.
 
 \justify
-Получается такой:
+Instead of such a dialogue:
 
---- Сколько стоит колл со страйком 110 на 3 месяца на \$1\,000?
+--- What is price of a 3 months call at strike \$100?
 
---- 45\%.
+--- \$5.
 
 \justify
-Предполагается, что каждый может подставить волатильность в формулу Блэка-Шоулза и вычислить премию.
+It turns out like this:
+
+--- What is price of a 3 months call at strike \$100?
+
+--- 20\%.
+
+\justify
+It is assumed that everyone can substitute volatility into the Black-Scholes formula and calculate the premium.
 \end{frame}
 
 
 
-\begin{frame}{Дельта и страйки}
+\begin{frame}{Delta and strikes}
 \justify
-Что происходит с улыбкой волатильности, когда цена базового актива растёт? Обычно она смещается в ту же сторону.
+What happens to the volatility smile when the price of the underlying asset increases? Usually, it shifts in the same direction.
 
 \centering
 \begin{tikzpicture}
@@ -490,8 +490,8 @@ How much of the asset and debt are needed to replicate the option?
 			ymin=0, ymax=0.50,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
 			grid = major,
-			xlabel={Страйк ($K$)},
-			ylabel={Волатильность ($\sigma$)},
+			xlabel={Strike ($K$)},
+			ylabel={Implied volatility ($\sigma$)},
 			legend entries = {
   	   $S=98$,
   	   $S=104$
@@ -511,21 +511,21 @@ How much of the asset and debt are needed to replicate the option?
 
 
 
-\begin{frame}{Дельта и страйки}
+\begin{frame}{Delta and strikes - 2}
 \justify
-Так как улыбка волатильности следует за движениями спота, нужно очень быстро договариваться о сделках. Сейчас страйку 68 соответствует волатильность 10\%, а через полминуты из-за движения спота --- уже 11\%.
+Since the volatility smile may follows spot movements, it is necessary to negotiate deals quickly. Currently, a strike of \$100 corresponds to volatility of 20\%. In a minute it may have volatility of 22\% due to change in the spot price.
 
 \justify
-На внебиржевом рынке принято оперировать следующим страйками, которые привязаны к дельтам:
+In the over-the-counter market, it is customary to operate with the following strikes, which are tied to deltas:
 \begin{itemize}
-\item DN (delta neutral) --- такой страйк $K_{DN}$, что стрэддл из колла и пута имеет дельту 0.
-\item 25C --- такой страйк $K_{25C}$, что колл имеет дельту 0.25.
-\item 25P --- такой страйк $K_{25P}$, что пут имеет дельту $-0.25$.
-\item 10C, 10P --- аналогично 25C и 25P.
+\item DN (delta neutral) is a strike $K_{DN}$ at which the straddle of a call and a put has a Delta of 0.
+\item 25C is a strike $K_{25C}$ at which the call has a delta of 0.25.
+\item 25P is a strike $K_{25C}$ at which the put has a delta of $-0.25$.
+\item 10C, 10P are similar to 25C and 25P.
 \end{itemize}
 
 \justify
-Эмпирически, implied волатильность таких страйков более стабильная (эффект sticky delta).
+Empirically, the implied volatility of such strikes is more stable (sticky delta effect).
 \end{frame}
 
 
@@ -542,7 +542,7 @@ How much of the asset and debt are needed to replicate the option?
 	\node[anchor=#4] at (#1, #2) {$\sigma_{#3}$};
 }
 
-\begin{frame}{Дельта и страйки}
+\begin{frame}{Delta and strikes - 3}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -555,8 +555,8 @@ How much of the asset and debt are needed to replicate the option?
 			ymin=0, ymax=0.4,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
 			grid = major,
-			xlabel={Страйк ($K$)},
-			ylabel={Волатильность ($\sigma$)}
+			xlabel={Strike ($K$)},
+			ylabel={Implied volatility ($\sigma$)}
 ]
 
 	\addplot[color = Set1-B, mark = none, thick, samples at={0,0.01,...,1}] {0.75*(\x - 0.5)^2 + 0.2};
@@ -572,31 +572,31 @@ How much of the asset and debt are needed to replicate the option?
 
 
 
-\begin{frame}{Параметризация улыбки волатильности}
+\begin{frame}{Parameterization of the volatility smile}
 \justify
-Волатильности опционов со страйками 10P, 25P, DN, 25C и 10C хорошо описывают форму улыбки волатильности, но с ними тоже есть неудобство. Когда волатильность на рынке повышается, более-менее равномерно повышаются все пять волатильностей (<<прилив поднимает все лодки>>).
+Volatilities of options at strikes 10P, 25P, DN, 25C, and 10C describe the shape of the volatility smile well. However, there is an inconvenience. When the market volatility increases, all five volatilities increase more or less uniformly ("a rising tide lifts all boats").
 
 \justify
-Риск-реверсал (\en{risk-reversal, risky}): RR25 --- купленный колл 25C и проданный пут 25P.
+\alert{Risk-reversal ("risky")} RR25 consists of a bought 25C call and a sold 25P put.
 \begin{align*}
 \sigma_{RR25} = \sigma_{25C} - \sigma_{25P}
 \end{align*}
 
 \justify
-Бабочка (\en{butterfly, fly}): FLY25 --- купленные колл 25C и пут 25P, проданные колл и пут $DN$
+\alert{Butterfly ("fly")} FLY25 is a bought 25C call and 25P put, sold $DN$ call and put.
 \begin{align*}
 \sigma_{FLY25} = 0.5\cdot(\sigma_{25P} - 2\sigma_{DN} + \sigma_{25C})
 \end{align*}
 
 \justify
-Формулы RR и FLY похожи на первую и вторую разностную производную.
+The formulas for RR and FLY resemble the first and second derivative.
 \end{frame}
 
 
 
-\begin{frame}{Параметризация улыбки волатильности}
+\begin{frame}{Parameterization of the volatility smile - 2}
 \justify
-Волатильность стрэддла DN задаёт общий уровень улыбки. Выше $\sigma_{DN}$ --- выше дисперсия распределения цены базового актива.
+Volatility of the DN straddle sets the overall level of the smile. Higher $\sigma_{DN}$, the higher the dispersion of the distribution of the underlying asset price.
 
 \centering
 \begin{tikzpicture}
@@ -610,8 +610,8 @@ How much of the asset and debt are needed to replicate the option?
 			ymin=0, ymax=0.24,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
 			grid = major,
-			xlabel={Страйк ($K$)},
-			ylabel={Волатильность ($\sigma$)},
+			xlabel={Strike ($K$)},
+			ylabel={Implied volatility ($\sigma$)},
 			legend entries = {
   	   $\sigma_{DN}=6\%$,
   	   $\sigma_{DN}=10\%$
@@ -634,9 +634,9 @@ How much of the asset and debt are needed to replicate the option?
 
 
 
-\begin{frame}{Параметризация улыбки волатильности}
+\begin{frame}{Parameterization of the volatility smile - 3}
 \justify
-Риск-реверсал задаёт наклон улыбки, или скошенность распределения базового актива влево или вправо.
+Risk reversal sets the slope of the smile or the skewness of the underlying asset's distribution to the left or right.
 
 \centering
 \begin{tikzpicture}
@@ -650,8 +650,8 @@ How much of the asset and debt are needed to replicate the option?
 			ymin=0, ymax=0.24,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
 			grid = major,
-			xlabel={Страйк ($K$)},
-			ylabel={Волатильность ($\sigma$)},
+			xlabel={Strike ($K$)},
+			ylabel={Implied volatility ($\sigma$)},
 			legend entries = {
   	   $\sigma_{RR25}=0\%$,
   	   $\sigma_{RR25}=4\%$
@@ -684,9 +684,9 @@ How much of the asset and debt are needed to replicate the option?
 
 
 
-\begin{frame}{Параметризация улыбки волатильности}
+\begin{frame}{Parameterization of the volatility smile - 4}
 \justify
-Бабочка задаёт вогнутость улыбки, или толщину хвостов распределения базового актива.
+The butterfly sets the concavity of the smile or the fatness of the tails of the underlying asset's distribution.
 
 \centering
 \begin{tikzpicture}
@@ -700,8 +700,8 @@ How much of the asset and debt are needed to replicate the option?
 			ymin=0, ymax=0.24,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
 			grid = major,
-			xlabel={Страйк ($K$)},
-			ylabel={Волатильность ($\sigma$)},
+			xlabel={Strike ($K$)},
+			ylabel={Implied volatility ($\sigma$)},
 			legend entries = {
   	   $\sigma_{FLY25}=1\%$,
   	   $\sigma_{FLY25}=4\%$
@@ -730,9 +730,9 @@ How much of the asset and debt are needed to replicate the option?
 
 
 
-\begin{frame}{Поверхность волатильности}
+\begin{frame}{Volatility surface}
 \justify
-Рыночная поверхность волатильности --- котировки DN, RR и FLY для разных сроков экспирации.
+Market volatility surface consists of DN, RR and FLY quotes for different terms.
 
 \justify
 \centering
@@ -744,29 +744,29 @@ How much of the asset and debt are needed to replicate the option?
 \end{tabular}
 
 \justify
-Это --- наблюдаемая действительность. Дальше мы должны откалибровать модель, например SABR, то есть подобрать внутренние параметры, при которых модель будет выдавать такие же цены на DN, RR и FLY.
+This is the observed reality. Next, we need to calibrate a model, such as SABR. We tune the internal parameters so that the model produces the same prices for DN, RR, and FLY.
 
 \justify
-Если нам это удалось, то можно надеяться, что модель будет выдавать разумные цены не только на ликвидные ванильные опционы, но и на более сложные и менее ликвидные продукты, цены которых мы не видим.
+If we succeed in this, then we can hope that the model will provide reasonable prices not only for liquid vanilla options but also for more complex and less liquid products, the prices of which we do not observe.
 \end{frame}
 
 
 
-\begin{frame}{Вега}
+\begin{frame}{Vega}
 \justify
-Предположим, что мы умеем магическим образом подбирать вектор параметров SABR функцией $f$:
+Suppose that a magic function $f$ picks the SABR parameters to reprice the market volatility surface:
 \begin{align*}
 (\alpha, \beta, \rho) = f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sigma_{3M,FLY10})
 \end{align*}
 
 \justify
-Также у нас есть численный метод, который умеет при помощи SABR оценивать PV нашего портфеля $V$ --- функция $g$.
+We also have a numerical procedure compute PV ($V$) of our portfolio using the SABR model. Lets call it a function $g$.
 \begin{align*}
 V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sigma_{3M,FLY10})\Big)
 \end{align*}
 
 \justify
-Резонно задать вопрос: что будет с портфелем, если рыночные котировки изменятся? На этот вопрос отвечает производная PV портфеля по волатильности --- <<вега>>.
+What will happen to the portfolio if market quotes change? To answer this question we compute the derivative of the portfolio's present value (PV) with respect to volatility --- the \alert{Vega}.
 \begin{align*}
 \mathcal{V}_{1M,RR25} &= \frac{\partial V}{\partial \sigma_{1M,RR25}} \approx \\
 &\approx \frac{g\Big(f(...,\sigma_{1M,RR25}+\delta,...)\Big) - g\Big(f(...,\sigma_{1M,RR25},...)\Big)}{\delta}
@@ -775,24 +775,24 @@ V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sig
 
 
 
-\begin{frame}{Вега опциона}
+\begin{frame}{Vega of a vanilla option}
 \justify
-В модели Блэка-Шоулза волатильность $\sigma$ --- константа, поэтому странно считать производную. Тем не менее, и для колл-опциона, и для пут-опциона вега равна
+Volatility $\sigma$ is constant in the Black-Scholes model, so it is odd to calculate the derivative. Nevertheless, both for calls and for puts Vega is equal to
 \begin{align*}
 \mathcal{V} &= \frac{\partial C}{\partial \sigma} = \frac{\partial P}{\partial \sigma} = Se^{-qT}\sqrt{T}N'(d_1) \\
 N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 \end{align*}
 
 \justify
-Обычные единицы измерения --- доллары или евро на процентный пункт изменения волатильности.
+Usually Vega is measured in dollars or euros per percentage point change in volatility.
 
 \justify
-Вега положительная и для колла, и для пута. <<Опционы любят волатильность>>.
+Vega is positive both for puts and for calls. "Options like volatility".
 \end{frame}
 
 
 
-\begin{frame}{Вега опциона}
+\begin{frame}{Vega of a vanilla option - 2}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -802,8 +802,8 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 			xmin=0, xmax=1,
 			ymin=0, ymax=0.25,
 			grid = none,
-			xlabel={Цена базового актива ($S$)},
-			ylabel={Вега опциона}
+			xlabel={Underlying asset price ($S$)},
+			ylabel={Option Vega}
 ]
 	
 	\addplot[color = Set1-B, mark = none, thick]
@@ -819,17 +819,17 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 
 
 
-\begin{frame}{Тета}
+\begin{frame}{Theta}
 \justify
-Тета --- чувствительность PV к течению времени. На сколько подешевеет купленный опцион, когда он станет на один день ближе к экспирации?
+\alert{Theta} is the sensitivity of the present value (PV) to the passage of time. How much will the purchased option decrease in value when it becomes one day closer to expiration?
 
 \begin{align*}
 \Theta = -\frac{\partial V}{\partial T}
 \end{align*}
-Обычные единицы измерения --- доллары или евро на календарный или торговый день.
+The standard units of measurement are dollars or euros per calendar or trading day.
 
 \justify
-Тета колл-опциона в модели Блэка-Шоулза:
+Theta of a call option in the Black-Scholes model:
 \begin{align*}
 \Theta = -\frac{\partial C}{\partial T} = - \frac{S\sigma e^{-qT}N'(d_1)}{2\sqrt{T}} -rKe^{-rT}N(d_2) + qSe^{-qT}N(d_1)
 \end{align*}
@@ -837,7 +837,7 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 
 
 
-\begin{frame}{Тета колл-опциона}
+\begin{frame}{Theta of a call option}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -848,8 +848,8 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 			xmin=0, xmax=1,
 			ymax=0,
 			grid = none,
-			xlabel={Цена базового актива ($S$)},
-			ylabel={Тета опциона}
+			xlabel={Underlying asset price ($S$)},
+			ylabel={Option Theta}
 ]
 	
 	\addplot[color = Set1-B, mark = none, thick]
@@ -865,7 +865,7 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 
 
 
-\begin{frame}{Тета колл-опциона}
+\begin{frame}{Theta of a call option - 2}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -874,8 +874,8 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 			xmin=0, xmax=1,
 			ymin=-0.15, ymax=0,
 			grid = major,
-			xlabel={Срок экспирации ($T$)},
-			ylabel={Тета опциона},
+			xlabel={Time till expiration ($T$)},
+			ylabel={Option Theta},
 			legend entries = {
   	   Out of the money,
   	   In the money,
@@ -915,41 +915,41 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 
 
 
-\begin{frame}{Гамма}
+\begin{frame}{Gamma}
 \justify
-Гамма --- чувствительность дельты к изменению цены базового актива. Другое определение --- вторая производная PV по цене базового актива.
+\alert{Gamma} is the sensitivity of the Delta to the underlying asset price. This is the second derivative of PV w.r.t. underlying asset price.
 \begin{align*}
 \Gamma = \frac{\partial V^2}{\partial^2 S} = \frac{\partial \Delta}{\partial S}
 \end{align*}
 
 \justify
-Чем больше по модулю гамма, тем хуже дериватив приближается линейной комбинацией базового актива и долга, и тем чаще нужно ребалансировать реплицирующий портфель.
+The larger the absolute value of Gamma, the worse a linear combination of the underlying asset and debt replicates a derivative, and the more frequently we have to rebalance the replicating portfolio.
 
 \justify
-В модели Блэка-Шоулза гамма колла равна гамме пута:
+In the Black-Scholes model Gamma of a put is equal to Gamma of a call:
 \begin{align*}
-\Gamma = \frac{\partial C^2}{\partial^2 S} = \frac{\partial C^2}{\partial^2 S} =
+\Gamma = \frac{\partial C^2}{\partial^2 S} = \frac{\partial P^2}{\partial^2 S} =
 \frac{e^{-qT}N'(d_1)}{S\sigma\sqrt{T}} 
 \end{align*} 
 \end{frame}
 
 
 
-\begin{frame}{Гамма и дельта-хеджирование}
+\begin{frame}{Gamma and delta-hedging}
 \justify
-Гамма отражает степень вогнутости функции. Чем более вогнута функция, тем больше потери на неточном хеджировании.
+Gamma reflects the concavity of the function. The more concave the function, the greater the losses from imperfect hedging.
 
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-			domain=64:80,
-			xtick={64,66,...,80},
-			ytick={0,1,2,...,10},
-			xmin=64, xmax=76,
-			ymin=0, ymax=6,
+			domain=92:110,
+			xtick distance=2,
+			ytick distance=1,
+			xmin=94, xmax=110,
+			ymin=0, ymax=10,
 			grid = major,
-			xlabel={Курс сегодня ($S$)},
-			ylabel={Цена опциона}
+			xlabel={Underlying asset price today ($S$)},
+			ylabel={Option price}
 ]
 	
 	\addplot[color = Set1-A, mark = none, thick]
@@ -962,22 +962,22 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 	
 	%\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
 	
-	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 70, 0.9898) {};
+	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 100, 2.6648) {};
 	
-	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 74, 3.472) {};
+	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 108, 9.3179) {};
 	
-	\addplot[color=Set1-A, dashed, thick] {0.4058 * \x - 27.4147};
+	\addplot[color=Set1-A, dashed, thick] {0.6083 * \x - 58.1936};
 	
-	\node[anchor=south west] at (axis cs: 68.5, 0) {$\Delta = 0.41$};
+	\node[anchor=south west] at (axis cs: 96.5, 0) {$\Delta = 0.61$};
 	
-	\draw[<->, >= triangle 45, thick] (74, 3.472) -- (74, 2.615);
+	\draw[<->, >= triangle 45, thick] (108, 9.3179) -- (108, 7.5028);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
 
 
 
-\begin{frame}{Гамма опциона}
+\begin{frame}{Gamma of a vanilla option}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -988,8 +988,8 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 			xmin=0, xmax=1,
 			ymin=0,
 			grid = none,
-			xlabel={Цена базового актива ($S$)},
-			ylabel={Гамма опциона}
+			xlabel={Underlying asset price ($S$)},
+			ylabel={Option Gamma}
 ]
 	
 	\addplot[color = Set1-B, mark = none, thick]
@@ -1005,7 +1005,7 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 
 
 
-\begin{frame}{Гамма опциона}
+\begin{frame}{Gamma of a vanilla option - 2}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -1014,8 +1014,8 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 			xmin=0, xmax=1,
 			ymin=0, ymax=15,
 			grid = major,
-			xlabel={Срок экспирации ($T$)},
-			ylabel={Гамма опциона},
+			xlabel={Time till expiration ($T$)},
+			ylabel={Option Gamma},
 			legend entries = {
 		At the money,
   	   Out of the money,
@@ -1055,9 +1055,9 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 
 
 
-\begin{frame}{Гамма и тета}
+\begin{frame}{Gamma and Theta}
 \justify
-Рассмотрим портфель из базового актива и опциона. В модели Блэка-Шоулза выполняется условие на цену $V$ этого портфеля:
+Consider a portfolio of an option and the underlying asset. In the Black-Scholes model portfolio value $V$ satisfies the following condition:
 \begin{align*}
 \frac{\partial V}{\partial t} + rS\frac{\partial V}{\partial S} + \frac{1}{2}\sigma^2S^2\frac{\partial^2 V}{\partial S^2} = rV
 \end{align*}
@@ -1065,43 +1065,40 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 -\Theta + rS\Delta + \frac{1}{2}\sigma^2S^2\Gamma = rV
 \end{align*}
 
-Если мы регулярно дельта-хеджируем портфель, то $\Delta=0$.
+If we delta-hedge the portfolio regularly, then $\Delta=0$.
 \begin{align*}
 -\Theta + \frac{1}{2}\sigma^2S^2\Gamma = rV
 \end{align*}
 
 \justify
-Большим значениям $\Gamma$ обычно соответствуют большие значения $\Theta$. Если мы купили опцион ($\Gamma > 0$), то мы зарабатываем на больших движениях базового актива, но теряем тету с течением времени (time value опциона уменьшается). Если мы продали опцион ($\Gamma < 0$), то мы теряем деньги из-за неточности хеджирования, но зарабатываем тету.
+Large values of $\Gamma$ usually correspond to large values of $\Theta$. If we buy an option ($\Gamma > 0$), we profit from large movements in the underlying asset but lose Theta over time (time value of the option decreases). If we sell an option ($\Gamma < 0$), we lose money due to imperfect hedging but gain Theta.
 \end{frame}
 
 
 
-\begin{frame}{Гамма и тета: пример}
+\begin{frame}{Gamma and Theta: an example}
 \justify
-Предположим, что в мире Блэка-Шоулза $S=\$100$, $r=0\%$, $q=0\%$, $\sigma=20\%$. Мы 
-\alert{продали} клиенту колл-опцион со страйком $K=\$100$ и сроком исполнения $T=0.25$ 
-лет.
+Suppose we live in the Black-Scholes world, where we have $S=\$100$, $r=0\%$, $q=0\%$, $\sigma=20\%$. We have \alert{sold} a call option at strike $K=\$100$ which expires in$T=0.25$  years.
 
 \justify
-Справедливая премия за опцион $\$3.99$, дельта 0.52. Мы захеджировали риск: купили
-0.52 акции и взяли \$48.01 в долг. PV нашей позиции 0, дельта 0. 
+Fair premium for this option is $\$3.99$, its Delta is 0.52. We hedged the risk: we bought 0.52 of the stock and borrowed \$48.01. Our PV is zero, our Delta is zero.
 
 \justify
-Прошло время $dt = 1/252$ (один рабочий день). Цена акции изменилась. Сколько мы потеряли или заработали на нашей дельта-нейтральной позиции?
+One business day has passed ($dt = 1/252$). Stock price has changed. How much did we gain or lose on our delta-neutral position?
 \end{frame}
 
 
 
-\begin{frame}{Гамма и тета: пример}
+\begin{frame}{Gamma and Theta: an example - 2}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-	height = \textheight,
+	height = \textheight-1cm,
 	xmin = 96, xmax = 104,
 	ymin = -0.3, ymax = 0.05,
 	grid = major,
-	xlabel = {Цена акции завтра ($S$)},
-	ylabel = {PV позиции, доллары},
+	xlabel = {Stock price tomorrow ($S$)},
+	ylabel = {Portfolio PV, \$},
 	y tick label style={
         /pgf/number format/.cd,
             fixed,
@@ -1123,52 +1120,47 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 
 
 
-\begin{frame}{Гамма и вега}
+\begin{frame}{Gamma and Vega}
 \justify
-В модели Блэка-Шоулза гамма и вега отличаются на константный множитель.
+In the Black-Scholes model Gamma and Vega differ by a constant multiplier.
 \begin{align*}
 \Gamma &= \frac{e^{-qT}N'(d_1)}{S\sigma\sqrt{T}} \\
 \mathcal{V} &= Se^{-qT}\sqrt{T}N'(d_1)
 \end{align*}
 
 \justify
-В некотором смысле обе производные показывают нашу зависимость от разброса будущих значений $S$.
+In some sense, both derivatives measure our sensitivity to the variance of the future value of $S$.
 
 \justify
-Гамма --- главный риск для коротких опционов ($\sqrt{T}$ в знаменателе), вега --- для длинных ($\sqrt{T}$ в числителе). 
+Gamma is major risk for short-dated options ($\sqrt{T}$ in the denominator), Vega is major risk for long-dated options ($\sqrt{T}$ in the numerator). 
 \end{frame}
 
 
 
-\begin{frame}{Дельта-хеджирование волатильность}
+\begin{frame}{Delta-hedging and volatility}
 
 \justify
-Рассмотрим акцию, которая не платит дивидендов, стоит $S_0=\$100$ и следует 
-геометрическому броуновскому движению с трендом $\mu=5\%$ и волатильностью
-$\sigma=20\%$. Безрисковая ставка $r=0\%$.
+Consider a non-dividend paying stock. Its current price is $S_0=\$100$. The stock price follows a geometric Brownian motion with trend $\mu=5\%$ and volatility $\sigma=20\%$. Risk-free rate is $r=0\%$.
 
 \justify
-Рассмотрим европейский колл-опцион со страйком $K=100$, сроком исполнения $T=1$ год. 
-Представим, что нам не удалось его купить на рынке и мы занимаемся динамической 
-репликацией.
+Consider a European call option at strike $K=100$ that expires in $T=1$ year. Imagine that we were unable to buy this option in the market, so we have to replicate it dynamically ourselves.
 
 \justify
-Предположим, что сейчас у нас на счету есть $\$7.97$, и мы можем 
-перебалансировать портфель $N=4\cdot365$ раз в год.
+Suppose that we have $\$7.97$ in  a bank account today. We are allowed to rebalance our replicating portfolio $N=4 \cdot 365$ times a year (4 times a day).
 
 \end{frame}
 
 
 
 
-\begin{frame}{Дельта-хеджирование и волатильность}
+\begin{frame}{Delta-hedging and volatility - 2}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
 	width = \textwidth,
 	height = \textheight - 0.5cm,
-	xlabel = {Цена базового актива через $T=1$ год ($S_T$)},
-	ylabel = {Цена портфеля},
+	xlabel = {Underlying asset price in$T=1$ year ($S_T$)},
+	ylabel = {Portfolio value},
 	xmin = 70, xmax = 130,
 	ymin = -5, ymax = 30,
 	grid = major,
@@ -1186,26 +1178,25 @@ $\sigma=20\%$. Безрисковая ставка $r=0\%$.
 
 
 
-\begin{frame}{Дельта-хеджирование и волатильность}
+\begin{frame}{Delta-hedging and volatility - 3}
 \justify
-Как мы считаем $\Delta$ для хеджа? Из формулы Блэка-Шоулза. Но в ней участвует 
-\alert{implied} волатильность! Вдруг реализованная волатильность окажется выше?
+How do we compute $\Delta$ for our hedge? From the Black-Scholes formula. But the formula depends on 
+\alert{implied} volatility! What if \alert{realized} volatility will turn out to be higher?
 
 \justify
-Предположим, что на каждом шаге волатильность броуновском движении оказывается $\sigma_{realized}=25\%$. Мы не знаем этого заранее, поэтому подбираем размер хеджа,
-исходя из $\sigma_{implied}=20\%$. 
+Suppose that a every time step realized volatility of the Brownian motion turns out to be $\sigma_{realized}=25\%$. We do not know this in advance, so we pick the hedge size assuming $\sigma_{implied}=20\%$. 
 \end{frame}
 
 
 
-\begin{frame}{Дельта-хеджирование и волатильность}
+\begin{frame}{Delta-hedging and volatility - 4}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
 	width = \textwidth,
 	height = \textheight - 0.5cm,
-	xlabel = {Цена базового актива через $T=1$ год ($S_T$)},
-	ylabel = {Цена портфеля},
+	xlabel = {Underlying asset price in $T=1$ year ($S_T$)},
+	ylabel = {Portfolio value},
 	xmin = 70, xmax = 130,
 	ymin = -5, ymax = 30,
 	grid = major,
@@ -1226,20 +1217,15 @@ $\sigma=20\%$. Безрисковая ставка $r=0\%$.
 
 
 
-\begin{frame}{Заключение}
+\begin{frame}{Conclusion}
 \justify
-Можно считать, что премия за опцион --- ожидаемая рынком прибыль по гамме (сколько в 
-сумме заработает владелец опциона, если будет его дельта-хеджировать). С другой 
-стороны, премия за опцион --- компенсация потерь продавца (он будет терять деньги на дельта-хеджировании).
+One can consider the option premium as the market's expectation of the profit through Gamma (how much the option holder will earn in total if they delta-hedge). On the other hand, the option premium compensates for the seller's losses (they will lose money on delta-hedging).
 
 \justify
-Если реализовавшаяся волатильность окажется выше, чем \en{implied}, то продавец опциона
-потеряет деньги на хеджировании, а покупатель --- заработает.
+If the realized volatility turns out to be higher than implied, the option seller will lose money on hedging, while the buyer will profit.
 
 \justify
-В среднем, на длинной дистанции, выгоднее скорее продавать гамму (продавать опционы, то
-есть продавать остальным страховку от кризиса). Иногда такая стратегия даёт сбой: 
-движение рынка такое сильное, что потери на гамме превосходят полученную премию. 
+On average, in the long run, it is more profitable to be selling Gamma (sell options, essentially selling crisis insurance to others). Sometimes this strategy fails: the market movement is so large that the losses on Gamma exceed the received premium.
 \end{frame}
 
 \end{document}
