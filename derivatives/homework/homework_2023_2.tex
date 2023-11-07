@@ -1,0 +1,77 @@
+\documentclass[a4paper,14pt]{extarticle}
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf			
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage[english]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage[hyphens]{url}
+\urlstyle{same}
+\usepackage{hyperref}
+
+\usepackage{libertine}
+\usepackage{libertinust1math}
+
+\begin{document}
+
+\section{Vanilla Put}
+
+Consider a one-step binomial model. Each step in the tree represents 1 month ($\tau = 1/12$ years). A non-dividend paying stock is currently priced at $S=\$100$. The stock price can either increase by a factor of $u = 1.2$ or decrease by a factor of $d = 0.8$. Risk-free interest rate is $r = 0\%$. What is fair value of 1 month European put option at strike $K = 95$? Suppose that such an option is priced at \$5 in the market. Present an arbitrage strategy that allows you to profit from the market's mispricing.
+
+\section{Digital Put}
+
+A non-dividend paying stock is priced at $S = \$200$. Volatility of the stock price in the Black-Scholes model is $\sigma = 40\%$. Risk-free interest rate is $r = 3\%$ per annum (continuous compounding). Find fair value of a digital put option that pays out $N = \$1\,000$ in $T = 0.25$ years if the stock price ends up lower than the strike $K = \$90$.
+
+\section{Collar}
+
+A collar is a combination of a sold European vanilla put at strike $K_1$ and a bought European vanilla call at strike $K_2$, where $K_1 < K_2$. Some companies use this structure to hedge against exchange rate increases, and yet have more flexibility than in a forward contract.
+
+In $T=1$ year a Japanese automotive company will need $N=\$10\,000\,000$ to pay its chip suppliers. Current USDJPY spot rate is $S=130$ (130 yen per 1 dollar). Risk-free rates are $r=0\%$ for the yen and $q=3\%$ for the dollar (both rates are continuously compounded). The company wants protection against the yen weakening to $K_2 = 150$ or worse, i.e., the right to buy dollars at $K_2=150$. Assume that we live in the Black-Scholes world, and volatility of the USDJPY pair is $\sigma=10\%$. How many yen the company would have to pay for an option which would provide this protection?
+
+Suppose that the company is not willing to pay a premium for the option but is ready to give up a portion of the profit in a scenario where the yen appreciates significantly. In other words, the company is willing to sell a put at a strike that we specify. Using trial and error method, find (with an accuracy of 0.1 yen) the strike $K_1$ for this put, so that the premium for this put is equal to the premium for the call at strike $K_2=150$. Now the company can sell the put and buy the call, and the overall cost of the hedge will be zero.
+
+\section{American Put}
+
+Consider a three-step binomial model. Each step is 3 months ($\tau=0.25$ years). A stock that pays no dividends is currently priced at $S=\$500$. Risk-free interest rate is $r=3\%$ per annum (simple interest without compounding). At each step, the stock can either increase by a factor of $u=1.2$ or decrease by a factor of $d=0.8$. What is the value of an American put option with a strike of $K=\$500$ and an expiration date in 9 months (at the third step of the tree)? Additionally, calculate the option's Delta at each node of the tree.
+
+Under what circumstances does it become advantageous to exercise the put option early? Will the answer change if the interest rate is 0\% or negative?
+
+
+\section{European Barrier}
+
+A European Knock-In Put (EKI Put) is a type of European put option that earns money if the underlying asset price at expiration is significantly below the strike, but is worthless if the price is just slightly below the strike.
+
+
+Formally, if $S_T$ is the underlying asset price at expiration, $K$ is the strike, and $B$ is the barrier $(B < K)$, then the option payoff $P$ is given by
+\begin{align*}
+P = \begin{cases}
+0, S_T \ge B \\
+K - S_T, S_T < B
+\end{cases}
+\end{align*}
+
+Devise a  strategy to replicate a European Knock-In Put using a combination of European vanilla and/or digital options.
+
+In the Black-Scholes model the underlying asset price is \$100, the asset pays no dividends, risk-free interest rate is 2\%, and volatility is 20\%. What is the price of the European Knock-In Put (EKI) with a strike of 100, a barrier of 90, and an expiration in $T=0.5$ years? How much cheaper is the EKI compared to a regular European vanilla put?
+
+\section{Structured Note with a Jackpot}
+
+A structured note with a jackpot works as follows.
+
+Let's assume that I invest $N=\$100\,000$ for a year in a note that is linked to S\&P\,500 index. Current index level is $S=\$4\,000$. If
+the index will be lower in a year than it is today, then I don't receive any cash back. Instead, I receive "shares"\ of the index,
+with the purchase price equal to today's price (my \$100\,000 will be automatically converted into 25 "shares"\ of the
+index). I will thus become a long-term investor (irony intended).
+
+If the index will slightly grow in a year and will end up above today's level $S=\$4\,000$ but below the cutoff level $K=\$4\,500$, I will get back the invested capital without any interest and without losses. However, if the index will end up at $K=\$4\,500$ or higher, I will  get back the capital of \$100\,000 and the jackpot of $X$ dollars. This $X$ is a contract parameter that you need to calculate.
+
+Replicate this structured note using European vanilla and/or digital options, as well as a
+deposit at the risk-free rate. Let's assume we live in the Black-Scholes world. Currently, the index is at $S=\$4\,000$,
+risk-free rate is $r=4\%$ (continuous compounding), dividend yield of the index is $q=2\%$ (continuous
+compounding), and volatility is $\sigma=20\%$. What could be a fair jackpot amount $X$ for a note with a term of $T=1$ year?
+
+
+\end{document}
