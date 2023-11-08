@@ -51,3 +51,8 @@ Homework 1. [Problems](https://artem-bakulin.github.io/latex/courses/derivatives
 3\. [Options and the Binomial Model](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/03-options-and-binomial-model/)
 
 4\. [Black-Scholes Model](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/04-black-scholes-model/)
+
+Homework 2. [Problems](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/homework/02-problems) \| [Solutions in Excel](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/homework/02-solutions)
+
+5\. [Present Value, Risk and Greeks](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/05-present-value-risk-and-greeks/) \| [Excel Example: Parametric Volatility](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/05-parametric-volatility-example/)
+
