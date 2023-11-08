@@ -60,10 +60,10 @@
 
 \begin{frame}{Present value}
 \justify
-\alert{Present value (PV)} of payment of $N$ dollars in $T$ years is the amount which market participants would be willing to pay to be entitled for this payment.
+\alert{Present value (PV)} of a payment of $N$ dollars in $T$ years is the amount which market participants would be willing to pay to be entitled for this payment.
 
 \justify
-\alert{Present value} of a derivative or a portfolio of derivatives is the amount that market participants would hypothetically be willing to pay for these trades or the portfolio. How much would they pay us if we were to erase our name from all contracts and replace it with the buyer's name?
+\alert{Present value} of a derivative or a portfolio of derivatives is the amount which market participants would hypothetically be willing to pay for this trade or the portfolio. How much would they pay us if we were to erase our name from all contracts and replace it with the buyer's name?
 
 \end{frame}
 
@@ -71,7 +71,7 @@
 
 \begin{frame}{Derivatives and IFRS}
 \justify
-From the financial report of a major German Frankfurt-based investment bank:
+Recent quarterly report by a major Frankfurt-based investment bank:
 
 \justify
 Assets (billions):
@@ -91,7 +91,7 @@ According to IFRS, the change in the present value (PV) of the derivative portfo
 
 \begin{frame}{Present value of a spot trade}
 \justify
-We have bought $N=1\,000\,000$ of EURUSD spot at the rate of $S_0 = 1.05$. Current market rate is $S=1.06$. What is our PV PV?
+We have bought $N=1\,000\,000$ of EURUSD spot at the rate of $S_0 = 1.05$. Current market rate is $S=1.06$. What is our PV?
 
 \justify
 \centering
@@ -118,7 +118,7 @@ Calculating the present value (PV) from market prices (in this case, the spot ra
 
 \begin{frame}{Present value of a spot trade - 2}
 \justify
-We have bought $N=1\,000\,000$ of EURUSD spot at the rate of $S_0 = 1.05$. Current market rate is $S=1.06$. What is our PV PV?
+We have bought $N=1\,000\,000$ of EURUSD spot at the rate of $S_0 = 1.05$. Current market rate is $S=1.06$. What is our PV?
 
 \justify
 \centering
@@ -164,12 +164,12 @@ Total PV      &      $-9\,434$ & $0$
 
 
 
-\begin{frame}{Present value and market spread}
+\begin{frame}{Present value and market spread - 2}
 \justify
-Can all market participants be required to calculate PV and profit, taking into account the bid/ask spread? No, because in that case, a newly executed deal would be unprofitable for both parties.
+Can all market participants be required to take the bid/ask spread into account when calculating PV and profit or loss? No, because in that case, a newly executed deal would be unprofitable for both parties.
 
 \justify
-Usually, PV is calculated either from the "fair" mid price between the bid and the ask prices or from the price of the last deal on the market.
+Usually, PV is calculated either from the "fair" mid price between the bid and the ask or from the price of the last deal on the market.
 
 \justify
 Implication: if the transaction occurred at the mid price between the bid and the ask, then its PV is zero.
@@ -177,12 +177,12 @@ Implication: if the transaction occurred at the mid price between the bid and th
 
 
 
-\begin{frame}{Presetn value}
+\begin{frame}{Present value}
 \justify
-We sold a call option to the client for a premium of 100 euros. Similar options are priced at 90 euros on the market. We know this because it is either a liquid option, or the calibrated model informed us of such prices based on market prices of other options
+We sold a call option to the client for a premium of 100 euros. Similar options are priced at 90 euros on the market. We know this because it is either a liquid option, or the calibrated model interpolated this price from market prices of other options
 
 \justify
-The PV of our position is $+10$ euro.
+PV of our position is $+10$ euro.
 \begin{itemize}
 \item Sold option: $-90$ euro.
 \item Received premium: $+100$ euro.
@@ -222,7 +222,7 @@ You cannot earn anything more than the risk-free interest rate if you don't take
 \alert{Market risk} is the possibility that our present value (PV) will change (upward or downward) due to changes in market prices.
 
 \justify
-How could we  measure market risk? The standard approach is to calculate the sensitivities of present value (PV) to changes in market variables. By how much will the PV of the portfolio change if the price of Brent futures increases by \$1?
+How could we  measure market risk? The standard approach is to calculate sensitivities of present value (PV) to changes in market variables. By how much will the PV of the portfolio change if the price of Brent futures increases by \$1?
 
 \justify
 There are standard sensitivities or the Greeks:
@@ -231,7 +231,7 @@ There are standard sensitivities or the Greeks:
 \item Vega ($\mathcal{V}$) is sensitivity to implied volatility.
 \item Rho ($\rho$) is sensitivity to interest rates.
 \item Theta ($\Theta$) is sensitivity to the passage of time.
-\item Gamma ($\Gamma$) is sensitivity of the Delta to the underlying asset price.
+\item Gamma ($\Gamma$) is sensitivity of Delta to the underlying asset price.
 \end{itemize}
 \end{frame}
 
@@ -239,7 +239,7 @@ There are standard sensitivities or the Greeks:
 
 \begin{frame}{Delta}
 \justify
-Delta is the sensitivity of the present value of the portfolio $V$ to changes in the price of the underlying asset (for example, the spot rate of the currency) S$.$
+Delta is sensitivity of the portfolio present value $V$ to changes in the price of the underlying asset (for example, the currency spot rate) S$.$
 \begin{align*}
 \Delta = \frac{\partial V}{\partial S}
 \end{align*}
@@ -271,7 +271,7 @@ V = N - N\frac{S_0}{S} \quad \Rightarrow \quad \Delta(S) = \frac{\partial V}{\pa
 \end{align*}
 
 \justify
-Suppose that spot rate has not moved after the trade yet, i.e. $S_0=S$:
+Suppose that spot rate has not moved after the trade yet, $S_0=S$:
 \begin{align*}
 \Delta(S_0) = N\frac{S_0}{S_0^2} = \frac{N}{S_0}
 \end{align*}
@@ -293,7 +293,7 @@ In the Black-Scholes model, Delta of a vanilla call option at strike $K$ expirin
 \end{align*}
 
 \justify
-If we have a complex option pricing model for which an analytical formula cannot be derived, Delta can be estimated numerically as the finite difference:
+If we have a complex option pricing model for which an analytical formula cannot be derived, Delta can be estimated numerically as finite difference:
 \begin{align*}
 \Delta \approx \frac{C(S+\delta,...) - C(S,...)}{\delta} \approx \frac{C(S+\delta,...) - C(S-\delta,...)}{2\delta}
 \end{align*}
@@ -513,19 +513,19 @@ What happens to the volatility smile when the price of the underlying asset incr
 
 \begin{frame}{Delta and strikes - 2}
 \justify
-Since the volatility smile may follows spot movements, it is necessary to negotiate deals quickly. Currently, a strike of \$100 corresponds to volatility of 20\%. In a minute it may have volatility of 22\% due to change in the spot price.
+Since the volatility smile may follow spot movements, it is necessary to negotiate deals quickly. Currently, a strike of \$100 corresponds to volatility of 20\%. In a minute it may have volatility of 22\% due to change in the spot price.
 
 \justify
 In the over-the-counter market, it is customary to operate with the following strikes, which are tied to deltas:
 \begin{itemize}
 \item DN (delta neutral) is a strike $K_{DN}$ at which the straddle of a call and a put has a Delta of 0.
 \item 25C is a strike $K_{25C}$ at which the call has a delta of 0.25.
-\item 25P is a strike $K_{25C}$ at which the put has a delta of $-0.25$.
+\item 25P is a strike $K_{25P}$ at which the put has a delta of $-0.25$.
 \item 10C, 10P are similar to 25C and 25P.
 \end{itemize}
 
 \justify
-Empirically, the implied volatility of such strikes is more stable (sticky delta effect).
+Empirically, the implied volatility of such strikes may be more stable (sticky delta effect).
 \end{frame}
 
 
@@ -572,7 +572,7 @@ Empirically, the implied volatility of such strikes is more stable (sticky delta
 
 
 
-\begin{frame}{Parameterization of the volatility smile}
+\begin{frame}{Parametrization of the volatility smile}
 \justify
 Volatilities of options at strikes 10P, 25P, DN, 25C, and 10C describe the shape of the volatility smile well. However, there is an inconvenience. When the market volatility increases, all five volatilities increase more or less uniformly ("a rising tide lifts all boats").
 
@@ -589,12 +589,12 @@ Volatilities of options at strikes 10P, 25P, DN, 25C, and 10C describe the shape
 \end{align*}
 
 \justify
-The formulas for RR and FLY resemble the first and second derivative.
+RR and FLY formulas resemble the first and the second derivative.
 \end{frame}
 
 
 
-\begin{frame}{Parameterization of the volatility smile - 2}
+\begin{frame}{Parametrization of the volatility smile - 2}
 \justify
 Volatility of the DN straddle sets the overall level of the smile. Higher $\sigma_{DN}$, the higher the dispersion of the distribution of the underlying asset price.
 
@@ -634,7 +634,7 @@ Volatility of the DN straddle sets the overall level of the smile. Higher $\sigm
 
 
 
-\begin{frame}{Parameterization of the volatility smile - 3}
+\begin{frame}{Parametrization of the volatility smile - 3}
 \justify
 Risk reversal sets the slope of the smile or the skewness of the underlying asset's distribution to the left or right.
 
@@ -684,7 +684,7 @@ Risk reversal sets the slope of the smile or the skewness of the underlying asse
 
 
 
-\begin{frame}{Parameterization of the volatility smile - 4}
+\begin{frame}{Parametrization of the volatility smile - 4}
 \justify
 The butterfly sets the concavity of the smile or the fatness of the tails of the underlying asset's distribution.
 
@@ -737,7 +737,7 @@ Market volatility surface consists of DN, RR and FLY quotes for different terms.
 \justify
 \centering
 \begin{tabular}{l|r|r|r|r|r}
-Срок & DN     & RR25   & RR10   & FLY25  & FLY10  \\ \hline
+Term & DN     & RR25   & RR10   & FLY25  & FLY10  \\ \hline
 1M   & 6.00\% & 0.50\% & 0.90\% & 0.25\% & 0.70\% \\
 2M   & 6.40\% & 0.60\% & 1.10\% & 0.30\% & 0.70\% \\
 3M   & 6.50\% & 0.65\% & 1.15\% & 0.30\% & 0.75\% 
@@ -747,7 +747,7 @@ Market volatility surface consists of DN, RR and FLY quotes for different terms.
 This is the observed reality. Next, we need to calibrate a model, such as SABR. We tune the internal parameters so that the model produces the same prices for DN, RR, and FLY.
 
 \justify
-If we succeed in this, then we can hope that the model will provide reasonable prices not only for liquid vanilla options but also for more complex and less liquid products, the prices of which we do not observe.
+If we succeed in this, then we can hope that the model will provide reasonable prices not only for liquid vanilla options but also for more complex and less liquid products, whose prices are not observable.
 \end{frame}
 
 
@@ -760,7 +760,7 @@ Suppose that a magic function $f$ picks the SABR parameters to reprice the marke
 \end{align*}
 
 \justify
-We also have a numerical procedure compute PV ($V$) of our portfolio using the SABR model. Lets call it a function $g$.
+We also have a numerical procedure to compute PV ($V$) of our portfolio using the SABR model. Lets call it a function $g$.
 \begin{align*}
 V = g(\alpha, \beta, \rho) = g\Big(f(\sigma_{1M,DN}, \sigma_{1M,RR25}, ..., \sigma_{3M,FLY10})\Big)
 \end{align*}
@@ -917,7 +917,7 @@ Theta of a call option in the Black-Scholes model:
 
 \begin{frame}{Gamma}
 \justify
-\alert{Gamma} is the sensitivity of the Delta to the underlying asset price. This is the second derivative of PV w.r.t. underlying asset price.
+\alert{Gamma} is sensitivity of the Delta to the underlying asset price. This is the second derivative of PV w.r.t. underlying asset price.
 \begin{align*}
 \Gamma = \frac{\partial V^2}{\partial^2 S} = \frac{\partial \Delta}{\partial S}
 \end{align*}
@@ -937,7 +937,7 @@ In the Black-Scholes model Gamma of a put is equal to Gamma of a call:
 
 \begin{frame}{Gamma and delta-hedging}
 \justify
-Gamma reflects the concavity of the function. The more concave the function, the greater the losses from imperfect hedging.
+Gamma reflects concavity of the price function. The more concave the function, the greater the losses from imperfect hedging.
 
 \centering
 \begin{tikzpicture}
@@ -1057,7 +1057,7 @@ Gamma reflects the concavity of the function. The more concave the function, the
 
 \begin{frame}{Gamma and Theta}
 \justify
-Consider a portfolio of an option and the underlying asset. In the Black-Scholes model portfolio value $V$ satisfies the following condition:
+Consider a portfolio of an option and its underlying asset. In the Black-Scholes model portfolio value $V$ satisfies the following condition:
 \begin{align*}
 \frac{\partial V}{\partial t} + rS\frac{\partial V}{\partial S} + \frac{1}{2}\sigma^2S^2\frac{\partial^2 V}{\partial S^2} = rV
 \end{align*}
@@ -1219,7 +1219,7 @@ Suppose that a every time step realized volatility of the Brownian motion turns 
 
 \begin{frame}{Conclusion}
 \justify
-One can consider the option premium as the market's expectation of the profit through Gamma (how much the option holder will earn in total if they delta-hedge). On the other hand, the option premium compensates for the seller's losses (they will lose money on delta-hedging).
+One can consider an option premium as the market's expectation of the profit through Gamma (how much the option holder will earn in total if they delta-hedge). On the other hand, the option premium compensates for the seller's losses (they will lose money on delta-hedging).
 
 \justify
 If the realized volatility turns out to be higher than implied, the option seller will lose money on hedging, while the buyer will profit.
