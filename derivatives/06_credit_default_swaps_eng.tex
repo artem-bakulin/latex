@@ -910,24 +910,23 @@ The lecturer will prefer to be risk-averse and to buy the insurance. Hypothetica
 
 
 
-\begin{frame}{Риск-нейтральная и реальная вероятности}
+\begin{frame}{Risk-neutral and real-world probabilities - 2}
 \justify
-Люди, принимающие инвестиционные решения, избегают риска (являются risk-averse), и это влияет на рынок облигаций и CDS.
+People who are making investment decisions tend to be risk-averse, and this impacts the bond and CDS market.
 
 \justify
-Покупателей рискованных облигаций не устраивает математическое ожидание доходности, равное доходности безрисковых бумаг. Они требуют премию за риск (risk premium), которая компенсирует дискомфорт от рискованной инвестиции. Выше доходность --- ниже цена облигаций.
+Those buying risky bonds are not satisfied with the expected rate of return equal to the return on risk-free bonds. They demand a risk premium that compensates for the discomfort of a risky investment. Risky bonds have to be cheaper and their yields have to be higher.
 
 \justify
-Покупатели CDS боятся потерь от дефолта, поэтому они готовы платить бОльшую премию за страховку, чем сферические риск-нейтральные инвесторы. Больше спрос --- выше цена CDS.
+Buyers of CDS fear losses during a default, so they are willing to pay more for the insurance than theoretical risk-neutral investors. Higher demand leads to higher CDS prices.
+
 \end{frame}
 
 
 
-\begin{frame}{Премия за кредитный риск - 1}
+\begin{frame}{Credit risk premium - 1}
 \justify
-Премия за кредитный риск (\en{credit premium}) компенсирует инвесторам душевные страдания от потерь при дефолтах по облигациям. Рискованные облигации должны
-давать доходность, которая не только компенсирует мат. ожидание потерь от
-дефолтов, но и даёт премию за риск.
+\alert{Credit risk premium} compensates investors for the emotional distress caused by losses in bond defaults. Risky bonds should yield a return that not only compensates for the expected losses from defaults but also provides a risk premium.
 
 \justify
 \centering
@@ -938,19 +937,17 @@ AAA    & AA     & A      & BBB    & CCC \\ \hline
 
 \justify
 \centering
-{\scriptsize Избыточная доходность корпоративных облигаций сверх гос. 
-облигаций, 1987--2011. Данные: \en{Ang (2014)}.}
+{\scriptsize Excess return of corporate bonds relative to government bonds, 1987--2011.
+
+Data: Ang (2014).}
 
 \justify
-Следствие. Если вам предлагают еврооблигации ООО <<Рога и копыта>> с 
-доходностью 10\% в долларах, то помните, что лишь 1\% --- это премия за риск,
-которую вы заработаете в мат. ожидании, а 9\% компенсируют ожидаемые
-потери при дефолте.
+If you are promised 10\% yield in Acme LLC's bonds, remember that probably just 1\% is a risk premium that you will retain on average. The rest 9\% compensate for expected losses in the event of default.
 \end{frame}
 
 
 
-\begin{frame}{Премия за кредитный риск - 2}
+\begin{frame}{Credit risk premium - 2}
 \centering
 \begin{tikzpicture}
 	\begin{axis}[
@@ -959,14 +956,14 @@ AAA    & AA     & A      & BBB    & CCC \\ \hline
 		date coordinates in = x,
 		xticklabel = {\year},
 		xtick = {1990-01-01, 1995-01-01, 2000-01-01, 2005-01-01, 2010-01-01, 2015-01-01, 2020-01-01},
-		ylabel = {\small Рост \$1 начальных инвестиций},
+		ylabel = {\small Growth of \$1 investment},
 		ylabel near ticks,
 		ymode = log,
 		log ticks with fixed point,
   		extra y ticks = {0.5, 2, 3, 4, 5},
  		extra y tick labels = {0.5, 2, 3, 4, 5},
 		xmin = 1986-10-31,
-		xmax = 2023-12-31,
+		xmax = 2024-12-31,
 		ymin = 0.9,
 		ymax = 16,
 		grid = both,
@@ -985,89 +982,87 @@ AAA    & AA     & A      & BBB    & CCC \\ \hline
 \end{tikzpicture}
 
 \centering
-\small Данные: Bank of America, St Louis Fed.
+\small Data: Bank of America, St Louis Fed.
 \end{frame}
 
 
 
-\begin{frame}{Риск-нейтральная и реальная вероятности}
+%\begin{frame}{Risk-neutral and real-world probabilities - 3}
+%\justify
+%In addition, we do not know which recovery rate market participants are embedding into prices. There are no liquid derivatives (such as recovery rate swaps) that would allow us separate recovery rate and default probability.
+
+%\justify
+%Does this mean that we cannot use our probabilities to price credit swaps? No!
+
+%\justify
+%Firstly, if we have liquid market instruments, then we can always hedge and eliminate uncertainty regarding the default probability.
+
+%\justify
+%Secondly, the CDS pricing formula only includes the product of (1-RecoveryRate) and the default probability. We rarely need to have them separately.
+%\end{frame}
+
+
+
+\begin{frame}{Pricing derivatives via replication}
 \justify
-Кроме того, мы не знаем, какую recovery rate участники рынка закладывают в цены. Не существует ликвидных деривативов (каких-нибудь recovery rate swap), которые позволяли бы разделить recovery rate и вероятность дефолта.
-
-\justify
-Означает ли это, что нельзя использовать наши вероятности для оценки CDS? Нет!
-
-\justify
-Во-первых, если у нас есть ликвидные рыночные инструменты, мы всегда можем захеджироваться и устранить неопределённость относительно вероятности дефолта.
-
-\justify
-Во-вторых, в формулу цены CDS входит только произведение (1-RecoveryRate) и вероятности, и нам почти никогда не нужно знать их по отдельности.
-\end{frame}
-
-
-
-\begin{frame}{Оценка деривативов через репликацию}
-\justify
-Вероятности дефолта и recovery rate нужны, чтобы подобрать правильную комбинацию 
-ингредиентов, которые повторяют кредитный дефолтный своп:
+Probability of default and recovery rate are necessary to pick the right combination of ingredients in a replicating portfolio that mimics a credit default swap.
 
 \justify
 \begin{itemize}
 \justifying
-\item Дать кому-то деньги в долг под залог корпоративной облигации.
-\item Продать облигацию на рынке.
-\item Купить безрисковую облигацию или заключить asset swap.
+\item Lend cash to someone at take a corporate bond as collateral.
+\item Sell the bond on the market.
+\item Buy a risk-free bond or enter an asset swap.
 \end{itemize}
 
 \justify
-Если модель помогает подобрать реплицирующий портфель, то не так важно, что она исходит из неверной оценки вероятности дефолта.
+If the model allows building a replicating portfolio, then it is not a tragedy that it relies on the "incorrect"\ implied probability of default.
 \end{frame}
 
 
 
-\begin{frame}{Риск-нейтральная вероятность и букмекеры}
+\begin{frame}{Risk-neutral probability and bookmakers}
 \justify
-Котировки букмекеров на матч <<Сити>> --- <<Бавария>> завтра:
+Bookmakers' odds for AC Milan vs Dortmund:
 
 \centering
 \begin{tabular}{c|c|c}
-<<Сити>> & Ничья & <<Бавария>> \\
-1.88 & 4.22 & 4.32
+AC Milan & Draw & Dortmund \\
+2.11 & 3.82 & 3.77
 \end{tabular}
 
 \justify
-Если коэффициент равен $k$, то $1/k$ --- <<вероятность>> события.
+If the odds are denoted by $k$, then $1/k$ is "probability"\ of an outcome.
 
 \centering
 \begin{tabular}{c|c|c}
-<<Сити>> & Ничья & <<Бавария>> \\
-53.1\% & 23.7\% & 23.2\%
+AC Milan & Draw & Dortmund \\
+47.3\% & 26.2\% & 26.5\%
 \end{tabular}
 
 \justify
-Допустим, всего азартные болельщики поставили \$100 миллионов, из них 23.7 --- на ничью. При 
-ничейном исходе победители заберут $\$23.7 \cdot 4.22 = \$100$ миллионов, то 
-есть весь банк.
+Suppose that gamblers have bet \$100 million, including \$26.2 for a draw. In case of a draw, the winners will collect $\$26.2 \cdot 3.82 = \$100$ million, i.e. they win the entire pool.
 
 \justify
-Нужно ли букмекеру стремиться к тому, чтобы коэффициенты отражали истинную вероятность реального мира? Нет! Ему важно, чтобы при любом исходе ставок проигравших хватило на выплаты победителям. Больше ставок на исход --- ниже коэффициент.
+Is the bookmaker concerned about making the odds reflect true real-world probability? No! Their priority is to ensure that the losing bets are sufficient to pay the winners, regardless of the outcome. More bets on an outcome result in lower odds and higher implied probability.
 \end{frame}
 
 
 
-\begin{frame}{Реформа рынка в 2009 г.}
+\begin{frame}{The reform of 2009}
 \justify
-В начале 2009 года регуляторы провели реформу рынка кредитных деривативов, чтобы избежать повторения кризиса 2008 года.
+At the beginning of 2009, regulators carried out a reform of the credit derivatives market to prevent a recurrence of the 2008 crisis
 
 \begin{itemize}
 \justifying
-\item Обязательный централизованный клиринг.
-\item 4 стандартных даты выплаты купонов: 20 марта, 20 июня, 20 сентября, 20 декабря.
-\item Фиксированные купоны либо по 1\% (облигации с высоким рейтингом), либо по 5\% (мусорные облигации).
+\item Mandatory centralized clearing.
+\item 4 standard coupon payment dates: March 20, June 20, September 20, December 20.
+\item Fixed coupons are either 1\% (investment-grade bonds) or 5\% (speculative bonds)..
 \end{itemize}
 
 \justify
-Все по-прежнему котируют CDS в терминах спреда (например, 2.40\%/2.41\%), но реальные купоны всё равно будут либо 1\%, либо 5\%. Одна из сторон сделки выплачивает другой сумму, рассчитанную по стандартной методологии, чтобы компенсировать разницу в купоне.
+CDS are still quoted in terms of spreads, e.g 2.40\%/2.41\%. However actual coupons will be either 1\% or 5\%. One of the parties pays the other an upfront payment that compensates for the difference between quoted coupon (2.40\%) and the fixed coupon (1\%).
+
 \end{frame}
 
 
