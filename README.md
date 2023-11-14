@@ -56,3 +56,4 @@ Homework 2. [Problems](https://artem-bakulin.github.io/latex/courses/derivatives
 
 5\. [Present Value, Risk and Greeks](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/05-present-value-risk-and-greeks/) \| [Excel Example: Parametric Volatility](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/05-parametric-volatility-example/)
 
+6\. [Credit Default Swaps](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/06-credit-default-swaps/) \| [Excel Example: CDS](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/06-credit-default-swap-example/)
