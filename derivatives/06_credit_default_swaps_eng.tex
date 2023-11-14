@@ -3,7 +3,7 @@
 \usepackage{cmap}				% To be able to copy-paste russian text from pdf
 \usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[russian]{babel}
+\usepackage[english]{babel}
 \usepackage{textpos}
 \usepackage{ragged2e}
 \usepackage{amssymb}
@@ -252,13 +252,13 @@ We have a view that creditworthiness of a reference entity will deteriorate in f
 \end{itemize}
 
 \justify
-Do you have to own a bond  to buy a CDS? No! This position would be called a naked CDS.
+Do you have to own a bond  to buy a CDS? No! This position would be called a naked CDS (*).
 
 \justify
 A small bank could be selling credit default swaps to diversify its credit portfolio. It could "make loans"\ to companies (reference entities) that would never speak to this bank otherwise.
 
 \justify
-The EU regulation prohibits naked CDS in case reference entity is one of the EU governments.
+(*) The EU regulation prohibits naked CDS in case reference entity is one of the EU governments.
 \end{frame}
 
 
@@ -378,7 +378,7 @@ Rule of thumb: 40\%.
 
 \begin{frame}{Credit rating}
 \justify
-Why don't we check credit rating to estimate probability of default? This is S\&P\,500 scale (best to worst):
+Why don't we check credit rating to estimate probability of default? This is Standard \& Poor's scale (best to worst):
 \begin{align*}
 \text{Investment-grade}
 \small
@@ -417,14 +417,14 @@ Why don't we check credit rating to estimate probability of default? This is S\&
 
 \begin{frame}{Credit-rating - 2}
 \justify
-Credit ratings reflect relative riskiness rather than absolute probability.
+Ratings reflect relative riskiness rather than absolute probability.
 
 \justify
 \centering
 \begin{tikzpicture}
 	\begin{axis}[
 		width = \textwidth,
-		height = \textheight - 1.25cm,
+		height = \textheight - 1.5cm,
 		ymin = 0,
 		ymax = 13,
 		xmin = 1981,
@@ -457,7 +457,7 @@ Credit ratings reflect relative riskiness rather than absolute probability.
 A risk-free zero-coupon government bond that matures in 1 year is priced at $G=98\%$ of its face value. If you invest \$980 today you receive \$1\,000 in a year. Rate of return is $\$1\,000 / \$980 - 1 \approx 2.04\%$.
 
 \justify
-A corporate bond of the same maturity is priced at $C=95\%$ of its face value. If you invest\$950 today, you receive \$1\,000 in a year (in case there is no default). Rate of return is $\$1\,000 / \$950 - 1 \approx 5.3\%$.
+A corporate bond of the same maturity is priced at $C=95\%$ of its face value. If you invest \$950 today, you receive \$1\,000 in a year (in case there is no default). Rate of return is $\$1\,000 / \$950 - 1 \approx 5.3\%$.
 
 \justify
 Why do market participants value the corporate bond less, i.e. demand higher rate of return?
@@ -473,7 +473,7 @@ Suppose that the recovery rate in case of default is $R=40\%$. You invest \$950 
 Government bond is worth $G=98\%$ of its face value, corporate bond is worth $C=95\%$, recovery rate in case of default is $R=40\%$.
 
 \justify
-Which default probability $p$ equalizes the two expected rates of return?
+Which default probability $p$ equalizes two expected rates of return?
 
 \justify
 \centering
@@ -560,7 +560,7 @@ S(T) &= \mathbb{P}(\xi \ge T) = 1 - D(T)
 Suppose we are flipping a coin. Probability of Tails outcome is $p$ (usually it is close to 50\%). We continue flipping the coin until the first Tails outcome (a default). We are interested in a random variable $\xi$ which is the number or Heads until the first Tails (years without a default).
 
 \justify
-What is probability that that the first Tail will occur after the $n$-th trial (i.e. we get at least $n$ Heads in a row)?
+What is probability that the first Tail will occur not sooner than in the $n$-th trial (i.e. we get at least $n$ Heads in a row)?
 \begin{align*}
 \mathbb{P}(\xi \ge n) = S(n) = (1 - p)^{n}
 \end{align*}
@@ -860,7 +860,7 @@ Substitute $R = 0.4$ and $\lambda = 0.02$:
 Probability that the reference entity will survive for 1 year is $S(1) = e^{-\lambda \cdot 1} \approx 1 - \lambda = 0.98$.
 
 \justify
-Probability of the default during 1 year is $\approx 2\%$. If the default happens you lose $1 - R = 0.6$ or $60\%$.
+Probability of a default during 1 year is $\approx 2\%$. If the default happens you lose $1 - R = 0.6$ or $60\%$.
 
 \justify
 How much would you pay for insurance, if you know that the credit event will happen with probability of 2\% and will cost you 60\% of the invested capital? Certainly, $2\% \cdot 60\% = 1.2\%$! 
@@ -1067,29 +1067,29 @@ CDS are still quoted in terms of spreads, e.g 2.40\%/2.41\%. However actual coup
 
 
 
-\begin{frame}{Базис CDS-Bond}
+\begin{frame}{CDS-Bond basis}
 \justify
-На идеальном сферическом рынке в вакууме не должно быть разницы между двумя стратегиями
+If we had an ideal liquid market, these two strategies would be equivalent.
 \begin{itemize}
 \justifying
-\item Купить рискованную облигацию с доходностью 5\% и CDS с купоном 3\%.
-\item Купить безрисковую облигацию с доходностью 2\%.
+\item Buy a risky bond yielding 5\% and buy a CDS at 3\%.
+\item Buy a risk-free bond yielding 2\%.
 \end{itemize}
 
 \justify
-На практике наблюдается ненулевой CDS-Bond basis:
+In practice, there is non-zero CDS-Bond basis:
 \begin{align*}
 \text{CDS Basis} = \text{CDS} - \text{Z-spread}
 \end{align*}
 
 \justify
-Некоторые факторы, которые влияют на базис:
+Some factors that affect the basis:
 \begin{itemize}
 \justifying
-\item Ликвидность.
-\item Несовпадение купонов.
-\item Накопленный купон на момент дефолта.
-\item Встроенные в облигацию опционы.
+\item Liquidity.
+\item Coupons are not perfectly matched.
+\item Coupon that accrued by the time of default.
+\item Options that are embedded into bonds.
 \end{itemize}
 \end{frame}
 
@@ -1097,53 +1097,50 @@ CDS are still quoted in terms of spreads, e.g 2.40\%/2.41\%. However actual coup
 
 \begin{frame}{Wrong Way CDS}
 \justify
-Что бы Вы сказали о следующих сделках?
+What would you tell about these trades
 \begin{itemize}
-\item Купить CDS на Германию у Deutsche Bank.
-\item Купить CDS на Deutsche Bank у сегодняшнего лектора.
+\item Buy a CDS referencing Germany from Deutsche Bank.
+\item Buy a CDS referencing Deutsche Bank from your lecturer.
 \end{itemize}
 
 \justify
-Страховка надёжна ровно настолько, насколько надёжен её продавец, который тоже может разориться. Важно, чтобы дефолт референсного эмитента не имел корреляции с дефолтом продавца страховки.
+Any insurance is reliable to the extent that its seller is reliable. It makes sense to ensure that there is no correlation between creditworthiness of the reference entity and the CDS seller.
 
 \justify
-Загадка: кто и у кого покупает CDS на гос. долг США?
+Puzzle: who is buying U.S. government CDS and who is selling them?
 \end{frame}
 
 
 
-\begin{frame}{Если всего этого мало}
+\begin{frame}{If this is not enough}
 \justify
-Индексный кредитный своп:
+Index credit default swap:
 \begin{itemize}
-\item 100 компаний-заемщиков.
-\item Начальный номинал \$10\,000\,000.
-\item При дефолте каждой компании номинал (и купон) уменьшается на \$100\,000.
+\item 100 reference entities.
+\item Initial notional amount is \$10\,000\,000.
+\item After each individual default the seller pays \$100\,000 to the buyer (and subsequent coupon payments are reduced).
 \end{itemize}
 
 Nth-to-default CDS:
 \begin{itemize}
-\item 100 компаний-заёмщиков
-\item Начальный номинал \$10\,000\,000.
-\item После первых $N$ дефолтов выплачивается полный номинал.
+\item 100 reference entities.
+\item Notional amount is \$10\,000\,000.
+\item After the first $N$ default the seller pays full notional amount to the buyer.
 \end{itemize}
-Оценка зависит не только от вероятностей дефолта, но и от корреляций между дефолтами. Подробности в учебнике Hull.
+\justify
+Pricing of complex swaps depends on correlations between reference entities. See Hull's book.
 \end{frame}
 
 
 
-\begin{frame}{Зачем?}
+\begin{frame}{Why?}
 \justify
-Кредитные деривативы --- это не только огромный рынок, но и важный компонент цены других деривативов:
+Credit derivatives are an input to pricing other derivatives:
 \begin{itemize}
 \item Credit valuation adjustment (CVA)
 \item Debt valuation adjustment (DVA)
-\item Capital valuation adjustment (KVA)
 \end{itemize}
 \end{frame}
-
-
-\insertdisclaimerframe
 
 \end{document}
 
