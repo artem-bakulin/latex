@@ -42,6 +42,8 @@ LaTeX sources for Habrahabr posts, presentations, and other stuff
 
 ## Derivatives (Autumn 2023, English)
 
+[Course Syllabus](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/syllabus/)
+
 1\. [FX Market and FX Forwards](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/01-fx-market-and-fx-forwards/)
 
 2\. [Interest Rate Swaps](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/02-interest-rate-swaps/) \| [Technical Notes on Interest Rates](https://artem-bakulin.github.io/latex/courses/derivatives/autumn-2023/02-technical-notes-on-interest-rates/)
