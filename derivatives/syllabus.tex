@@ -1,0 +1,151 @@
+\documentclass[a4paper,14pt]{extarticle}
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf			
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage[english]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage{libertine}
+\usepackage{libertinust1math}
+
+\usepackage{parskip} % remove paragraph indentation
+
+\title{Derivatives}
+\author{Artem Bakulin}
+\date{October 9, 2023}
+
+\begin{document}
+
+\maketitle
+
+\section*{Course description}
+This course is introduction to financial derivatives. We will have a look at some most common
+classes, such as foreign exchange forwards, interest rate swaps, vanilla and exotic options, credit
+default swaps. Every time we will be interested in two questions: what is economic purpose of a
+derivative (who are natural buyers and sellers), and how do we price it?
+
+Main goal of the course is to give you an idea of risk-neutral pricing and replication. Every
+reasonable derivative can be replicated as a combination of some underlying assets (probably
+with dynamic, but mechanical, trading). If you are trying to price a derivative by forecasting the
+future, then probably you are doing something wrong.
+
+After the course you will understand major classes of derivatives. You will learn which class of
+derivatives can hedge which risk. You will also understand how market-makers price derivatives
+and risk-manage their positions.
+
+\section*{Course requirements}
+
+Prerequisites:
+
+1. Basic calculus (you know what is derivative of a function).
+
+2. Basic probability theory (you know what is expected value and standard deviation).
+
+\section*{Course contents}
+
+1. Mechanics of foreign exchange market. Foreign exchange forwards. Hedging and speculation.
+Arbitrage-free price of a forward. Non-deliverable forwards.
+Reading: Hull, chapters 2-5.
+
+2. Floating interest rates. Interest rate swaps and futures. Bootstrapping a yield curve from
+market instruments. Managing interest rate risk. Overnight index swaps curve and discounting.
+LIBOR-gate.
+Reading: Hull, chapters 6, 7.
+
+3. Vanilla options. Vanilla strategies. Single-step and multi-step binomial trees. Dynamic
+replication (also known as delta-hedging).
+Reading: Hull, chapters 10-13.
+
+4. Geometric Brownian motion and Black-Scholes formula as the limit of binomial tree. Implied
+volatility and volatility smile.
+Reading: Hull, chapters 14,15,20
+
+5. Market risk and option greeks: delta, gamma, vega, rho, theta. Link between gamma and theta,
+gamma and vega.
+Reading: Hull, chapter 19.
+
+6. Credit default swaps. Connection between bonds, probabilities of default, and credit default
+swaps. Wrong-way risk. Risk-neutral and real-world probabilities revisited.
+Reading: Hull, chapters 24, 25
+
+7. Monte-Carlo method. Risk-neutral probability and fundamental theorem of asset pricing.
+Reading: Hull, chapter 21.
+
+\section*{Course materials}
+
+\subsection*{Required textbooks and materials}
+Rule of thumb in derivatives: if you are not sure where to start, check Hull’s book.
+
+John C Hull. \textit{Options, Futures, and Other Derivatives.} 11th ed. Pearson, 2022. ISBN:
+9780136939979.
+
+\subsection*{Additional reading}
+
+These books go into depths of some particular topics. You do not have to read them to pass the
+course. However, they demonstrate how deep is the rabbit hole, and how many aspects one
+needs to take into account.
+
+1. Strictly speaking, Kevin Rodger’s book is not about derivatives per se. However it offers great
+insight into everyday life of a trader at large investment bank, and role of computers on modern
+financial markets.
+
+Kevin Rodgers. \textit{Why Aren't They Shouting?: A Banker’s Tale of Change, Computers and Perpetual
+Crisis.} Random House Business, 2017. ISBN: 9781847941534.
+
+2. I recommend Emmanuel Derman’s book as your second book about derivatives after Hull. On
+one hand, it covers more advanced topics than Hull’s textbook. On the other hand, I like how the
+book combines intuitive explanations with mathematical technicalities.
+
+Emanuel Derman, Michael B. Miller, David Park. \textit{The Volatility Smile: An Introduction for Students
+and Practitioners.} Wiley, 2016. ISBN: 9781118959169.
+
+3. In case you are interested in theoretical foundations and mathematical proofs, have a look at
+two Steven Shreve’s books.
+
+Steven Shreve. \textit{Stochastic Calculus for Finance I: The Binomial Asset Pricing Model.} Springer, 2004.
+ISBN: 9780387249681.
+
+Steven Shreve. \textit{Stochastic Calculus for Finance II: Continuous-Time Models.} Springer, 2004. ISBN:
+9780387401010.
+
+4. Some people prefer Tomas Bjork’s book about mathematical foundations:
+
+Tomas Bjork. \textit{Arbitrage Theory in Continuous Time.} 3rd ed. Oxford University Press, 2009. ISBN:
+9780199574742.
+
+5. Interest rate swaps may appear simple to someone, compared to options. Marc Henrard’s
+book demonstrates how complex this area is, and how different it is from what is described in
+textbooks.
+
+Marc Henrard. \textit{Interest Rate Modelling in the Multi-curve Framework.} Palgrave Macmillan, 2014.
+ISBN: 9781137374660.
+
+6. Iain Clark describes complex stochastic volatility models that are frequently used on foreign
+exchange market.
+
+Iain Clark. \textit{Foreign Exchange Option Pricing: A Practitioner's Guide.} Wiley, 2010. ISBN: 9780470683682.
+
+7. This course does not cover credit valuation adjustment (CVA) and other specific adjustments.
+However they are extremely important. If you are not aware of them, you are risking losing
+money in the long run.
+
+Jon Gregory. \textit{The xVA Challenge: Counterparty Risk, Funding, Collateral, Capital and Initial Margin.}
+4th ed. Wiley, 2020. ISBN: 9781119508977.
+
+\section*{Sample problem for course evaluation}
+A structured note works as follow. A client invests \$100\,000 notional at inception. Whatever
+happens, the client will receive full notional \$100\,000 in 3 years (so the note offers 100\% capital
+guarantee).
+
+At the end of years 1, 2, and 3, the note may (or may not) pay out additional fixed coupons of X\%
+of notional. This X\% coupon rate is parameter of the contract, which you will need to compute.
+Coupon is paid out only in case on the payment date the S\&P\,500 index is higher than its level
+today \$4\,000.
+
+How can you replicate this note using cash deposits, vanilla options and/or digital options?
+Assume that risk-free rate is 3\% (continuously compounded), Black-Scholes volatility of the
+index is 20\%, dividend yield is 1\%. What is fair value of coupon X\%?
+\end{document}
