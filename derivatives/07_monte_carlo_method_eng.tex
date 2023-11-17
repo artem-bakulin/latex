@@ -1,0 +1,1086 @@
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{tabularx}
+
+\usepackage{enumitem}
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+% remove navigation bar
+\setbeamertemplate{navigation symbols}{} 
+
+\setbeamertemplate{page number in head/foot}[totalframenumber] 
+
+\usepackage{eurosym}
+\renewcommand{\EUR}[1]{\textup{\euro}#1}
+
+\title{Monte-Carlo Method}
+\author{Artem Bakulin}
+\date{November 23, 2023}
+
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
+\newcommand{\ruen}[2]{#1 (\en{#2})}
+
+% https://tex.stackexchange.com/questions/98003/filter-rows-from-a-table
+\pgfplotsset{
+    discard if not/.style 2 args={
+        x filter/.code={
+            \edef\tempa{\thisrow{#1}}
+            \edef\tempb{#2}
+            \ifx\tempa\tempb
+            \else
+                \def\pgfmathresult{inf}
+            \fi
+        }
+    }
+}
+
+
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\newcommand{\drawStockNode}[5]{
+
+	\node (#5)
+	[
+		draw,
+		rectangle,
+		rounded corners,
+		inner sep = 0pt,
+		outer sep = 0pt,
+		minimum width = 2.4cm,
+		minimum height = 0.55cm,
+		align = center
+	]
+	at (#3, #4)
+	{
+		\begin{tabular}{c|c}
+		#1 & #2
+		\end{tabular}
+	};
+}
+
+\newcommand{\drawStockLink}[4]{
+
+	\draw[
+		->,
+		>=triangle 90
+	]
+	(#1.east) -- (#2.west)
+	node[
+		pos = 0.5,
+		anchor = #4
+	]
+	{#3};
+}
+
+\newcommand{\drawOneStepBinomialTree}{
+	\drawStockNode{$S_0$} {?}{0}{ 0}{S0_node}
+	\drawStockNode{$S_0u$}{$V_u$}{4}{ 1}{Su_node}
+	\drawStockNode{$S_0d$}{$V_d$}{4}{-1}{Sd_node}
+	
+	\drawStockLink{S0_node}{Su_node}{$p$}{south east}	
+	\drawStockLink{S0_node}{Sd_node}{$1-p$}{north east}
+}
+
+
+
+\begin{frame}{Recap: binomial model}
+\centering
+\begin{tikzpicture}
+	\drawOneStepBinomialTree
+\end{tikzpicture}
+
+\justify
+\begin{itemize}
+\justifying
+\item Current stock price is $S_0$.
+\item Stock price can either increase to $S_0\cdot u$ (u>1) or drop to $S_0 \cdot d$ (d<1).
+\item Single period of $\tau$ years, risk-free interest rate is $r$, such that $d < 1+r\tau < u$.
+\item An option pays off (has the value of) either $V_u$ or $V_d$ depending on the stock price moving up or down.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Recap: binomial model - 2}
+\centering
+\begin{tikzpicture}
+	\drawOneStepBinomialTree
+\end{tikzpicture}
+
+\justify
+Consider a portfolio of $\Delta$ stock and debt $L$. Pick $\Delta$ and $L$ so that this portfolio replicates the option
+\begin{equation*}
+\begin{cases}
+L(1+r\tau) + \Delta S_0 u = V_u \\
+L(1+r\tau) + \Delta S_0 d = V_d
+\end{cases}
+\end{equation*}
+
+\begin{equation*}
+\begin{cases}
+\Delta = \dfrac{V_u - V_d}{S_0(u-d)} \\
+L = \dfrac{V_du - V_ud}{(1+r\tau)(u-d)}
+\end{cases}
+\end{equation*}
+\end{frame}
+
+
+
+\begin{frame}{Recap: binomial model - 3}
+\centering
+\begin{tikzpicture}
+\drawOneStepBinomialTree
+\end{tikzpicture}
+
+\justify
+The option is worth the same as the replicating portfolio:
+\begin{align*}
+C &= \Delta S_0 +L = \\
+ &= \dfrac{V_u-V_d}{(u-d)\cancel{S_0}}\cancel{S_0} + \dfrac{V_du -V_ud}{(1+r\tau)(u-d)} = \\
+ &= \dfrac{qV_u +(1-q)V_d}{1+r\tau},
+\end{align*}
+where
+\begin{equation*}
+q = \dfrac{1+r\tau - d}{u-d}
+\end{equation*}
+This magic parameter $q$ is called the "risk-neutral probability".
+\end{frame}
+
+
+
+\renewcommand{\drawStockLink}[2]{
+
+	\draw[
+		->,
+		>=triangle 45
+	]
+	(#1.east) -- (#2.west)
+	{};
+}
+
+\renewcommand{\drawStockNode}[5]{
+
+	\node (#5)
+	[
+		draw,
+		rectangle,
+		rounded corners,
+		inner sep = 1pt,
+		outer sep = 0pt,
+		minimum width = 1.5cm
+	]
+	at (#3, #4)
+	{
+		\centering
+		\begin{tabular}{c}
+		#1 \\ \hline #2
+		\end{tabular}
+	};
+}
+
+\newcommand{\nodeVerticalStep}{0.7}
+\newcommand{\nodeHorizontalStep}{2.75}
+
+\begin{frame}{Recap: binomial model - 4}
+\centering
+\begin{tikzpicture}
+\drawStockNode{$\$100$}{\only<1-7>{?}\only<8->{\$14.8}}{0}{0}{S0_node}
+
+\drawStockNode{$\$120$}{\only<1-5>{?}\only<6->{\$25.8}}{\nodeHorizontalStep}{\nodeVerticalStep}{Su_node}
+\drawStockNode{$\$80$}{\only<1-6>{?}\only<7->{\$3.8}}{\nodeHorizontalStep}{-\nodeVerticalStep}{Sd_node}
+
+\drawStockNode{$\$144$}{\only<1-2>{?}\only<3->{\$44}}{2*\nodeHorizontalStep}{2*\nodeVerticalStep}{Suu_node}
+\drawStockNode{$\$96$}{\only<1-3>{?}\only<4->{\$7.6}}{2*\nodeHorizontalStep}{0}{Sud_node}
+\drawStockNode{$\$64$}{\only<1-4>{?}\only<5->{\$0}}{2*\nodeHorizontalStep}{-2*\nodeVerticalStep}{Sdd_node}
+
+\drawStockNode{$\$172.8$}{\only<1>{?}\only<2->{\$72.8}}{3*\nodeHorizontalStep}{3*\nodeVerticalStep}{Suuu_node}
+\drawStockNode{$\$115.2$}{\only<1>{?}\only<2->{\$15.2}}{3*\nodeHorizontalStep}{\nodeVerticalStep}{Suud_node}
+\drawStockNode{$\$76.8$}{\only<1>{?}\only<2->{\$0}}{3*\nodeHorizontalStep}{-\nodeVerticalStep}{Sudd_node}
+\drawStockNode{$\$51.2$}{\only<1>{?}\only<2->{\$0}}{3*\nodeHorizontalStep}{-3*\nodeVerticalStep}{Sddd_node}
+
+\drawStockLink{S0_node}{Su_node}
+\drawStockLink{S0_node}{Sd_node}
+
+\drawStockLink{Su_node}{Suu_node}
+\drawStockLink{Su_node}{Sud_node}
+
+\drawStockLink{Sd_node}{Sud_node}
+\drawStockLink{Sd_node}{Sdd_node}
+
+\drawStockLink{Suu_node}{Suuu_node}
+\drawStockLink{Suu_node}{Suud_node}
+
+\drawStockLink{Sud_node}{Suud_node}
+\drawStockLink{Sud_node}{Sudd_node}
+
+\drawStockLink{Sdd_node}{Sudd_node}
+\drawStockLink{Sdd_node}{Sddd_node}
+\end{tikzpicture}
+
+\justify
+Suppose that $u=1.2$, $d=0.8$, $S_0=\$100$, $r=0\%$. What is fair value of a call option at strike $K=100$?
+
+\justify
+The "risk-neutral probability":
+\begin{align*}
+q = \dfrac{1+r\tau - d}{u - d} = \dfrac{1 - 0.8}{1.2 - 0.8} = 0.5
+\end{align*}
+\end{frame}
+
+
+
+
+
+\newcommand{\highlightStockLink}[6]{
+	\draw[
+		color=#4,
+		very thick,
+		->,
+		>=triangle 45
+	]
+	(#1.east) -- (#2.west)
+	node[
+		pos=#5,
+		anchor=#6
+	]
+	{#3};
+}
+
+\newcommand{\highlightStockLinkUp}[3]{
+	\highlightStockLink{#1}{#2}{$q$}{#3}{0.5}{south}
+}
+
+\newcommand{\highlightStockLinkDown}[3]{
+	\highlightStockLink{#1}{#2}{$1-q$}{#3}{0.15}{west}
+}
+
+\begin{frame}{Recap: risk-neutral probability}
+\centering
+\begin{tikzpicture}
+\drawStockNode{$S_0$}{?}{0}{0}{S0_node}
+
+\drawStockNode{$S_0u$}{?}{\nodeHorizontalStep}{\nodeVerticalStep}{Su_node}
+\drawStockNode{$S_0d$}{?}{\nodeHorizontalStep}{-\nodeVerticalStep}{Sd_node}
+
+\drawStockNode{$S_0u^2$}{?}{2*\nodeHorizontalStep}{2*\nodeVerticalStep}{Suu_node}
+\drawStockNode{$S_0ud$}{?}{2*\nodeHorizontalStep}{0}{Sud_node}
+\drawStockNode{$S_0d^2$}{?}{2*\nodeHorizontalStep}{-2*\nodeVerticalStep}{Sdd_node}
+
+\drawStockNode{$S_0u^3$}{$V_3$}{3*\nodeHorizontalStep}{3*\nodeVerticalStep}{Suuu_node}
+\drawStockNode{$S_0u^2d$}{$V_2$}{3*\nodeHorizontalStep}{\nodeVerticalStep}{Suud_node}
+\drawStockNode{$S_0ud^2$}{$V_1$}{3*\nodeHorizontalStep}{-\nodeVerticalStep}{Sudd_node}
+\drawStockNode{$S_0d^3$}{$V_0$}{3*\nodeHorizontalStep}{-3*\nodeVerticalStep}{Sddd_node}
+
+\only<1-2>{
+	\drawStockLink{S0_node}{Su_node}
+	\drawStockLink{S0_node}{Sd_node}
+
+	\drawStockLink{Su_node}{Suu_node}
+	\drawStockLink{Su_node}{Sud_node}
+
+	\drawStockLink{Sd_node}{Sud_node}
+	\drawStockLink{Sd_node}{Sdd_node}
+
+	\drawStockLink{Suu_node}{Suuu_node}
+	\drawStockLink{Suu_node}{Suud_node}
+
+	\drawStockLink{Sud_node}{Suud_node}
+	\drawStockLink{Sud_node}{Sudd_node}
+
+	\drawStockLink{Sdd_node}{Sudd_node}
+	\drawStockLink{Sdd_node}{Sddd_node}
+}
+
+\only<3>{
+	\highlightStockLinkUp{S0_node}{Su_node}{Set1-A}
+	\highlightStockLinkUp{Su_node}{Suu_node}{Set1-A}
+	\highlightStockLinkDown{Suu_node}{Suud_node}{Set1-A}
+}
+
+\only<4>{
+	\highlightStockLinkUp{S0_node}{Su_node}{Set1-A}
+	\highlightStockLinkDown{Su_node}{Sud_node}{Set1-A}
+	\highlightStockLinkUp{Sud_node}{Suud_node}{Set1-A}
+}
+
+\only<5>{
+	\highlightStockLinkDown{S0_node}{Sd_node}{Set1-A}
+	\highlightStockLinkUp{Sd_node}{Sud_node}{Set1-A}
+	\highlightStockLinkUp{Sud_node}{Suud_node}{Set1-A}
+}
+
+\end{tikzpicture}
+
+\justify
+Risk-neutral probability: $q = \dfrac{1 + rT - d}{u - d}$.
+
+\justify
+Fair value of an option today:
+\begin{align*}
+V = \frac{q^3V_3 + \only<1>{3q^2(1-q)}\only<2->{\alert{3q^2(1-q)}}V_2 + 3q(1-q)^2V_1 + (1-q)^3V_0}{(1+rT)^3}
+\end{align*}
+\end{frame}
+
+
+\begin{frame}{Recap: risk-neutral probability - 2}
+\justify
+Close your eyes and pretend that $q$ is the probability of the sock price moving up (in reality it is not). Then $3q^2(1-q)$ is probability of the stock moving up twice and moving down once. In this scenario the stock is worth  $S_0u^2d$, and the option pays off $V_2$.
+
+\justify
+\centering
+\begin{tabular}{l|l|l}
+Stock price & Payoff & "Probability" \\ \hline
+$S_0u^3$   & $V_3$   & $q^3$ \\
+$S_0u^2d$  & $V_2$   & $3q^2(1-q)$ \\
+$S_0ud^2$  & $V_1$   & $3q(1-q)^2$ \\ 
+$S_0d^3$   & $V_0$   & $(1-q)^3$ 
+\end{tabular}
+
+\justify
+Fair value of an option looks similar to the discounted "expected"\ payoff.
+\begin{align*}
+V = \frac{q^3V_3 + 3q^2(1-q)V_2 + 3q(1-q)^2V_1 + (1-q)^3V_0}{(1+rT)^3}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Stock price}
+\justify
+A stock is equivalent to a call option at strike 0. This option's terminal payoff is  $V(S) = \max(S-0, 0) = S$.
+\begin{align*}
+S &= \frac{q^3S_0u^3 + 3q^2(1-q)S_0u^2d + 3q(1-q)^2S_0ud^2 + (1-q)^3S_0d^3}{(1+rT)^3} = \\
+&= S_0\frac{q^3u^3 + 3q^2u^2(1-q)d + 3qu(1-q)^2d^2 + (1-q)^3d^3}{(1+rT)^3} = \\
+&= S_0\frac{\Big(qu + (1-q)d \Big)^3}{(1+rT)^3} 
+= S_0\frac{\left(\dfrac{1+rT-d}{u-d}u + \dfrac{u-1-rT}{u-d}d \right)^3}{(1+rT)^3} = \\
+&= S_0 \frac{\left(\dfrac{(1+rT)(u-d)}{u-d} \right)^3}{(1+rT)^3} = S_0
+\end{align*}
+
+\justify
+A stock is worth its discounted "expected value".
+\end{frame}
+
+
+
+\begin{frame}{Bond price}
+\justify
+Consider a risk-free bond that will pay \$1 at the third step. A bond is a cbombination of a digital call and a digital put. This derivative has a payoff of $V(S) = 1$.
+\begin{align*}
+B &= \frac{q^3 \cdot 1 + 3q^2(1-q) \cdot 1 + 3q(1-q)^2 \cdot 1 + (1-q)^3 \cdot 1}{(1+rT)^3} = \\
+&= \frac{\Big(q + (1-q) \Big)^3}{(1+rT)^3} = \frac{1}{(1+rT)^3}
+\end{align*}
+
+\justify
+A risk-free bond is worth its discounted "expected value".
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральная вероятность}
+\justify
+Чтобы вычислить коэффициенты $q$ и $1-q$, мы составили реплицирующий портфель и предположили отсутствие возможностей для арбитража. Значение $q$ механически вычисляется из параметров задачи $u$ и $d$ (возможный разброс цены акции вверх и вниз) и $r$ (безрисковая процентная ставка).
+
+\justify
+Оказалось, что цены всех трёх активов (дериватива, акции, безрисковой облигации) оказались равны дисконтированному <<математическому ожиданию>> будущих выплат, если вместо истинных вероятностей подставить <<риск-нейтральные вероятности>> $q$ и $1-q$.
+
+\justify
+Совпадение ли это?
+\end{frame}
+
+
+
+\begin{frame}{Фундаментальная теорема}
+\justify
+Справедлива фундаментальная теорема оценки активов (\en{Fundamental Theorem of Asset Pricing, FATP}):
+
+\justify
+На рынке с дискретным временем* нет возможностей для арбитража тогда и только тогда, когда существует риск-нейтральная вероятностная мера $\mathbb{Q}$, эквивалентная** вероятностной мере реального мира $\mathbb{P}$.
+
+\justify
+*Существует формулировка в непрерывном времени.
+
+\justify
+**Две вероятностные меры $\mathbb{P}$ и $\mathbb{Q}$ называются эквивалентными, если для любого события $A$ справедливо, что
+\begin{align*}
+\mathbb{P}(A)=0 \quad \Leftrightarrow \quad \mathbb{Q}(A)=0
+\end{align*}
+Меры $\mathbb{P}$ и $\mathbb{Q}$ согласны в том, какие события хотя бы гипотетически возможны, но могут присваивать им разную вероятность.
+\end{frame}
+
+
+
+\begin{frame}{Риск-нейтральная вероятность}
+\justify
+В риск-нейтральном мире все активы стоят своё дисконтированное математическое ожидание. Другими словами, все активы в среднем растут на безрисковую процентную ставку.
+
+\justify
+Это было бы возможно, если бы инвесторы интересовались лишь математическим ожиданием доходности, то есть были бы риск-нейтральными (\en{risk neutral}).
+
+\justify
+Верно ли, что реальный мир населён риск-нейтральными роботами? Нет! Среднестатистический инвестор на реальном рынке избегает риска (является \en{risk averse}).
+\end{frame}
+
+
+
+\begin{frame}{Тест на риск-нейтральность -- 1}
+\justify
+Вы должны вложить весь свой капитал на 1 год либо в безрисковые облигации, либо в рискованные акции. Какой вариант вы предпочтёте?
+
+\justify
+\centering
+\begin{tabular}{l|r|r|r}
+Сценарий & Вероятность & Облигации & Акции \\ \hline
+Хороший  & 50\%   & $+2\%$    & $+22\%$  \\
+Плохой   & 50\%   & $+2\%$    & $-18\%$  \\ \hline
+\multicolumn{2}{l|}{Мат. ожидание} & $+2\%$ & $+2\%$
+\end{tabular}
+
+\pause
+\justify
+В среднем при одинаковой доходности люди предпочитают менее рискованные активы. Чтобы убедить избегающих риска инвесторов купить акцию, нужно дать им скидку, чтобы ожидаемая будущая доходность была чуть выше.
+\end{frame}
+
+
+
+\begin{frame}{Тест на риск-нейтральность -- 2}
+\justify
+Вы должны вложить весь свой капитал на 1 год либо в акцию А, либо в акцию B. Какой вариант вы предпочтёте?
+
+\justify
+\centering
+\begin{tabular}{l|r|r|r}
+Сценарий & Вероятность   & Акция А & Акция B \\ \hline
+Кризис и потеря работы   & 50\%    & $+25\%$ & $-25\%$  \\
+Премия 12 зарплат        & 50\%    & $-15\%$ & $+15\%$  \\ \hline
+\multicolumn{2}{l|}{Мат. ожидание} & $+5\%$  & $+5\%$
+\end{tabular}
+
+\pause
+\justify
+Когда люди оценивают активы, они интересуются не только разбросом возможных доходностей, но и корреляцией со всем рынком. Активы, которые меньше падают в кризис, ценятся выше и имеют меньшую ожидаемую доходность.
+\end{frame}
+
+
+
+\begin{frame}{Ценообразование в риск-нейтральном мире}
+\justify
+Мы не можем залезть в головы к инвесторам, чтобы вычислить степень их риск-нейтральности. Поэтому мы не знаем, какая премия за риск заложена в текущие цены активов.
+
+\justify
+Хорошая новость: нам и не нужно этого знать. FATP гарантирует, что цена дериватива в реальном мире окажется такой же, как и в риск-нейтральном мире. Для цены базового актива это, разумеется, не верно.
+\end{frame}
+
+
+
+\begin{frame}{Ценообразование в риск-нейтральном мире}
+\justify
+FATP гарантирует, что любой дериватив можно оценить 	по следующему алгоритму:
+
+\justify
+1. Записать случайный процесс, которому следует цена базового актива в риск-нейтральном мире.
+
+2. Выписать функцию выплаты по деривативу в зависимости от цены базового актива.
+
+3. Вычислить математическое ожидание выплаты.
+
+4. Умножить математическое ожидание на коэффициент дисконтирования.
+
+\justify
+Обычно самый сложный шаг --- шаг номер 3. Зачастую аналитического решения не существует.
+\end{frame}
+
+
+
+\begin{frame}{Пример: модель Блэка-Шоулза}
+\justify
+В модели Блэка-Шоулза цена базового актива в реальном мире $S(t)$ следует геометрическому броуновскому движению. Приращение цены $dS$ за малое время $dt$ равно
+\begin{align*}
+\frac{dS}{S} = \mu dt + \sigma  \xi \sqrt{dt}, \quad \xi \sim \mathcal{N}(0,1) 
+\end{align*}
+Здесь $\mu$ --- тренд, $\sigma$ --- волатильность.
+
+\justify
+В риск-нейтральном мире базовый актив растёт на безрисковую процентную ставку $r$ (поэтому цена дериватива не зависит от тренда $\mu$).
+\begin{align*}
+\frac{dS}{S} = r \cdot dt + \sigma \xi \sqrt{dt} , \quad \xi \sim \mathcal{N}(0,1) 
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Пример: модель Блэка-Шоулза}
+\justify
+Если сложить все приращения за все шаги по $dt$, то на длинном интервале $(0, T)$ цена базового актива в риск-нейтральном мире изменяется по следующему закону:
+\begin{align*}
+S_T(\xi) = S_0\exp{\left[\left(r - \frac{\sigma^2}{2}\right)T + \sigma\xi\sqrt{T}\right]}, \quad \xi \sim \mathcal{N}(0, 1)
+\end{align*}
+
+\justify
+Пусть $f(S_T(\xi)) = \max(S_T(\xi) - K, 0)$ --- функция выплаты ванильного европейского колл-опциона. Тогда цена опциона согласно FATP равна
+\begin{align*}
+C = e^{-rT} \int\limits_{-\infty}^{+\infty}f\Big(S_T(x)\Big)\phi(x)dx
+\end{align*}
+Здесь $\phi(x)$ --- функция плотности стандартного нормального распределения $\mathcal{N}(0,1)$. Если раскрыть интеграл, то получится формула Блэка-Шоулза.
+\end{frame}
+
+
+
+\begin{frame}{Численные методы}
+\justify
+Как быть, если случайный процесс и/или формула выплаты настолько сложны, что не получается вычислить риск-нейтральное математическое ожидание в явном виде?
+
+\justify
+На помощь приходят численные методы:
+\begin{itemize}
+\item Биномиальные деревья.
+\item Разностные схемы.
+\item Метод Монте-Карло.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Метод Монте-Карло}
+\justify
+Как вычислить число $\pi$? Нужно наудачу бросить на квадрат $N$ точек и посмотреть, сколько из них попали во вписанный круг. 
+
+\centering
+\begin{tikzpicture}
+	\begin{axis}[
+			width = 6cm,
+			height = 6cm,
+			only marks,
+			xmin = 0, xmax = 1,
+			ymin = 0, ymax = 1,
+			xtick = {\empty},
+			ytick = {\empty}
+		]
+				
+		\addplot[mark=*, mark size=1.5pt, color=Set1-A] table[x=x, y=y, col sep=comma] {monte_carlo_pi_in_circle.csv};
+		
+		\addplot[mark=x, mark size=1.5pt, color=Set1-B] table[x=x, y=y, col sep=comma] {monte_carlo_pi_not_in_circle.csv};
+		
+		\draw[very thick] (0.5, 0.5) circle (0.5);
+		\draw[very thick] (0, 0) rectangle (1, 1);
+	\end{axis}
+\end{tikzpicture}
+\justify
+Если радиус круга $R$, то в круг должно попасть примерно $N\dfrac{\pi R^2}{4R^2}$ точек. В данном случае в круге $N_0=770$ точек из $N=1000$. 
+\begin{align*}
+\pi \approx \frac{4N_0}{N} = \frac{4 \cdot 770}{1000} = 3.08
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Метод Монте-Карло}
+\justify
+Пусть цена базового актива в риск-нейтральном мире, а вслед за ней и выплата по деривативу, зависят от реализации некоторой случайной величины $\xi$ (возможно многомерной). Предположим, что мы знаем закон распределения $\xi$.
+
+\justify
+1. Выберем наудачу $n$ (достаточно много) реализаций случайной величины $\xi$: $\xi_1, \xi_2, ..., \xi_n$.
+
+2. Для каждой реализации $\xi_i$ вычислим цену базового актива $S_T(\xi_i)$ и выплату по деривативу $f(S_T(\xi_i))$.
+
+3. Оценим математическое ожидание выплаты как 
+\begin{align*}
+\hat{f} = \frac{1}{n}\sum\limits_{i=1}^{n}f\Big(S_T(\xi_i)\Big)
+\end{align*}
+
+4. Выполним дисконтирование.
+
+\justify
+Можно надеяться (почему?), что с ростом $n$ оценка мат. ожидания будет сходиться к истинному мат. ожиданию.
+\end{frame}
+
+
+
+\begin{frame}{Закон больших чисел}
+\justify
+Пусть $\xi_i$ --- независимые одинаково распределённые случайные величины, которые имеют конечное математическое ожидание $\mathbb{E}\xi_i=\mu$. Тогда с вероятностью 1 (почти наверное)
+\begin{align*}
+\lim_{n \to \infty} \frac{1}{n} \sum\limits_{i=1}^{n}\xi_i = \mu
+\end{align*}
+
+\justify
+Это закон больших чисел (ЗБЧ). Если усреднить много-много реализаций одной и той же случайной величины, то получится число, достаточно близкое к истинному математическому ожиданию.
+
+\justify
+Что такое <<достаточно>> близко?
+\end{frame}
+
+
+
+\begin{frame}{Центральная предельная теорема}
+\justify
+Пусть $\xi_i$ --- независимые одинаково распределённые случайные величины, которые имеют конечное математическое ожидание $\mathbb{E}\xi_i=\mu$ и конечную дисперсию $\operatorname{Var}(\xi_i) = \sigma^2$. Тогда имеет место сходимость по распределению:
+\begin{align*}
+\lim_{n \to \infty} \sqrt{n}\frac{\dfrac{1}{n}\sum\limits_{i=1}^{n}\xi_i - \mu}{\sigma} = \mathcal{N}(0, 1)
+\end{align*}
+
+\justify
+$\mathcal{N}(0, 1)$ --- стандартное нормальное распределение.
+
+\justify
+Это --- центральная предельная теорема (ЦПТ). Среднее арифметическое большого количества реализаций случайной величины следует нормальному распределению.
+\end{frame}
+
+
+
+\begin{frame}{Случайные числа}
+\justify
+Для метода Монте-Карло нужно много, очень много случайных чисел.
+
+\justify
+В большинстве современных процессоров есть встроенный аппаратный генератор случайных чисел. Например, инструкция x86 RDRAND позволяет получить 16, 32 или 64 случайных бита.
+
+\justify
+Недостатки:
+\begin{itemize}
+\item Быстродействие (450 тактов на Core i7-7700).
+\item Невоспроизводимость результатов.
+\end{itemize}
+
+\justify
+Нужен быстрый алгоритм получения <<почти>> случайных чисел.
+\end{frame}
+
+
+
+\begin{frame}{Псевдослучайные последовательности}
+\justify
+Простой генератор псевдослучайных чисел по методу Лемера, реализованный в std::minstd\_rand:
+\begin{align*}
+X_{k+1} = (48\,271 \cdot X_k) \ \operatorname{MOD} \ 2\,147\,483\,647
+\end{align*}
+
+\justify
+Для каждого целого положительного начального значения $X_0$ (которое называется \en{seed}) получается новая <<почти случайная>> последовательность целых чисел от 0 до 2\,147\,483\,646.
+
+\justify
+Как получить случайные действительные числа из равномерного распределения $U(0, 1)$?
+\begin{align*}
+U_k = X_k / (2\,147\,483\,647 - 1)
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Псевдослучайные последовательности}
+\justify
+Если мы умеем создавать случайные числа $U_k$ из равномерного распределения $U(0,1)$, то как получить случайные числа, например, из нормального распределения $\mathcal{N}(0, 1)$?
+
+\justify
+Пусть $N(x)$ --- функция распределения стандартного нормального распределения, а $N^{-1}(x)$ --- её обратная функция. Тогда величины
+\begin{align*}
+N_k = N^{-1}(U_k)
+\end{align*}
+будут иметь стандартное нормальное распределение:
+\begin{align*}
+\mathbb{P}(N_k < x) = \mathbb{P}(N^{-1}(U_k) < x) = \mathbb{P}(U_k < N(x)) = U(N(x)) = N(x)
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Псевдослучайные последовательности}
+\centering
+\begin{tikzpicture}
+	\begin{axis}[
+			width = \textheight,
+			height = \textheight,
+			xmin = -2.25, xmax = 2.25,
+			ymin = -2.25, ymax = 2.25,
+			axis x line = center,
+			axis y line = center,
+			legend entries = {
+				$N(x)$,
+				$N^{-1}(x)$
+			},
+			legend style = {
+				at = {(0.03,0.97)},
+				anchor = north west
+			}
+		]
+
+		\addplot[color=Set1-A, thick] table[x=x, y=y, col sep=comma] {monte_carlo_norm_cdf.csv};
+		
+		\addplot[color=Set1-B, thick] table[x=y, y=x, col sep=comma] {monte_carlo_norm_cdf.csv};
+		
+		\draw[dashed] (axis cs: -5, 1) -- (axis cs: 5, 1);
+		\draw[dashed] (axis cs: 1, -5) -- (axis cs: 1, 5);
+		
+		\draw[dashed, thick, color = Set1-B] (0.25, 0) -- (0.25, -0.6745) -- (0, -0.6745);
+		\draw[dashed, thick, color = Set1-A] (0, 0.25) -- (-0.6745, 0.25) -- (-0.6745, 0);
+		
+		\node[anchor=south] at (0.25, 0) {\small 0.25};
+		\node[anchor=east] at (0, -0.6745) {\small -0.67};
+		\node[circle, fill, inner sep=1.5pt, color=Set1-B] at (0.25, 0) {};
+		\node[circle, fill, inner sep=1.5pt, color=Set1-B] at (0, -0.6745) {};
+		\node[circle, fill, inner sep=1.5pt, color=Set1-B] at (0.25, -0.6745) {};
+	\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Демонстрация}
+\justify
+Пример: 10\,000 нормально распределённых случайных величин в Excel.
+\end{frame}
+
+
+
+\begin{frame}{Ванильный колл-опцион}
+\justify
+Рассмотрим европейский колл-опцион со страйком $K$ и сроком исполнения $T$ лет. Начальная цена базового актива $S_0$. В риск-нейтральном мире базовый актив следует геометрическому броуновскому движению со средним $r$ (безрисковая ставка) и волатильностью $\sigma$:
+\begin{align*}
+S_T(\xi) = S_0 \exp\left[\left(r - \frac{\sigma^2}{2}\right)T + \sigma\xi\sqrt{T}\right], \quad \xi \sim \mathcal{N}(0, 1)
+\end{align*}
+
+Выплата по колл-опциону:
+\begin{align*}
+f(S_T(\xi)) = \max(S_T(\xi) - K, 0)
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Ванильный колл-опцион}
+\justify
+1. Сгенерируем $n$ реализаций случайной величины $\xi$: $\xi_1, \xi_2, ..., \xi_n$. 
+
+\justify
+2. Посчитаем $n$ выплат по колл-опциону:
+\begin{align*}
+f_i = f(S_T(\xi_i)) = \max\left\{S_0 \exp\left[\left(r - \frac{\sigma^2}{2}\right)T + \sigma\xi_i\sqrt{T}\right] - K, 0\right\}
+\end{align*}
+
+\justify
+3. Посчитаем среднюю выплату и дисконтируем её --- это будет сегодняшняя цена опциона.
+\begin{align*}
+\hat{C} = e^{-rT} \cdot \frac{1}{n}\sum\limits_{i=1}^{n}f(S_T(\xi_i))
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Демонстрация}
+\justify
+Пример: ванильный колл-опцион.
+\end{frame}
+
+
+
+\begin{frame}{Оценка погрешности}
+\justify
+Пусть $\hat{C}$ --- дисконтированная средняя выплата 	опциона, которую мы получили в результате $n$ симуляций, а $\hat{s}$ --- её выборочное стандартное отклонение.
+
+\justify
+Согласно ЦПТ, при больших $n$ ошибка (разность $\hat{C}$ и истинного математического ожидания $C$) --- нормально распределённая случайна величина:
+\begin{align*}
+\sqrt{n}\frac{\hat{C} - C}{\hat{s}} \sim \mathcal{N}(0, 1)
+\end{align*}
+
+\justify
+Мы можем построить доверительный интервал для $C$. Например, известно, что $N(1.96) \approx 0.975$. Поэтому 95\% доверительный интервал $C$ равен
+\begin{align*}
+\left(\hat{C} - 1.96\frac{\hat{s}}{\sqrt{n}}; \hat{C} + 1.96\frac{\hat{s}}{\sqrt{n}} \right)
+\end{align*}  
+\end{frame}
+
+
+
+\begin{frame}{Seed variance}
+\justify
+\en{Seed variance}\ --- оценка того, насколько результат метода Монте-Карло зависит от значения seed, которым мы инициализировали генератор случайных чисел.
+
+\justify
+Если генератор псевдослучайных чисел достаточно хороший, а в алгоритме нет ошибок, то seed variance будет близка к теоретической погрешности.
+
+\justify
+Например, мы провели $k$ вычислений для $k$ разных значений seed и получили $k$ цен опциона $\hat{C}_1, \hat{C}_2,...,\hat{C}_k$. Тогда seed variance ($\hat{s})$
+ --- выборочное стандартное отклонение $\hat{C}_i$:
+\begin{align*}
+\bar{C} = \frac{1}{k}\sum\limits_{i=1}^{k}\hat{C}_i \quad \hat{s} = \sqrt{\frac{1}{n-1}\sum\limits_{i=1}^{k}(\bar{C} - \hat{C}_i)^2} 
+\end{align*}
+
+\justify
+Проверка seed variance --- стандартный приём при тестировании нового алгоритма. Она позволяет а) найти ошибки и б) оценить количество симуляций, которые дают приемлемую точность.
+\end{frame}
+
+
+
+\begin{frame}{Азиатский опцион}
+\justify
+В азиатском колл-опционе выплата зависит от средней цены базового актива за время жизни опциона.
+
+\justify
+Стороны договариваются о $k$ датах наблюдений (<<фиксингов>>) $0 \le t_1 < t_2 < ... < t_k \le T$. Выплата по колл-опциону со страйком $K$ равна
+\begin{align*}
+f = \max\left(\frac{S(t_1) + S(t_2) + ... + S(t_k)}{n} - K, 0\right)
+\end{align*}
+
+\justify
+Например, азиатский опцион может платить разность между средним курсом USDRUB ЦБ РФ за месяц и страйком $80$. 
+
+\justify
+Выплата по азиатскому опциону зависит от всей траектории цены, а не только от конечной точки (является \en{path-dependent}). Аналитической формулы цены такого опциона нет. 
+\end{frame}
+
+
+
+\begin{frame}{Азиатский опцион}
+\justify
+Чтобы оценить азиатский опцион, нужно сгенерировать случайные траектории цены базового актива в риск-нейтральном мире.
+
+\justify
+Например, если в опционе $k$ дат фиксингов $t_1, t_2, ... t_k$, то один такой путь $i$ мог бы выглядеть как 
+\begin{align*}
+S_0 \to S_{i,1} \to S_{i,2} \to ... \to S_{i,k}
+\end{align*}
+причём
+\begin{align*}
+S_{i,0} &= S_0, \quad t_0 = 0 \\
+S_{i,j} &= S_{i,j-1} \exp\left[\left(r - \frac{\sigma^2}{2}\right)(t_j - t_{j-1}) + \sigma\xi_{i,j}\sqrt{t_j - t_{j-1}}\right] \\
+\xi_{i,j} &\sim \mathcal{N}(0, 1)
+\end{align*}
+\end{frame}
+
+
+
+\newcommand{\plotStockPath}[2] {
+	
+	\addplot[
+		mark = *,
+		color = #2,
+		thick
+	]
+	table[
+		x = t,
+		y = stock_price,
+		col sep = comma,
+		discard if not={path}{#1}
+	]
+	{monte_carlo_paths.csv};
+}
+
+\begin{frame}{Азиатский опцион}
+\centering
+\begin{tikzpicture}
+	\begin{axis}[
+		width = \textwidth - 0.5cm,
+		height = \textheight - 1cm,
+		xlabel = {Время (годы)},
+		ylabel = {Цена базового актива},
+		xmin=0, xmax=0.5,
+		xticklabel = {\pgfmathprintnumber[fixed, precision=2]{\tick}}
+	]
+	
+		\plotStockPath{1}{Set1-A}
+		\plotStockPath{2}{Set1-B}
+		\plotStockPath{3}{Set1-C}
+		\plotStockPath{4}{Set1-D}
+		\plotStockPath{5}{Set1-E}
+		\plotStockPath{6}{Set1-F}
+		\plotStockPath{7}{Set1-G}
+		\plotStockPath{8}{Set1-H}
+		\plotStockPath{9}{Set1-I}
+	\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Демонстрация}
+\justify
+Пример: азиатский колл-опцион.
+\end{frame}
+
+
+
+\begin{frame}{Радужный опцион}
+\justify
+Фиксируем четыре валютные пары и их текущие курсы:
+
+\centering
+\begin{tabular}{l|l}
+EURUSD & 1.1050 \\
+GBPUSD & 1.2530 \\
+JPYUSD & 0.00754 \\
+CADUSD & 0.7490
+\end{tabular}
+
+\justify
+Через три месяца ($T=0.25$) посмотрим, какая валюта сильнее всего укрепилась к доллару, и выберем её для определения выплаты:
+\begin{align*}
+M = \max\left(\frac{S_{eurusd}(T)}{S_{eurusd}(0)}, \frac{S_{gbpusd}(T)}{S_{gbpusd}(0)}, \frac{S_{jpyusd}(T)}{S_{jpyusd}(0)}, \frac{S_{cadusd}(T)}{S_{cadusd}(0)} \right)
+\end{align*}
+
+\justify 
+Радужный (\en{rainbow}) опцион с номиналом $N=\$1000$ и страйком $K=100\%$ имеет выплату
+\begin{align*}
+\max(M - K, 0) \cdot N = \max(M-1, 0) \cdot \$1000
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Корреляции}
+\justify
+Цена радужного опциона зависит не только от волатильностей валютных пар, но и от корреляций между ними. Если какие-то корреляции отрицательные (например, если EURUSD дешевеет, то GBPUSD обычно дорожает), то цена опциона должна быть выше.
+
+\justify
+В методе Монте-Карло мы симулируем движение базовых активов в риск-нейтральном мире. Следовательно, нам нужны риск-нейтральные корреляции, а не корреляции из реального мира (например, исторические).
+
+\justify
+Какие рыночные инструменты могут показать <<ожидаемую рынком>> корреляцию?
+\end{frame}
+
+
+
+\begin{frame}{Корреляции}
+\justify
+Помимо <<мейджоров>> EURUSD и GBPUSD, на валютном рынке есть и опционы на <<кросс>> EURGBP. Implied волатильность кросса EURGBP может подсказать ожидаемую рынком корреляцию.
+
+\justify
+Как вычислить курс EURGBP?
+\begin{align*}
+S_{eurgbp} = \frac{S_{eurusd}}{S_{gbpusd}}
+\end{align*}
+
+\justify
+Если корреляция высокая (когда евро растёт, то и фунт растёт), то числитель и знаменатель дроби чаще растут вместе, и сама дробь изменяется не так сильно. Если корреляция отрицательная, то наоборот, вся дробь изменяется сильнее, чем числитель и знаменатель по отдельности.
+\end{frame}
+
+
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+
+\begin{frame}{Корреляции}
+\justify
+Перейдём от курсов к логарифмам:
+\begin{align*}
+S_{eurgbp} = \frac{S_{eurusd}}{S_{gbpusd}} \quad \Rightarrow \quad \ln S_{eurgbp} = \ln S_{eurusd} - \ln S_{gbpusd} 
+\end{align*}
+
+\justify
+В риск-нейтральном мире Блэка-Шоулза цены следуют логнормальному распределению, а логарифмы цен --- нормальному распределению.
+\begin{align*}
+\Var(\ln S_{eurgbp}) &= \Var(\ln S_{eurusd} - \ln S_{gbpusd}) = \\
+&= \Var(\ln S_{eurusd}) + \Var(\ln S_{gbpusd}) - \\
+&- 2\Cov(\ln S_{eurusd}, \ln S_{gbpusd})
+\end{align*}
+В терминах волатильностей:
+\begin{align*}
+\sigma_{eurgbp}^2 &= \sigma_{eurusd}^2 + \sigma_{gbpusd}^2 - 2\rho\sigma_{eurusd}\sigma_{gbpusd} \Rightarrow \\
+\rho &= \frac{\sigma_{eurusd}^2 + \sigma_{gbpusd}^2 - \sigma_{eurgbp}^2}{2\sigma_{eurusd}\sigma_{gbpusd}}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Корреляции}
+\justify
+Как сгенерировать $n$ случайных величин с заданной матрицей корреляции $Q$?
+
+\justify
+Для любой положительно определённой матрицы $Q$ существует разложение Холецкого (\en{Cholesky}) на нижнюю треугольную матрицу $L$ и верхнюю треугольную матрицу $L^T$:
+\begin{align*}
+Q = L \cdot L^T
+\end{align*}
+
+\justify
+Если в случайном векторе $x=(x_1,...,x_n)^T$ все величины независимые, то в векторе $Lx$ все компоненты будут связаны матрицей корреляции $Q$.
+\end{frame}
+
+
+
+\begin{frame}{Радужный опцион}
+\justify
+Алгоритм оценки радужного опциона методом Монте-Карло:
+
+1. Оценить матрицу риск-нейтральных корреляций $Q$ из волатильностей четырёх валютных пар и их кроссов.
+
+2. Выполнить разложение Холецкого: $Q = L \cdot L^T$.
+
+3. Сгенерировать четыре независимые стандартные нормальные величины $\xi = (\xi_1,...,\xi_4)^T$.
+
+4. Получить вектор скоррелированных величин $(\psi_1,...,\psi_4)^T = L\xi$.
+
+5. Посчитать финальный курс каждой валюты ($r$ --- безрисковая ставка в долларах, $q_i$ --- в валюте):
+\begin{align*}
+S_{T,i}(\psi_i) = S_{0,i}\exp\left[\left(r - q_i - \frac{\sigma_i^2}{2}\right)T + \sigma_i\psi_i\sqrt{T}\right]
+\end{align*}
+
+6. Вычислить выплату по радужному опциону.
+
+7. Повторить 10\,000 раз.
+\end{frame}
+
+
+
+\begin{frame}{Variance reduction}
+\justify
+Наша псевдослучайная последовательность $\mathcal{N}(0,1)$ не является идеальной и может иметь перекос влево или вправо относительно истинного математического ожидания 0.
+
+\justify
+Anti-thetic trials --- метод борьбы со смещением выборки. Каждый раз, когда генератор случайных чисел выдаёт реализацию нормальной величины, например 0.42, можно добавить в выборку противоположное число, например $-0.42$. По построению новая выборка будет иметь среднее 0.
+
+\justify
+Другие более сложные методы снижения дисперсии метода Монте-Карло:
+\begin{itemize}
+\item Stratified sampling, importance sampling
+\item Orthogonal array sampling
+\item Sobol numbers
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Демонстрация}
+\justify
+Пример: радужный опцион с \en{anti-thetic trials}.
+\end{frame}
+
+\end{document}
+
+
