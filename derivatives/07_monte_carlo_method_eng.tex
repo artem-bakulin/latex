@@ -38,7 +38,7 @@
 \usepackage{eurosym}
 \renewcommand{\EUR}[1]{\textup{\euro}#1}
 
-\title{Monte-Carlo Method}
+\title{Monte Carlo Method}
 \author{Artem Bakulin}
 \date{November 23, 2023}
 
@@ -578,13 +578,13 @@ Numerical procedures come to rescue
 \begin{itemize}
 \item Binomial trees.
 \item Finite difference methods.
-\item Monte-Carlo method.
+\item Monte Carlo method.
 \end{itemize}
 \end{frame}
 
 
 
-\begin{frame}{Monte-Carlo method}
+\begin{frame}{Monte Carlo method}
 \justify
 How do we compute $\pi$? Randomly drop $N$ points at a square. Count how many points hit the inscribed circle.
 
@@ -617,92 +617,93 @@ Denote circle radius $R$. Approximately $N\dfrac{\pi R^2}{4R^2}$ points should h
 
 
 
-\begin{frame}{Метод Монте-Карло}
+\begin{frame}{Monte Carlo method - 2}
 \justify
-Пусть цена базового актива в риск-нейтральном мире, а вслед за ней и выплата по деривативу, зависят от реализации некоторой случайной величины $\xi$ (возможно многомерной). Предположим, что мы знаем закон распределения $\xi$.
+Suppose that in the risk-neutral world price of the underlying asset and payoff of a derivative depend on a random variable $\xi$ (which may be multi-dimensional). Suppose that we know the distribution of $\xi$.
 
 \justify
-1. Выберем наудачу $n$ (достаточно много) реализаций случайной величины $\xi$: $\xi_1, \xi_2, ..., \xi_n$.
+1. Choose at random $n$ (a sufficiently large number) realizations of this random variable $\xi$: $\xi_1, \xi_2, ..., \xi_n$.
 
-2. Для каждой реализации $\xi_i$ вычислим цену базового актива $S_T(\xi_i)$ и выплату по деривативу $f(S_T(\xi_i))$.
+2.  Compute terminal asset price $S_T(\xi_i)$ and drivative payoff $f(S_T(\xi_i))$ for each realization $\xi_i$.
 
-3. Оценим математическое ожидание выплаты как 
+3. Estimate the expected payoff as
 \begin{align*}
 \hat{f} = \frac{1}{n}\sum\limits_{i=1}^{n}f\Big(S_T(\xi_i)\Big)
 \end{align*}
 
-4. Выполним дисконтирование.
+4. Discount the expected payoff to today.
 
 \justify
-Можно надеяться (почему?), что с ростом $n$ оценка мат. ожидания будет сходиться к истинному мат. ожиданию.
+One can hope (why?) that as $n$ grows, our estimate of expected value will be converging to the true expcted value.
 \end{frame}
 
 
 
-\begin{frame}{Закон больших чисел}
+\begin{frame}{Law of Large Numbers}
 \justify
-Пусть $\xi_i$ --- независимые одинаково распределённые случайные величины, которые имеют конечное математическое ожидание $\mathbb{E}\xi_i=\mu$. Тогда с вероятностью 1 (почти наверное)
+Let  $\xi_i$ be independent identically distributed (i.i.d) random variables, which have a finite expected value of $\mathbb{E}\xi_i=\mu$. Then with probability of 1 (almost surely)
 \begin{align*}
 \lim_{n \to \infty} \frac{1}{n} \sum\limits_{i=1}^{n}\xi_i = \mu
 \end{align*}
 
 \justify
-Это закон больших чисел (ЗБЧ). Если усреднить много-много реализаций одной и той же случайной величины, то получится число, достаточно близкое к истинному математическому ожиданию.
+This is \alert{Law of Large Numbers} (LLN). Average of a large sample of independent trials should be "reasonably"\ close to true expected value.
 
 \justify
-Что такое <<достаточно>> близко?
+What is "reasonably"\ close?
 \end{frame}
 
 
 
-\begin{frame}{Центральная предельная теорема}
+\begin{frame}{Central Limit Theorem}
 \justify
-Пусть $\xi_i$ --- независимые одинаково распределённые случайные величины, которые имеют конечное математическое ожидание $\mathbb{E}\xi_i=\mu$ и конечную дисперсию $\operatorname{Var}(\xi_i) = \sigma^2$. Тогда имеет место сходимость по распределению:
+Suppose that $\xi_i$ are independent identically distributed (i.i.d.) random variables, with finite expected value $\mathbb{E}\xi_i=\mu$ and finite variance $\operatorname{Var}(\xi_i) = \sigma^2$. Then there is a convergence by distribution:
 \begin{align*}
 \lim_{n \to \infty} \sqrt{n}\frac{\dfrac{1}{n}\sum\limits_{i=1}^{n}\xi_i - \mu}{\sigma} = \mathcal{N}(0, 1)
 \end{align*}
 
 \justify
-$\mathcal{N}(0, 1)$ --- стандартное нормальное распределение.
+Here $\mathcal{N}(0, 1)$ is standard normal (Gaussian) distribution.
 
 \justify
-Это --- центральная предельная теорема (ЦПТ). Среднее арифметическое большого количества реализаций случайной величины следует нормальному распределению.
+This is \alert{Central Limit Theorem} (CLT). Arithmetic mean of a large sample of i.i.d. variables tends to normal distribution.
 \end{frame}
 
 
 
-\begin{frame}{Случайные числа}
+
+\begin{frame}{Random numbers}
 \justify
-Для метода Монте-Карло нужно много, очень много случайных чисел.
+Monte Carlo method needs random numbers, lots of random numbers!
 
 \justify
-В большинстве современных процессоров есть встроенный аппаратный генератор случайных чисел. Например, инструкция x86 RDRAND позволяет получить 16, 32 или 64 случайных бита.
+Most modern processors have a hardware random numbers generator. For example, RDRAND from x86 instruction set provides 16, 32 or 64 random bits.
 
 \justify
-Недостатки:
+Drawbacks:
 \begin{itemize}
-\item Быстродействие (450 тактов на Core i7-7700).
-\item Невоспроизводимость результатов.
+\item Performance (450 ticks on a Core i7-7700).
+\item Unreproducible results.
 \end{itemize}
 
 \justify
-Нужен быстрый алгоритм получения <<почти>> случайных чисел.
+We need a fast algorithm for producing numbers that are "almost"\ random.
 \end{frame}
 
 
 
-\begin{frame}{Псевдослучайные последовательности}
+\begin{frame}{Pseudo-random sequences}
 \justify
-Простой генератор псевдослучайных чисел по методу Лемера, реализованный в std::minstd\_rand:
+Simple random numbers generator from std::minstd\_rand (Lehmer's algorithm):
 \begin{align*}
 X_{k+1} = (48\,271 \cdot X_k) \ \operatorname{MOD} \ 2\,147\,483\,647
 \end{align*}
 
 \justify
-Для каждого целого положительного начального значения $X_0$ (которое называется \en{seed}) получается новая <<почти случайная>> последовательность целых чисел от 0 до 2\,147\,483\,646.
+Each positive integer initial value $X_0$ (which is called a seed) produces an "almost random"\ sequence of integers between 0 and 2\,147\,483\,646.
 
 \justify
-Как получить случайные действительные числа из равномерного распределения $U(0, 1)$?
+How do we get pseudo-random real numbers from the uniform distribution $U(0, 1)$?
 \begin{align*}
 U_k = X_k / (2\,147\,483\,647 - 1)
 \end{align*}
@@ -710,16 +711,16 @@ U_k = X_k / (2\,147\,483\,647 - 1)
 
 
 
-\begin{frame}{Псевдослучайные последовательности}
+\begin{frame}{Pseudo-random sequences - 2}
 \justify
-Если мы умеем создавать случайные числа $U_k$ из равномерного распределения $U(0,1)$, то как получить случайные числа, например, из нормального распределения $\mathcal{N}(0, 1)$?
+Suppose we are able to produce random numbers $U_k$ from the uniform distribution $U(0,1)$. How do we get random numbers that follow a different distribution, for example, the standard normal $\mathcal{N}(0, 1)$?
 
 \justify
-Пусть $N(x)$ --- функция распределения стандартного нормального распределения, а $N^{-1}(x)$ --- её обратная функция. Тогда величины
+Let $N(x)$ denote cumulative distribution function of the standard normal distribution, and let $N^{-1}(x)$ denote its inverse function. Then these variables
 \begin{align*}
 N_k = N^{-1}(U_k)
 \end{align*}
-будут иметь стандартное нормальное распределение:
+will follow standard normal distribution:
 \begin{align*}
 \mathbb{P}(N_k < x) = \mathbb{P}(N^{-1}(U_k) < x) = \mathbb{P}(U_k < N(x)) = U(N(x)) = N(x)
 \end{align*}
@@ -727,7 +728,7 @@ N_k = N^{-1}(U_k)
 
 
 
-\begin{frame}{Псевдослучайные последовательности}
+\begin{frame}{Pseudo-random sequences - 3}
 \centering
 \begin{tikzpicture}
 	\begin{axis}[
@@ -768,21 +769,21 @@ N_k = N^{-1}(U_k)
 
 
 
-\begin{frame}{Демонстрация}
+\begin{frame}{Demo}
 \justify
-Пример: 10\,000 нормально распределённых случайных величин в Excel.
+An example: 10\,000 normal random variables in Excel.
 \end{frame}
 
 
 
-\begin{frame}{Ванильный колл-опцион}
+\begin{frame}{Vanilla call option}
 \justify
-Рассмотрим европейский колл-опцион со страйком $K$ и сроком исполнения $T$ лет. Начальная цена базового актива $S_0$. В риск-нейтральном мире базовый актив следует геометрическому броуновскому движению со средним $r$ (безрисковая ставка) и волатильностью $\sigma$:
+Consider a European vanilla call option at strike $K$ that expires in $T$ years. Current price of the underlying asset is $S_0$. In the risk-neutral world, the underlying asset follows a geometric Brownian motion with a mean of $r-q$ (risk-free rate less dividend yield) and volatility $\sigma$.
 \begin{align*}
-S_T(\xi) = S_0 \exp\left[\left(r - \frac{\sigma^2}{2}\right)T + \sigma\xi\sqrt{T}\right], \quad \xi \sim \mathcal{N}(0, 1)
+S_T(\xi) = S_0 \exp\left[\left(r - q - \frac{\sigma^2}{2}\right)T + \sigma\xi\sqrt{T}\right], \quad \xi \sim \mathcal{N}(0, 1)
 \end{align*}
 
-Выплата по колл-опциону:
+Payoff of a call option is:
 \begin{align*}
 f(S_T(\xi)) = \max(S_T(\xi) - K, 0)
 \end{align*}
@@ -790,18 +791,18 @@ f(S_T(\xi)) = \max(S_T(\xi) - K, 0)
 
 
 
-\begin{frame}{Ванильный колл-опцион}
+\begin{frame}{Vanilla call option - 2}
 \justify
-1. Сгенерируем $n$ реализаций случайной величины $\xi$: $\xi_1, \xi_2, ..., \xi_n$. 
+1. Sample $n$ realizations of random variable $\xi$: $\xi_1, \xi_2, ..., \xi_n$. 
 
 \justify
-2. Посчитаем $n$ выплат по колл-опциону:
+2. Compute $n$ option payoffs:
 \begin{align*}
-f_i = f(S_T(\xi_i)) = \max\left\{S_0 \exp\left[\left(r - \frac{\sigma^2}{2}\right)T + \sigma\xi_i\sqrt{T}\right] - K, 0\right\}
+f_i = f(S_T(\xi_i)) = \max\left\{S_0 \exp\left[\left(r - q - \frac{\sigma^2}{2}\right)T + \sigma\xi_i\sqrt{T}\right] - K, 0\right\}
 \end{align*}
 
 \justify
-3. Посчитаем среднюю выплату и дисконтируем её --- это будет сегодняшняя цена опциона.
+3. Compute the average payoff and discount it to today. This will be fair price for this option.
 \begin{align*}
 \hat{C} = e^{-rT} \cdot \frac{1}{n}\sum\limits_{i=1}^{n}f(S_T(\xi_i))
 \end{align*}
@@ -809,25 +810,25 @@ f_i = f(S_T(\xi_i)) = \max\left\{S_0 \exp\left[\left(r - \frac{\sigma^2}{2}\righ
 
 
 
-\begin{frame}{Демонстрация}
+\begin{frame}{Demo}
 \justify
-Пример: ванильный колл-опцион.
+Demo: a vanilla call option.
 \end{frame}
 
 
 
-\begin{frame}{Оценка погрешности}
+\begin{frame}{Error estimation}
 \justify
-Пусть $\hat{C}$ --- дисконтированная средняя выплата 	опциона, которую мы получили в результате $n$ симуляций, а $\hat{s}$ --- её выборочное стандартное отклонение.
+Let $\hat{C}$ be the discounted average payoff of an option, which we computed as a result of $n$ simulations, and $\hat{s}$ is its sample standard deviation.
 
 \justify
-Согласно ЦПТ, при больших $n$ ошибка (разность $\hat{C}$ и истинного математического ожидания $C$) --- нормально распределённая случайна величина:
+According to the CLT, if $n$ is sufficiently large, then the difference between $\hat{C}$ and the true expected value $C$ is a normally distributed random variable:
 \begin{align*}
 \sqrt{n}\frac{\hat{C} - C}{\hat{s}} \sim \mathcal{N}(0, 1)
 \end{align*}
 
 \justify
-Мы можем построить доверительный интервал для $C$. Например, известно, что $N(1.96) \approx 0.975$. Поэтому 95\% доверительный интервал $C$ равен
+We can construct a confidence interval for $C$. For example, we know that $N(1.96) \approx 0.975$. Consequently, 95\% confidence interval for $C$ is
 \begin{align*}
 \left(\hat{C} - 1.96\frac{\hat{s}}{\sqrt{n}}; \hat{C} + 1.96\frac{\hat{s}}{\sqrt{n}} \right)
 \end{align*}  
@@ -837,56 +838,55 @@ f_i = f(S_T(\xi_i)) = \max\left\{S_0 \exp\left[\left(r - \frac{\sigma^2}{2}\righ
 
 \begin{frame}{Seed variance}
 \justify
-\en{Seed variance}\ --- оценка того, насколько результат метода Монте-Карло зависит от значения seed, которым мы инициализировали генератор случайных чисел.
+\alert{Seed variance} is an estimate of how much the outcome of the Monte Carlo method depends on the initial seed value in the random number generator.
 
 \justify
-Если генератор псевдослучайных чисел достаточно хороший, а в алгоритме нет ошибок, то seed variance будет близка к теоретической погрешности.
+If the pseudo-random number generator is good enough, and there are no errors in the algorithm, then the seed variance will be close to the theoretical error.
 
 \justify
-Например, мы провели $k$ вычислений для $k$ разных значений seed и получили $k$ цен опциона $\hat{C}_1, \hat{C}_2,...,\hat{C}_k$. Тогда seed variance ($\hat{s})$
- --- выборочное стандартное отклонение $\hat{C}_i$:
+Suppose that we performed $k$ computations with $k$ different seeds and got $k$ option prices $\hat{C}_1, \hat{C}_2,...,\hat{C}_k$. Then seed variance $\hat{s}$ is sample standard deviation of $\hat{C}_i$:
 \begin{align*}
-\bar{C} = \frac{1}{k}\sum\limits_{i=1}^{k}\hat{C}_i \quad \hat{s} = \sqrt{\frac{1}{n-1}\sum\limits_{i=1}^{k}(\bar{C} - \hat{C}_i)^2} 
+\bar{C} = \frac{1}{k}\sum\limits_{i=1}^{k}\hat{C}_i, \quad \hat{s} = \sqrt{\frac{1}{n-1}\sum\limits_{i=1}^{k}(\bar{C} - \hat{C}_i)^2} 
 \end{align*}
 
 \justify
-Проверка seed variance --- стандартный приём при тестировании нового алгоритма. Она позволяет а) найти ошибки и б) оценить количество симуляций, которые дают приемлемую точность.
+It is a good idea to check seed variance when you are testing a new algorithm. It helps both to find bugs and to estimate the number of simulations required to achieve acceptable accuracy.
 \end{frame}
 
 
 
-\begin{frame}{Азиатский опцион}
+\begin{frame}{Asian option}
 \justify
-В азиатском колл-опционе выплата зависит от средней цены базового актива за время жизни опциона.
+Payoff of an \alert{Asian option} depends on the average underlying asset price during lifetime of the option.
 
 \justify
-Стороны договариваются о $k$ датах наблюдений (<<фиксингов>>) $0 \le t_1 < t_2 < ... < t_k \le T$. Выплата по колл-опциону со страйком $K$ равна
+Parties agree about $k$ observation dates (or fixing dates) $0 \le t_1 < t_2 < ... < t_k \le T$. Payoff of a call option at strike $K$ is
 \begin{align*}
 f = \max\left(\frac{S(t_1) + S(t_2) + ... + S(t_k)}{n} - K, 0\right)
 \end{align*}
 
 \justify
-Например, азиатский опцион может платить разность между средним курсом USDRUB ЦБ РФ за месяц и страйком $80$. 
+For example, an Asian option may pay the difference between monthly average EURUSD rate and the strike of $1.06$. 
 
 \justify
-Выплата по азиатскому опциону зависит от всей траектории цены, а не только от конечной точки (является \en{path-dependent}). Аналитической формулы цены такого опциона нет. 
+Payoff of an Asian option is path-dependent, i.e. it depends on particular trajectory rather than just on the terminal value. There is no analytical formula to price such an option. 
 \end{frame}
 
 
 
-\begin{frame}{Азиатский опцион}
+\begin{frame}{Asian option - 2}
 \justify
-Чтобы оценить азиатский опцион, нужно сгенерировать случайные траектории цены базового актива в риск-нейтральном мире.
+To price an Asian option, we need random trajectories of the underlying asset price in the risk-neutral world.
 
 \justify
-Например, если в опционе $k$ дат фиксингов $t_1, t_2, ... t_k$, то один такой путь $i$ мог бы выглядеть как 
+For example, if there are $k$ fixing dates $t_1, t_2, ... t_k$, then a trajectory $i$ could look like this 
 \begin{align*}
 S_0 \to S_{i,1} \to S_{i,2} \to ... \to S_{i,k}
 \end{align*}
-причём
+So that
 \begin{align*}
 S_{i,0} &= S_0, \quad t_0 = 0 \\
-S_{i,j} &= S_{i,j-1} \exp\left[\left(r - \frac{\sigma^2}{2}\right)(t_j - t_{j-1}) + \sigma\xi_{i,j}\sqrt{t_j - t_{j-1}}\right] \\
+S_{i,j} &= S_{i,j-1} \exp\left[\left(r - q - \frac{\sigma^2}{2}\right)(t_j - t_{j-1}) + \sigma\xi_{i,j}\sqrt{t_j - t_{j-1}}\right] \\
 \xi_{i,j} &\sim \mathcal{N}(0, 1)
 \end{align*}
 \end{frame}
@@ -909,14 +909,14 @@ S_{i,j} &= S_{i,j-1} \exp\left[\left(r - \frac{\sigma^2}{2}\right)(t_j - t_{j-1}
 	{monte_carlo_paths.csv};
 }
 
-\begin{frame}{Азиатский опцион}
+\begin{frame}{Asian option - 2}
 \centering
 \begin{tikzpicture}
 	\begin{axis}[
 		width = \textwidth - 0.5cm,
 		height = \textheight - 1cm,
-		xlabel = {Время (годы)},
-		ylabel = {Цена базового актива},
+		xlabel = {Time (years)},
+		ylabel = {Underlying asset price},
 		xmin=0, xmax=0.5,
 		xticklabel = {\pgfmathprintnumber[fixed, precision=2]{\tick}}
 	]
@@ -936,9 +936,9 @@ S_{i,j} &= S_{i,j-1} \exp\left[\left(r - \frac{\sigma^2}{2}\right)(t_j - t_{j-1}
 
 
 
-\begin{frame}{Демонстрация}
+\begin{frame}{Demo}
 \justify
-Пример: азиатский колл-опцион.
+An example: Asian call option.
 \end{frame}
 
 
