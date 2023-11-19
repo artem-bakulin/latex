@@ -3,7 +3,7 @@
 \usepackage{cmap}				% To be able to copy-paste russian text from pdf
 \usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[russian]{babel}
+\usepackage[english]{babel}
 \usepackage{textpos}
 \usepackage{ragged2e}
 \usepackage{amssymb}
@@ -44,10 +44,6 @@
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
-
-\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
-\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
-\newcommand{\ruen}[2]{#1 (\en{#2})}
 
 % https://tex.stackexchange.com/questions/98003/filter-rows-from-a-table
 \pgfplotsset{
@@ -402,7 +398,7 @@ A stock is worth its discounted "expected value".
 
 \begin{frame}{Bond price}
 \justify
-Consider a risk-free bond that will pay \$1 at the third step. A bond is a cbombination of a digital call and a digital put. This derivative has a payoff of $V(S) = 1$.
+Consider a risk-free bond that will pay \$1 at the third step. A bond is a combination of a digital call and a digital put. This derivative has a payoff of $V(S) = 1$.
 \begin{align*}
 B &= \frac{q^3 \cdot 1 + 3q^2(1-q) \cdot 1 + 3q(1-q)^2 \cdot 1 + (1-q)^3 \cdot 1}{(1+rT)^3} = \\
 &= \frac{\Big(q + (1-q) \Big)^3}{(1+rT)^3} = \frac{1}{(1+rT)^3}
@@ -422,7 +418,7 @@ To calculate the coefficients $q$ and $1-q$, we constructed a replicating portfo
 The value of $q$ follows mechanically from the parameters of the problem, $u$ and $d$ (potential upward and downward price changes) and $r$ (risk-free interest rate).
 
 \justify
-It turned out that the prices of all three assets (a derivative, stock, risk-free bond) are equal to the discounted "expected value"\ of future payouts if we substitute "risk-neutral probabilities" $q$ and $1-q$ instead of true probabilities.
+It turned out that the prices of all three assets (a derivative, a stock, a risk-free bond) are equal to the discounted "expected value"\ of future payouts if we substitute "risk-neutral probabilities" $q$ and $1-q$ instead of true probabilities.
 
 \justify
 Is this a coincidence?
@@ -674,7 +670,7 @@ This is \alert{Central Limit Theorem} (CLT). Arithmetic mean of a large sample o
 
 \begin{frame}{Random numbers}
 \justify
-Monte Carlo method needs random numbers, lots of random numbers!
+We need random numbers, lots of random numbers!
 
 \justify
 Most modern processors have a hardware random numbers generator. For example, RDRAND from x86 instruction set provides 16, 32 or 64 random bits.
@@ -943,9 +939,9 @@ An example: Asian call option.
 
 
 
-\begin{frame}{Радужный опцион}
+\begin{frame}{Rainbow option}
 \justify
-Фиксируем четыре валютные пары и их текущие курсы:
+Consider four currency pairs and they current spot rates.
 
 \centering
 \begin{tabular}{l|l}
@@ -956,13 +952,13 @@ CADUSD & 0.7490
 \end{tabular}
 
 \justify
-Через три месяца ($T=0.25$) посмотрим, какая валюта сильнее всего укрепилась к доллару, и выберем её для определения выплаты:
+In 3 months ($T=0.25$) we will check which currency strengthened the most against the dollar. We will use this currency to determine payoff of the option:
 \begin{align*}
 M = \max\left(\frac{S_{eurusd}(T)}{S_{eurusd}(0)}, \frac{S_{gbpusd}(T)}{S_{gbpusd}(0)}, \frac{S_{jpyusd}(T)}{S_{jpyusd}(0)}, \frac{S_{cadusd}(T)}{S_{cadusd}(0)} \right)
 \end{align*}
 
 \justify 
-Радужный (\en{rainbow}) опцион с номиналом $N=\$1000$ и страйком $K=100\%$ имеет выплату
+Rainbow option at strike $K=100\%$ that has a notional of $N=\$1000$ pays off
 \begin{align*}
 \max(M - K, 0) \cdot N = \max(M-1, 0) \cdot \$1000
 \end{align*}
@@ -970,52 +966,55 @@ M = \max\left(\frac{S_{eurusd}(T)}{S_{eurusd}(0)}, \frac{S_{gbpusd}(T)}{S_{gbpus
 
 
 
-\begin{frame}{Корреляции}
+\begin{frame}{Correlations}
 \justify
-Цена радужного опциона зависит не только от волатильностей валютных пар, но и от корреляций между ними. Если какие-то корреляции отрицательные (например, если EURUSD дешевеет, то GBPUSD обычно дорожает), то цена опциона должна быть выше.
+Price of a rainbow option depends not only on the volatilities of currency pairs but also on the correlations between them. If some correlations are negative (for example, when EURUSD depreciates, GBPUSD usually appreciates), then the option price should be higher.
 
 \justify
-В методе Монте-Карло мы симулируем движение базовых активов в риск-нейтральном мире. Следовательно, нам нужны риск-нейтральные корреляции, а не корреляции из реального мира (например, исторические).
+In the Monte Carlo method, we simulate prices of underlying assets in the risk-neutral world. Therefore, we need risk-neutral correlations, rather than correlations from the real world (such as historical correlations).
 
 \justify
-Какие рыночные инструменты могут показать <<ожидаемую рынком>> корреляцию?
+Which market instruments can indicate the implied correlation?
 \end{frame}
 
 
 
-\begin{frame}{Корреляции}
+\begin{frame}{Correlations - 2}
 \justify
-Помимо <<мейджоров>> EURUSD и GBPUSD, на валютном рынке есть и опционы на <<кросс>> EURGBP. Implied волатильность кросса EURGBP может подсказать ожидаемую рынком корреляцию.
+In addition to major currency pairs EURUSD and GBPUSD, FX market offers options that have EURGBP cross as underlying. Implied volatility of EURGBP cross can indicate the implied correlation.
 
 \justify
-Как вычислить курс EURGBP?
+How to compute EURGBP exchange rate?
 \begin{align*}
 S_{eurgbp} = \frac{S_{eurusd}}{S_{gbpusd}}
 \end{align*}
 
 \justify
-Если корреляция высокая (когда евро растёт, то и фунт растёт), то числитель и знаменатель дроби чаще растут вместе, и сама дробь изменяется не так сильно. Если корреляция отрицательная, то наоборот, вся дробь изменяется сильнее, чем числитель и знаменатель по отдельности.
+If the correlation is high (when the euro strengthens, the pound also strengthens), then the numerator and denominator of the fraction often grow together, and the fraction itself does not change much.
+
+\justify
+On the contrary, if the correlation is negative the entire fraction changes more than the numerator and denominator individually.
 \end{frame}
 
 
 \newcommand{\Var}{\operatorname{Var}}
 \newcommand{\Cov}{\operatorname{Cov}}
 
-\begin{frame}{Корреляции}
+\begin{frame}{Correlations - 3}
 \justify
-Перейдём от курсов к логарифмам:
+Transition from exchange rates to logarithms:
 \begin{align*}
 S_{eurgbp} = \frac{S_{eurusd}}{S_{gbpusd}} \quad \Rightarrow \quad \ln S_{eurgbp} = \ln S_{eurusd} - \ln S_{gbpusd} 
 \end{align*}
 
 \justify
-В риск-нейтральном мире Блэка-Шоулза цены следуют логнормальному распределению, а логарифмы цен --- нормальному распределению.
+In the risk-neutral world of Black-Scholes, asset prices follow a log-normal distribution, and their logarithms follow a normal distribution.
 \begin{align*}
 \Var(\ln S_{eurgbp}) &= \Var(\ln S_{eurusd} - \ln S_{gbpusd}) = \\
 &= \Var(\ln S_{eurusd}) + \Var(\ln S_{gbpusd}) - \\
 &- 2\Cov(\ln S_{eurusd}, \ln S_{gbpusd})
 \end{align*}
-В терминах волатильностей:
+Re-write in terms of volatility:
 \begin{align*}
 \sigma_{eurgbp}^2 &= \sigma_{eurusd}^2 + \sigma_{gbpusd}^2 - 2\rho\sigma_{eurusd}\sigma_{gbpusd} \Rightarrow \\
 \rho &= \frac{\sigma_{eurusd}^2 + \sigma_{gbpusd}^2 - \sigma_{eurgbp}^2}{2\sigma_{eurusd}\sigma_{gbpusd}}
@@ -1024,57 +1023,57 @@ S_{eurgbp} = \frac{S_{eurusd}}{S_{gbpusd}} \quad \Rightarrow \quad \ln S_{eurgbp
 
 
 
-\begin{frame}{Корреляции}
+\begin{frame}{Cholesky decomposition}
 \justify
-Как сгенерировать $n$ случайных величин с заданной матрицей корреляции $Q$?
+We need $n$ random variables with a given correlation matrix $Q$.
 
 \justify
-Для любой положительно определённой матрицы $Q$ существует разложение Холецкого (\en{Cholesky}) на нижнюю треугольную матрицу $L$ и верхнюю треугольную матрицу $L^T$:
+For any positive-definite matrix $Q$ there exists Cholesky decomposition into lower triangular matrix $L$ and upper triangular matrix $L^T$:
 \begin{align*}
 Q = L \cdot L^T
 \end{align*}
 
 \justify
-Если в случайном векторе $x=(x_1,...,x_n)^T$ все величины независимые, то в векторе $Lx$ все компоненты будут связаны матрицей корреляции $Q$.
+Suppose that there is a vector $x=(x_1,...,x_n)^T$ of pairwise uncorrelated random variables. Then a vector $Lx$ will have all components correlated according to the correlation matrix $Q$.
 \end{frame}
 
 
 
-\begin{frame}{Радужный опцион}
+\begin{frame}{Rainbow option}
 \justify
-Алгоритм оценки радужного опциона методом Монте-Карло:
+How to price a rainbow option using the Monte Carlo method.
 
-1. Оценить матрицу риск-нейтральных корреляций $Q$ из волатильностей четырёх валютных пар и их кроссов.
+1. Compute a matrix of risk-neutral correlations $Q$ from implied volatilities of 4 currency pairs and their crosses.
 
-2. Выполнить разложение Холецкого: $Q = L \cdot L^T$.
+2. Compute Cholesky decomposition: $Q = L \cdot L^T$.
 
-3. Сгенерировать четыре независимые стандартные нормальные величины $\xi = (\xi_1,...,\xi_4)^T$.
+3. Generate 4 uncorrelated normal variables $\xi = (\xi_1,...,\xi_4)^T$.
 
-4. Получить вектор скоррелированных величин $(\psi_1,...,\psi_4)^T = L\xi$.
+4. Compute 4 correlated random variables $(\psi_1,...,\psi_4)^T = L\xi$.
 
-5. Посчитать финальный курс каждой валюты ($r$ --- безрисковая ставка в долларах, $q_i$ --- в валюте):
+5. Compute terminal exchange rate for each currency  ($r$ is the dollar risk-free rate, $q_i$ is risk-free rate in the $i$-th currency):
 \begin{align*}
 S_{T,i}(\psi_i) = S_{0,i}\exp\left[\left(r - q_i - \frac{\sigma_i^2}{2}\right)T + \sigma_i\psi_i\sqrt{T}\right]
 \end{align*}
 
-6. Вычислить выплату по радужному опциону.
+6. Compute payoff of a rainbow option.
 
-7. Повторить 10\,000 раз.
+7. Repeat 10\,000 times.
 \end{frame}
 
 
 
 \begin{frame}{Variance reduction}
 \justify
-Наша псевдослучайная последовательность $\mathcal{N}(0,1)$ не является идеальной и может иметь перекос влево или вправо относительно истинного математического ожидания 0.
+Our pseudo-random sequence of $\mathcal{N}(0,1)$ variables is not perfect and may have a bias to the left or right relative to the true expected value of 0.
 
 \justify
-Anti-thetic trials --- метод борьбы со смещением выборки. Каждый раз, когда генератор случайных чисел выдаёт реализацию нормальной величины, например 0.42, можно добавить в выборку противоположное число, например $-0.42$. По построению новая выборка будет иметь среднее 0.
+\alert{Anti-thetic trials} are a method to combat sampling bias. Every time the random number generator produces a realization of a normal variable, for example, 0.42, you can add the opposite number, for example, $-0.42$, to the sample. By construction, this new sample will have a mean of 0.
 
 \justify
-Другие более сложные методы снижения дисперсии метода Монте-Карло:
+Other more complex methods for variance reduction:
 \begin{itemize}
-\item Stratified sampling, importance sampling
+\item  Stratified sampling, importance sampling
 \item Orthogonal array sampling
 \item Sobol numbers
 \end{itemize}
@@ -1082,9 +1081,9 @@ Anti-thetic trials --- метод борьбы со смещением выбо�
 
 
 
-\begin{frame}{Демонстрация}
+\begin{frame}{Demo}
 \justify
-Пример: радужный опцион с \en{anti-thetic trials}.
+An example: a rainbow option with anti-thetic trials.
 \end{frame}
 
 \end{document}
