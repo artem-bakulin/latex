@@ -1,0 +1,139 @@
+\documentclass[a4paper,14pt]{extarticle}
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf			
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage[english]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{siunitx}
+
+\usepackage[hyphens]{url}
+\urlstyle{same}
+\usepackage{hyperref}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+%\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{colorbrewer}
+
+\usepackage{libertine}
+\usepackage{libertinust1math}
+
+\begin{document}
+
+\section{Structured Note}
+
+Write a code in any programming language to price a structure note. Our structured note is in fact a basket barrier option, where coupons depend on the trajectory of the price of the best of four stocks. Please refer to Excel spreadsheet that replicates all the steps.
+
+The structured note has a notional value of \$100\,000 and a maturity of 5 years. At the end of each year, the note may pay (or may not pay) a coupon.
+
+Consider a basket of four stocks: A, B, C, D. Each stock is currently priced at \$100, does not pay dividends, and has a Black-Scholes volatility of 30\%. Pairwise correlations between the stocks are equal to 0.40. Risk-free interest rate is 2\% (continuous compounding).
+
+On the very first day, at the note inception, the current price of each stock $S_{A,0}$, $S_{B,0}$, $S_{C,0}$, $S_{D,0}$ is fixed. Each coupon on the note is a European vanilla option on the best of the four stocks in the basket at a strike of $K=110\%$ of the initial price. More formally, the payout at the end of year $t$ is
+\begin{align*}
+V_t = \$100\,000 \cdot \max\left[\max\left(\frac{S_{A,t}}{S_{A,0}}; \frac{S_{B,t}}{S_{B,0}}; \frac{S_{C,t}}{S_{C,0}}; \frac{S_{C,t}}{S_{C,0}}\right) - 110\%; 0\% \right]
+\end{align*}
+
+There is a knock-out barrier in the note. If on any coupon date the best-performing stock is priced at $B=150\%$ of its initial price or higher, then the note is terminated prematurely. As compensation, the owner receives a fixed payment (rebate) of $R=5\%$ of the notional, i.e. \$5\,000. Neither on the barrier breach date nor on subsequent coupon dates does the note pay the "option"\ component.
+
+For example, if at the end of the first year the best-performing stock is already priced at 160\% of the initial price, the note holder will receive only the 5\% compensation for breaching the barrier (and will not receive the 160\% - 110\% = 50\% for the fact that the best-performing stock is above the strike).
+
+\subsection{Random Variables}
+
+In risk-neutral world of the Black-Scholes model, asset prices follow a log-normal distribution. Suppose that at the beginning of a period the stock price is $S_0$, and duration of the period until the following price measurement is $\tau$ years. Then the stock price at the end of the period is a random variable:
+\begin{align}
+S(\tau) = S_0\exp\left[\left(r - \dfrac{\sigma^2}{2}\right)\tau +
+\sigma\xi\sqrt{\tau}\right], \quad \xi \sim \mathcal{N}(0, 1)
+\label{brownian_final_price}
+\end{align}
+Here, $S(\tau)$ is the stock price at the end of the $\tau$-length period, $r$ is risk-free rate, $\sigma$ is the stock volatility, $\xi$ is a standard normal variable that represents fluctuations of the stock price around the mean.
+
+In our case, we need to trace dynamics of the basket of 4 stocks over 5 periods to determine the payouts of the structured note at the end of the first year, the second year, and so on. In total, one "scenario"\ is determined by 20 standard normal variables $\xi_i^j$, where $i=1..4$ is the stock index, $j=1..5$ is the period index (first year, second year, and so on).
+
+We know from the problem statement that the stocks are correlated with a correlation of 0.4 within one period. That is, for any period $j$, four random variables $\xi_1^j,..., \xi_4^j$ are correlated with a correlation of 0.4. There is no "memory" in the Black-Scholes model, so for different periods $j$ and $k$, the corresponding random variables $\xi_i^j$ and $\xi_i^k$ are independent.
+
+It turns out that one scenario in the Monte Carlo method is 5 groups of 4 correlated random variables. If you want to compute the note price on a sample of 10\,000 scenarios, you need 50\,000 sets of 4 correlated variables. If you are using Python, you can use the \href{https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.multivariate_normal.html}{multivariate\_normal} method.
+
+Don't forget to fix a specific seed in your code, otherwise, your code will produce different results each time!
+
+Table \ref{random_sample_table} is an example of how random simulations might look like.
+\begin{table}[h]
+\centering
+\begin{tabular}{l|r|r|r|r}
+Set & $\xi_1$ & $\xi_2$ & $\xi_3$ & $\xi_4$ \\ \hline
+1 & $0.770$ &  $0.288$ & $-1.116$ &  $0.622$ \\
+2 &$-2.060$ & $-0.295$ & $-1.288$ &  $0.205$ \\
+3 & $0.398$ &  $0.194$ &  $0.621$ & $-0.222$ \\
+4 & $1.568$ &  $0.702$ &  $1.592$ &  $0.917$ \\
+5 &$-2.049$ & $-0.868$ & $-1.196$ & $-0.630$ \\
+<...> & <...> & <...> & <...> & <...>
+\end{tabular}
+\caption{Example of several random sets of 4 correlated variables}
+\label{random_sample_table}
+\end{table}
+
+\subsection{Stock Prices Paths}
+
+Now we can move on to the stock prices on each coupon payment date. To do this, we need to apply formula (\ref{brownian_final_price}) sequentially. The trickiest part is not to mix up the indices. For example, the first set of four random variables determines price changes in the first period of the first scenario, the second set corresponds to the second period of the same scenario, and so on. You should end up with something like Table \ref{table_stock_prices}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|l|r|r|r|r|r}
+Scenario & Stock & Year 1 & Year 2 & Year 3 & Year 4 & Year 5 \\
+\hline
+1 & A & \$122.88 &  \$64.60 &  \$70.98 & \$110.81 &  \$58.45 \\
+  & B & \$106.34 &  \$94.95 &  \$98.15 & \$118.17 &  \$88.83 \\
+  & C &  \$69.78 &  \$46.24 &  \$54.34 &  \$85.45 &  \$58.22 \\
+  & D & \$117.54 & \$121.90 & \$111.24 & \$142.87 & \$115.34 \\
+\hline
+2 & A &  \$75.13 & \$101.71 & \$111.90 &  \$94.56 & \$150.59 \\
+  & B &  \$74.59 &  \$57.54 &  \$58.53 &  \$34.52 &  \$22.76 \\
+  & C & \$117.70 & \$104.97 & \$172.62 & \$146.31 & \$114.91 \\
+  & D &  \$77.03 &  \$70.02 &  \$97.54 &  \$70.80 &  \$49.77
+\end{tabular}
+\caption{Example of two random scenarios for stock prices}
+\label{table_stock_prices}
+\end{table}
+
+To ensure that your stock price simulations make sense, price a vanilla option. For instance, a call option on stock B with a maturity of 5 years and a strike of \$100. The average discounted payout in your sample should roughly coincide with the Black-Scholes formula.
+
+\subsection{Pricing the Structure Note}
+
+Now you need to calculate the payments in the structured note in each of the scenarios. You should reread the contract description once again and consider all cases carefully. I recommend calculating the price of the best-performing stock as a percentage of the initial price as an intermediate result. You will end up with something like Table \ref{table_note_payments}.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{l|l|r|r|r|r|r}
+Scenario & Parameter & Year 1 & Year 2 & Year 3 & Year 4 & Year 5 \\
+\hline
+Barrier is not breached & Best stock & 122.9\% & 121.9\% &	 111.2\%	& 142.9\% & 115.3\% \\
+            & Payout      & \$12\,900 &       \$11\,900 & \$1\,200 &    \$32\,900 & \$5\,300 \\
+\hline
+Barrier is breached & Best stock & 117.7\% & 105.0\% & 172.6\%	& 146.3\% & 150.6\% \\
+            & Payout      & \$7\,7000 &  \$0  &   \$5\,000 &    \$0 & \$0 \\ 
+
+\end{tabular}
+\caption{Payout of the structured note in multiple scenarios}
+\label{table_note_payments}
+\end{table}
+
+Now, all that's left is to discount all payments at the risk-free rate and calculate the average discounted payout across all scenarios. This will be theoretical price of the note.
+
+\subsection{Delta and Vega}
+
+Calculate Delta and Vega of the structured note. Of course, there is no analytical formula, so you need to run the Monte Carlo method several times.
+
+Remember the current price of the note. Then increase the price of stock A by 1\%, keeping the strike the same. This models a situation where we have just bought the note, fixed the initial price of stock A at \$100, and immediately after that, stock A has appreciated. How much is the note worth now? If the note's price changed by \$50, you can estimate the Delta as $\$50 / 0.01 = \$5\,000$. In other words, the note carries the same risk as if we had bought \$5\,000 worth of stock A.
+
+Now calculate Vega. Increase the volatility of one of the stocks by 1 percentage point. The change in the note's price will give us Vega, which is usually measured in dollars per percentage point.
+
+Now we know not only the price of the note but also how to approximately replicate it through trading stocks and vanilla options.
+
+\subsection{Seed Variance}
+
+Calculate the seed variance of your Monte Carlo method. Try 10 or 20 different seeds and observe how the note price changes. Calculate the average price across all seeds and the sample standard deviation.
+\end{document}
