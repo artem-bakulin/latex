@@ -1,0 +1,84 @@
+\documentclass[a4paper,14pt]{extarticle}
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf			
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage[english]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage[hyphens]{url}
+\urlstyle{same}
+\usepackage{hyperref}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+%\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{colorbrewer}
+
+\usepackage{libertine}
+\usepackage{libertinust1math}
+
+\begin{document}
+
+\section{DN-straddle}
+
+Consider the Black-Scholes model. A non-dividend-paying stock ($q= 0\%$) is priced at $S=\$100$ in the market. The stock's volatility is $\sigma= 30\%$, risk-free interest rate is $r= 3\%$ (continuous compounding).
+
+A Delta-neutral straddle (DN-straddle) is a combination of a bought call and a bought put at the same strike, and the delta of this combination is zero (hence the name delta-neutral). DN is one of the elements of the volatility smile, along with risk reversals and butterflies.
+
+Let's look at options with a maturity of $T= 0.5$ years. At what strike $K_{DN}$ a straddle (a bought call and a bought put) will have a delta of zero? Derive the formula or find this strike numerically with an accuracy of \$0.01.
+
+\section{Vega Hedging}
+
+An investment bank sold to a client a European put option on a stock index at a strike of $K_1=\$3\,500$ with a maturity of $T_1=1$ year. Current index price is $S=\$4\,000$, and its volatility is $\sigma=20\%$. Calculate Vega of this option in dollars per percentage point change in volatility, assuming a risk-free rate of $r=4\%$ and a dividend yield of $q=0\%$. Provide the answer with the sign, considering that the bank sold the option. For example, if Vega is positive, it means that the bank benefits from an increase in volatility.
+
+If volatility increases, the bank will incur a loss in the present value (PV) of the sold option, so it wants to hedge. Another client is interested in a quote for a European call at a strike of $K_2=\$4\,100$ with a maturity of $T_2=0.5$ years. How many units of this call should be bought or sold to make total Vega of the portfolio of the put and the call equal to zero?
+
+Hint: standard Vega formula gives the answer in "units"\ (how much present value will change if volatility increases by 1.0, i.e., by 100\%).
+
+\section{Artem and the Monte Carlo method}
+
+Trader Artem decided to check whether the fair forward rate formula, which we derived in the very first lecture, is correct. Consider a non-dividend paying stock ($q=0\%$). Сurrent stock price is $S_0 = \$100$, volatility in the Black-Scholes model is $\sigma=30\%$, and the risk-free interest rate is $r=2\%$. Artem is interested in a forward contract with a delivery date in $T=1$ year.
+
+According to the model, fair forward rate is $K = S_0e^{rT} \approx \$102.02$. Present value of the forward at a rate of $K$ should be zero. To check this, Artem generated $N=1\,000\,000$ random realizations of the future stock price in one year, $S_i$, and calculated $V_i$ --- the discounted payoff of the forward in each scenario.
+\begin{align*}
+S_i &= S_0\exp \left[\left(r - \sigma^2/2\right)T + \xi_i\sigma\sqrt{T}\right], \quad \xi_i \sim \mathcal{N}(0, 1) \\
+V_i &= (S_i - K)e^{-rT}
+\end{align*}
+
+If the model is correct, then the average of all $V_i$ should be zero. However, Artem was surprised to find that the sample mean was $\hat\mu = -\$0.02$, and the sample standard deviation was $\hat\sigma = \$30.7$. It seems like the fair forward rate formula is not confirmed by the experiment, as the average payoff is not zero.
+
+Help Artem restore faith in the forward rate formula: calculate a $c=99\%$ confidence interval for the forward payoff. How many simulations in the Monte Carlo method need to be performed to ensure that the width of the confidence interval does not exceed $v=\$0.01$?
+
+\section{Gamma and Theta}
+
+Consider the Black-Scholes model. A non-dividend paying stock is currently priced at $S=\$500$. The stock's volatility is $\sigma=30\%$, risk-free interest rate is $r=3\%$ (continuous compounding).
+
+Suppose we own a European put option at a strike of $K=\$480$ with a maturity of $T=0.5$ years. What is present value of such an option in the Black-Scholes model? How many units of the stock do we need to buy or to sell to make Delta of our position (bought put and some underlying asset) equal to zero?
+
+Let's assume that we have performed a Delta hedge, and the following business day has come. There are $T_2 = T - 1/360$ days left until the option expires. Calculate the profit (change in PV) of our position (the option and the hedge) in three scenarios: if new price of the underlying asset is $S_1 = \$480$ (significantly decreased), $S_2 = \$500$ (remained the same), $S_3 = \$520$ (significantly increased).
+
+\section{Delta-Gamma Hedging}
+
+Consider an option with the same parameters as in the previous problem. A non-dividend paying stock is currently priced at $S=\$500$. The stock's volatility is $\sigma=30\%$, risk-free interest rate is $r=3\%$ (continuous compounding). We own a European put option at a strike of $K_1=\$480$ with maturity of $T=0.5$ years.
+
+Instead of Delta-hedging, we are now hedging our Gamma. To do this, we found another option on the market --- a European call option at a strike of $K_2=\$500$ and maturity of $T=0.5$ years. The volatility is the same, $\sigma=30\%$. How many units of the call do we need to buy or sell to make total Gamma of the portfolio (initial put plus hedging call) equal to zero?
+
+Most likely, Delta of the portfolio of the call and the put will not be zero. How many units of the underlying asset do we need to buy or to sell so that Delta of the portfolio (put, call, underlying asset) is equal to zero?
+
+How will the PV of the portfolio change (what will our profit be) if the stock makes a jump to $S_1=\$480$, and the time to expiration remains the same at $T=0.5$?
+
+\section{Credit Default Swap}
+
+A risk-free zero-coupon bond 0f $T=5$ years maturity has a yield of $g=1\%$ (annual interest compounding). A corporate zero-coupon bond of the same maturity has a yield of $c=4\%$. In the event of default, recovery rate will be $R=40\%$, and the payment of the residual value of the bond will occur on the same date as originally scheduled for maturity (i.e., after $T$ years from today).
+
+What is probability of default during lifetime of the bond? What is default intensity (hazard rate) $\lambda$?
+
+Consider a five-year credit default swap in which the insurance buyer pays annual coupons (i.e., there will be a total of 5 coupon payments). In the event of default, the insurance payout will occur on the following coupon date (default after 1.5 years --- payout after 2 years from today). There are no accrued coupon payments.
+
+What is fair annual coupon in this swap? Suppose the regulator requires that the coupon should be 1\% per annum in all credit default swaps. What percentage of the notional amount should the buyer pay the seller today for a swap with 1\% coupons to be fair? Please, DO NOT neglect the discounting of future cashflows at the risk-free rate $g$!
+
+\end{document}
