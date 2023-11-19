@@ -1,0 +1,262 @@
+\documentclass[a4paper,14pt]{extarticle}
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf			
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage[english]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{siunitx}
+
+\usepackage[hyphens]{url}
+\urlstyle{same}
+\usepackage{hyperref}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+%\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{colorbrewer}
+
+\usepackage{libertine}
+\usepackage{libertinust1math}
+\usepackage{eurosym}
+\begin{document}
+
+\noindent The exam consists of 10 multiple choice questions and 5 problems. During the exam, you can use any materials or gadgets except assistance from other human beings and neural networks.
+
+\section{Quiz (10 points)}
+
+\noindent 1. A market-maker is trading in the euro-dollar (EURUSD) currency pair. He bought 1\,000\,000 euros from one client at 1.09\underline{50} (1 euro is worth 1.0950 dollars) and, milliseconds later, sold 1\,000\,000 euros to another client at 1.09\underline{51}. How much did the market-maker earn?
+
+A. 100 dollars
+
+B. 100 euros
+
+C. 200 dollars
+
+D. 200 euros
+ 
+\vspace{\baselineskip}
+
+\noindent 2. Dollar-yen (USDJPY) spot exchange rate is 130 (1 dollar is worth 130 yen). Interest rates are 5\% in dollars and 0\% in yen (both rates are simple interest rates without compounding). What is fair forward rate for a contract with delivery in six months $(T=0.5)$?
+
+A. 136.5
+
+B. 133.3
+
+C. 126.8
+
+D. 123.8
+
+\vspace{\baselineskip}
+
+\noindent 3. A 1-year deposit yields 5\% per annum, and a 2-year deposit yields 4\% per annum (both rates are continuously compounded). What is fair rate for a forward ("deferred") deposit that starts in 1 year and ends in 2 years?
+
+A. 1\%
+
+B. 2\%
+
+C. 3\%
+
+D. 4\%
+
+\vspace{\baselineskip}
+
+\noindent 4. Why is the ESTER interest rate usually lower than the EURIBOR-3M rate?
+
+A. ESTER is the rate for securities-backed loans, while EURIBOR is for unsecured loans.
+
+B. ESTER is published with a 1-day lag.
+
+C. ESTER is the rate for 1-day loans, which are less risky than 3-months loans, as in EURIBOR.
+
+D. The panel of banks that determine EURIBOR includes banks from outside the Eurozone.
+
+\vspace{\baselineskip}
+
+\noindent 5. December EURIBOR futures are priced at 96.0. A trader has bought one such futures contract. In which case will the trader make a profit on his bet?
+
+A. If and only if EURIBOR is above 0.96\% in December 
+
+B. If and only if EURIBOR is above 4.0\% in December 
+
+C. If and only if EURIBOR is below 0.96\% in December 
+
+D. If and only if EURIBOR is below 4.0\% in December 
+
+\vspace{\baselineskip}
+
+\noindent 6. A large bank pegged its employees' ruble salaries to the dollar exchange rate. Suppose an employment contract specifies a salary of 100\,000 rubles. If at the end of the month, the dollar-ruble (USDRUB) rate is 80 or lower, the employee receives 100\,000 rubles. If the rate is higher than 80 and equals $X$, the employee receives $X/80 \cdot 100\,000$ rubles. What does the employee's position resemble?
+
+A. Bought USDRUB call option at strike 80
+
+B. Bought USDRUB put option at strike 80
+
+C. Sold USDRUB call option at strike 80
+
+D. Sold USDRUB put option at strike 80
+
+\vspace{\baselineskip}
+
+\noindent 7. A trader sold a European vanilla put option on gold at strike \$1\,800 for a premium of \$50 and sold a European vanilla call option at strike \$2\,000 for a premium of \$40. At the time of expiration, gold is priced at \$1\,700 per ounce. What is total profit or loss for the trader? Ignore interest on the received premium.
+
+A. Lost \$100
+
+B. Lost \$10
+
+C. Earned \$10
+
+D. Earned \$100
+
+\vspace{\baselineskip}
+
+\noindent 8. Junior trader Artem bought a European call option on the dollar-ruble currency pair on December 31. The market then closed for the New Year holidays (which are longer than a week in Russia). During holidays neither the exchange rate, nor volatility, nor interest rates were changing. Nevertheless, the risk system, which operates 24x7, was showing Artem that his option was constantly appreciating and generating profits. What risk unexpectedly helped Artem?
+
+A. Delta
+
+B. Gamma
+
+C. Theta
+
+D. Vega
+
+\vspace{\baselineskip}
+
+\noindent 9. A 1-year zero-coupon bond of a large Frankfurt-based bank yields 4\%. A similar risk-free 1-year zero-coupon German  government bond yields 3\%. In the event of the bank's bankruptcy, the recovery rate is 50\%. What is implied probability of the bank's default?
+
+A. 4\%
+
+B. 3\%
+
+C. 2\%
+
+D. 1\%
+
+\vspace{\baselineskip}
+
+\noindent 10. Why does the Monte Carlo method estimate fair value of a derivative more accurately when we increase the number of simulations?
+
+A. The more frequent the delta-hedging, the more accurate the replication.
+
+B. This is a property of the Black-Scholes model.
+
+C. This is stated in the fundamental theorem of asset pricing.
+
+D. It is guaranteed by the central limit theorem.
+
+\section{Problems} 
+
+\subsection{A Forward with Dividends}
+
+During the first lecture we derived the fair forward rate formula under the assumption that the underlying asset is a currency that is earning some interest rate. In this problem, we will explore how to handle assets that pay discrete dividends.
+
+A preferred stock is priced in the market at $S=\$1\,000$. In exactly $T_D=0.25$ years from now, it will pay a fixed dividend of $D=\$50$, and this will be the only dividend payment. Risk-free interest rate is $r=5\%$ (continuous compounding). Let's consider a forward contract on this stock with delivery in $T=0.5$ years. What is fair forward rate (forward price) $F$?
+
+Hint: Consider two ways to obtain the stock in six months. Firstly, you can immediately enter into a forward contract. Secondly, you can borrow money now and use it to buy the stock. When the stock pays dividends, you can use these dividends to repay part of the loan.
+
+\subsection{Condor}
+
+A condor is combination of options that resembles a stretched butterfly (hence the name, as the condor is a large bird). Figure \ref{condor_payoff} shows payoff of a condor. A condor is determined by 4 strikes $K_1<K_2<K_3<K_4$, such that $K_2-K_1 = K_4-K_3$. Payoff of a condor depending on the underlying asset price at expiration $S(T)$ is given by
+
+\begin{align*}
+\text{Payoff} = \begin{cases}
+0, S(T) < K_1\\
+S(T) - K_1, K_1 \le S(T) < K_2 \\
+K_2-K_1 = K_4-K_3, K_2 \le S(T) < K_3 \\
+K_4-S(T), K_3 \le S(T) < K_4\\
+0, S(T) \ge K_4
+\end{cases}
+\end{align*}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+	width = 15cm,
+	height = 6cm,
+	xmin = 100,
+	xmax = 200,
+	ymin = 0,
+	ymax = 25,
+	xtick = {115, 130, 170, 185},
+	xticklabels = {$K_1$, $K_2$, $K_3$, $K_4$},
+	ytick = {0}
+]
+
+ \addplot[color=red, very thick, domain=100:200, samples at={100,101,...,200}] {
+ 	(\x < 115)*0.1 +
+ 	(\x >= 115)*(\x<130)*(\x - 115) +
+ 	(\x >= 130)*(\x<170)*(130-115) +
+ 	(\x >= 170)*(\x<185)*(185 - \x) +
+ 	(\x >= 185)*0.1
+ };
+\end{axis}
+\end{tikzpicture}
+\caption{Payoff of a condor}
+\label{condor_payoff}
+\end{figure}
+
+Describe how to replicate a condor using vanilla options. Assume that we are in the Black-Scholes world. A non-dividend paying stock is priced at $S=\$100$. Volatility of the stock is $\sigma=20\%$, and risk-free rate is $r=2\%$ (continuous compounding). What is the price of a condor with a maturity of $T=1$ year and strikes $K_1=\$80$, $K_2=\$85$, $K_3=\$115$, $K_4=\$120$?
+
+Calculate Delta and Vega of such a condor in three scenarios: $S_1=\$70$, $S_2=\$100$, $S_3=\$130$.
+
+\subsection{Dual Currency Deposit}
+
+A dual currency deposit (DCD) is a deposit where the investor earns an enhanced interest rate but may sometimes receive back the principal amount in a different currency.
+
+Let's assume an investor deposits $N=100\,000$ dollars into a bank for a term of $T=1$ year. If, after a year, the spot exchange rate of the euro-dollar currency pair is above the barrier $K=1.05$, the investor will receive back their dollars plus an enhanced interest rate of $x\%$ (simple interest without compounding). However, if the euro-dollar pair falls below the barrier, the bank will pay the same $x\%\cdot 100\,000$ dollars in interest, but will return $95\,238$ euros (calculated as $100\,000/1.05$) rather than the invested principal amount \$100\,000. Table \ref{dcd_payoff} illustrates these two scenarios.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|c|c}
+Payout & If $S(T) > 1.05$ & If $S(T) \le 1.05$ \\ \hline
+Interest & $x\% \cdot \$100\,000$ & $x\% \cdot \$100\,000$ \\
+Principal amount & \$100\,000 & \euro95\,238
+\end{tabular}
+\caption{Payoff of a dual currency deposit. Principal amount is \$100\,000, enhanced rate is $x\%$, barrier is 1.05, euro-dollar spot rate at expiration is $S(T)$.}
+\label{dcd_payoff}
+\end{table}
+
+Come up with a way to replicate a DCD using deposits and/or loans at the risk-free rate and/or vanilla and/or digital options.
+
+In the Black-Scholes model, EURUSD spot rate is $S=1.10$ (1 euro is worth 1.10 dollars), volatility is $\sigma=10\%$, risk-free rate in dollars is $r=4\%$, and in euros it is $q=2\%$ (both rates are continuously compounded). Consider a dual currency deposit with a barrier of $K=1.05$ for $T=1$ year. What is fair enhanced rate $x\%$ for this dual currency deposit (simple interest without compounding)?
+
+\subsection{Structured Note}
+
+Consider a structured note with a variable coupon. An investor invests a principal amount of $N=\$100\,000$. After $T=3$ years, the investor will receive back the entire principal amount. The note pays annual coupons at the end of the first, second, and third years. The size of each coupon depends on the price of the underlying asset, the S\&P\,500 index.
+
+If the index is at or below $K_1=\$3\,700$ on the coupon date, the coupon is $c=3\%$ of the principal (i.e., \$3\,000). If the index is at or above $K_2=\$4\,300$, the coupon is also 3\%. However, if the index is between \$3\,700 and \$4\,300, the enhanced coupon is $x\%$ of the principal. This $x\%$ is a contract parameter that you need to compute. These three scenarios are presented in the table \ref{structured_note_payoff}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c}
+Index & Coupon \\ \hline
+$S(T_i) \le \$3\,700 $ & \$3\,000 \\
+$\$3\,700 < S(T_i) < \$4\,300 $ & $x\% \cdot \$100\,000$ \\
+$\$4\,300 \le S(T_i)  $ & \$3\,000
+\end{tabular}
+\caption{Coupons in the structure note depending on $S(T_i)$, index level on the coupon date.}
+\label{structured_note_payoff}
+\end{table}
+
+Come up with a way to replicate such a note using deposits and/or loans at the risk-free rate and/or vanilla options and/or digital options.
+
+Assume that in the Black-Scholes world current index price is $S=\$4\,000$, volatility of the index is $\sigma=25\%$, risk-free rate is $r=4\%$, dividend yield is $q=2\%$ (both rates are continuously compounded). What is fair enhanced coupon rate $x\%$?
+
+\subsection{Hedging a Credit Default Swap}
+
+A risk-free government zero-coupon bond with a maturity of $T=5$ years has a yield of $g=4\%$ (annual compounding). The yield on a risky corporate zero-coupon bond with the same maturity is $c=6\%$. In the event of default on the corporate bond, recovery rate is $R=40\%$, and the payout of the residual value will occur on the original maturity date.
+
+Consider a 5-year credit default swap in which coupons are paid annually. In the event of default, the insurance payment will occur on the following coupon date. There is no payment of the accrued coupon.
+
+Calculate fair coupon in such a swap. Please do not neglect discounting.
+
+We sold such a swap with a notional amount of $N=\$1\,000\,000$ to a client at a fair price. At the time of the transaction, its present value is zero. Let's examine our market risk and how to manage it.
+
+Assume that the yield on the corporate bond has increased by $dr=0.01\%$ (1 basis point). What is fair coupon in the credit swap now (it will change because default probability has changed)? If we receive the old coupon from the client, and the default probability has increased, how much did we earn or lose (i.e., what is our new present value, considering that the initial PV was \$0)?
+
+Now calculate how the price of the corporate bond has changed with the increase in yield by $dr=0.01\%$. How many bonds would we need to buy or sell at the very beginning, when the yield had not yet had time to change, so that the total profit from the position in the swap and the bond in the event of an increase in yield by $dr$ would be zero? Assume that face value of the corporate bond is \$1.
+
+\end{document}
