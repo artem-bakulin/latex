@@ -428,7 +428,7 @@ Is this a coincidence?
 
 \begin{frame}{Fundamental theorem}
 \justify
-The following \alert{Fundamental Theorem of Asset Pricing (FATP)} holds true:
+The following \alert{Fundamental Theorem of Asset Pricing (FTAP)} holds true:
 
 \justify
 In a market with discrete time*, there are no arbitrage opportunities if and only if there exists a risk-neutral probability measure $\mathbb{Q}$ that is equivalent** to the real-world probability measure $\mathbb{P}$.
@@ -507,14 +507,14 @@ When people evaluate assets, they are not only concerned with the variance of po
 We cannot delve into the minds of investors to calculate the extent of their risk-neutrality. Therefore, we do not know what risk premium is embedded into current asset prices.
 
 \justify
-Good news: we don't need to know this. FATP ensures that the price of a derivative in the real world will be the same as in the risk-neutral world. Of course, this is not true for the price of the underlying asset.
+Good news: we don't need to know this. FTAP ensures that the price of a derivative in the real world will be the same as in the risk-neutral world. Of course, this is not true for the price of the underlying asset.
 \end{frame}
 
 
 
 \begin{frame}{Pricing derivatives in risk-neutral world - 2}
 \justify
-FATP ensures that we can price any derivative using the following algorithm:
+FTAP ensures that we can price any derivative using the following algorithm:
 
 \justify
 1. Specify a stochastic process for the underlying asset price in risk-neutral world.
@@ -556,7 +556,7 @@ S_T(\xi) = S_0\exp{\left[\left(r - q - \frac{\sigma^2}{2}\right)T + \sigma\xi\sq
 \end{align*}
 
 \justify
-Define $f(S_T(\xi)) = \max(S_T(\xi) - K, 0)$ a payoff function of a vanilla European call option. According to FATP fair price of this option is equal to
+Define $f(S_T(\xi)) = \max(S_T(\xi) - K, 0)$ a payoff function of a vanilla European call option. According to FTAP, fair price of this option is equal to
 \begin{align*}
 C = e^{-rT} \int\limits_{-\infty}^{+\infty}f\Big(S_T(x)\Big)\phi(x)dx
 \end{align*}
@@ -1152,8 +1152,8 @@ Artem the lecturer has 3 donuts and faces a lottery. Someone tosses a fair coin,
 \centering
 \begin{tabular}{l|r|r|r}
 Outcome & Probability & Donuts & Happiness \\ \hline
-Head & 50\% & 2 & $\ln 2 \approx 0.693$ \\
-Tail & 50\% & 4 & $\ln 4 \approx 1.386$ \\ \hline
+Heads & 50\% & 2 & $\ln 2 \approx 0.693$ \\
+Tails & 50\% & 4 & $\ln 4 \approx 1.386$ \\ \hline
 \multicolumn{2}{l|}{Expected value} & 3 & 1.040
 \end{tabular}
 
@@ -1164,8 +1164,8 @@ Somewhere in the world there is Anti-Artem from Australia. Anti-Artem's donuts a
 \centering
 \begin{tabular}{l|r|r|r}
 Outcome & Probability & Donuts & Happiness \\ \hline
-Head & 50\% & 4 & $\ln 4 \approx 1.386$ \\ 
-Tail & 50\% & 2 & $\ln 2 \approx 0.693$ \\ \hline
+Heads & 50\% & 4 & $\ln 4 \approx 1.386$ \\ 
+Tails & 50\% & 2 & $\ln 2 \approx 0.693$ \\ \hline
 \multicolumn{2}{l|}{Expected value} & 3 & 1.040
 \end{tabular}
 \end{frame}
@@ -1177,14 +1177,14 @@ Tail & 50\% & 2 & $\ln 2 \approx 0.693$ \\ \hline
 Artem and Anti-Artem have opposite sensitivities to one and the same underlying risk (the coin flip). They can help each other.
 
 \justify
-Consider a coin derivative: Artem makes a bet that the outcome will be Head. Anti-Artem will pay Artem 1 donut if the outcome is Head. Artem will pay Anti-Artem 1 donut if the outcome is Tail.
+Consider a donut derivative: Artem makes a bet that the outcome will be Heads. Anti-Artem will pay Artem 1 donut if the outcome is Heads. Artem will pay Anti-Artem 1 donut if the outcome is Tails.
 
 \justify
 \centering
 \begin{tabular}{l|r|r|r}
 Outcome & Probability & Donuts & Happiness \\ \hline
-Head & 50\% & 3 & $\ln 3 \approx 1.099$ \\
-Tail & 50\% & 3 & $\ln 3 \approx 1.099$ \\ \hline
+Heads & 50\% & 3 & $\ln 3 \approx 1.099$ \\
+Tails & 50\% & 3 & $\ln 3 \approx 1.099$ \\ \hline
 \multicolumn{2}{l|}{Expected value} & 3 & 1.099
 \end{tabular}
 
@@ -1198,7 +1198,7 @@ Number of donuts in the world has not changed, but both Artem and Anti-Artem are
 \justify
  In  the 1990s, snowmobile manufacturer Bombardier faced a declining demand for snowmobiles. Customers were concerned about warmer winters and lack of snow.  Who would want to pay \$10\,000 for a snowmobile in autumn only to park it in garage for a year?
 \justify
-In 1999 Bombardier offered a free insurance policy to its buyers. If the coming winter would be snowless (less snow than a half of the three-years average for this location), then Bombardier would automatically send a \$1\,000 cheque to the disappointed customer.
+In 1998 Bombardier offered a free insurance policy to its buyers. If the coming winter would be snowless (less snow than a half of the three-years average for this location), then Bombardier would automatically send a \$1\,000 cheque to the disappointed customer.
 
 \justify
 Sales increased by 38\% that year. Risk-averse buyers liked the insurance policy and their dream of owning a snowmobile came true.
@@ -1212,13 +1212,13 @@ Bombardier hedged its exposure with a market-maker Enron. This is an example of 
 
 \begin{frame}{Conclusion: Chicken McNuggets}
 \justify
-In 1980s McDonalds were launching a new product: Chicken McNuggets. They demanded a fixed price agreement  with chicken producers. Producers were not willing to agree on a fixed price due to high volatility of their costs.
+In 1980s McDonald's were launching a new product: Chicken McNuggets. They demanded a fixed price agreement  with chicken producers. Producers were not willing to agree on a fixed price due to high volatility of their costs.
 
 \justify
 A financial expert (namely, Ray Dalio) advised that chicken producers could hedge their costs using corn and soybean futures, because feed prices were the most significant and the most volatile component of the cost.
 
 \justify
-As a result, McDonalds were able to secure supply of chicken at fixed prices and offer Chicken McNuggets in their menu. 
+As a result, McDonald's were able to secure supply of chicken at fixed prices and offer Chicken McNuggets in their menu. 
 \end{frame}
 
 
@@ -1228,17 +1228,17 @@ As a result, McDonalds were able to secure supply of chicken at fixed prices and
 Derivatives a are a \alert{financially} zero-sum game. For someone to earn a euro in a derivative, someone must lose a euro. Derivatives would be unnecessary on a planet populated by risk-neutral robots (or on a planet with perfect infinitely liquid zero-cost markets).
 
 \justify
-Derivatives are not a zero-sum game if we measure \alert{utility} (economists' fancy term for happiness or wellbeing).  Risk-averse homo sapiens are willing to enter a derivative contract to have insurance against catastrophic losses at the cost of reducing their potential gains. People dislike losses more than they like profits. 
+Derivatives are not a zero-sum game if we measure \alert{utility} (economists' fancy term for happiness or wellbeing).  Risk-averse homo sapiens may be willing to enter a derivative contract to have insurance against catastrophic losses at the cost of reducing their potential gains. People dislike losses more than they like profits. 
 
 \justify
-Derivatives cannot eliminate the uncertainty of the future and the associated risk. However derivatives can distribute the risk between economic agents in a more efficient way. As a result these agents will at least sleep better or may even change their economic choices and help the economic growth.
+Derivatives cannot eliminate the uncertainty of the future and the associated risk. However derivatives can distribute risk between economic agents in a more efficient way. As a result these agents will at least sleep better or may even change their economic choices and help the economic growth.
 \end{frame}
 
 
 
 \begin{frame}{Conclusion}
 \justify
-We had 14 sessions, 350 slides, 4 home assignments, and a whole galaxy of multi-colored Excel spreadsheets... Also, a case of exotics, some indices, a variance swap, a couple of credit swaps, and two dozen vanillas. Not that we needed all that for the work, but once you get locked into studying derivatives, the tendency is to push it as far as you can. The only thing that really worried me was the Monte Carlo. There is nothing in the world more helpless and irresponsible and depraved than a quant who is crunching vanillas with the Monte Carlo, and I knew we'd get into that rotten stuff pretty soon.
+We had 14 sessions, 350 slides, 4 home assignments, and a whole galaxy of multi-colored Excel spreadsheets... Also, a basket of exotics, some indices, a variance swap, a couple of CDS'es, and two dozen vanillas. Not that we needed all that for the work, but once you get locked into studying derivatives, the tendency is to push it as far as you can. The only thing that really worried me was the Monte Carlo. There is nothing in the world more helpless and irresponsible and depraved than a quant who is crunching vanillas with the Monte Carlo, and I knew we'd get into that rotten stuff pretty soon.
 \end{frame}
 \end{document}
 
