@@ -1088,6 +1088,112 @@ An example: a rainbow option with anti-thetic trials.
 
 
 
+\begin{frame}{Conclusion: a zero-sum game?}
+\justify
+Happiness is in donuts (more precisely, in logarithm of the number of donuts). Each subsequent donut is less valuable than preceding donut. 
+
+\justify
+\centering
+\begin{tikzpicture}
+	\begin{axis} [
+		width = \textwidth,
+		height = \textheight - 3.2cm,
+		xmin = 0, xmax = 7,
+		ymin = -1, ymax = 2,
+		grid = major,
+		xlabel = {\small Number of chocolate donuts with chocolate},
+		ylabel = {\small Lecturer's happiness},
+		ylabel near ticks
+	]
+		\addplot[
+			color = Set1-B,
+			very thick,
+			samples at = {0.1,0.11,...,7}
+		]
+		{ln(x)};
+		
+		\draw[thick] 
+			(3, 1.099) -- 
+			(4, 1.099) -- 
+			node[
+				pos = 0.5,
+				anchor = west
+			]
+			{0.28}
+			(4, 1.386);
+
+		\draw[thick] 
+			(2, 0.693) -- 
+			(3, 0.693) -- 
+			node[
+				pos = 0.5,
+				anchor = west
+			]
+			{0.41}
+			(3, 1.099);
+
+		\node[
+			fill = Set1-B,
+			circle,
+			inner sep = 2pt
+		]
+		at (3, 1.099) {};
+	\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Conclusion: a zero-sum game?}
+\justify
+Artem the lecturer has 3 donuts and faces a lottery. Someone tosses a fair coin, and depending on the outcome Artem will end up with 2 donuts or 4 donuts.
+
+\justify
+\centering
+\begin{tabular}{l|r|r|r}
+Outcome & Probability & Donuts & Happiness \\ \hline
+Head & 50\% & 2 & $\ln 2 \approx 0.693$ \\
+Tail & 50\% & 4 & $\ln 4 \approx 1.386$ \\ \hline
+\multicolumn{2}{l|}{Expected value} & 3 & 1.040
+\end{tabular}
+
+\justify
+Somewhere in the world there is Anti-Artem from Australia. Anti-Artem's donuts are linked to the same coin flip (the same source of randomness) but the outcomes are opposite.
+
+\justify
+\centering
+\begin{tabular}{l|r|r|r}
+Outcome & Probability & Donuts & Happiness \\ \hline
+Head & 50\% & 4 & $\ln 4 \approx 1.386$ \\ 
+Tail & 50\% & 2 & $\ln 2 \approx 0.693$ \\ \hline
+\multicolumn{2}{l|}{Expected value} & 3 & 1.040
+\end{tabular}
+\end{frame}
+
+
+
+\begin{frame}{Conclusion: a zero-sum game?}
+\justify
+Artem and Anti-Artem have opposite sensitivities to one and the same underlying risk (the coin flip). They can help each other.
+
+\justify
+Consider a coin derivative: Artem makes a bet that the outcome will be Head. Anti-Artem will pay Artem 1 donut if the outcome is Head. Artem will pay Anti-Artem 1 donut if the outcome is Tail.
+
+\justify
+\centering
+\begin{tabular}{l|r|r|r}
+Outcome & Probability & Donuts & Happiness \\ \hline
+Head & 50\% & 3 & $\ln 3 \approx 1.099$ \\
+Tail & 50\% & 3 & $\ln 3 \approx 1.099$ \\ \hline
+\multicolumn{2}{l|}{Expected value} & 3 & 1.099
+\end{tabular}
+
+\justify
+Number of donuts in the world has not changed, but both Artem and Anti-Artem are more happy now.
+\end{frame}
+
+
+
 \begin{frame}{Conclusion: snowmobiles}
 \justify
  In  the 1990s, snowmobile manufacturer Bombardier faced a declining demand for snowmobiles. Customers were concerned about warmer winters and lack of snow.  Who would want to pay \$10\,000 for a snowmobile in autumn only to park it in garage for a year?
