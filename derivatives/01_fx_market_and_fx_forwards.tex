@@ -39,7 +39,7 @@
 
 \title{Валютный рынок. Валютные форварды}
 \author{Артём Бакулин}
-\date{6 марта 2023 г.}
+\date{4 марта 2024 г.}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -47,6 +47,15 @@
 \newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
 \newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
 \newcommand{\ruen}[2]{#1 (\en{#2})}
+
+\newcommand{\eurusdBigFigures}{1.08}
+\newcommand{\eurusdBigFiguresMinusOne}{1.07}
+\newcommand{\eurusdBigFiguresPlusTwo}{1.10}
+\newcommand{\eurusdBigFiguresPerMillion}{1\,08}
+\newcommand{\eurusdBigFiguresPlusTwoPerMillion}{1\,10}
+\newcommand{\eurusdBusinessDate}{Пн 04.03.2024}
+\newcommand{\eurusdSpotDate}{Ср 06.03.2024}
+\newcommand{\eurusdOneYearDate}{Чт 06.03.2025}
 
 \begin{document}
 
@@ -63,14 +72,14 @@
 \alert{Валютная спот-сделка} (\en{foreign exchange spot, FX spot}) --- сделка, в которой стороны меняют одну валюту на другую <<почти сразу>> (\en{on the spot}), обычно на второй рабочий день.
 
 \justify
-Купить валютную пару, например EURUSD, означает согласиться получить первую валюту (EUR) и отдать вторую (USD). Например, купить спот 1\,000\,000 EURUSD по курсу 1.0721 означает следующие платежи:
+Купить валютную пару, например EURUSD, означает согласиться получить первую валюту (EUR) и отдать вторую (USD). Например, купить спот 1\,000\,000 EURUSD по курсу \eurusdBigFigures21 означает следующие платежи:
 
 \justify
 \centering
 \begin{tabular}{l|r|r}
 Дата                          & EUR & USD \\ \hline
-Пн 06.03.2023 (сегодня)  & 0   & 0   \\
-Ср 08.03.2023 (спот)     & +1\,000\,000 & $-1\,072\,100$
+\eurusdBusinessDate\ (сегодня)  & 0   & 0   \\
+\eurusdSpotDate\ (спот)     & +1\,000\,000 & $-\eurusdBigFiguresPerMillion2\,100$
 \end{tabular}
 \end{frame}
 
@@ -81,19 +90,19 @@
 Некоторые традиции валютного рынка сложились в докомпьютерную эру, когда нужно
 было договариваться о сделках по телефону.
 \begin{align*}
-\underbrace{\text{\Large 1.07}}_{\text{Figures}}\underbrace{\text{\Large 21}}_{\text{Pips}}
+\underbrace{\text{\Large \eurusdBigFigures}}_{\text{Figures}}\underbrace{\text{\Large 21}}_{\text{Pips}}
 \end{align*}
 \justify
-<<Фигуры>> (big figures) ---  старшие значащие цифры, которые можно пропустить в 
-разговоре. <<Пипы>> (pips) --- третья-четвёртая цифра после запятой (первая-вторая 
-для USDJPY), о которых и нужно договориться.
+<<Фигуры>> (\en{big figures}) ---  старшие значащие цифры, которые можно пропустить в 
+разговоре. <<Пипы>> (\en{pips}) --- третья и четвёртая цифры после запятой (первая и вторая 
+для \en{USDJPY}), о которых и нужно договориться.
 
 \justify
---- Добрый день, евро (EURUSD), 10 (миллионов), пожалуйста?
+--- Добрый день, евро (EURUSD), 1 (миллион), пожалуйста?
 
---- 21--23. (Покупаем по 1.07\underline{21}, продаём по 1.07\underline{23}).
+--- 21--23. (Покупаем по \eurusdBigFigures\underline{21}, продаём по \eurusdBigFigures\underline{23}).
 
---- Продали (отдадим вам 1\,000\,000 EUR, получим 1\,072\,100 USD).
+--- Продали. (Отдадим вам 1\,000\,000 EUR, получим \eurusdBigFiguresPerMillion2\,100 USD).
 \end{frame}
 
 
@@ -109,15 +118,15 @@
 и продажи для своих клиентов:
 
 \centering
-\begin{tabular}{c|c|c}
-bid & mid & ask/offer \\ \hline
-1.07\underline{21} & 1.07\underline{22} & 1.07\underline{23}
+\begin{tabular}{c|c|c|c}
+Bid & Mid & Ask/offer & Spread \\ \hline
+\eurusdBigFigures\underline{21} & \eurusdBigFigures\underline{22} & \eurusdBigFigures\underline{23} & \underline{2}
 \end{tabular}
 
 \justify
 Bid --- курс, по которому клиент продаёт первую валюту. Ask --- курс, по которому клиент 
 покупает первую валюту. Mid --- среднее между bid и ask. Спред (spread) --- разность между 
-ask и bid (2 пипа в нашем примере).
+ask и bid.
 
 \justify
 Когда клиент просит цену, он говорит объём сделки, но не уточняет, будет ли он покупать или продавать!
@@ -127,16 +136,16 @@ ask и bid (2 пипа в нашем примере).
 
 \begin{frame}{Прибыль маркет-мейкера}
 \justify
-Предположим, что банк продал одному клиенту 1\,000\,000 EUR по 1.07\underline{23} и
-смог купить у другого клиента 1\,000\,000 EUR по 1.07\underline{21}. Сколько 
+Предположим, что банк продал одному клиенту 1\,000\,000 EUR по \eurusdBigFigures\underline{23} и
+смог купить у другого клиента 1\,000\,000 EUR по \eurusdBigFigures\underline{21}. Сколько 
 заработал банк?
 
 \centering
 \begin{tabular}{l|r|r}
 Сделка & EUR & USD \\
 \hline
-Продажа 1.07\underline{23} & $-1\,000\,000$ & $+1\,072\,300$ \\
-Покупка 1.07\underline{21} & $+1\,000\,000$ & $-1\,072\,100$ \\
+Продажа по \eurusdBigFigures\underline{23} & $-1\,000\,000$ & $+\eurusdBigFiguresPerMillion2\,300$ \\
+Покупка по \eurusdBigFigures\underline{21} & $+1\,000\,000$ & $-\eurusdBigFiguresPerMillion2\,100$ \\
 \hline
 Итого & 0 & $+200$
 \end{tabular}
@@ -157,21 +166,21 @@ ask и bid (2 пипа в нашем примере).
 \alert{Рыночный риск} (\en{market risk}) --- возможность оказаться в убытке в результате изменения рыночных цен.
 
 \justify
-1. Клиент A купил у маркет-мейкера 1\,000\,000 EUR по 1.07\underline{23}.
+1. Клиент A купил у маркет-мейкера 1\,000\,000 EUR по \eurusdBigFigures\underline{23}.
 
 \justify
 2. По какой-то причине клиенты-продавцы пока бездействуют.
 
 \justify
-3. Вышла новость: ЕЦБ повышает ставки, евро укрепляется. Другие маркет-мейкеры теперь предлагают цены 1.07\underline{51}/1.07\underline{53}.
+3. Вышла новость: ЕЦБ повышает ставки, евро укрепляется. Другие маркет-мейкеры теперь предлагают цены \eurusdBigFigures\underline{51}/\eurusdBigFigures\underline{53}.
 
 \justify
 5. Клиент-продавец Б всё-таки дошёл до нашего маркет-мейкера и просит котировку.
-Придётся предложить ему как минимум 1.07\underline{51}, чтобы он не ушёл к конкурентам.
+Придётся предложить ему как минимум \eurusdBigFigures\underline{51}, чтобы он не ушёл к конкурентам.
 
 \justify
-7. Итого: продали клиенту А по 1.07\underline{23}, купили у клиента Б по
-1.07\underline{51}. Убыток: \$2\,800.
+7. Итого: продали клиенту А по \eurusdBigFigures\underline{23}, купили у клиента Б по
+\eurusdBigFigures\underline{51}. Убыток: \$2\,800.
 \end{frame}
 
 
@@ -202,20 +211,20 @@ ask и bid (2 пипа в нашем примере).
 \justify
 Сценарий 1 (все сделки по 1\,000\,000 EUR) :
 
-1. Клиент А получил спред 1.07\underline{21}/1.07\underline{23} и купил по \underline{23}.
+1. Клиент А получил спред \eurusdBigFigures\underline{21}/\eurusdBigFigures\underline{23} и купил по \underline{23}.
 
-2. Рынок сдвинулся на 30 пипов вверх до 1.07\underline{51}/1.07\underline{53}.
+2. Рынок сдвинулся на 30 пипов вверх до \eurusdBigFigures\underline{51}/\eurusdBigFigures\underline{53}.
 
-3. Клиент Б продал по 1.07\underline{51}. Убыток: $-\$2\,800$.
+3. Клиент Б продал по \eurusdBigFigures\underline{51}. Убыток: $-\$2\,800$.
 
 \justify
 Сценарий 2 (все сделки по 1\,000\,000 EUR) :
 
-1. Клиент А получил спред 1.06\underline{97}/1.07\underline{47} и купил по \underline{47}.
+1. Клиент А получил спред \eurusdBigFiguresMinusOne\underline{97}/\eurusdBigFigures\underline{47} и купил по \underline{47}.
 
-2. Рынок сдвинулся на 30 пипов вверх до 1.07\underline{27}/1.07\underline{77}.
+2. Рынок сдвинулся на 30 пипов вверх до \eurusdBigFigures\underline{27}/\eurusdBigFigures\underline{77}.
 
-3. Клиент Б продал по 1.07\underline{27}. Прибыль: $+\$20\,000$.
+3. Клиент Б продал по \eurusdBigFigures\underline{27}. Прибыль: $+\$20\,000$.
 
 \justify
 Проблема: клиенты не любят слишком широкие спреды и с радостью убегут к 
@@ -230,10 +239,10 @@ ask и bid (2 пипа в нашем примере).
 наш рыночный риск?
 
 \justify
-1. Клиент А получил спред 1.07\underline{21}/1.07\underline{23} и купил по \underline{23}.
+1. Клиент А получил спред \eurusdBigFigures\underline{21}/\eurusdBigFigures\underline{23} и купил по \underline{23}.
 
 \justify
-2. Клиент Б обратился за котировкой, и мы предложили ему 1.07\underline{22}/1.07\underline{24}.
+2. Клиент Б обратился за котировкой, и мы предложили ему \eurusdBigFigures\underline{22}/\eurusdBigFigures\underline{24}.
 
 \justify
 2a. Bid (левая цена) \underline{22} стал выгоднее. Если клиент Б пришёл 
@@ -252,14 +261,14 @@ ask и bid (2 пипа в нашем примере).
 Что если обратиться к другому маркет-мейкеру?
 
 \justify
-1. Клиент А получил спред 1.07\underline{21}/1.07\underline{23} и купил по \underline{23}.
+1. Клиент А получил спред \eurusdBigFigures\underline{21}/\eurusdBigFigures\underline{23} и купил по \underline{23}.
 
 \justify
 2. Позвоним коллегам из другого банка в соседнем небоскрёбе и попросим 
 котировку (как будто мы -- клиент, а они --- маркет-мейкер)
 
 \justify
-3. Нам предложили 1.07\underline{20.5}/1.07\underline{22.5}. Мы купили по \underline{22.5}.
+3. Нам предложили \eurusdBigFigures\underline{20.5}/\eurusdBigFigures\underline{22.5}. Мы купили по \underline{22.5}.
 
 \justify
 4. Продали по \underline{23}, купили по \underline{22.5} --- заработали \$50. 
@@ -304,16 +313,19 @@ ask и bid (2 пипа в нашем примере).
 Откуда маркет-мейкер знает <<справедливую>> рыночную цену?
 
 \justify
-Трейдер Артём устроился в ДжиПиСитиБанк и отвечает за пару EURUSD. Артём сидит в бункере без связи с внешним миром. Единственное, что он наблюдает --- сделки клиентов.
+Артём устроился младшим трейдером ДжиПиСитиБанк и отвечает за пару EURUSD. Артём сидит в бункере без связи с внешним миром. Единственное, что он наблюдает --- сделки клиентов.
 
 \justify
-09:00 --- К Артёму обратился клиент А. Артём предложил 1.07\underline{21}/\underline{23}. Клиент А купил по \underline{23}.
+09:00 --- Клиент А просит котировку. Артём предложил \eurusdBigFigures\underline{21}/\underline{23}. 
+09:00 --- Клиент А купил по \underline{23}.
 
 \justify
-09:01 --- К Артёму обратился клиент Б. Артём предложил 1.07\underline{21}/\underline{23}. Клиент Б купил по \underline{23}.
+09:01 --- Клиент Б просит котировку. Артём предложил \eurusdBigFigures\underline{21}/\underline{23}.
+09:01 --- Клиент Б купил по \underline{23}.
 
 \justify
-09:02 --- К Артёму обратился клиент В. Артём предложил 1.07\underline{21}/\underline{23}. Клиент В купил по \underline{23}.
+09:02 --- Клиент В просит котировку. Артём предложил \eurusdBigFigures\underline{21}/\underline{23}. 
+09:02 --- Клиент В купил по \underline{23}.
 
 \justify
 Не пора ли Артёму насторожиться?
@@ -327,13 +339,16 @@ ask и bid (2 пипа в нашем примере).
 его риск? Начнёт сдвигать цену вправо (применит стратегия номер 2).
 
 \justify
-09:03 --- К Артёму обратился клиент Г. Артём предложил 1.07\underline{22}/\underline{24}. Клиент Г всё равно купил по \underline{24}.
+09:03 --- Клиент Г просит котировку. Артём предложил \eurusdBigFigures\underline{22}/\underline{24}.
+09:03 --- Клиент Г всё равно купил по \underline{24}.
 
 \justify
-09:04 --- К Артёму обратился клиент Д. Артём предложил 1.07\underline{23}/\underline{25}. Клиент Д наконец-то продал по \underline{23}!
+09:04 --- Клиент Д просит котировку. Артём предложил \eurusdBigFigures\underline{23}/\underline{25}.
+09:04 --- Клиент Д наконец-то продал по \underline{23}!
 
 \justify
-09:05 --- К Артёму обратился клиент Е. Артём предложил 1.07\underline{23}/\underline{25}. Клиент купил по \underline{25}!
+09:05 --- Клиент Е просит котировку. Артём предложил \eurusdBigFigures\underline{23}/\underline{25}.
+09:05 --- Клиент Е купил по \underline{25}!
 
 \justify
 Изоляция от мира не помешала Артёму нащупать равновесную цену --- ту, при которой поток продавцов примерно равен потоку покупателей.
@@ -410,16 +425,16 @@ ask и bid (2 пипа в нашем примере).
 \begin{frame}{Неблагоприятный отбор}
 \justify
 Вы ищете, у кого бы купить 1\,000 евро на отпуск и разметили на финтех-платформе
-объявление <<куплю 1\,000 евро по 80>>. Через секунду ваша заявка 
+объявление <<куплю 1\,000 евро по 100>>. Через секунду ваша заявка 
 исполнена: с вами поторговал алгоритмический хэдж-фонд. Хорошо это или плохо?
 
 \justify
 С одной стороны, вы сделали ровно то, что хотели. С другой стороны, высока 
 вероятность, что вас облапошили: хэдж-фонд осведомлён лучше вас и продал вам
-евро по 80 за секунду до того, как евро упал до 79.
+евро по 100 за секунду до того, как евро упал до 99.
 
 \justify
-Происходит \alert{неблагоприятный отбор} (\en{adverse selection}): выставляя 
+Происходит \alert{неблагоприятный отбор} (\en{adverse selection}). Выставляя 
 заявку, вы рискуете, что с вами поторгует более информированный участник рынка.
 \end{frame}
 
@@ -520,14 +535,14 @@ ask и bid (2 пипа в нашем примере).
 фиксированному курсу и в фиксированном объёме. 
 
 \justify
-Пример: покупка форварда EURUSD сроком 1 год по курсу 1.112 в размере 1\,000\,000:
+Пример: покупка форварда EURUSD сроком 1 год по курсу \eurusdBigFiguresPlusTwo\underline{20} в размере 1\,000\,000:
 
 \centering
 \begin{tabular}{l|r|r}
 Дата                          & EUR & USD \\ \hline
-Пн 06.03.2023 (сегодня)  & 0   & 0   \\
-Ср 08.03.2023 (спот) & 0   & 0   \\
-Пт 08.03.2024 (1Y)   & 1\,000\,000 & $-1\,112\,000$
+\eurusdBusinessDate\ (сегодня)  & 0   & 0   \\
+\eurusdSpotDate\ (спот) & 0   & 0   \\
+\eurusdOneYearDate\ (1Y)   & 1\,000\,000 & $-\eurusdBigFiguresPlusTwoPerMillion 2\,000$
 \end{tabular}
 
 \justify
@@ -546,10 +561,10 @@ ask и bid (2 пипа в нашем примере).
 \vspace{\baselineskip}
 \centering
 \begin{tabular}{l|l}
-Спот-курс & 1.091 \\
-Форвардный курс & 1.112 \\
+Спот-курс & \eurusdBigFigures\underline{10} \\
+Форвардный курс & \eurusdBigFiguresPlusTwo\underline{20} \\
 \hline
-Форвардные пункты & $1.112 - 1.091 = 0.021 = 210$ <<пипов>>
+Форвардные пункты & $\eurusdBigFiguresPlusTwo\underline{20} - \eurusdBigFigures\underline{10} = 0.02\underline{10 }= 210$ <<пипов>>
 \end{tabular}
 
 \justify
