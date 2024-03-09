@@ -22,6 +22,16 @@ download_acm_term_premium_data <- function() {
     )
 }
 
-download_acm_term_premium_data() %>% 
+acm_data <- download_acm_term_premium_data() 
+
+acm_data %>% 
   write_csv("acm_term_premium.csv")
+
+acm_data %>%
+  filter(date >= '1990-01-01', date <= '2023-12-31') %>%
+  summarise(
+    acmtp02 = mean(acmtp02),
+    acmtp05 = mean(acmtp05),
+    acmtp10 = mean(acmtp10)
+  )
 

@@ -4,6 +4,7 @@ library(curl)
 
 download_from_bundesbank <- function(series_url, series_name) {
 
+  print(sprintf("Downloading %s from %s", series_name, series_url))
   curl_download(series_url, "tmp.csv")
 
   data <- read_csv("tmp.csv", skip=8, col_names=c("date", "value", "comment"))
@@ -24,12 +25,12 @@ download_from_bundesbank <- function(series_url, series_name) {
 }
 
 euribor_3m <- download_from_bundesbank(
-  "https://api.statistiken.bundesbank.de/rest/download/BBK01/ST0316?format=csv&lang=en",
+  "https://api.statistiken.bundesbank.de/rest/download/BBIG1/D.D0.EUR.MMKT.EURIBOR.M03.BID._Z?format=csv&lang=en",
   "3m"
 )
 
 euribor_6m <- download_from_bundesbank(
-  "https://api.statistiken.bundesbank.de/rest/download/BBK01/ST0325?format=csv&lang=en",
+  "https://api.statistiken.bundesbank.de/rest/download/BBIG1/D.D0.EUR.MMKT.EURIBOR.M06.BID._Z?format=csv&lang=en",
   "6m"
 )
 
