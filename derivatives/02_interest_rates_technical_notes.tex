@@ -1,0 +1,381 @@
+\documentclass{beamer}
+
+\usepackage{cmap}				% To be able to copy-paste russian text from pdf
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{textpos}
+\usepackage{ragged2e}
+\usepackage{amssymb}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{multirow}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows,snakes,backgrounds,shapes}
+\usepgfplotslibrary{groupplots,colorbrewer,dateplot,statistics}
+\usepackage{animate}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+
+\usepackage{enumitem}
+\setitemize{label=\usebeamerfont*{itemize item}%
+  \usebeamercolor[fg]{itemize item}
+  \usebeamertemplate{itemize item}}
+
+% remove navigation bar
+\setbeamertemplate{navigation symbols}{} 
+
+\usepackage{eurosym}
+\renewcommand{\EUR}[1]{\textup{\euro}#1}
+
+\title{Технические детали процентных ставок}
+\author{Артём Бакулин}
+\date{11 марта 2024 г.}
+
+\usetheme{Warsaw}
+\usecolortheme{beaver}
+
+% remove navigation bar
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamertemplate{page number in head/foot}[totalframenumber] 
+
+\newcommand{\ru}[1]{\begin{otherlanguage}{russian}#1\end{otherlanguage}}
+\newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
+\newcommand{\ruen}[2]{#1 (\en{#2})}
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Капитализация процентов}
+\justify
+<<Сложные проценты --- самая могущественная формула сила во Вселенной>> 
+(ошибочно приписывается Альберту Эйнштейну).
+
+\justify
+Пусть депозит под ставку (\en{rate}) $r$ действует (\en{term}) $T$ лет с 
+частотой капитализации (\en{frequency})\ $f$ раз в год. Начальная сумма вклада 
+$N_0$. В конце срока мы получим
+\begin{align*}
+N &= N_0\underbrace{\left(1 + \frac{r}{f}\right) \cdot \left(1 + \frac{r}{f}\right) \cdot ... \cdot \left(1 + \frac{r}{f}\right)}_{fT \text{\ множителей}} = 
+N_0\left(1 + \frac{r}{f}\right)^{fT}
+\end{align*}
+
+Например, депозит на 1\,000\,000 под 12\% на 1 год с ежемесячной капитализацией:
+\begin{align*}
+1\,000\,000 \cdot \left(1 + \frac{0.12}{12}\right)^{12} \approx 1\,126\,825
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Общеупотребительные методы капитализации}
+\centering
+\begin{tabular}{l|l|l}
+Частота ($f$) & Русское название & Английское название \\ \hline 
+0 & Без капитализации* & Zero \\
+1 & Ежегодно & Annually \\
+2 & Раз в полгода & Semi-annually \\
+4 & Ежеквартально & Quarterly \\
+12 & Ежемесячно & Monthly \\
+365 & Ежедневно & Daily \\
+$\infty$ & Непрерывно* & Continuously 
+\end{tabular}
+
+\justify
+Простые проценты без капитализации (\en{zero compounding}), $f=0$:
+\begin{align*}
+N = N_0 (1 + rT)
+\end{align*}
+
+Непрерывная капитализация (\en{continuous compounding}), $f=\infty$:
+\begin{align*}
+N = N_0e^{rT}
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Непрерывная капитализация процентов}
+\justify
+Предположим, что совсем-совсем небольшой процент прибавляется ко вкладу каждый 
+час, каждую минуту, каждую миллисекунду. Частота капитализации $f$ стремится к 
+бесконечности.
+\begin{align*}
+N &= N_0 \lim_{f \to +\infty} \left(1 + \frac{r}{f}\right)^{fT} = 
+\begin{Bmatrix}x= f/r \\ f=xr \\ x \to +\infty \\ f \to +\infty\end{Bmatrix} = \\
+&= N_0\lim_{x \to +\infty} \left(1 + \frac{r}{xr}\right) ^ {xrT} =
+N_0{\underbrace{\left(\lim_{x \to +\infty} \left( 1 + \frac{1}{x} \right) ^ x\right)}_{e \approx 2.71828}}  ^ {rT} = \\
+&= N_0e^{rT} \approx N_0(1 + rT)
+\end{align*}
+<<Непрерывные>> проценты не встречаются в реальной жизни, но заметно упрощают 
+формулы в теоретических моделях.
+\end{frame}
+
+
+
+\begin{frame}{Капитализация процентов - 1}
+\justify
+Рассмотрим депозиты на 1\,000\,000 рублей под ставку 12\% на срок 1 год и 5 лет. 
+Как конечная сумма вклада зависит от капитализации процентов?
+
+
+\begin{table}
+\centering
+\begin{tabular}{l|r|r|r}
+Начисление процентов & $f$ & 1 год & 5 лет \\ \hline
+Без капитализации & 0         & 1\,120\,000 & 1\,600\,000 \\
+Ежегодно          & 1         & 1\,120\,000 & 1\,762\,342 \\
+Раз в полгода     & 2         & 1\,123\,600 & 1\,790\,848 \\
+Ежеквартально     & 4         & 1\,125\,509 & 1\,806\,111 \\
+Ежемесячно        & 12        & 1\,126\,825 & 1\,816\,697 \\
+Ежедневно         & 365       & 1\,127\,475 & 1\,821\,939 \\
+Непрерывно        & $+\infty$ & 1\,127\,497 & 1\,822\,119
+\end{tabular}
+\end{table}
+
+\justifying
+Чем выше ставка и дольше срок, тем важнее роль капитализации. Ежедневная капитализация процентов достаточно близка к непрерывной.
+\end{frame}
+
+
+
+\begin{frame}{Капитализация процентов - 2}
+
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			xlabel=\text{Время, месяцы},
+			ylabel=\text{Сумма вклада, рубли},
+			xmin=0,
+			xmax=24.5,
+			width=\textwidth,
+			height=\textheight - 1.5cm,
+			ymin=100,
+			ymax=130,
+			legend style={at={(0.01, 0.99)}, anchor=north west}
+		]
+	
+
+		\addplot[const plot, samples at={0,0.1,...,60}, very thick, color=Set1-A] {100 * (1 + 0.12/4) ^ (4*3*floor(x/3)/12.0)};
+		\addlegendentry{$f=4$}
+	
+		\addplot[const plot, samples at={0,0.5,...,60}, very thick, color=Set1-B] {100 * (1 + 0.12/12) ^ (12*floor(x)/12.0)};
+		\addlegendentry{$f=12$}
+		
+		\addplot[domain=0:60, color=Set1-C, very thick] {100 * exp(0.12*x/12)};
+		\addlegendentry{$f=+\infty$}
+		\end{axis}
+	\end{tikzpicture}
+	\scriptsize{Рост вклада с течением времени, $N_0=100$, $r=12\%$}
+\end{frame}
+
+
+
+\begin{frame}{Соглашение о подсчёте дней}
+\justify
+Сколько лет между 1 марта 2024 года и 1 апреля 2024 года?
+
+\centering
+\begin{tabular}{l|l}
+Конвенция & Кол-во лет \\ \hline
+ACT/365 & $31/365 \approx 0.08493$ \\
+ACT/360 & $31/360 \approx 0.08611$ \\
+30/360  & $30/360 \approx 0.08333$ \\
+BUS/252 & $21/252 \approx 0.08333$ 
+\end{tabular}
+
+\justify
+ACT --- считаем календарные дни. 30 --- считаем, что в месяце 30 дней. BUS --- считаем только рабочие дни.
+
+\justify
+Выбор способа начисления процентов --- рыночная конвенция. Правило большого пальца: в странах Британского Содружества ACT/365, в других странах --- ACT/360, в Бразилии --- BUS/252. Читайте мелкий шрифт! 
+\end{frame}
+
+
+
+\begin{frame}{Конвенция 30/360}
+\justify
+Сколько лет между датами $D_1.M_1.Y_1$ и $D_2.M_2.Y_2$?
+\begin{align*}
+T = \frac{360(Y_2-Y_1) + 30(M_2-M_1) + (D_2-D_1)}{360}
+\end{align*}
+
+\justify
+Конвенция 30/360 возникла в докомпьютерную эпоху и позволяет быстро прикинуть результат в уме. Она по-прежнему живее всех живых (например, на рынке облигаций).
+\begin{itemize}
+\item Обратная совместимость
+\item Размер платежей по кредитам не меняется в течение года
+\end{itemize}
+
+\vspace{\baselineskip}
+\justify
+*Несколько вариантов (30/360 Bond, 30/360 US, 30E/360, 30E/360 ISDA) отличаются тем, как они обрабатывают февраль и месяцы с 31 днями. Скажем спасибо библиотекам финансовых вычислений за то, что прячут от нас эти детали!
+\end{frame}
+
+
+
+\begin{frame}{Конвенция о переносе дней}
+\justify
+Кредит на три месяца начался 29 марта 2024 года (пт). Когда он закончится: 28 июня (пт) или 1 июля (пн)?
+
+\justify
+Конвенция \en{modified following / business month end}:
+
+\justify
+1) Если дата начала --- последний рабочий день текущего месяца, то дата окончания --- тоже последний рабочий день месяца. Пример: 29.02.2024 (чт) --- 31.05.2024 (пт).
+
+\justify
+2) Если дата окончания выпала на выходной, то она сдвигается вперёд на ближайший 
+рабочий день, если только ближайший рабочий день --- не в следующем месяце. Пример: 
+15.03.2024 (пт) --- 17.06.2024 (пн).
+
+\justify
+3) В противном случае дата окончания сдвигается назад. Пример: 29.03.2024 (пт) --- 28.06.2024 (пт).
+\end{frame}
+
+
+
+\begin{frame}{Переход между способами капитализации}
+\justify
+Если вам нужна <<непрерывная>> ставка $r^*$, а есть только <<обычная>> $r$ (или наоборот), то всегда можно выразить одну через другую.
+\begin{align*}
+e^{r^*T} &= \left(1 + \frac{r}{f}\right)^{fT} \\
+r^* &= f\ln \left(1 + \frac{r}{f}\right) \\
+r &= f\left(e^{r^*/f} - 1\right)
+\end{align*}
+
+\justify
+То же самое для <<простых>> процентов без капитализации:
+\begin{align*}
+e^{r^*T} &= 1+rT \\
+r^* &= \frac{\ln(1+rT)}{T} \\
+r &= \frac{e^{r^*T}-1}{T}
+\end{align*}
+
+\end{frame}
+
+
+
+\begin{frame}{Отложенный депозит}
+\justify
+Предположим, что на рынке доступны два депозита с <<нулевой>> капитализацией:
+\begin{itemize}
+\item На $T_1=1$ год под ставку $r_1=12\%$ 
+\item На $T_2=2$ года под ставку $r_2=8\%$ 
+\end{itemize}
+
+Банк предлагает <<отложенный>> депозит: вы обязаны принести деньги через год на 1 год, а банк обязан зафиксировать ставку по депозиту $x$ уже сегодня. На какую ставку вы согласитесь?
+
+\centering
+\begin{tikzpicture}
+		\draw [->,>=triangle 90] (0, 0) -- (8.5, 0);
+
+		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1=12\%$};
+
+		\draw [->,>=triangle 45] (4,0) .. controls (4.5, 1) and (6.5, 1) .. (7,0) node[anchor=north west]{$T_2=2$} node[pos=0.5,anchor=south]{$x$};
+
+		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2=8\%$};
+	\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Отложенный депозит - 2}
+\centering
+\begin{tikzpicture}
+		\draw [->,>=triangle 90] (0, 0) -- (8.5, 0);
+
+		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1=12\%$};
+
+		\draw [->,>=triangle 45] (4,0) .. controls (4.5, 1) and (6.5, 1) .. (7,0) node[anchor=north west]{$T_2=2$} node[pos=0.5,anchor=south]{$x$};
+
+		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2=8\%$};
+	\end{tikzpicture}
+	
+\justifying
+Не должно быть разницы между депозитом на два года и цепочкой из двух депозитов:
+\begin{align*}
+(1 + r_1T_1)\Big(1+x(T_2-T_1)\Big) = 1 + r_2T_2
+\end{align*}
+\begin{align*}
+x = \frac{\dfrac{1+r_2T_2}{1+r_1T_1} - 1}{T_2-T_1} = \frac{\dfrac{1 + 0.08 \cdot 2}{1 + 0.12} - 1}{2-1} \approx 3.57\%
+\end{align*}
+
+При любой другой ставке <<отложенный>> депозит будет не выгоден либо вкладчикам (и они не будут им пользоваться), либо банку (и он не будет его предлагать).
+\end{frame}
+
+
+
+\begin{frame}{Непрерывная капитализация процентов}
+\justify
+Пересчитаем простые проценты в непрерывные:
+\begin{align*}
+r_1^* &= \frac{\ln(1+r_1T_1)}{T_1} = \frac{\ln 1.12}{1} \approx 11.333\% \\
+r_2^* &= \frac{\ln(1+r_2T_2)}{T_2} = \frac{\ln 1.14}{2} \approx 7.421\%
+\end{align*}
+
+\centering
+\begin{tikzpicture}
+		\draw [->,>=triangle 90] (0, 0) -- (8.5, 0);
+
+		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1^*=11.333\%$};
+
+		\draw [->,>=triangle 45] (4,0) .. controls (4.5, 1) and (6.5, 1) .. (7,0) node[anchor=north west]{$T_2=2$} node[pos=0.5,anchor=south]{$x^*$};
+
+		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2^*=7.421\%$};
+	\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Непрерывная капитализация процентов - 2}
+\centering
+\begin{tikzpicture}
+		\draw [->,>=triangle 90] (0, 0) -- (8.5, 0);
+
+		\draw [->,>=triangle 45] (1,0) node[anchor=north east]{$0$} .. controls (1.5, 1) and (3.5, 1) .. (4,0) node[anchor=north]{$T_1=1$} node[pos=0.5,anchor=south]{$r_1^*=11.333\%$};
+
+		\draw [->,>=triangle 45] (4,0) .. controls (4.5, 1) and (6.5, 1) .. (7,0) node[anchor=north west]{$T_2=2$} node[pos=0.5,anchor=south]{$x^*$};
+
+		\draw [->,>=triangle 45] (1,0) .. controls (1.5, -1) and (6.5, -1) .. (7,0) node[pos=0.5,anchor=north]{$r_2^*=7.421\%$};
+	\end{tikzpicture}
+
+\justifying
+Не должно быть разницы между цепочкой из <<непрерывных>> годовых депозитов и двухгодовым депозитом:
+\begin{align*}
+e^{r_1^*T_1}e^{x^*(T_2-T_1)} = e^{r_2^*T_2}
+\end{align*}
+\begin{align*}
+x^* = \frac{r_2^*T_2-r_1^*T_1}{T_2-T_1} = \frac{7.421\%\cdot2 - 11.333\%}{2 - 1} \approx 3.509\%
+\end{align*}
+
+Пересчитаем <<непрерывные>> обратно в простые:
+\begin{align*}
+x = \frac{e^{x^*(T_2-T_1)} - 1}{T_2 - T_1} = e^{0.03509} - 1 \approx 3.57\% 
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{Непрерывная капитализация процентов - 3}
+\justify
+Наблюдаемая действительность --- то, что люди готовы вложить $100$ рублей, чтобы получить $112$ рублей через год. Это можно интерпретировать и как <<простую>> ставку 12\% , и как <<непрерывную>> ставку 11.33\%, и как коэффициент дисконтирования $1/1.12 = 0.8929$. Это разные точки зрения (или разные единицы измерения) на одно и то же явление.
+
+\justify 
+В зависимости от контекста может быть удобнее пользоваться разными абстракциями. Можно показывать пользователям <<простые>> проценты, математику будущих ставок программировать в терминах <<непрерывных>> ставок, а \en{present value}\ будущих выплат вычислять с помощью коэффициентов дисконтирования.
+\end{frame}
+
+\end{document}
