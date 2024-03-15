@@ -136,7 +136,7 @@ download_from_cboe <- function(index_name) {
 
 download_shiller_data <- function() {
   
-  full_url <- "http://www.econ.yale.edu/~shiller/data/ie_data.xls"
+  full_url <- "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/ie_data.xls"
   curl_download(full_url, "ie_data.xls")
   raw_data <- xlsx::read.xlsx("ie_data.xls", sheetName="Data", startRow=8)
   file.remove("ie_data.xls")
@@ -162,7 +162,7 @@ put_data <- bind_rows(
 put_monthly <- put_data %>% 
   group_by(month = last_day_of_month(date)) %>% 
   summarise(put = last(put)) %>% 
-  filter(month >= "1986-12-31", month <= "2022-12-31") %>% 
+  filter(month >= "1986-12-31") %>% 
   mutate(
     put_return = put / lag(put) - 1,
     put_return = if_else(is.na(put_return), 0, put_return),
@@ -174,7 +174,7 @@ puty_data <- download_from_cboe("PUTY")
 puty_monthly <- puty_data %>% 
   group_by(month = last_day_of_month(date)) %>% 
   summarise(puty = last(index_level)) %>% 
-  filter(month >= '1986-12-31', month <= '2022-12-31') %>% 
+  filter(month >= '1986-12-31') %>% 
   mutate(puty_return = puty / lag(puty) - 1) %>% 
   mutate(puty_return = if_else(is.na(puty_return), 0, puty_return)) %>% 
   mutate(puty_growth = cumprod(1 + puty_return))
@@ -184,11 +184,10 @@ shiller_data <- download_shiller_data()
 
 sp500_monthly <- shiller_data %>% 
   filter(
-    month >= "1986-12-31",
-    month <= "2022-12-31"
+    month >= "1986-12-31"
   ) %>% 
   mutate(
-    sp500_return = (sp500 + dividend/12) / lag(sp500) - 1,
+    sp500_return = (sp500 + if_else(is.na(dividend), 0, dividend/12)) / lag(sp500) - 1,
     sp500_return = if_else(is.na(sp500_return), 0, sp500_return),
     sp500_growth = cumprod(1 + sp500_return)
   )
@@ -202,8 +201,7 @@ rf_monthly <- ff_data %>%
     rf_return = rf
   ) %>% 
   filter(
-    month >= '1986-12-31',
-    month <= '2022-12-31'
+    month >= '1986-12-31'
   ) %>% 
   mutate(
     rf_growth = cumprod(1 + rf_return)
@@ -211,15 +209,15 @@ rf_monthly <- ff_data %>%
 
 
 merged_data <- puty_monthly %>% 
-  inner_join(put_monthly, by="month") %>% 
-  inner_join(sp500_monthly, by="month") %>% 
-  inner_join(rf_monthly, by="month")
+  left_join(put_monthly, by="month") %>% 
+  left_join(sp500_monthly, by="month") %>% 
+  left_join(rf_monthly, by="month")
 
-merged_data %>% write_csv("cboe_puty.csv")
+merged_data %>% write_csv("cboe_puty.csv", na="nan")
 
 merged_data %>% 
   tail(-1) %>% 
-  filter(month >= "1987-01-01") %>% 
+  filter(month >= "1987-01-01", month <= "2023-12-31") %>% 
   lm(put_return - rf_return ~ sp500_return - rf_return, data=.) %>% 
   summary()
 
@@ -261,7 +259,7 @@ merged_data %>%
   group_by(
     year = year(month)
   ) %>% 
-  filter(year >= 1987) %>% 
+  filter(year >= 1987, year <= 2023) %>% 
   summarise(
     sp500 = prod(1 + sp500_return) - 1,
     put = prod(1 + put_return) - 1,

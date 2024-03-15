@@ -49,6 +49,14 @@
 \newcommand{\en}[1]{\begin{otherlanguage}{english}#1\end{otherlanguage}}
 \newcommand{\ruen}[2]{#1 (\en{#2})}
 
+\newcommand{\usdrubstrike}{96}
+\newcommand{\usdrubaxisspread}{8}
+\newcommand{\usdrublow}{70}
+\newcommand{\usdrubhigh}{120}
+\newcommand{\highminusstrikepremium}{22}
+\newcommand{\strikeminuslowpremium}{24}
+\newcommand{\usdrubbarrier}{100}
+
 \begin{document}
 
 
@@ -64,7 +72,7 @@
 \alert{Опцион колл [пут])} --- контракт, который даёт владельцу право, но не обязанность, купить [продать] базовый актив по заранее оговорённой цене в заранее определённую дату. 
 
 \justify
-Пример: колл-опцион, который даёт право (но не обязанность) купить 1\,000 долларов за 76\,000 рублей рублей через 3 месяца. Сегодня за такой опцион нужно заплатить 2\,000 рублей.
+Пример: колл-опцион, который даёт право (но не обязанность) купить 1\,000 долларов за \usdrubstrike\,000 рублей рублей через 3 месяца. Сегодня за такой опцион нужно заплатить 2\,000 рублей.
 \end{frame}
 
 
@@ -102,9 +110,9 @@
 		\draw [->, >=triangle 45] (8.5, 0) .. controls (8, 0.5) and (7, 0.5) .. (6.5, 0) node[pos=0.5, anchor=south]{$-1$ день};
 		
 		\circlewithtext{0.5}{0}{Сегодня};
-		\circlewithtext{2.5}{0}{\begin{tabular}{c}Спот \\ $-2\,000$ р. \end{tabular}};
+		\circlewithtext{2.5}{0}{\begin{tabular}{c}Спот \\ $-2\,000$ RUB \end{tabular}};
 		\circlewithtext{6.5}{0}{Экспирация};
-		\circlewithtext{8.5}{0}{\begin{tabular}{c}Поставка \\ $+\$1\,000$ \\ $-76\,000$ р.\end{tabular}};
+		\circlewithtext{8.5}{0}{\begin{tabular}{c}Поставка \\ $+1\,000$ USD\\ $-\usdrubstrike\,000$ RUB\end{tabular}};
 	\end{tikzpicture}
 	
 \justify
@@ -143,25 +151,24 @@
 
 \begin{frame}{Пример: колл-опцион}
 \justifying
-Колл-опцион на покупку долларов за рубли со страйком 76.
+Колл-опцион на покупку долларов за рубли со страйком \usdrubstrike.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,84},
-			ytick={-3,-2,...,8},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-3, ymax=8,
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Выплата (payoff)},
 		]
-  \addplot[Set1-A, very thick] {(\x > 76)*(\x - 76) + 0.05};
+  \addplot[Set1-A, very thick] {(\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.05};
   
-  \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 500, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -170,28 +177,24 @@
 
 \begin{frame}{Пример: покупаем колл-опцион}
 \justifying
-Покупка колл-опциона со страйком 76 за премию 2 руб.
+Покупка колл-опциона со страйком \usdrubstrike\ за премию 2 руб.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,84},
-			ytick={-3,-2,...,8},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-3, ymax=8,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Прибыль (profit'n'loss)},
-			%scaled x ticks=false
 		]
-  \addplot[Set1-A, very thick] {(\x > 76)*(\x - 76) - 2};
+  \addplot[Set1-A, very thick] {(\x > \usdrubstrike)*(\x - \usdrubstrike) - 2};
   
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -200,28 +203,24 @@
 
 \begin{frame}{Пример: покупаем пут-опцион}
 \justifying
-Покупка пут-опциона со страйком 76 за премию 2 руб.
+Покупка пут-опциона со страйком \usdrubstrike\ за премию 2 руб.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,84},
-			ytick={-3,-2,...,8},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-3, ymax=8,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Прибыль (profit'n'loss)},
-			%scaled x ticks=false
 		]
-  \addplot[Set1-A, very thick] {(\x < 76)*(76 - \x) - 2};
+  \addplot[Set1-A, very thick] {(\x < \usdrubstrike)*(\usdrubstrike - \x) - 2};
   
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -230,28 +229,24 @@
 
 \begin{frame}{Пример: продаём колл-опцион}
 \justifying
-Продажа колл-опциона со страйком 76 за премию 2 руб.
+Продажа колл-опциона со страйком \usdrubstrike\ за премию 2 руб.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={66,68,...,84},
-			ytick={-8,-7,...,3},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-8, ymax=3,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Прибыль (profit'n'loss)},
-			%scaled x ticks=false
 		]
-  \addplot[Set1-A, very thick] {(\x > 76)*(76 - \x) + 2};
+  \addplot[Set1-A, very thick] {(\x > \usdrubstrike)*(\usdrubstrike - \x) + 2};
   
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -260,28 +255,24 @@
 
 \begin{frame}{Пример: продаём пут-опцион}
 \justifying
-Продажа пут-опциона со страйком 76 за премию 2 руб.
+Продажа пут-опциона со страйком \usdrubstrike\ за премию 2 руб.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,94},
-			ytick={-8,-7,...,3},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-8, ymax=3,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Прибыль (profit'n'loss)},
-			%scaled x ticks=false
 		]
-  \addplot[Set1-A, very thick] {(\x < 76)*(\x - 76) + 2};
+  \addplot[Set1-A, very thick] {(\x < \usdrubstrike)*(\x - \usdrubstrike) + 2};
   
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -290,10 +281,10 @@
 
 \begin{frame}{Хэджирование с помощью опционов}
 \justify
-Через три месяца нам понадобится \$1\,000 на отпуск. Форвардный курс на три месяца 76.0. Если купить форвард, мы зафиксируем курс, но что делать, если рубль укрепится до 50? Будет обидно покупать доллары по 76 при рыночном курсе 50.
+Через три месяца нам понадобится \$1\,000 на отпуск. Форвардный курс на три месяца \usdrubstrike. Если купить форвард, мы зафиксируем курс, но что делать, если рубль укрепится до \usdrublow? Будет обидно покупать доллары по \usdrubstrike\ при рыночном курсе \usdrublow.
 
 \justify
-Решение: можно купить колл-опцион со страйком 76 на \$1\,000 за премию 2\,000 рублей. Если доллар сильно вырастет, мы исполняем опцион и покупаем по 76. Если рубль внезапно укрепляется до 50, то опцион пропадает, а мы покупаем по рыночному курсу 50.
+Решение: можно купить колл-опцион со страйком \usdrubstrike\ на \$1\,000 за премию 2\,000 рублей. Если доллар сильно вырастет, мы исполняем опцион и покупаем по \usdrubstrike. Если рубль внезапно укрепляется до \usdrublow, то опцион пропадает, а мы покупаем по рыночному курсу \usdrublow.
 
 \justify
 Плюс: не так обидно при укреплении рубля. Минус: прямо сейчас нужно заплатить за опцион. Опцион работает как страховка от падения рубля.
@@ -304,10 +295,10 @@
 
 \begin{frame}{Хэджирование с помощью опционов - 2}
 \justify
-Через три месяца нам придут дивиденды \$1\,000 от иностранных инвестиций. Тогда же нам нужно будет заплатить рубли за ипотеку. Форвардный курс на три месяца 76.0. Если продать форвард, мы зафиксируем курс, но что делать, если рубль ослабнет до 90? Будет обидно продавать доллары по 76 при рыночном курсе 90.
+Через три месяца нам придут дивиденды \$1\,000 от иностранных инвестиций. Тогда же нам нужно будет заплатить рубли за ипотеку. Форвардный курс на три месяца \usdrubstrike. Если продать форвард, мы зафиксируем курс, но что делать, если рубль ослабнет до \usdrubhigh? Будет обидно продавать доллары по \usdrubstrike\ при рыночном курсе \usdrubhigh.
 
 \justify
-Решение: можно купить пут-опцион со страйком 76 на \$1\,000 за премию 2\,000 рублей. Если доллар упадёт до 50, мы исполняем опцион и продаём доллары по 76. Если доллар укрепится до 90, опцион пропадает, а мы продадим доллары по рыночному курсу 90.
+Решение: можно купить пут-опцион со страйком \usdrubstrike\ на \$1\,000 за премию 2\,000 рублей. Если доллар упадёт до \usdrublow, мы исполняем опцион и продаём доллары по \usdrubstrike. Если доллар укрепится до \usdrubhigh, опцион пропадает, а мы продадим доллары по рыночному курсу \usdrubhigh.
 
 \justify
 Плюс: не так обидно при укреплении доллара. Минус: прямо сейчас нужно заплатить за опцион. Опцион работает как страховка от укрепления рубля.
@@ -317,10 +308,10 @@
 
 \begin{frame}{Спекуляция с помощью опционов}
 \justify
-Хрустальный шар показал, что за три месяца доллар сильно укрепится относительного текущего форвардного курса 76. Мы хотим на этом заработать, но \sout{жена} акционеры нашего хэдж-фонда выделили нам бюджет всего 2\,000 рублей.
+Хрустальный шар показал, что за три месяца доллар сильно укрепится относительного текущего форвардного курса \usdrubstrike. Мы хотим на этом заработать, но \sout{жена} акционеры нашего хэдж-фонда выделили нам бюджет всего 2\,000 рублей.
 
 \justify
-Решение: можно купить колл-опцион со страйком 76 на \$1\,000 за премию 2\,000 рублей. Если доллар укрепится до 90 рублей, мы заработаем $(90 - 76) \cdot 1\,000 - 2\,000 = 12\,000$ рублей. Если этого не случится, мы просто потеряем нашу ставку.
+Решение: можно купить колл-опцион со страйком \usdrubstrike\ на \$1\,000 за премию 2\,000 рублей. Если доллар укрепится до \usdrubhigh\ рублей, мы заработаем $(\usdrubhigh - \usdrubstrike) \cdot 1\,000 - 2\,000 = \highminusstrikepremium\,000$ рублей. Если этого не случится, мы просто потеряем нашу ставку.
 
 \justify
 Опцион позволяет взять <<плечо>> --- увеличить выигрыш при хорошем исходе (как будто у нас есть целая \$1\,000) ценой потерь в худшем исходе (можно потерять всю премию). Однако, проигрыш строго ограничен снизу, а выигрыш может быть бесконечно большим.
@@ -330,10 +321,10 @@
 
 \begin{frame}{Спекуляция с помощью опционов - 2}
 \justify
-Хрустальный шар показал, что за три месяца доллар сильно упадёт относительного текущего форвардного курса 76. Мы хотим на этом заработать, но \sout{жена} акционеры нашего хэдж-фонда выделили нам всего 2\,000 рублей.
+Хрустальный шар показал, что за три месяца доллар сильно упадёт относительного текущего форвардного курса \usdrubstrike. Мы хотим на этом заработать, но \sout{жена} акционеры нашего хэдж-фонда выделили нам всего 2\,000 рублей.
 
 \justify
-Решение: можно купить пут-опцион со страйком 76 на \$1\,000 за премию 2\,000 рублей. Если доллар упадёт до 62 рублей, мы заработаем $(76 - 62) \cdot 1\,000 - 2\,000 = 12\,000$ рублей. Если этого не случится, мы просто потеряем нашу ставку.
+Решение: можно купить пут-опцион со страйком \usdrubstrike\ на \$1\,000 за премию 2\,000 рублей. Если доллар упадёт до \usdrublow\ рублей, мы заработаем $(\usdrubstrike - \usdrublow) \cdot 1\,000 - 2\,000 = \strikeminuslowpremium\,000$ рублей. Если этого не случится, мы просто потеряем нашу ставку.
 
 \justify
 Опцион пут позволяет сделать ставку на падение базового актива (доллара).
@@ -368,25 +359,22 @@
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,84},
-			ytick={-8,-7,...,6},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-6, ymax=6,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Прибыль (profit'n'loss)},
 			%scaled x ticks=false
 		]
 	
-  \addplot[Set1-A, very thick, dashed] {-(\x < 74)*(74 - \x) + 0.5};
-  \addplot[Set1-B, very thick, dashed] {(\x > 78)*(\x - 78) - 0.5};
-  \addplot[Set1-C, very thick] {-(\x < 74)*(74 - \x) + 0.5 + (\x > 78)*(\x - 78) - 0.5 + 0.05};	
+  \addplot[Set1-A, very thick, dashed] {-(\x < \usdrubstrike-2)*(\usdrubstrike-2 - \x) + 0.5};
+  \addplot[Set1-B, very thick, dashed] {(\x > \usdrubstrike+2)*(\x - \usdrubstrike-2) - 0.5};
+  \addplot[Set1-C, very thick] {-(\x < \usdrubstrike-2)*(\usdrubstrike-2 - \x) + 0.5 + (\x > \usdrubstrike+2)*(\x - \usdrubstrike-2) - 0.5 + 0.05};	
 
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -401,25 +389,21 @@
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,84},
-			ytick={-8,-7,...,6},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-6, ymax=6,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
-			ylabel={Прибыль (profit'n'loss)},
-			%scaled x ticks=false
+			ylabel={Прибыль (profit'n'loss)}
 		]
 		
-	  \addplot[Set1-A, very thick, dashed] {(\x > 74)*(\x - 74) - 1};
-  \addplot[Set1-B, very thick, dashed] {-(\x > 78)*(\x - 78) + 0.5};
-  \addplot[Set1-C, very thick] {(\x > 74)*(\x - 74) - 1 -(\x > 78)*(\x - 78) + 0.5};
+	  \addplot[Set1-A, very thick, dashed] {(\x > \usdrubstrike-2)*(\x - \usdrubstrike+2) - 1};
+  \addplot[Set1-B, very thick, dashed] {-(\x > \usdrubstrike+2)*(\x - \usdrubstrike-2) + 0.5};
+  \addplot[Set1-C, very thick] {(\x > \usdrubstrike-2)*(\x - \usdrubstrike+2) - 1 -(\x > \usdrubstrike+2)*(\x - \usdrubstrike-2) + 0.5};
   
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -434,25 +418,21 @@
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,84},
-			ytick={-8,-7,...,6},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-6, ymax=6,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
-			ylabel={Прибыль (profit'n'loss)},
-			%scaled x ticks=false
+			ylabel={Прибыль (profit'n'loss)}
 		]
 		
-	  \addplot[Set1-A, very thick, dashed] {(\x < 76)*(76 - \x) - 1};
-  \addplot[Set1-B, very thick, dashed] {(\x > 76)*(\x - 76) - 1};
-  \addplot[Set1-C, very thick] {(\x < 76)*(76 - \x) - 1 + (\x > 76)*(\x - 76) - 1};
+	  \addplot[Set1-A, very thick, dashed] {(\x < \usdrubstrike)*(\usdrubstrike - \x) - 1};
+  \addplot[Set1-B, very thick, dashed] {(\x > \usdrubstrike)*(\x - \usdrubstrike) - 1};
+  \addplot[Set1-C, very thick] {(\x < \usdrubstrike)*(\usdrubstrike - \x) - 1 + (\x > \usdrubstrike)*(\x - \usdrubstrike) - 1};
   
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -467,25 +447,22 @@
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,84},
-			ytick={-6,-5,...,6},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-6, ymax=6,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Выплата (payoff)},
 			%scaled x ticks=false
 		]
 		
-	\addplot[Set1-A, very thick, dashed] {(\x > 76)*(\x - 76) + 0.1};
-  	\addplot[Set1-B, very thick, dashed] {-(\x < 76)*(76-\x) - 0.1};
-  	\addplot[Set1-C, very thick] {(\x > 76)*(\x - 76) -(\x < 76)*(76-\x) };
+	\addplot[Set1-A, very thick, dashed] {(\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.1};
+  	\addplot[Set1-B, very thick, dashed] {-(\x < \usdrubstrike)*(\usdrubstrike-\x) - 0.1};
+  	\addplot[Set1-C, very thick] {(\x > \usdrubstrike)*(\x - \usdrubstrike) -(\x < \usdrubstrike)*(\usdrubstrike-\x) };
  
-   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -494,29 +471,25 @@
 
 \begin{frame}{Комбинации: базовый актив и долг}
 \justifying
-1 доллар и долг в 76 рублей.
+1 доллар и долг в \usdrubstrike\ рублей.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,84},
-			ytick={-6,-5,...,6},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-6, ymax=6,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
-			ylabel={Выплата (payoff)},
-			%scaled x ticks=false
+			ylabel={Выплата (payoff)}
 		]
 		
-  	\addplot[Set1-C, very thick] {\x - 76};
+  	\addplot[Set1-C, very thick] {\x - \usdrubstrike};
  
-   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -556,12 +529,12 @@ C_K(t) - P_K(t) = S(t)e^{-q(T-t)} - Ke^{-r(T-t)}
 будет выше [ниже] заранее зафиксированного страйка.
 
 \justify
-Пример: европейский цифровой колл на пару доллар-рубль со страйком 76, экспирацией 
+Пример: европейский цифровой колл на пару доллар-рубль со страйком \usdrubstrike, экспирацией 
 через 3 месяца и номиналом 1\,000 рублей.
 
 \justify
 Владелец получит 1\,000 рублей, если через 3 
-месяца спот-курс будет выше 76. Сейчас за такой опцион нужно заплатить премию 500 
+месяца спот-курс будет выше \usdrubstrike. Сейчас за такой опцион нужно заплатить премию 500 
 рублей.
 \end{frame}
 
@@ -569,30 +542,27 @@ C_K(t) - P_K(t) = S(t)e^{-q(T-t)} - Ke^{-r(T-t)}
 
 \begin{frame}{Покупаем цифровой колл}
 \justifying
-Цифровой колл: страйк 76, номинал 1 р.
+Цифровой колл: страйк \usdrubstrike, номинал 1 р.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,84},
-			ytick={-6,-5,...,6},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-2, ymax=2,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Выплата (payoff)},
 			%scaled x ticks=false
 		]
 		
-	\addplot[Set1-A, very thick, domain=76:84] {1};
-	\addplot[Set1-A, very thick, domain=68:76] {0.02};
+	\addplot[Set1-A, very thick, domain=\usdrubstrike:(\usdrubstrike + \usdrubaxisspread)] {1};
+	\addplot[Set1-A, very thick, domain=(\usdrubstrike - \usdrubaxisspread):\usdrubstrike] {0.02};
  
-   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -601,30 +571,26 @@ C_K(t) - P_K(t) = S(t)e^{-q(T-t)} - Ke^{-r(T-t)}
 
 \begin{frame}{Покупаем цифровой пут}
 \justifying
-Цифровой пут: страйк 76, номинал 1 р.
+Цифровой пут: страйк \usdrubstrike, номинал 1 р.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,84},
-			ytick={-6,-5,...,6},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike - \usdrubaxisspread):(\usdrubstrike + \usdrubaxisspread),
+			xmin=(\usdrubstrike - \usdrubaxisspread), xmax=(\usdrubstrike + \usdrubaxisspread),
 			ymin=-2, ymax=2,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
-			ylabel={Выплата (payoff)},
-			%scaled x ticks=false
+			ylabel={Выплата (payoff)}
 		]
 		
-	\addplot[Set1-A, very thick, domain=76:84] {0.02};
-	\addplot[Set1-A, very thick, domain=68:76] {1};
+	\addplot[Set1-A, very thick, domain=\usdrubstrike:(\usdrubstrike + \usdrubaxisspread)] {0.02};
+	\addplot[Set1-A, very thick, domain=(\usdrubstrike - \usdrubaxisspread):\usdrubstrike] {1};
  
-   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+  \draw[thick, color=black] (axis cs: \usdrubstrike - \usdrubaxisspread, 0) -- (axis cs: \usdrubstrike + \usdrubaxisspread, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -639,7 +605,7 @@ C_K(t) - P_K(t) = S(t)e^{-q(T-t)} - Ke^{-r(T-t)}
 
 \justify
 Плюсы: простая функция выплаты, цена --- почти что вероятность (сколько рублей вы 
-заплатите за ставку, которая заработает 1000 рублей, если доллар будет выше 76?). 
+заплатите за ставку, которая заработает 1000 рублей, если доллар будет выше \usdrubstrike?). 
 
 \justify
 Недостатки: сложно хеджировать опцион, если к моменту экспирации цена базового актива окажется около страйка. Маркет-мейкеры закладывают это неудобство в спред bid-ask.
@@ -648,25 +614,27 @@ C_K(t) - P_K(t) = S(t)e^{-q(T-t)} - Ke^{-r(T-t)}
 Можно ли как-то связать цену цифрового опциона с ценой европейского опциона?
 \end{frame}
 
-
+\newcommand{\leftstrikeA}{95.5}
+\newcommand{\leftstrikeB}{95.75}
+\newcommand{\leftstrikeC}{95.95}
+\newcommand{\rightstrikeA}{96.5}
+\newcommand{\rightstrikeB}{96.25}
+\newcommand{\rightstrikeC}{96.05}
 
 \begin{frame}{Цифровой опцион и колл-спред}
 \justifying
-\only<1>{Колл-спред: купить колл-75.5, продать колл-76.5}
-\only<2>{Колл-спред: купить 2 колла-75.75, продать 2 колла-76.25}
-\only<3>{Колл-спред: купить 10 коллов-75.95, продать 10 коллов-76.05}
+\only<1>{Колл-спред: купить колл-\leftstrikeA, продать колл-\rightstrikeA}
+\only<2>{Колл-спред: купить 2 колла-\leftstrikeB, продать 2 колла-\rightstrikeB}
+\only<3>{Колл-спред: купить 10 коллов-\leftstrikeC, продать 10 коллов-\rightstrikeC}
 
 \centering
-	\begin{tikzpicture}
+	\begin{tikzpicture}		
 		\begin{axis}[
-			domain=74:78,samples=500,
-			%axis lines=middle,
-			xtick={72,73,...,80},
-			ytick={-2,-1.5,...,2},
-			xmin=74, xmax=78,
+			domain=(\usdrubstrike-2):(\usdrubstrike+2),
+			xmin=(\usdrubstrike-2), xmax=(\usdrubstrike+2),
 			ymin=-1.5, ymax=1.5,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=1,
+			ytick distance=0.5,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Выплата (payoff)},
@@ -674,22 +642,22 @@ C_K(t) - P_K(t) = S(t)e^{-q(T-t)} - Ke^{-r(T-t)}
 		]
 
 \only<1>{
-	\addplot[Set1-A, very thick, dashed] {(\x > 75.5)*(\x - 75.5) - 0.03};
-  	\addplot[Set1-B, very thick, dashed] {-(\x > 76.5)*(\x - 76.5) + 0.06};
-  	\addplot[Set1-C, very thick] {(\x > 75.5)*(\x - 75.5) - (\x > 76.5)*(\x - 76.5) + 0.03};
+	\addplot[Set1-A, very thick, dashed, samples=201] {(\x > \leftstrikeA)*(\x - \leftstrikeA) - 0.03};
+  	\addplot[Set1-B, very thick, dashed, samples=201] {-(\x > \rightstrikeA)*(\x - \rightstrikeA) + 0.06};
+  	\addplot[Set1-C, very thick, samples=201] {(\x > \leftstrikeA)*(\x -\leftstrikeA) - (\x > \rightstrikeA)*(\x - \rightstrikeA) + 0.03};
 }
 \only<2>{
-	\addplot[Set1-A, very thick, dashed] {2*(\x > 75.75)*(\x - 75.75) - 0.03};
-  	\addplot[Set1-B, very thick, dashed] {-2*(\x > 76.25)*(\x - 76.25) + 0.06};
-  	\addplot[Set1-C, very thick] {2*(\x > 75.75)*(\x - 75.75) - 2*(\x > 76.25)*(\x - 76.25) + 0.03};
+	\addplot[Set1-A, very thick, dashed, samples=201] {2*(\x > \leftstrikeB)*(\x - \leftstrikeB) - 0.03};
+  	\addplot[Set1-B, very thick, dashed, samples=201] {-2*(\x > \rightstrikeB)*(\x - \rightstrikeB) + 0.06};
+  	\addplot[Set1-C, very thick, samples=201] {2*(\x > \leftstrikeB)*(\x -\leftstrikeB) - 2*(\x > \rightstrikeB)*(\x - \rightstrikeB) + 0.03};
 }
 \only<3>{
-	\addplot[Set1-A, very thick, dashed] {10*(\x > 75.95)*(\x - 75.95) - 0.03};
-  	\addplot[Set1-B, very thick, dashed] {-10*(\x > 76.05)*(\x - 76.05) + 0.06};
-  	\addplot[Set1-C, very thick] {10*(\x > 75.95)*(\x - 75.95) - 10*(\x > 76.05)*(\x - 76.05) + 0.03};
+	\addplot[Set1-A, very thick, dashed, samples=201] {10*(\x > \leftstrikeC)*(\x -\leftstrikeC) - 0.03};
+  	\addplot[Set1-B, very thick, dashed, samples=201] {-10*(\x > \rightstrikeC)*(\x - \rightstrikeC) + 0.06};
+  	\addplot[Set1-C, very thick, samples=201] {10*(\x > \leftstrikeC)*(\x -\leftstrikeC) - 10*(\x > \rightstrikeC)*(\x - \rightstrikeC) + 0.03};
 }
  
-   \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 90, 0);
+   \draw[thick, color=black] (axis cs: (\usdrubstrike-2, 0) -- (axis cs: (\usdrubstrike+2, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -763,28 +731,25 @@ C_{digital}(K) + P_{digital}(K) = e^{-rT}
 
 \begin{frame}{Пример: европейский барьер}
 \justify
-Колл со страйком 76 и европейским knock-out барьером 80.
+Колл со страйком \usdrubstrike\ и европейским knock-out барьером \usdrubbarrier.
 
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=68:84,
-			%axis lines=middle,
-			xtick={68,70,...,84},
-			ytick={-3,-2,...,8},
-			xmin=68, xmax=84,
+			domain=(\usdrubstrike-6):(\usdrubstrike+10),
+			xmin=(\usdrubstrike-6), xmax=(\usdrubstrike+10),
 			ymin=-3, ymax=8,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Выплата (payoff)},
 			%scaled x ticks=false
 		]
-  \addplot[Set1-A, very thick,domain=68:79.99] {(\x > 76)*(\x - 76) + 0.03};
-  \addplot[Set1-A, very thick,domain=80:84] {0.03};
+  \addplot[Set1-A, very thick, samples=201, domain=(\usdrubstrike-6):(\usdrubbarrier-0.01)] {(\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.03};
+  \addplot[Set1-A, very thick,domain=\usdrubbarrier:(\usdrubstrike+10)] {0.03};
   
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
+   \draw[thick, color=black] (axis cs: (\usdrubstrike-6, 0) -- (axis cs: (\usdrubstrike+10, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -804,51 +769,48 @@ C_{digital}(K) + P_{digital}(K) = e^{-rT}
 2. В точках, где график выплаты разрывный, добавляем цифровой опцион.
 
 \justify
-Как реплицировать европейский колл со страйком 76 и евпропейским \en{knock-out} 
-барьером 80?
+Как реплицировать европейский колл со страйком \usdrubstrike\ и евпропейским \en{knock-out} 
+барьером \usdrubbarrier?
 \end{frame}
 
 
 
 \begin{frame}{Репликация европейского барьера}
 \justify
-Купить ванильный колл-76
-\only<2->{, продать ванильный колл-80}
-\only<3->{, продать 4 цифровых колла-80}
+Купить ванильный колл-\usdrubstrike
+\only<2->{, продать ванильный колл-\usdrubbarrier}
+\only<3->{, продать 4 цифровых колла-\usdrubbarrier}
 \justify
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=70:86,
-			%axis lines=middle,
-			xtick={70,72,...,86},
-			ytick={-5,-4,...,6},
-			xmin=70, xmax=86,
+			domain=(\usdrubstrike-6):(\usdrubstrike+10),
+			xmin=(\usdrubstrike-6), xmax=(\usdrubstrike+10),
 			ymin=-5, ymax=6,
-			%x label style={at={(axis description cs: 0.5, -0.1)}, anchor=north},
-			%y label style={at={(axis description cs:-0.1,1)},anchor=south},
+			xtick distance=2,
+			ytick distance=1,
 			grid = major,
 			xlabel={Курс в дату экспирации},
 			ylabel={Выплата (payoff)},
 			%scaled x ticks=false
 		]
-  \addplot[Set1-A, very thick, dashed] {(\x > 76)*(\x - 76) + 0.06};
+  \addplot[Set1-A, very thick, dashed] {(\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.06};
 \only<2->{
-  \addplot[Set1-B, very thick, dashed] {-(\x > 80)*(\x - 80) - 0.03};
+  \addplot[Set1-B, very thick, dashed] {-(\x > \usdrubbarrier)*(\x - \usdrubbarrier) - 0.03};
 }
 \only<2>{
-  \addplot[Set1-C, very thick] {-(\x > 80)*(\x - 80) - 0.03 + (\x > 76)*(\x - 76) + 0.06};
+  \addplot[Set1-C, very thick] {-(\x > \usdrubbarrier)*(\x - \usdrubbarrier) - 0.03 + (\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.06};
 }
 \only<3->{
-	\addplot[Set1-E, very thick, dashed, domain=70:80] {-0.06};
-	\addplot[Set1-E, very thick, dashed, domain=80:86] {-4};
+	\addplot[Set1-E, very thick, dashed, domain=(\usdrubstrike-6):\usdrubbarrier] {-0.06};
+	\addplot[Set1-E, very thick, dashed, domain=\usdrubbarrier:(\usdrubstrike+10)] {-4};
 }
 \only<3>{
-	\addplot[Set1-C, very thick, domain=70:80] {-(\x > 80)*(\x - 80) - 0.03 + (\x > 76)*(\x - 76) + 0.06};
-	\addplot[Set1-C, very thick, domain=80:90] {0.03};
+	\addplot[Set1-C, very thick, domain=(\usdrubstrike-6):\usdrubbarrier] {-(\x > \usdrubbarrier)*(\x - \usdrubbarrier) - 0.03 + (\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.06};
+	\addplot[Set1-C, very thick, domain=\usdrubbarrier:\usdrubstrike+10] {0.03};
 }
 
-  \draw[thick, color=black] (axis cs: 60, 0) -- (axis cs: 120, 0);
+   \draw[thick, color=black] (axis cs: (\usdrubstrike-6, 0) -- (axis cs: (\usdrubstrike+10, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -900,13 +862,13 @@ C_{digital}(K) + P_{digital}(K) = e^{-rT}
 
 \begin{frame}{Продажа out-of-the-money пута}
 \justify
-Индекс S\&P\,500 сейчас находится на уровне \$4\,120 (27 октября 2023). Пут-опцион со страйком \$2\,700, который истекает 15 декабря, стоит \$2 на \en{Chicago Mercantile Exchange (CME)}.
+Индекс S\&P\,500 сейчас находится на уровне \$5\,120 (15 марта 2024 г.). Пут-опцион со страйком \$3\,300, который истекает 3 мая, стоит \$1 на \en{Chicago Mercantile Exchange (CME)}.
 
 \justify
-Если вы продадите 1\,000 таких опционов, то вы заработаете премию \$2\,000 практически без риска. В последний раз индекс S\&P\,500 падал на 35\% за 7 недель в 1929 году в разгар Великой депрессии.
+Если вы продадите 1\,000 таких опционов, то вы заработаете премию \$1\,000 практически без риска. В последний раз индекс S\&P\,500 падал на 35\% за 7 недель в 1929 году в разгар Великой депрессии.
 
 \justify
-Внимание: если Великая депрессия всё-таки повторится, и индекс упадёт до \$2\,600, то вы потеряете \$100\,000.
+Внимание: если Великая депрессия всё-таки повторится, и индекс упадёт до \$3\,200, то вы потеряете \$100\,000.
 
 \justify
 Хватит ли у вас храбрости продать кому-то такую страховку от кризиса?
@@ -922,7 +884,7 @@ C_{digital}(K) + P_{digital}(K) = e^{-rT}
 Чикагская опционная биржа (\en{Chicago Board of Option Exchange, CBOE}) публикует индекс \en{S\&P\,500 PutWrite Index ("PUT")}, который отражает результаты следующей стратегии.
 
 \justify
-1. Продать одномесячный \en{at-the-money} пут-опцион на индекс S\&P\,500. Например, продать опцион со страйком $K=\$4\,120$, если текущий уровень индекса \$4\,120.
+1. Продать одномесячный \en{at-the-money}\ пут-опцион на индекс \en{S\&P\,500}. Например, продать опцион со страйком $K=\$5\,120$, если текущий уровень индекса \$5\,120.
 
 \justify
 2. Вложить $K$ долларов в безрисковые одномесячные облигации США. Так деньги будут всегда под рукой на случай, если рынок всё-таки упадёт и покупатель исполнит опцион.
@@ -1001,17 +963,17 @@ C_{digital}(K) + P_{digital}(K) = e^{-rT}
 \centering
 \begin{tabular}{l|r|r|r}
 & PUT & S\&P\,500 & T-bill \\ \hline
-Геом. среднее & 9.3\% & 10.3\% & 2.9\% \\
-Избыт. дох-ть & 6.3\% & 7.2\% & 0.0\% \\
-Ст. откл. & 11.1\% & 16.2\% & 0.0\% \\
-Отн. Шарпа & 0.56 & 0.45 & 0.0 \\
-Мес. бета & 0.48 & 1.00 & 0.00
+Геом. среднее & 9.4\% & 10.6\% & 2.9\% \\
+Избыт. дох-ть & 6.3\% & 7.4\% & 0.0\% \\
+Ст. откл. & 11.0\% & 16.0\% & 0.0\% \\
+Отн. Шарпа & 0.58 & 0.46 & 0.0 \\
+Мес. бета & 0.47 & 1.00 & 0.00
 \end{tabular}
 
-\small Период: 1987--2022. Все метрики, кроме беты в годовом выражении.
+\small Период: 1987--2023. Все метрики, кроме беты, в годовом выражении.
 
 \justify
-Индекс PUT показал лучшее соотношение риска и доходности (отношение Щарпа). Продавать другим страховки от падения рынка выглядит более интересной стратегией, чем инвестиции в сам рынок.
+Индекс PUT показал лучшее соотношение риска и доходности (отношение Шарпа). Продавать другим страховки от падения рынка выглядит более интересной стратегией, чем инвестиции в сам рынок.
 
 \justify
 Святой Грааль финансов найден? В чём подвох?
