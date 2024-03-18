@@ -279,7 +279,7 @@
 
 
 
-\begin{frame}{хеджирование с помощью опционов}
+\begin{frame}{Хеджирование с помощью опционов}
 \justify
 Через три месяца нам понадобится \$1\,000 на отпуск. Форвардный курс на три месяца \usdrubstrike. Если купить форвард, мы зафиксируем курс, но что делать, если рубль укрепится до \usdrublow? Будет обидно покупать доллары по \usdrubstrike\ при рыночном курсе \usdrublow.
 
@@ -293,7 +293,7 @@
 
 
 
-\begin{frame}{хеджирование с помощью опционов - 2}
+\begin{frame}{Хеджирование с помощью опционов - 2}
 \justify
 Через три месяца нам придут дивиденды \$1\,000 от иностранных инвестиций. Тогда же нам нужно будет заплатить рубли за ипотеку. Форвардный курс на три месяца \usdrubstrike. Если продать форвард, мы зафиксируем курс, но что делать, если рубль ослабнет до \usdrubhigh? Будет обидно продавать доллары по \usdrubstrike\ при рыночном курсе \usdrubhigh.
 
@@ -794,20 +794,20 @@ C_{digital}(K) + P_{digital}(K) = e^{-rT}
 			ylabel={Выплата (payoff)},
 			%scaled x ticks=false
 		]
-  \addplot[Set1-A, very thick, dashed] {(\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.06};
+  \addplot[Set1-A, very thick, dashed, samples=201] {(\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.06};
 \only<2->{
-  \addplot[Set1-B, very thick, dashed] {-(\x > \usdrubbarrier)*(\x - \usdrubbarrier) - 0.03};
+  \addplot[Set1-B, very thick, dashed, samples=201] {-(\x > \usdrubbarrier)*(\x - \usdrubbarrier) - 0.03};
 }
 \only<2>{
-  \addplot[Set1-C, very thick] {-(\x > \usdrubbarrier)*(\x - \usdrubbarrier) - 0.03 + (\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.06};
+  \addplot[Set1-C, very thick, samples=201] {-(\x > \usdrubbarrier)*(\x - \usdrubbarrier) - 0.03 + (\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.06};
 }
 \only<3->{
-	\addplot[Set1-E, very thick, dashed, domain=(\usdrubstrike-6):\usdrubbarrier] {-0.06};
-	\addplot[Set1-E, very thick, dashed, domain=\usdrubbarrier:(\usdrubstrike+10)] {-4};
+	\addplot[Set1-E, very thick, dashed, samples=201, domain=(\usdrubstrike-6):\usdrubbarrier] {-0.06};
+	\addplot[Set1-E, very thick, dashed, samples=201, domain=\usdrubbarrier:(\usdrubstrike+10)] {-4};
 }
 \only<3>{
-	\addplot[Set1-C, very thick, domain=(\usdrubstrike-6):\usdrubbarrier] {-(\x > \usdrubbarrier)*(\x - \usdrubbarrier) - 0.03 + (\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.06};
-	\addplot[Set1-C, very thick, domain=\usdrubbarrier:\usdrubstrike+10] {0.03};
+	\addplot[Set1-C, very thick, samples=201, domain=(\usdrubstrike-6):\usdrubbarrier] {-(\x > \usdrubbarrier)*(\x - \usdrubbarrier) - 0.03 + (\x > \usdrubstrike)*(\x - \usdrubstrike) + 0.06};
+	\addplot[Set1-C, very thick, samples=201, domain=\usdrubbarrier:\usdrubstrike+10] {0.03};
 }
 
    \draw[thick, color=black] (axis cs: (\usdrubstrike-6, 0) -- (axis cs: (\usdrubstrike+10, 0);
