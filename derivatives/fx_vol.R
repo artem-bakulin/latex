@@ -16,10 +16,10 @@ download_central_bank_fx_rates <- function(ccy, from_date, to_date) {
   
   CURRENCY_CODES = c("USD" = "R01235", "EUR" = "R01239")
   URL_PATTERN = "http://cbr.ru/Queries/UniDbQuery/DownloadExcel/98956?Posted=True&mode=1&VAL_NM_RQ=%s&From=%s&To=%s&FromDate=%s&ToDate=%s"
-  from_date_1 = as.character(from_date, "%d.%m.%Y")
-  from_date_2 = as.character(from_date, "%d/%m/%Y")
-  to_date_1 = as.character(to_date, "%d.%m.%Y")
-  to_date_2 = as.character(to_date, "%d/%m/%Y")
+  from_date_1 = as.character.Date(from_date, format="%d.%m.%Y")
+  from_date_2 = as.character.Date(from_date, format="%d/%m/%Y")
+  to_date_1 = as.character.Date(to_date, format="%d.%m.%Y")
+  to_date_2 = as.character.Date(to_date, format="%d/%m/%Y")
   
   if (!ccy %in% names(CURRENCY_CODES)) {
     stop(sprtinf("Unknown currency code %s", ccy))
@@ -65,7 +65,7 @@ get_central_bank_fx_rate <- function(ccy, from_year, to_year) {
   data
 }
 
-get_central_bank_fx_rate("USD", 2012, 2023) %>% 
+get_central_bank_fx_rate("USD", 2012, 2024) %>% 
   mutate(log_return = log(fx_rate / lag(fx_rate))) %>% 
   filter(!is.na(log_return)) %>% 
   group_by(mid_month = make_date(year(date), month(date), 15)) %>% 
