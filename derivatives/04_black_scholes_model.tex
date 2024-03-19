@@ -1169,18 +1169,17 @@ C_K = F(S_0, T, K, \sigma, r, q)
 
 \begin{frame}{<<Ожидаемая>> волатильность -2}
 \justify
-Опционы на USDRUB с датой исполнения 15.06.2023.
+Опционы на USDRUB с датой исполнения 20.06.2024.
 
 \centering
 \begin{tikzpicture}
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			%domain=70:130,
-			xtick={55,60,...,95},
-			ytick={0,5,...,40},
-			xmin=55, xmax=95,
-			ymin=0, ymax=20,
+			xmin=70, xmax=120,
+			ymin=0, ymax=25,
+			xtick distance=5,
+			ytick distance=5,
 			grid = major,
 			xlabel={Страйк ($K$)},
 			ylabel={Цена опциона, руб.}
@@ -1211,18 +1210,17 @@ C_K = F(S_0, T, K, \sigma, r, q)
 
 \begin{frame}{<<Ожидаемая>> волатильность - 3}
 \justify
-Опционы на USDRUB с датой исполнения 15.06.2023.
+Опционы на USDRUB с датой исполнения 20.06.2024.
 
 \centering
 \begin{tikzpicture}
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			%domain=60:84,
-			xtick={55,60,...,95},
-			ytick={0.0,0.05,...,0.65},
-			xmin=55, xmax=95,
-			ymin=0.15, ymax=0.35,
+			xmin=70, xmax=120,
+			ymin=0.16, ymax=0.30,
+			xtick distance=5,
+			ytick distance=0.02,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
 			grid = major,
 			xlabel={Страйк ($K$)},
@@ -1246,18 +1244,17 @@ C_K = F(S_0, T, K, \sigma, r, q)
 
 \begin{frame}{<<Ожидаемая>> волатильность - 4}
 \justify
-Опционы на S\&P\,500 с датой исполнения 16.06.2023.
+Опционы на S\&P\,500 с датой исполнения 21.06.2024.
 
 \centering
 \begin{tikzpicture}
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			domain=3000:5000,
-			xtick={3000,3100,...,5000},
-			ytick={50,100,...,600},
-			xmin=3500, xmax=4500,
+			xmin=4700, xmax=5700,
 			ymin=0, ymax=500,
+			xtick distance=100,
+			ytick distance=50,
 			grid = major,
 			xlabel={Страйк ($K$)},
 			ylabel={Цена опциона, \$},
@@ -1289,18 +1286,17 @@ C_K = F(S_0, T, K, \sigma, r, q)
 
 \begin{frame}{<<Ожидаемая>> волатильность - 5}
 \justify
-Опционы на S\&P\,500 с датой исполнения 16.06.2023.
+Опционы на S\&P\,500 с датой исполнения 21.06.2024.
 
 \centering
 \begin{tikzpicture}
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			domain=3000:5000,
-			xtick={3000,3100,...,5000},
-			ytick={0.05,0.10,...,0.30},
-			xmin=3500, xmax=4500,
-			ymin=0, ymax=0.30,
+			xmin=4700, xmax=5700,
+			ymin=0.0, ymax=0.20,
+			xtick distance=100,
+			ytick distance=0.05,
 			grid = major,
 			xlabel={Страйк ($K$)},
 			ylabel={Волатильность ($\sigma$)},
@@ -1429,7 +1425,7 @@ C_K = F(S_0, T, K, \sigma, r, q)
 
 \begin{frame}{Опционная бабочка - 4}
 \justify
-Бабочки со страйками $K-1$, $K$ и $K+1$. Экспирация 15.06.2023.
+Бабочки со страйками $K-1$, $K$ и $K+1$. Экспирация  20.06.2024.
 
 \centering
 \begin{tikzpicture}
@@ -1437,10 +1433,10 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			width = \textwidth,
 			height = \textheight - 2cm,
 			%domain=60:84,
-			xtick={55,60,...,95},
-			ytick={0.01,0.02,...,0.08},
-			xmin=55, xmax=95,
-			ymin=0, ymax=0.08,
+			xmin=70, xmax=120,
+			ymin=0, ymax=0.06,
+			xtick distance=5,
+			ytick distance=0.01,
 			scaled y ticks = false,
 			yticklabel={\pgfmathprintnumber[fixed, fixed zerofill, precision=2]{\tick}},
 			grid = major,
@@ -1469,10 +1465,10 @@ C_K = F(S_0, T, K, \sigma, r, q)
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			xtick={55,60,...,95},
-			ytick={0.01,0.02,...,0.08},
-			xmin=55, xmax=95,
-			ymin=0, ymax=0.08,
+			xmin=70, xmax=120,
+			ymin=0, ymax=0.06,
+			xtick distance=5,
+			ytick distance=0.01,
 			scaled y ticks = false,
 			yticklabel={\pgfmathprintnumber[fixed, fixed zerofill, precision=2]{\tick}},
 			grid = major,
