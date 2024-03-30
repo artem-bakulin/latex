@@ -1251,6 +1251,108 @@ $\sigma=20\%$. Безрисковая ставка $r=0\%$.
 движение рынка такое сильное, что потери на гамме превосходят полученную премию. 
 \end{frame}
 
+
+
+\begin{frame}{Бонус: индекс GAMMA}
+\justify
+Чикагская опционная биржа (\en{CBOE}) публикует индекс \en{GAMMA}, который отслеживает доходность следующей торговой стратегии:
+
+\justify
+1. Купить \en{at-the-money}\ стрэдлы на индекс \en{S\&P\,500}\ с экспирациями в ближайшие пять ближайших торговых дней. Например, если сегодня понедельник, то стратегия покупает пары \en{ATM}\ колллов и путов с экспирациями со вторника по пятницу и в следующий понедельник.
+
+\justify
+2. Захеджировать дельту ближайшим фьючерсом.
+
+\justify
+3. На следующий день, после экспирации ближайшего стрэддла, купить новый стрэддл с экспирацией через неделю и снова выполнить дельта-хеджирование.
+
+\justify
+Стратегия зарабатывает деньги на резких колебаниях рынка, когда реализованная волатильность оказывается выше, чем \en{implied}\ волатильность, которую ожидали продавцы стрэддлов.
+\end{frame}
+
+
+
+\begin{frame}{Бонус: индекс GAMMA - 2}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+ 	width=\textwidth,
+	height=\textheight - 1cm,
+	date coordinates in=x,
+	date ZERO=2012-01-01,
+  	xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01, 2023-01-01, 2025-01-01},
+  	minor xtick={2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01,2024-01-01},
+  	xticklabel={\year},
+  	xmin=2012-05-31,
+  	xmax=2025-01-01,
+	 ymode = log,
+ 	grid=both,
+   	log ticks with fixed point,
+  	ylabel={\small{Рост \$1 инвестиций}},
+  	xlabel near ticks,
+  	ylabel near ticks,
+	legend entries = {
+		S\&P\,500 Total Return,
+		CBOE Gamma (inverted),
+		T-bills
+	},
+	legend pos=north east,
+	legend style={font=\tiny},
+	legend cell align={left}
+]
+
+\addplot[color = Set1-A, mark = none, very thick]
+	table[
+		x=month,
+		y=sp500_growth,
+		col sep=comma
+	]
+	{cboe_gamma.csv};
+
+\addplot[color = Set1-B, mark = none, very thick]
+	table[
+		x=month,
+		y=inv_gamma_growth,
+		col sep=comma
+	]
+	{cboe_gamma.csv};
+
+\addplot[color = Set1-C, mark = none, very thick, dashed]
+	table[
+		x=month,
+		y=rf_growth,
+		col sep=comma
+	]
+	{cboe_gamma.csv};
+
+   \draw[thick, color=black] (axis cs: 1985-01-01, 1) -- (axis cs: 2025-01-01, 1);
+\end{axis}
+\end{tikzpicture}
+
+\small Данные: CBOE, Yahoo Finance, Kenneth French.
+\end{frame}
+
+
+
+\begin{frame}{Бонус: индекс GAMMA - 3}
+\centering
+\begin{tabular}{l|r|r|r}
+& Inv. GAMMA & S\&P\,500 & T-bills \\ \hline
+Геом. среднее & 12.8\% & 13.7\% & 1.1\% \\
+Избыт. дох-ть & 11.6\% & 12.5\% & 0.0\% \\
+Ст. откл. & 60.1\% & 16.0\% & 0.0\% \\
+Отн. Шарпа & 0.19 & 0.79 & 0.0 \\
+Мес. бета & 0.94 & 1.00 & 0.00
+\end{tabular}
+
+\small{Период: 2013--2023. Все метрики, кроме беты, в годовом выражении.}
+
+\justify
+Индекс \en{GAMMA}\ показывал отрицательную среднюю доходность. Положительную доходность показывала обратная стратегия --- продавать (а не покупать) стрэддлы.
+
+\justify
+Продавать гамму (продавать остальным страховку от кризиса) --- прибыльная на дистанции стратегия.
+\end{frame}
 \end{document}
 
 

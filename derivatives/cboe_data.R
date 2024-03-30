@@ -334,3 +334,75 @@ sp500_data %>%
          
 sp500_monthly %>% 
   filter(month == "1987-10-31")
+
+
+gamma_data <- download_from_cboe("GAMMA")
+gamma_data <- gamma_data %>%
+  bind_rows(
+    head(.) %>% mutate(date = date - 1),
+    .
+  ) %>%
+  group_by(
+    month = last_day_of_month(date)
+  ) %>%
+  summarise(gamma = last(index_level)) %>%
+  mutate(
+    gamma_return = gamma / lag(gamma,default=first(gamma)) - 1,
+    inv_gamma_return = -gamma_return,
+    gamma_growth = cumprod(1 + gamma_return),
+    inv_gamma_growth = cumprod(1 + inv_gamma_return),
+  )
+
+# Gamma goes back to 2012 -> we can use SP500 total return from Yahoo Finance rather than from Shiller's website
+sp500_tr_index <- yahoofinancer::Index$new("^SP500TR")
+sp500_tr_data <- sp500_tr_index$get_history(start="2012-05-31", end="2024-03-29", interval="1d") %>%
+  as_tibble() %>% 
+  transmute(
+    date = as.Date(date, tz="UTC"),
+    sp500 = close
+  ) %>%
+  group_by(
+    month = last_day_of_month(date)
+  ) %>%
+  summarise(
+    sp500 = last(sp500)
+  ) %>%
+  mutate(
+    sp500_return = sp500 / lag(sp500, default=first(sp500)) - 1,
+    sp500_growth = cumprod(1 + sp500_return)
+  )
+
+merged_gamma_data <- gamma_data %>%
+  left_join(sp500_tr_data, by="month") %>%
+  left_join(rf_monthly, by="month") %>%
+  mutate(rf_growth = rf_growth / first(rf_growth))
+
+merged_gamma_data %>%
+  write_csv("cboe_gamma.csv", na="nan")
+
+merged_gamma_data <- merged_gamma_data %>% filter(month >= '2013-01-01', month<='2023-12-31')
+
+merged_gamma_data %>%
+  group_by(
+    year = year(month)
+  ) %>% 
+  summarise(
+    sp500 = prod(1 + sp500_return) - 1,
+    inv_gamma = prod(1 + inv_gamma_return) - 1,
+    rf = prod(1 + rf_return) - 1,
+    sp500_excess = (1 + sp500) / (1 + rf) - 1,
+    inv_gamma_excess = (1 + inv_gamma) / (1 + rf) - 1
+  ) %>% 
+  summarise(
+    from = min(year),
+    to = max(year),
+    sp500_mean = prod(1 + sp500) ^ (1/n()) - 1,
+    inv_gamma_mean = prod(1 + inv_gamma) ^ (1/n()) - 1,
+    rf_mean = prod(1 + rf) ^ (1/n()) - 1,
+    sp500_excess_mean = prod(1 + sp500_excess) ^ (1/n())- 1,
+    inv_gamma_excess_mean = prod(1 + inv_gamma_excess) ^ (1/n())- 1,
+    sp500_std = sd(sp500_excess),
+    inv_gamma_std = sd(inv_gamma_excess),
+    sp500_sharpe = sp500_excess_mean / sp500_std,
+    inv_gamma_sharpe = inv_gamma_excess_mean / inv_gamma_std
+  )
