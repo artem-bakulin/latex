@@ -15,17 +15,17 @@
 
 \title{Derivatives}
 \author{Artem Bakulin}
-\date{October 9, 2023}
+\date{March 3, 2024}
 
 \begin{document}
 
 \maketitle
 
 \section*{Course description}
-This course is introduction to financial derivatives. We will have a look at some most common
+This course is an introduction to financial derivatives. We will have a look at some most common
 classes, such as foreign exchange forwards, interest rate swaps, vanilla and exotic options, credit
 default swaps. Every time we will be interested in two questions: what is economic purpose of a
-derivative (who are natural buyers and sellers), and how do we price it?
+derivative, who are natural buyers and sellers, and how do we price it?
 
 Main goal of the course is to give you an idea of risk-neutral pricing and replication. Every
 reasonable derivative can be replicated as a combination of some underlying assets (probably
@@ -48,7 +48,7 @@ Prerequisites:
 
 1. Mechanics of foreign exchange market. Foreign exchange forwards. Hedging and speculation.
 Arbitrage-free price of a forward. Non-deliverable forwards.
-Reading: Hull, chapters 2-5.
+Reading: Hull, chapters 2--5.
 
 2. Floating interest rates. Interest rate swaps and futures. Bootstrapping a yield curve from
 market instruments. Managing interest rate risk. Overnight index swaps curve and discounting.
@@ -57,7 +57,7 @@ Reading: Hull, chapters 6, 7.
 
 3. Vanilla options. Vanilla strategies. Single-step and multi-step binomial trees. Dynamic
 replication (also known as delta-hedging).
-Reading: Hull, chapters 10-13.
+Reading: Hull, chapters 10--13.
 
 4. Geometric Brownian motion and Black-Scholes formula as the limit of binomial tree. Implied
 volatility and volatility smile.
@@ -89,7 +89,7 @@ course. However, they demonstrate how deep is the rabbit hole, and how many aspe
 needs to take into account.
 
 1. Strictly speaking, Kevin Rodger’s book is not about derivatives per se. However it offers great
-insight into everyday life of a trader at large investment bank, and role of computers on modern
+insight into everyday life of a trader at a large investment bank, and role of computers on modern
 financial markets.
 
 Kevin Rodgers. \textit{Why Aren't They Shouting?: A Banker’s Tale of Change, Computers and Perpetual
@@ -136,12 +136,12 @@ Jon Gregory. \textit{The xVA Challenge: Counterparty Risk, Funding, Collateral, 
 4th ed. Wiley, 2020. ISBN: 9781119508977.
 
 \section*{Sample problem for course evaluation}
-A structured note works as follow. A client invests \$100\,000 notional at inception. Whatever
-happens, the client will receive full notional \$100\,000 in 3 years (so the note offers 100\% capital
+A structured note works as follows. A client invests \$100\,000 notional at inception. Whatever
+happens, the client will receive back full notional \$100\,000 in 3 years (so the note offers a100\% capital
 guarantee).
 
 At the end of years 1, 2, and 3, the note may (or may not) pay out additional fixed coupons of X\%
-of notional. This X\% coupon rate is parameter of the contract, which you will need to compute.
+of the notional. This X\% coupon rate is a parameter of the contract, which you will need to compute.
 Coupon is paid out only in case on the payment date the S\&P\,500 index is higher than its level
 today \$4\,000.
 
