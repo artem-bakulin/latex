@@ -22,23 +22,37 @@ LaTeX sources for Habrahabr posts, presentations, and other stuff
 
 [Индексное инвестирование (декабрь 2021)](https://artem-bakulin.github.io/latex/papers/index-investing-presentation-dec-2021/)
 
-## Derivatives (Spring 2023, Russian)
+## Derivatives (Spring 2024, Russian)
 
-1\. [Валютный рынок. Валютные форварды](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/01-fx-market-and-fx-forwards/)
+[Описание курса](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/syllabus/)
 
-2\. [Процентные свопы](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/02-interest-rate-swaps/)
+1\. [Валютный рынок. Валютные форварды](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/01-fx-market-and-fx-forwards/)
 
-3\. [Опционы. Биномиальная модель](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/03-options-and-binomial-model/)
+2\. [Процентные свопы](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/02-interest-rate-swaps/) \| [Технические детали процентных ставок](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/02-technical-notes-on-interest-rates/) \| [Процентный своп: пример в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/02-interest-rate-swap-example)
 
-4\. [Модель Блэка-Шоулза](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/04-black-scholes-model/)
+3\. [Опционы. Биномиальная модель](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/03-options-and-binomial-model/)
 
-5\. [Текущая стоимость, риск и греки](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/05-present-value-risk-and-greeks/)
+4\. [Модель Блэка-Шоулза](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/04-black-scholes-model/)
 
-6\. [Кредитные дефолтные свопы](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/06-credit-default-swaps/) \| [Пример в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/06-credit-default-swap-example/)
+5\. [Текущая стоимость, риск и греки](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/05-present-value-risk-and-greeks/) \| [Улыбка волатильности: пример в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/05-parametric-volatility-example/)
 
-7\. [Метод Монте-Карло](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/07-monte-carlo-method/) \| [Пример в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/07-monte-carlo-example/)
+6\. [Кредитные дефолтные свопы](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/06-credit-default-swaps/) \| [Кредитный дефолтный своп: пример в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/06-credit-default-swap-example/)
 
-Бонус. [Value at Risk](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/08-value-at-risk/) \| [Пример в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/08-value-at-risk-example/)
+7\. [Метод Монте-Карло](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/07-monte-carlo-method/) \| [Метод Монте-Карло: пример в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/07-monte-carlo-example/)
+
+Бонусная лекция (2022). [Value at Risk](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/08-value-at-risk/) \| [Value at Risk: пример в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2023/08-value-at-risk-example/)
+
+Домашнее задание 1. [Задачи](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/01-problems) \| [Решения в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/01-solutions)
+
+Домашнее задание 2. [Задачи](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/02-problems) \| [Решения в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/02-solutions)
+
+Домашнее задание 3. [Задачи](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/03-problems) \| [Решения в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/03-solutions)
+
+Домашнее задание 4 (программирование). [Описание](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/04-structured-note-description/) \| [Структурная нота в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/04-structured-note-spreadsheet/)
+
+Экзамен. [Задачи](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/exam-problems) \| [Решения в Excel](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/exam-solutions/)
+
+Мини-тесты на лекциях. [Тест 1](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/quiz-01) \| [Тест 2](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/quiz-02) \| [Тест 3](https://artem-bakulin.github.io/latex/courses/derivatives/spring-2024/homework/quiz-03)
 
 ## Derivatives (Autumn 2023, English)
 
