@@ -39,7 +39,7 @@
 
 \title{Foreign Exchange Market. Forwards}
 \author{Artem Bakulin}
-\date{October 10, 2023}
+\date{October 15, 2024}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -57,14 +57,14 @@
 \alert{Foreign exchange spot, or FX spot} is a trade in which two parties exchange two currencies "almost immediately" ("on the spot"), usually on the second business day.
 
 \justify
-Buying a currency pair, such as EURUSD, involves receiving the first currency (EUR) and paying the second one (USD). For example, buying 1\,000\,000 of EURUSD spot at exchange rate of 1.0721 results in the following payments:
+Buying a currency pair, such as EURUSD, involves receiving the first currency (EUR) and paying the second one (USD). For example, buying 1\,000\,000 of EURUSD spot at exchange rate of 1.0921 results in the following payments:
 \justify
 
 \centering
 \begin{tabular}{l|r|r}
 Date                          & EUR & USD \\ \hline
-Tue 10.10.2023 (today)  & 0   & 0   \\
-Thu 12.10.2023 (spot)     & +1\,000\,000 & $-1\,072\,100$
+Tue 15.10.2024 (today)  & 0   & 0   \\
+Thu 17.10.2024 (spot)     & +1\,000\,000 & $-1\,092\,100$
 \end{tabular}
 \end{frame}
 
@@ -76,18 +76,18 @@ Some market conventions originate from pre-computer era, when people had to nego
 over phone.
 
 \begin{align*}
-\underbrace{\text{\Large 1.07}}_{\text{Figures}}\underbrace{\text{\Large 21}}_{\text{Pips}}
+\underbrace{\text{\Large 1.09}}_{\text{Figures}}\underbrace{\text{\Large 21}}_{\text{Pips}}
 \end{align*}
 \justify
 
-\alert{Big figures} are  the most significant digits that are typically not not pronounced. \alert{Pips} are the third and the fourth digits after the decimal point (1st and 2nd in USDJPY), and it is essential to negotiate them.
+\alert{Big figures} are  the most significant digits that are typically not pronounced. \alert{Pips} are the third and the fourth digits after the decimal point (1st and 2nd in USDJPY), and it is essential to negotiate them.
 
 \justify
 --- Good morning. Euro [EURUSD], 10 [million], please?
 
---- 21--23. [We buy at 1.07\underline{21}, we sell at 1.07\underline{23}].
+--- 21--23. [We buy at 1.09\underline{21}, we sell at 1.09\underline{23}].
 
---- Sold. [We pay you 1\,000\,000 EUR and receive 1\,072\,100 USD].
+--- Sold. [We pay you 1\,000\,000 EUR and receive 1\,092\,100 USD].
 \end{frame}
 
 
@@ -102,7 +102,7 @@ Most companies and individuals purchase currency from market-makers, usually fro
 \centering
 \begin{tabular}{c|c|c|c}
 Bid & Mid & Ask/offer & Spread \\ \hline
-1.07\underline{21} & 1.07\underline{22} & 1.07\underline{23} & 2 pips
+1.09\underline{21} & 1.09\underline{22} & 1.09\underline{23} & 2 pips
 \end{tabular}
 
 \justify
@@ -116,14 +116,14 @@ When a client requests a price (a quote), they specify the size of the trade, bu
 
 \begin{frame}{Market-maker's profit}
 \justify
-Suppose that a bank has sold 1\,000\,000 EUR at 1.07\underline{23} to one client, and has managed to buy 1\,000\,000 EUR at 1.07\underline{21} from another client. How much money has the bank made?
+Suppose that a bank has sold 1\,000\,000 EUR at 1.09\underline{23} to one client, and has managed to buy 1\,000\,000 EUR at 1.09\underline{21} from another client. How much money has the bank made?
 
 \centering
 \begin{tabular}{l|r|r}
 Trade & EUR & USD \\
 \hline
-Sell at 1.07\underline{23} & $-1\,000\,000$ & $+1\,072\,300$ \\
-Buy at 1.07\underline{21} & $+1\,000\,000$ & $-1\,072\,100$ \\
+Sell at 1.09\underline{23} & $-1\,000\,000$ & $+1\,092\,300$ \\
+Buy at 1.09\underline{21} & $+1\,000\,000$ & $-1\,092\,100$ \\
 \hline
 Net & 0 & $+200$
 \end{tabular}
@@ -132,7 +132,7 @@ Net & 0 & $+200$
 Do you have to buy Euros before selling Euros? Not necessarily, because usually FX spot trades spot trades settle on the second business day.
 
 \justify
-This market-maker seems to be making money out of thin air. Where is the catch? Could everyone follow the sam	e strategy?
+This market-maker seems to be making money out of thin air. Where is the catch? Could everyone follow the same strategy?
 \end{frame}
 
 
@@ -142,19 +142,19 @@ This market-maker seems to be making money out of thin air. Where is the catch? 
 \alert{Market risk} is the possibility of incurring a loss due to changes in market prices.
 
 \justify
-1. Client A bought 1\,000\,000 EUR at 1.07\underline{23} from a market-maker.
+1. Client A bought 1\,000\,000 EUR at 1.09\underline{23} from a market-maker.
 
 \justify
 2. For some reason, clients who could be selling are inactive.
 
 \justify
-3. Breaking news: the European Central Bank (ECB) has hiked interest rates, and Euro is strengthening. Other market-makers are now quoting 1.07\underline{51}/1.07\underline{53}.
+3. Breaking news: the European Central Bank (ECB) has hiked interest rates, and Euro is strengthening. Other market-makers are now quoting 1.09\underline{51}/1.09\underline{53}.
 
 \justify
-4. Client B who is willing to sell requests a quote. The market-maker must offer at least 1.07\underline{51}. Otherwise the client will prefer competitors' offers.
+4. Client B who is willing to sell requests a quote. The market-maker must offer at least 1.09\underline{51}. Otherwise the client will prefer competitors' offers.
 
 \justify
-5. Summary: the market-maker sold EUR at 1.07\underline{23} to client A, and bought EUR at 1.07\underline{51} from client B. Net loss is \$2\,800.
+5. Summary: the market-maker sold EUR at 1.09\underline{23} to client A, and bought EUR at 1.09\underline{51} from client B. Net loss is \$2\,800.
 \end{frame}
 
 
@@ -181,20 +181,20 @@ rapidly.
 \justify
 Scenario 1 (all trades are 1\,000\,000 EUR) :
 
-1. Quote 1.07\underline{21}/1.07\underline{23} to client A. Client A buys at \underline{23}.
+1. Quote 1.07\underline{21}/1.09\underline{23} to client A. Client A buys at \underline{23}.
 
-2. The market moves up by 30 pips to 1.07\underline{51}/1.07\underline{53}.
+2. The market moves up by 30 pips to 1.09\underline{51}/1.09\underline{53}.
 
-3. Client B sells at 1.07\underline{51}. Loss: $-\$2\,800$.
+3. Client B sells at 1.09\underline{51}. Loss: $-\$2\,800$.
 
 \justify
 Scenario 2 (all trades are 1\,000\,000 EUR) :
 
-1. Quote 1.06\underline{97}/1.07\underline{47} to client A. Client A buys at \underline{47}.
+1. Quote 1.08\underline{97}/1.09\underline{47} to client A. Client A buys at \underline{47}.
 
-2. The market moves up by 30 pips to 1.07\underline{51}/1.07\underline{53}.
+2. The market moves up by 30 pips to 1.09\underline{51}/1.09\underline{53}.
 
-3. Client B sells at 1.07\underline{27}. Profit: $+\$20\,000$.
+3. Client B sells at 1.09\underline{27}. Profit: $+\$20\,000$.
 
 \justify
 Bad news: clients do not like excessively wide spreads and will gladly trade with our competitors.
@@ -206,10 +206,10 @@ Bad news: clients do not like excessively wide spreads and will gladly trade wit
 \justify
 What if we offer more favorable conditions on trades that reduce our market risk?
 \justify
-1. Quote 1.07\underline{21}/1.07\underline{23} to client A. Client A buys at \underline{23}.
+1. Quote 1.09\underline{21}/1.09\underline{23} to client A. Client A buys at \underline{23}.
 
 \justify
-2. Client B requests a quote, and we quote 1.07\underline{22}/1.07\underline{24}.
+2. Client B requests a quote, and we quote 1.09\underline{22}/1.09\underline{24}.
 
 \justify
 2a. The bid (left hand side) \underline{22} is more favorable now. In case client B is willing to sell, there is high probability that they will prefer us over competitors. We sold at \underline{23} and bought at \underline{22}. Profit is $+\$100$. Less risk, less profit.
@@ -225,13 +225,13 @@ What if we offer more favorable conditions on trades that reduce our market risk
 We could potentially ask another market-maker to make a quote for us.
 
 \justify
-1. We quoted 1.07\underline{21}/1.07\underline{23} to client A. Client A bought at \underline{23}.
+1. We quoted 1.09\underline{21}/1.09\underline{23} to client A. Client A bought at \underline{23}.
 
 \justify
 2. Lets call our competitors across the street and request a quote. We act as a client, and they are a market-maker.
 
 \justify
-3. They quote 1.07\underline{20.5}/1.07\underline{22.5}. We buy at \underline{22.5}.
+3. They quote 1.09\underline{20.5}/1.09\underline{22.5}. We buy at \underline{22.5}.
 
 \justify
 4. We sold at \underline{23}, we bought at \underline{22.5}, we made \$50. This profit is even less than with strategy 2, but it comes with lower risk.
@@ -275,17 +275,17 @@ How does a market-maker know what is the \alert{fair} price?
 Junior trader Artem joined a large bank and was put in charge of market-making EURUSD. Isolated in a bunker, he is cut off from external communication channels. The sole source of information available to Artem are clients' requests and completed trades.
 
 \justify
-09:00 --- Client A requested a quote. Artem quoted 1.07\underline{21}/\underline{23}.
+09:00 --- Client A requested a quote. Artem quoted 1.09\underline{21}/\underline{23}.
 
 09:00 --- Client A bought at \underline{23}.
 
 \justify
-09:01 --- Client B requested a quote. Artem quoted 1.07\underline{21}/\underline{23}.
+09:01 --- Client B requested a quote. Artem quoted 1.09\underline{21}/\underline{23}.
 
 09:01 --- Client B bought at \underline{23}.
 
 \justify
-09:02 --- Client C requested a quote. Artem quoted 1.07\underline{21}/\underline{23}.
+09:02 --- Client C requested a quote. Artem quoted 1.09\underline{21}/\underline{23}.
 
 09:02 --- Client C bought at \underline{23}.
 
@@ -300,17 +300,17 @@ Should Artem be worried at this point?
 Artem faces increased market risk due to a series of unidirectional right-hand side trades. What is his next step? Artem must begin skewing his quotes to the right (strategy 2).
 
 \justify
-09:03 --- Client D requested a quote. Artem quoted 1.07\underline{22}/\underline{24}.
+09:03 --- Client D requested a quote. Artem quoted 1.09\underline{22}/\underline{24}.
 
 09:03 --- Nevertheless, Client D bought at \underline{24}.
 
 \justify
-09:04 --- Client E requested a quote. Artem quoted 1.07\underline{23}/\underline{25}.
+09:04 --- Client E requested a quote. Artem quoted 1.09\underline{23}/\underline{25}.
 
 09:04 --- Finally, client E sold at \underline{23}!
 
 \justify
-09:05 --- Client F requested a quote. Artem quoted 1.07\underline{23}/\underline{25}.
+09:05 --- Client F requested a quote. Artem quoted 1.09\underline{23}/\underline{25}.
 
 09:05 --- Client F bought at  \underline{25}!
 
@@ -379,10 +379,10 @@ A natural experiment is taking place on the U.S. market for index credit default
 
 \begin{frame}{Adverse selection}
 \justify
-You plan to buy 1\,000 GBP for an upcoming holiday. You place an order on an anonymous Fintech platform: "I will buy 1\,000 GBPEUR at 1.15 or better". Your order is filled almost instantly. Another user of this platform, an algorithmic hedge fund, has traded with you. Is this a good or a bad outcome?
+You plan to buy 1\,000 GBP for an upcoming holiday. You place an order on an anonymous Fintech platform: "I will buy 1\,000 GBPEUR at 1.19 or better". Your order is filled almost instantly. Another user of this platform, an algorithmic hedge fund, has traded with you. Is this a good or a bad outcome?
 
 \justify
-On one hand, you have achieved your goal promptly. On the other hand, it is likely that you've fallen victim to a more informed participant. The hedge fund had sold you GBPEUR at 1.15 just seconds before the rate dropped to 1.14.
+On one hand, you have achieved your goal promptly. On the other hand, it is likely that you've fallen victim to a more informed participant. The hedge fund had sold you GBPEUR at 1.19 just seconds before the rate dropped to 1.18.
 
 \justify
 This is called \alert{adverse selection}. When you place an order you bear the risk that a better-informed participant will make money on you.
@@ -427,7 +427,7 @@ Suppose you place an order to buy at $x=\$100$.
 \begin{tabular}{l|l|l}
 True value & Uninformed (90\%) & Informed (10\%) \\ \hline
 \$90 (50\%) & Trade (loss $-\$10$) & Trade (loss $-\$10$) \\ \hline
-\$110 (50\%) & Trade (gain $+\$10$) & No trade (\$0) 
+\$110 (50\%) & Trade (gain $+\$10$) & \alert{No trade (\$0)} 
 \end{tabular}
 
 \justify
@@ -485,9 +485,9 @@ Example: buying 1\,000\,000 of EURUSD 1 year forward at forward rate of 1.112:
 \centering
 \begin{tabular}{l|r|r}
 Date                          & EUR & USD \\ \hline
-Thu 12.10.2023 (today)  & 0   & 0   \\
-Mon 16.10.2023 (spot) & 0   & 0   \\
-Wed 16.10.2024 (1Y)   & 1\,000\,000 & $-1\,112\,000$
+Thu 17.10.2024 (today)  & 0   & 0   \\
+Mon 21.10.2024 (spot) & 0   & 0   \\
+Tue 21.10.2025 (1Y)   & 1\,000\,000 & $-1\,112\,000$
 \end{tabular}
 
 \justify
@@ -521,7 +521,7 @@ Forward points & $1.112 - 1.091 = 0.021 = 210$ pips
 
 \begin{frame}{Currency risk}
 \justify
-Suppose that we are a natural gas exporter from Russia. We signed a contract to deliver gas to Europe. In 1 year, we must deliver 1\,000\,000 cubic meters of gas, for which we will be paid 1\,000\,000 EUR. The production cost for this volume of gas is 80\,000\,000 RUB. Current EURRUB spot rate is 85.0.
+Suppose that we are a natural gas exporter from Russia. We signed a contract to deliver gas to Europe. In 1 year, we must deliver 1\,000\,000 cubic meters of gas, for which we will be paid 1\,000\,000 EUR. The production cost for this volume of gas is 100\,000\,000 RUB. Current EURRUB spot rate is 105.0.
 
 \justify
 \centering
@@ -529,9 +529,9 @@ Suppose that we are a natural gas exporter from Russia. We signed a contract to 
 EURRUB      & Revenue & \multicolumn{2}{c|}{Spot} & Expense & Profit \\
 \cline{3-4}
 in 1 year   & EUR   & EUR   & RUB & RUB & RUB \\ \hline
-75.0        & $+1$  & $-1$ & $+75$         & $-80$  & $-5$ \\
-85.0        & $+1$ & $-1$ & $+85$         & $-80$  & $+5$ \\
-95.0        & $+1$ & $-1$ & $+95$          & $-80$ & $+15$ 
+95.0        & $+1$  & $-1$ & $+95$         & $-100$  & $-5$ \\
+105.0        & $+1$ & $-1$ & $+105$         & $-100$  & $+5$ \\
+115.0        & $+1$ & $-1$ & $+115$          & $-100$ & $+15$ 
 \end{tabular}
 
 (all amounts are in millions)
@@ -544,7 +544,7 @@ This is \alert{currency risk}: our profit is subject to change depending on fluc
 
 \begin{frame}{Hedging currency risk}
 \justify
-We can mitigate currency risk by entering into an FX forward contract. For instance, one large German investment bank from Frankfurt might buy EURRUB forward from us at a forward rate of 90.0.
+We can mitigate currency risk by entering into an FX forward contract. For instance, one large German investment bank from Frankfurt might buy EURRUB forward from us at a forward rate of 110.0.
 
 \justify
 \centering
@@ -552,13 +552,13 @@ We can mitigate currency risk by entering into an FX forward contract. For insta
 EURRUB      & Revenue & \multicolumn{2}{c|}{Forward} & Expense & Profit \\
 \cline{3-4}
 in 1 year   & EUR     & EUR    & RUB              & RUB     & RUB   \\ \hline
-75.0        & $+1$  & $-1$ & $+90$  & $-80$ & $+10$  \\
-85.0        & $+1$  & $-1$ & $+90$  & $-80$ & $+10$  \\
-95.0        & $+1$  & $-1$ & $+90$  & $-80$ & $+10$ 
+95.0        & $+1$  & $-1$ & $+110$  & $-100$ & $+10$  \\
+105.0        & $+1$  & $-1$ & $+110$  & $-100$ & $+10$  \\
+115.0        & $+1$  & $-1$ & $+110$  & $-100$ & $+10$ 
 \end{tabular}
 
 \justify
-A forward is our obligation. Even if EURRUB rises to 105.0 in 1 year, we remain committed to selling EUR at 90.0. The forward contract protects us from the risk of a loss (in case EURRUB declines) and caps the potential profit (in case EURRUB rises).
+A forward is our obligation. Even if EURRUB rises to 130.0 in 1 year, we remain committed to selling EUR at 110.0. The forward contract protects us from the risk of a loss (in case EURRUB declines) and caps the potential profit (in case EURRUB rises).
 
 \justify
 Do we need to possess 1\,000\,000 EUR today in order to sell a forward? No!
@@ -571,7 +571,7 @@ Do we need to possess 1\,000\,000 EUR today in order to sell a forward? No!
 Lets dream that we have a crystal ball and we know for sure that EUR will depreciate in 1 year. How could we monetize our knowledge? Straightforward answer: sell 1 million of EURRUB on the spot. What if we do not have 1 million euro at hand?
 
 \justify
-Solution: sell a EURRUB 1 year forward at forward rate of 90.0. In 1 year  we will receive 90\,000\,000 RUB. We will buy EUR on the spot at the prevailing spot rate.
+Solution: sell a EURRUB 1 year forward at forward rate of 110.0. In 1 year  we will receive 110\,000\,000 RUB. We will buy EUR on the spot at the prevailing spot rate.
 
 \justify
 \centering
@@ -579,9 +579,9 @@ Solution: sell a EURRUB 1 year forward at forward rate of 90.0. In 1 year  we wi
 EURRUB      & \multicolumn{2}{c|}{Forward} & \multicolumn{2}{c|}{Spot} & Profit \\
 \cline{2-5}
 in 1 year & EUR     & RUB     & EUR     & RUB      & RUB \\ \hline
-80.0      & $-1$ & $+90$  & $+1$ & $-80$ & $+10$ \\
-90.0      & $-1$ & $+90$  & $+1$ & $-90$ & 0 \\
-100.0     & $-1$& $+90$  & $+1$ & $-100$ & $-10$ \\
+90.0      & $-1$ & $+100$  & $+1$ & $-90$ & $+10$ \\
+110.0      & $-1$ & $+100$  & $+1$ & $-100$ & 0 \\
+120.0     & $-1$& $+100$  & $+1$ & $-110$ & $-10$ \\
 \end{tabular}
  
 \justify
@@ -602,8 +602,8 @@ Suppose that you are a European investor. You have 1 million EUR today. In 1 yea
 
 \begin{frame}{Fair forward rate - 2}
 \justify
-Current EURRUB spot rate is $S_{eurrub}=85$, risk-free bank deposit in EUR earns $r_{eur}=0.25\%$, RUB deposit is $r_{rub}=6\%$. 
-Forward market offers forwards at $F_{eurrub}=89.0$.
+Current EURRUB spot rate is $S_{eurrub}=100$, risk-free bank deposit in EUR earns $r_{eur}=3\%$, RUB deposit is $r_{rub}=20\%$. 
+Forward market offers forwards at $F_{eurrub}=115.0$.
 
 \justify
 Strategy 1: buy RUB today
@@ -612,9 +612,9 @@ Strategy 1: buy RUB today
 \begin{tabular}{l|r|r|r|r}
 & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 & EUR & RUB & EUR & RUB \\ \hline
-Sell spot & $-1\,000\,000$ & $+85\,000\,000$ & & \\
-Deposit RUB & & $-85\,000\,000$ & & $+90\,100\,000$ \\ \hline
-Total & $-1\,000\,000$ & $0$ & & $+90\,100\,000$
+Sell spot & $-1\,000\,000$ & $+100\,000\,000$ & & \\
+Deposit RUB & & $-100\,000\,000$ & & $+120\,000\,000$ \\ \hline
+Total & $-1\,000\,000$ & $0$ & & $+120\,000\,000$
 \end{tabular}
 
 \justify
@@ -624,9 +624,9 @@ Strategy 2: sell a forward
 \begin{tabular}{l|r|r|r|r}
 & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 & EUR & RUB & EUR & RUB \\ \hline
-Deposit EUR & $-1\,000\,000$ & & $+1\,002\,500$ & \\
-Sell a forward &   &   & $-1\,002\,500$ & $+89\,222\,500$ \\ \hline
-Total & $-1\,000\,000$ &   & $0$ & $+89\,222\,500$
+Deposit EUR & $-1\,000\,000$ & & $+1\,030\,000$ & \\
+Sell a forward &   &   & $-1\,030\,000$ & $+118\,450\,000$ \\ \hline
+Total & $-1\,000\,000$ &   & $0$ & $+118\,450\,000$
 \end{tabular}
 
 \end{frame}
@@ -641,7 +641,7 @@ Is it plausible that two strategies yield different results?
 \centering
 \begin{tabular}{l|l}
 Strategy 1 & Strategy 2 \\ \hline
-+90\,100\,000 RUB  & +89\,222\,500 RUB \\
++120\,000\,000 RUB  & +118\,450\,000 RUB \\
 $1\,000\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
 \end{tabular}
 
@@ -661,14 +661,14 @@ Strategy 1 is clearly better, and everyone will follow it.
 
 \begin{frame}{Fair forward rate - 4}
 \justify
-Suppose that forward rate on the market is higher, e.g. $F_{eurrub}=91$.
+Suppose that forward rate on the market is higher, e.g. $F_{eurrub}=118$.
 
 
 \justify
 \centering
 \begin{tabular}{l|l}
 Strategy 1 & Strategy 2 \\ \hline
-+90\,100\,000 RUB  & +91\,227\,500 RUB \\
++120\,000\,000 RUB  & +121\,540\,000 RUB \\
 $1\,000\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
 \end{tabular}
 
@@ -692,7 +692,7 @@ At which forward rate $F_{eurrub}$ the market will be in equilibrium, and strate
 
 \begin{align*}
 &1\,000\,000 \cdot S_{eurrub} \cdot (1 + r_{rub}) = 1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub} \Rightarrow \\
-&F_{eurrub} = S_{eurrub} \frac{1 + r_{rub}}{1 + r_{eur}} = 85 \cdot \frac{1 + 0.06}{1 + 0.0025} \approx 89.87531
+&F_{eurrub} = S_{eurrub} \frac{1 + r_{rub}}{1 + r_{eur}} = 100 \cdot \frac{1 + 0.20}{1 + 0.03} \approx 116.50
 \end{align*}
 
 \justify
@@ -718,7 +718,7 @@ When a client deposits cash with a bank at the risk-free rate, the bank borrows 
 \justify
 Suppose that the forward rate is lower than the equilibrium rate.
 
-$S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=89$. 
+$S_{eurrub}=100$, $r_{eur}=3\%$, $r_{rub}=20\%$, $F_{eurrub}=115$. 
 
 \justify
 \centering
@@ -726,16 +726,16 @@ $S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=89$.
 \begin{tabular}{l|r|r|r|r}
 & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 & EUR & RUB & EUR & RUB \\ \hline
-Borrow EUR     & $+1\,000\,000$ &                                   & $-1\,002\,500$ & \\
-Sell spot            & $-1\,000\,000$ & $+85\,000\,000$ &                               & \\
-Deposit RUB    &                                & $-85\,000\,000$  &                                & $+90\,100\,000$ \\
-Buy a forward &                               &                                 & $+1\,012\,360$ & $-90\,100\,000$ \\ \hline
-Total & 0 & 0 & $+9\,860$ & 0
+Borrow EUR     & $+1\,000\,000$ &                                   & $-1\,030\,000$ & \\
+Sell spot            & $-1\,000\,000$ & $+100\,000\,000$ &                               & \\
+Deposit RUB    &                                & $-100\,000\,000$  &                                & $+120\,000\,000$ \\
+Buy a forward &                               &                                 & $+1\,043\,478$ & $-120\,000\,000$ \\ \hline
+Total & 0 & 0 & $+13\,478$ & 0
 \end{tabular}
 }
 
 \justify
-9\,860 EUR in 1 year with zero initial investment. Too good to be true?
+13\,478 EUR in 1 year with zero initial investment. Too good to be true?
 \end{frame}
 
 
@@ -744,7 +744,7 @@ Total & 0 & 0 & $+9\,860$ & 0
 \justify
 Suppose that the forward rate is higher than the equilibrium rate.
 
- $S_{eurrub}=85$, $r_{eur}=0.25\%$, $r_{rub}=6\%$, $F_{eurrub}=91$. 
+ $S_{eurrub}=100$, $r_{eur}=3\%$, $r_{rub}=20\%$, $F_{eurrub}=118$. 
 
 \justify
 \centering
@@ -752,11 +752,11 @@ Suppose that the forward rate is higher than the equilibrium rate.
 \begin{tabular}{l|r|r|r|r}
 & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 & EUR & RUB & EUR & RUB \\ \hline
-Borrow RUB     &                               & $+85\,000\,000$  &                            & $-90\,100\,000$  \\
-Buy spot            & $+1\,000\,000$ & $-85\,000\,000$ &                               &   \\
-Deposit EUR    &  $-1\,000\,000$  &                                 & $+1\,002\,500$ &  \\
-Sell a forward &                               &                                & $-1\,002\,500$ & $+91\,227\,500$ \\ \hline
-Total & 0 & 0 & 0 & $+1\,127\,500$
+Borrow RUB     &                               & $+100\,000\,000$  &                            & $-120\,000\,000$  \\
+Buy spot            & $+1\,000\,000$ & $-100\,000\,000$ &                               &   \\
+Deposit EUR    &  $-1\,000\,000$  &                                 & $+1\,030\,000$ &  \\
+Sell a forward &                               &                                & $-1\,016\,949$ & $+120\,000\,000$ \\ \hline
+Total & 0 & 0 & +13\,501 & 0
 \end{tabular}
 }
 
@@ -791,7 +791,7 @@ Consider the following two strategies.
 \begin{tabular}{l|r|r|r|r}
  & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 Strategy  1& EUR & RUB & EUR & RUB \\ \hline
-Buy a forward &                              &                                & $+1\,002\,250$ & $-90\,100\,000$
+Buy a forward &                              &                                & $+1\,030\,000$ & $-120\,000\,000$
 \end{tabular}
 }
 
@@ -800,10 +800,10 @@ Buy a forward &                              &                                & 
 \begin{tabular}{l|r|r|r|r}
 & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 Strategy 2 & EUR & RUB & EUR & RUB \\ \hline
-Borrow RUB & 0                            & $+85\,000\,000$ &                    & $-90\,100\,000$ \\
-Buy spot        & $+1\,000\,000$ & $-85\,000\,000$  &                     &                                  \\
-Deposit EUR & $-1\,000\,000$  &                                  & $+1\,002\,500$ & \\  \hline
-Total & 0 & 0 &  $+1\,002\,500$ & $-90\,100\,000$
+Borrow RUB & 0                            & $+100\,000\,000$ &                    & $-120\,000\,000$ \\
+Buy spot        & $+1\,000\,000$ & $-100\,000\,000$  &                     &                                  \\
+Deposit EUR & $-1\,000\,000$  &                                  & $+1\,030\,000$ & \\  \hline
+Total & 0 & 0 &  $+1\,030\,000$ & $-120\,000\,000$
 \end{tabular}
 }
 
@@ -905,6 +905,21 @@ Fair futures rate is the same as fair forward rate.
 
 
 
+
+\begin{frame}{Carry trade}
+\justify
+\alert{Currency carry trade} is an investment currency that borrows cash in currencies that have lower interest rates (e.g. JPY) and invests into currencies that have higher interest rates (e.g. USD). A simple example: buying a USDJPY future (USD interest rates are higher).
+
+\justify
+On average, in the long run, high-yield currencies depreciate not as dramatically as one could expect from the interest rate differential and forwards and futures quotes.
+
+\justify
+Doskov, Nikolay and Swinkels, Laurens. \textit{Empirical Evidence on the Currency Carry Trade, 1900--2012}. Journal of International Money and Finance 51, pp. 370-389. 2015.
+
+\end{frame}
+
+
+
 \begin{frame}{Partially convertible currencies}
 \justify
 A few currencies are not fully convertible. Moreover, foreign exchange derivatives may be banned.
@@ -984,13 +999,13 @@ A hypothetical non-deliverable forward between Citi and Deutsche:
 \begin{tabular}{l|l}
 	Contract & Non-deliverable forward		\\
 	Deutsche "sells"  & 1\,000\,000 USD	\\
-	Deutsche "buys" & 6\,500\,000 CNY		\\
-	Rate		 		      & 6.50 						\\
-	Delivery date	   & 16.11.2023 \\
+	Deutsche "buys" & 7\,000\,000 CNY		\\
+	Rate		 		      & 7.00 						\\
+	Delivery date	   & 21.11.2024 \\
 	Reference rate	   & People's Bank of China rate	\\
-	Fixing date		   & 14.11.2023 \\
-	Today (reference)	& 12.10.2023 \\
-	Spot date (reference) & 16.10.2023
+	Fixing date		   & 19.11.2024 \\
+	Today (reference)	& 17.10.2024 \\
+	Spot date (reference) & 21.10.2024
 \end{tabular}
 \end{frame}
 
@@ -998,20 +1013,20 @@ A hypothetical non-deliverable forward between Citi and Deutsche:
 
 \begin{frame}{Mechanics of a non-deliverable forward}
 \justify
-There are no payments at inception (on October 12).
+There are no payments at inception (on October 17).
 
 \justify
-On the fixing date (November 14) the PBoC announces its official exchange rate, e.g. 6.40.
+On the fixing date (November 19) the PBoC announces its official exchange rate, e.g. 6.90.
 
 \justify
 Deutsche guessed that the rate will be lower, so
 
 A. Deutsche "sells" 1\,000\,000 USD.
 
-B. Deutsche "buys" $6\,500\,000 \text{CNY} = \dfrac{6\,500\,000}{6.40} = 1\,015\,625 \text{USD}$.
+B. Deutsche "buys" $7\,000\,000 \text{CNY} = \dfrac{7\,000\,000}{6.90} = 1\,014\,493 \text{ USD}$.
 
 \justify
-On delivery date (November 16) Citi will pay Deutsche the net gain 15\,625 USD.
+On delivery date (November 21) Citi will pay Deutsche the net gain 14\,493 USD.
 
 \justify
 Market participants do not have to report their non-deliverable forwards to the Government of China. A non-deliverable forward is an ideal tool for speculators.
@@ -1021,11 +1036,11 @@ Market participants do not have to report their non-deliverable forwards to the 
 
 \begin{frame}{Hedging currency risk with an NDF}
 \justify
-A fruit company from the U.S. has to pay 6\,500\,000 CNY to its supplier in a month.
+A fruit company from the U.S. has to pay 7\,000\,000 CNY to its supplier in a month.
 
-1. Sell 1\,000\,000 of USDCNY non-deliverable forward at 6.50.
+1. Sell 1\,000\,000 of USDCNY non-deliverable forward at 7.00.
 
-2. On the fixing date buy 6\,500\,000 CNY at prevailing (and unknown) spot rate  $S$.
+2. On the fixing date buy 7\,000\,000 CNY at prevailing (and unknown) spot rate  $S$.
 
 3. On the delivery date receive both the USD gain on the NDF and the CNY from the spot trade.
 
@@ -1033,11 +1048,11 @@ A fruit company from the U.S. has to pay 6\,500\,000 CNY to its supplier in a mo
 \centering
 \small
 \begin{tabular}{l|r|r|r|r}
-& \multicolumn{2}{c|}{In case $S=6.40$} & \multicolumn{2}{c}{In case $S=6.60$} \\ \cline{2-5}
+& \multicolumn{2}{c|}{In case $S=6.90$} & \multicolumn{2}{c}{In case $S=7.10$} \\ \cline{2-5}
 Transaction & USD & CNY & USD & CNY \\ \hline
-NDF & $+15\,625$ & & $-15\,151$ & \\
-Spot & $-1\,015\,625$ & $+6\,500\,000$ & $-984\,849$ & $+6\,500\,000$ \\
-Pay the supplier & & $-6\,500\,000$ & & $-6\,500\,000$ \\ \hline
+NDF & $+14\,493$ & & $-14\,084$ & \\
+Spot & $-1\,014\,493$ & $+7\,000\,000$ & $-985\,916$ & $+7\,000\,000$ \\
+Pay the supplier & & $-7\,000\,000$ & & $-7\,000\,000$ \\ \hline
 Total & $-1\,000\,000$ & 0 & $-1\,000\,000$ & 0
 \end{tabular}
 \end{frame}
