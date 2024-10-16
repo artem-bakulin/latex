@@ -579,9 +579,9 @@ Solution: sell a EURRUB 1 year forward at forward rate of 110.0. In 1 year  we w
 EURRUB      & \multicolumn{2}{c|}{Forward} & \multicolumn{2}{c|}{Spot} & Profit \\
 \cline{2-5}
 in 1 year & EUR     & RUB     & EUR     & RUB      & RUB \\ \hline
-90.0      & $-1$ & $+100$  & $+1$ & $-90$ & $+10$ \\
-110.0      & $-1$ & $+100$  & $+1$ & $-100$ & 0 \\
-120.0     & $-1$& $+100$  & $+1$ & $-110$ & $-10$ \\
+90.0      & $-1$ & $+110$  & $+1$ & $-90$ & $+20$ \\
+110.0      & $-1$ & $+110$  & $+1$ & $-110$ & 0 \\
+130.0     & $-1$& $+110$  & $+1$ & $-130$ & $-20$ \\
 \end{tabular}
  
 \justify
@@ -595,7 +595,7 @@ in 1 year & EUR     & RUB     & EUR     & RUB      & RUB \\ \hline
 What factors determine the "fair" forward rate, at which both the buyer and the seller will be happy to sign the contract? 
 
 \justify
-Suppose that you are a European investor. You have 1 million EUR today. In 1 year you will require RUB for a holiday trip to Sochi. How could you secure the amount of RUBs which you will possess in 1 year?
+Suppose that you are a European investor. You have 10\,000 EUR today. In 1 year you will require RUB for a holiday trip to Sochi. How could you secure the amount of RUBs which you will possess in 1 year?
 \end{frame}
 
 
@@ -612,9 +612,9 @@ Strategy 1: buy RUB today
 \begin{tabular}{l|r|r|r|r}
 & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 & EUR & RUB & EUR & RUB \\ \hline
-Sell spot & $-1\,000\,000$ & $+100\,000\,000$ & & \\
-Deposit RUB & & $-100\,000\,000$ & & $+120\,000\,000$ \\ \hline
-Total & $-1\,000\,000$ & $0$ & & $+120\,000\,000$
+Sell spot & $-10\,000$ & $+1\,000\,000$ & & \\
+Deposit RUB & & $-1\,000\,000$ & & $+1\,200\,000$ \\ \hline
+Total & $-10\,000$ & $0$ & & $+1\,200\,000$
 \end{tabular}
 
 \justify
@@ -624,9 +624,9 @@ Strategy 2: sell a forward
 \begin{tabular}{l|r|r|r|r}
 & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 & EUR & RUB & EUR & RUB \\ \hline
-Deposit EUR & $-1\,000\,000$ & & $+1\,030\,000$ & \\
-Sell a forward &   &   & $-1\,030\,000$ & $+118\,450\,000$ \\ \hline
-Total & $-1\,000\,000$ &   & $0$ & $+118\,450\,000$
+Deposit EUR & $-10\,000$ & & $+10\,300$ & \\
+Sell a forward &   &   & $-10\,300$ & $+1\,184\,500$ \\ \hline
+Total & $-10\,000$ &   & $0$ & $+1\,184\,500$
 \end{tabular}
 
 \end{frame}
@@ -641,8 +641,8 @@ Is it plausible that two strategies yield different results?
 \centering
 \begin{tabular}{l|l}
 Strategy 1 & Strategy 2 \\ \hline
-+120\,000\,000 RUB  & +118\,450\,000 RUB \\
-$1\,000\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
++1\,200\,000 RUB  & +1\,184\,500 RUB \\
+$10\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $10\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
 \end{tabular}
 
 \justify
@@ -668,8 +668,8 @@ Suppose that forward rate on the market is higher, e.g. $F_{eurrub}=118$.
 \centering
 \begin{tabular}{l|l}
 Strategy 1 & Strategy 2 \\ \hline
-+120\,000\,000 RUB  & +121\,540\,000 RUB \\
-$1\,000\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
++1\,200\,000 RUB  & +1\,215\,400 RUB \\
+$10\,000 \cdot S_{eurrub} \cdot (1+r_{rub})$ & $10\,000 \cdot (1+r_{eur}) \cdot F_{eurrub}$
 \end{tabular}
 
 \justify
@@ -691,7 +691,7 @@ This time strategy 2 is better.
 At which forward rate $F_{eurrub}$ the market will be in equilibrium, and strategies 1 and 2 will be equivalent?
 
 \begin{align*}
-&1\,000\,000 \cdot S_{eurrub} \cdot (1 + r_{rub}) = 1\,000\,000 \cdot (1+r_{eur}) \cdot F_{eurrub} \Rightarrow \\
+&10\,000 \cdot S_{eurrub} \cdot (1 + r_{rub}) = 10\,000 \cdot (1+r_{eur}) \cdot F_{eurrub} \Rightarrow \\
 &F_{eurrub} = S_{eurrub} \frac{1 + r_{rub}}{1 + r_{eur}} = 100 \cdot \frac{1 + 0.20}{1 + 0.03} \approx 116.50
 \end{align*}
 
@@ -726,16 +726,16 @@ $S_{eurrub}=100$, $r_{eur}=3\%$, $r_{rub}=20\%$, $F_{eurrub}=115$.
 \begin{tabular}{l|r|r|r|r}
 & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 & EUR & RUB & EUR & RUB \\ \hline
-Borrow EUR     & $+1\,000\,000$ &                                   & $-1\,030\,000$ & \\
-Sell spot            & $-1\,000\,000$ & $+100\,000\,000$ &                               & \\
-Deposit RUB    &                                & $-100\,000\,000$  &                                & $+120\,000\,000$ \\
-Buy a forward &                               &                                 & $+1\,043\,478$ & $-120\,000\,000$ \\ \hline
-Total & 0 & 0 & $+13\,478$ & 0
+Borrow EUR     & $+10\,000.00$ &                                   & $-10\,300.00$ & \\
+Sell spot            & $-9\,870.83$ & $+987\,083$ &                               & \\
+Deposit RUB    &                                & $-987\,083$  &                                & $+1\,118\,450$ \\
+Buy a forward &                               &                                 & $+10\,300.00$ & $-1\,118\,450$ \\ \hline
+Total & $+129.17$ & 0 & 0 & 0
 \end{tabular}
 }
 
 \justify
-13\,478 EUR in 1 year with zero initial investment. Too good to be true?
+129 EUR out of nothing. Too good to be true?
 \end{frame}
 
 
@@ -752,11 +752,11 @@ Suppose that the forward rate is higher than the equilibrium rate.
 \begin{tabular}{l|r|r|r|r}
 & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 & EUR & RUB & EUR & RUB \\ \hline
-Borrow RUB     &                               & $+100\,000\,000$  &                            & $-120\,000\,000$  \\
-Buy spot            & $+1\,000\,000$ & $-100\,000\,000$ &                               &   \\
-Deposit EUR    &  $-1\,000\,000$  &                                 & $+1\,030\,000$ &  \\
-Sell a forward &                               &                                & $-1\,016\,949$ & $+120\,000\,000$ \\ \hline
-Total & 0 & 0 & +13\,501 & 0
+Borrow RUB     &                               & $+1\,000\,000$  &                            & $-1\,200\,000$  \\
+Buy spot            & $+10\,000.00$ & $-1\,000\,000$ &                               &   \\
+Deposit EUR    &  $-9\,873.29$  &                                 & $+10\,169.49$ &  \\
+Sell a forward &                               &                                & $-10\,169.49$ & $+1\,200\,000$ \\ \hline
+Total & $+126.71$ & 0 & 0 & 0
 \end{tabular}
 }
 
@@ -791,7 +791,7 @@ Consider the following two strategies.
 \begin{tabular}{l|r|r|r|r}
  & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 Strategy  1& EUR & RUB & EUR & RUB \\ \hline
-Buy a forward &                              &                                & $+1\,030\,000$ & $-120\,000\,000$
+Buy a forward &                              &                                & $+10\,300$ & $-1\,200\,000$
 \end{tabular}
 }
 
@@ -800,10 +800,10 @@ Buy a forward &                              &                                & 
 \begin{tabular}{l|r|r|r|r}
 & \multicolumn{2}{c|}{Today} & \multicolumn{2}{c}{In 1 year} \\ \cline{2-5}
 Strategy 2 & EUR & RUB & EUR & RUB \\ \hline
-Borrow RUB & 0                            & $+100\,000\,000$ &                    & $-120\,000\,000$ \\
-Buy spot        & $+1\,000\,000$ & $-100\,000\,000$  &                     &                                  \\
-Deposit EUR & $-1\,000\,000$  &                                  & $+1\,030\,000$ & \\  \hline
-Total & 0 & 0 &  $+1\,030\,000$ & $-120\,000\,000$
+Borrow RUB &                             & $+1\,000\,000$ &                    & $-1\,200\,000$ \\
+Buy spot        & $+10\,000$ & $-1\,000\,000$  &                     &                                  \\
+Deposit EUR & $-10\,000$  &                                  & $+10\,300$ & \\  \hline
+Total & 0 & 0 &  $+10\,300$ & $-1\,200\,000$
 \end{tabular}
 }
 
@@ -908,10 +908,10 @@ Fair futures rate is the same as fair forward rate.
 
 \begin{frame}{Carry trade}
 \justify
-\alert{Currency carry trade} is an investment strategy that borrows cash in currencies that have lower interest rates (e.g. JPY) and invests into currencies that have higher interest rates (e.g. USD). A simple example: buying a USDJPY future (USD interest rates are higher).
+\alert{Currency carry trade} is an investment strategy which borrows cash in currencies that have lower interest rates (e.g. JPY) and invests into currencies that have higher interest rates (e.g. USD). A simple example: buying a USDJPY future (USD interest rates are higher).
 
 \justify
-On average, in the long run, high-yield currencies depreciate not as dramatically as one could expect from the interest rate differential and forwards and futures quotes.
+On average, in the long run, high-yield currencies depreciate not as dramatically as one could expect from the interest rate differential.
 
 \justify
 Doskov, Nikolay and Swinkels, Laurens. \textit{Empirical Evidence on the Currency Carry Trade, 1900--2012}. Journal of International Money and Finance 51, pp. 370-389. 2015.
