@@ -37,7 +37,7 @@
 
 \title{Interest Rate Swaps}
 \author{Artem Bakulin}
-\date{October 17, 2023}
+\date{October 22, 2024}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -117,7 +117,7 @@ How large is the term risk premium? This variable is unobservable, so we have to
 
 \begin{tabular}{r|r|r}
 2 years & 5 years & 10 years \\ \hline
-0.31\% & 0.71\% & 1.16\% 
+0.29\% & 0.68\% & 1.13\% 
 \end{tabular}
 
 \justify
@@ -125,7 +125,7 @@ Kim-Wright model, US Treasury, 1990--2023:
 
 \begin{tabular}{r|r|r}
 2 years & 5 years & 10 years \\ \hline
-0.30\% & 0.43\% & 0.77\%
+0.32\% & 0.49\% & 0.84\%
 \end{tabular}
 
 \end{frame}
@@ -203,12 +203,12 @@ At which rate a large bank could borrow Euro on the market (from another bank or
 \justify
 \centering
 \begin{tabular}{l|r}
-Term (tenor)     & EURIBOR 13.10.2023 \\ \hline
-1W (1 week)    & $3.874\%$ \\
-1M (1 month)     & $3.860\%$ \\
-3M (3 months)    & $3.985\%$ \\
-6M (6 months)   & $4.121\%$ \\
-12M (12 months) & $4.171\%$ 
+Term (tenor)     & EURIBOR 17.10.2024 \\ \hline
+1W (1 week)    & $3.366\%$ \\
+1M (1 month)     & $3.174\%$ \\
+3M (3 months)    & $3.219\%$ \\
+6M (6 months)   & $3.036\%$ \\
+12M (12 months) & $2.717\%$ 
 \end{tabular}
 
 \justify
@@ -275,12 +275,12 @@ EURIBOR is published on every TARGET2 business day (this is the ECB's payment sy
 \justify
 \centering
 \begin{tabular}{l|r}
-Term  & ESTER 12.10.2023 \\ \hline
-1 day & $3.901\%$
+Term  & ESTER 17.10.2024 \\ \hline
+1 day & $3.415\%$
 \end{tabular}
 
 \justify
-A panel of 48 banks determine ESTER. Each bank informs the ECB about its transactions when it borrows Euro on the market. The ECB discards the lower 25\%  and the 25\% higher values and then computes the weighted average.
+A panel of 45 banks determines ESTER. Each bank informs the ECB about its transactions when it borrows Euro on the market. The ECB discards the lower 25\%  and the 25\% higher values and then computes the weighted average.
 
 \justify
 ESTER is simple interest rate (no compounding) in ACT/360 convention.
@@ -338,8 +338,8 @@ Similarly to EURIBOR, ESTER is computed on TARGET2 business days.
   ytick={-1, 0, 1, 2, 3, 4},
   minor ytick={-0.5, 0.5, 1.5, 2.5, 3.5},
   xticklabel={\year},
-  xmin=2012-01-01,
-  xmax=2024-01-01,
+  xmin=2014-01-01,
+  xmax=2025-01-01,
   ymin=-1,
   ymax=4.5,
   grid=both,
@@ -360,7 +360,7 @@ Similarly to EURIBOR, ESTER is computed on TARGET2 business days.
 	\plotBenchmarkRate{3m}{Set1-B}
 	\plotBenchmarkRate{ester}{Set1-C}
 	
-	\draw[thick, color=black] (axis cs: 2012-01-01, 0) -- (axis cs: 2024-01-01, 0);
+	\draw[thick, color=black] (axis cs: 2012-01-01, 0) -- (axis cs: 2026-01-01, 0);
 \end{axis}
 \end{tikzpicture}
 
@@ -371,13 +371,13 @@ Similarly to EURIBOR, ESTER is computed on TARGET2 business days.
 
 \begin{frame}{EURIBOR futures}
 \justify
-ICE Futures Europe exchange (former LIFFE) offers three-months EURIBOR futures. For examples, \alert{FEIZ3} is December 2023 futures.
+ICE Futures Europe exchange (former LIFFE) offers three-months EURIBOR futures. For examples, \alert{FEIZ4} is December 2024 futures.
 
 \justify
 \centering
 \begin{tabular}{r|r}
 Bid & Offer \\ \hline
-95.99 & 96.00
+97.19 & 97.20
 \end{tabular}
 
 \justify
@@ -385,13 +385,13 @@ Suppose that we blindly click "buy 10 lots at 96.00".
 \begin{itemize}
 \justifying
 \item No initial cost to be paid today.
-\item On December 18 2023** the exchange will set final price for the futures at $F = 100 - X$, where 
+\item On December 16 2024** the exchange will set final price for the futures at $F = 100 - X$, where 
 $X$ is the EURIOBOR which will be announced on that day.
-\item We will earn $10 \cdot (F - 96.00) \cdot \EUR{2\,500}$, where \EUR{2\,500} is a constant from the futures' specification.
+\item We will earn $10 \cdot (F - 97.20) \cdot \EUR{2\,500}$, where \EUR{2\,500} is a constant from the futures' specification.
 \end{itemize}
 
 \justify
-*FEI is contract code. Z is month code (H for March, M for June, U for September, Z for December). 3 is last digit of the year.
+*FEI is contract code. Z is month code (H for March, M for June, U for September, Z for December). 4 is last digit of the year.
 
 \justify
 **Two business days prior to the third Wednesday of the month.
@@ -403,45 +403,45 @@ $X$ is the EURIOBOR which will be announced on that day.
 \justify
 I know in advance that in December I will become richer by \EUR{1\,000\,000}. I plan to deposit the money for three months, collect it in March and go on holiday. I face \alert{interest rate risk}: I do not know how  much money I will have by March.
 \justify
-Solution: buy one lot of EURIBOR December futures at 96.00.
+Solution: buy one lot of EURIBOR December futures at 97.20.
 
 \justify
-Suppose that by December 18 the EURIBOR will drop to $3.50\%$.
+Suppose that by December 18 the EURIBOR will drop to $2.0\%$.
 \begin{itemize}
 \justifying
-\item The exchange will set the final price at $100 - 3.50 = 96.50$.
-\item Gain on the futures is $(96.50-96.00)\cdot\EUR{2\,500} = \EUR{1\,250}$.
-\item Three months deposit at EURIBOR $3.50\%$ will earn
+\item The exchange will set the final price at $100 - 2.0 = 98.0$.
+\item Gain on the futures is $(98.00-97.20)\cdot\EUR{2\,500} = \EUR{2\,000}$.
+\item Three months deposit at EURIBOR $2.0\%$ will earn
 
-$\EUR{1\,000\,000} \cdot 0.035 / 4 = \EUR{8\,750}$.
-\item In total, I will earn $\EUR{1\,250} + \EUR{8\,750} = \EUR{10\,000}$.
+$\EUR{1\,000\,000} \cdot 2\% / 4 = \EUR{5\,000}$.
+\item In total, I will earn $\EUR{2\,000} + \EUR{5\,000} = \EUR{7\,000}$.
 \end{itemize} 
 
 \justify
-I would have earned the same amount if EURIBOR was $4.00\%$:
+I would have earned the same amount if EURIBOR was $2.80\%$:
 
-$\EUR{1\,000\,000} \cdot 0.04/4 =\EUR{10\,000}$.
+$\EUR{1\,000\,000} \cdot 2.8\%/4 =\EUR{7\,000}$.
 \end{frame}
 
 
 
 \begin{frame}{EURIBOR futures - 3}
 \justify
-We bought the December futures in October at 96.00. In December we deposited cash at the prevailing EURIBOR. How much money are we going to make?\
+We bought the December futures in October at \alert{97.20}. In December we deposited cash at the prevailing EURIBOR. How much money are we going to make?
 \justify
 \centering
 \begin{tabular}{r|r|r|r|r}
 EURIBOR   & Final price & Futures         & Deposit & Total \\ \hline
-$2.50\%$ & 97.50        & $\EUR{3\,750}$      &   $\EUR{6\,250}$  & $\EUR{10\,000}$ \\
-$3.00\%$ & 97.00        & $\EUR{2\,500}$      &   $\EUR{7\,500}$  & $\EUR{10\,000}$ \\
-$3.50\%$ & 96.50        & $\EUR{1\,250}$      & $\EUR{8\,750}$  & $\EUR{10\,000}$ \\
-$4.00\%$ & 96.00        & $\EUR{0}$                & $\EUR{10\,000}$  & $\EUR{10\,000}$ \\
-$4.50\%$ & 95.50        & $-\EUR{1\,250}$    & $\EUR{11\,250}$ & $\EUR{10\,000}$ \\
-$5.00\%$ & 95.00        & $-\EUR{2\,500}$    & $\EUR{12\,500}$ & $\EUR{10\,000}$
+$1.50\%$ & 98.50        & $\EUR{3\,250}$      &   $\EUR{3\,750}$  & $\EUR{7\,000}$ \\
+$2.00\%$ & 98.00        & $\EUR{2\,000}$      &   $\EUR{5\,000}$  & $\EUR{7\,000}$ \\
+$2.50\%$ & 97.50        & $\EUR{750}$      & $\EUR{6\,250}$  & $\EUR{7\,000}$ \\
+$2.80\%$ & 97.20        & $\EUR{0}$                & $\EUR{7\,000}$  & $\EUR{7\,000}$ \\
+$3.00\%$ & 97.00        & $-\EUR{500}$    & $\EUR{7\,500}$ & $\EUR{7\,000}$ \\
+$3.50\%$ & 96.50        & $-\EUR{1\,750}$    & $\EUR{8\,750}$ & $\EUR{7\,000}$
 \end{tabular}
 
 \justify
-When we buy 1 futures lot at $100-X$ we secure interest rate for a future deposit of \EUR{1\,000\,000} at EURIBOR. When we sell we secure a future loan of \EUR{1\,000\,000} at EURIBOR.
+When we buy 1 futures lot at $100-X$ we secure interest rate of $X\%$ for a future deposit of \EUR{1\,000\,000} at EURIBOR. When we sell we secure a future loan of \EUR{1\,000\,000} at EURIBOR.
 \end{frame}
 
 
@@ -1026,15 +1026,16 @@ Consider the following market quotes (swap rates) for interest rate swaps refere
 
 \justify
 \centering
-\begin{tabular}{l|r|l|r}
-Maturity & Swap rate & Maturity & Swap rate \\ \hline
-3m   & 3.00\% & 4y   & 3.25\% \\
-6m   & 3.40\% & 5y   & 3.15\% \\
-9m   & 3.60\% & 6y   & 3.10\% \\
-1y   & 3.70\% & 7y   & 3.05\% \\
-18m  & 3.75\% & 8y   & 3.00\% \\
-2y   & 3.60\% & 9y   & 3.00\% \\
-3y   & 3.40\% & 10y  & 3.00\% 
+\begin{tabular}{c|c}
+Maturity & Swap rate \\ \hline
+3m   & 3.20\% \\
+1y & 2.54\% \\
+2y & 2.22 \% \\
+3y & 2.16\% \\
+4y & 2.15\% \\
+5y & 2.17\% \\
+7y & 2.25 \% \\
+10y & 2.35 \%
 \end{tabular}
 \end{frame}
 
@@ -1052,20 +1053,14 @@ Maturity & Swap rate & Maturity & Swap rate \\ \hline
   %ytick={-0.5, 0, 0.5, 1.0, 1.5},
   %minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
   xticklabel={\year},
-  xmin=2023-03-13,
+  xmin=2024-03-08,
   xmax=2030-01-01,
-  %ymin=-0.75,
-  %ymax=1.5,
+  ymin=200,
+  ymax=400,
   grid=major,
   ylabel={\small{EURIBOR, basis points}},
   xlabel near ticks,
-  ylabel near ticks,
-  legend entries = {	
-  	   Linear,
-  	   Spline
-  },
-  legend cell align={left},
-  legend pos = north east
+  ylabel near ticks
 ]
 
 	\addplot[
@@ -1079,19 +1074,7 @@ Maturity & Swap rate & Maturity & Swap rate \\ \hline
 		col sep=comma
 	]
 	{euribor_bootstrap.csv};
-	
-	\addplot[
-		color = Set1-B,
-		mark = none,
-		very thick
-	]
-	table[
-		x=date,
-		y=spline,
-		col sep=comma
-	]
-	{euribor_bootstrap.csv};
-	
+		
 	\draw[thick, color=black] (axis cs: 2012-01-01, 0) -- (axis cs: 2030-01-01, 0);
 \end{axis}
 \end{tikzpicture}
