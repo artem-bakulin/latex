@@ -1048,17 +1048,17 @@ Maturity & Swap rate \\ \hline
   height=\textheight - 1cm,
   date coordinates in=x,
   date ZERO=2012-01-01,
-  xtick={2023-01-01, 2024-01-01, 2025-01-01, 2026-01-01, 2027-01-01, 2028-01-01, 2029-01-01, 2030-01-01},
+  xtick={2024-01-01, 2025-01-01, 2026-01-01, 2027-01-01, 2028-01-01, 2029-01-01, 2030-01-01, 2031-01-01},
   %minor xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01},
   %ytick={-0.5, 0, 0.5, 1.0, 1.5},
   %minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
   xticklabel={\year},
-  xmin=2024-03-08,
-  xmax=2030-01-01,
-  ymin=200,
-  ymax=400,
+  xmin=2024-10-24,
+  xmax=2031-01-01,
+  ymin=1.5,
+  ymax=3.5,
   grid=major,
-  ylabel={\small{EURIBOR, basis points}},
+  ylabel={\small{EURIBOR, \%}},
   xlabel near ticks,
   ylabel near ticks
 ]
@@ -1070,12 +1070,12 @@ Maturity & Swap rate \\ \hline
 	]
 	table[
 		x=date,
-		y=linear,
+		y=euribor,
 		col sep=comma
 	]
 	{euribor_bootstrap.csv};
 		
-	\draw[thick, color=black] (axis cs: 2012-01-01, 0) -- (axis cs: 2030-01-01, 0);
+	\draw[thick, color=black] (axis cs: 2012-01-01, 0) -- (axis cs: 2035-01-01, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -1092,12 +1092,12 @@ We know future EURIBOR values and discount factors, so we can pick a swap rate a
 \justify
 \centering
 \begin{tabular}{l|l|l}
-& Receive & Pay \\ \hline
-Effective date & 15.09.2025 & 15.09.2025 \\ 
-Maturity date  & 15.03.2028 & 15.03.2028 \\
+& Pay & Receive \\ \hline
+Effective date & 24.03.2027 & 24.03.2027 \\ 
+Maturity date  & 24.10.2029 & 24.03.2029 \\
 Notional       & \EUR{1\,000\,000} & \EUR{1\,000\,000} \\
 Frquency       & Semi-annually     & Quarterly \\
-Rate           & \alert{2.7646\%}          & EURIBOR-3M   \\
+Rate           & \alert{2.1517\%}          & EURIBOR-3M   \\
 Basis          & ACT/360           & ACT/360
 \end{tabular}
 \end{frame}
@@ -1112,12 +1112,15 @@ PV01 (present value of 1 bp) or DV01 (dollar value of 1 bp) is measure of intere
 \centering
 \begin{tabular}{l|r|r}
 Maturity  & PV01 & Hedge size \\ \hline
-18m   & $-23$  euro/bp & $+\EUR{158\,000}$ \\
-2y    & $+129$ euro/bp & $-\EUR{668\,000}$ \\
-3y    & $+155$ euro/bp & $-\EUR{545\,000}$ \\
-4y    & $-23$  euro/bp & $+\EUR{62\,000}$ \\
-5y    & $-455$ euro/bp & $+\EUR{989\,000}$ \\ \hline
-Total & $-217$ euro/bp & $-\EUR{4\,000}$
+3m & $-16$  euro/bp & $+\EUR{637\,000}$ \\
+1y   & $+65$  euro/bp & $-\EUR{664\,000}$ \\
+2y    & $-196$ euro/bp & $+\EUR{1\,013\,000}$ \\
+3y    & $-109$ euro/bp & $+\EUR{381\,000}$ \\
+4y    & $+6$  euro/bp & $-\EUR{16\,000}$ \\
+5y    & $+466$ euro/bp & $-\EUR{993\,000}$ \\ 
+7y    & $0$ euro/bp & $\EUR{0}$ \\ 
+10y    & $0$ euro/bp & $\EUR{0}$ \\ \hline
+Total & $+215$ euro/bp & $\EUR{359\,000}$
 \end{tabular}
 
 \justify
