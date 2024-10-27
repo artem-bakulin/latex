@@ -38,7 +38,7 @@
 
 \title{Options and the Binomial Model}
 \author{Artem Bakulin}
-\date{October 26, 2023}
+\date{October 29, 2024}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -59,22 +59,32 @@
 A \alert{call  [put] option} is a contract which grants the owner the right, but not the obligation, to buy [to sell] an underlying asset at a specified price on a specified date.
 
 \justify
-An example: a call option which allows to buy 1\,000 EUR for 1\,060 USD in 3 months. Today one would need to pay 20 USD for such an option.
+An example: a call option which allows to buy 1\,000 EUR for 1\,080 USD in 3 months. Today one would need to pay 20 USD for such an option.
 \end{frame}
 
 
 
 \begin{frame}{Options - 2}
-\begin{itemize}
-\justifying
-\item A \alert{call} option gives the right to buy, a \alert{put} option gives the right to sell.
-\item \alert{Strike} is the specified price at which holder of an option may buy the underlying asset.
-\item \alert{Premium} is the amount which one needs to pay today to become holder of an option.
-\item To \alert{write} an option is the same as selling an option.
-\item \alert{Expiration date} is a date on which an option ceases to exist in case the holder did not exercise his right.
-\item A \alert{European} option can only be exercised on the expiration date.
-\item An \alert{American} option can be exercised on any day prior to the expiration date.
-\end{itemize}
+\justify
+A \alert{call} option gives the right to buy, a \alert{put} option gives the right to sell.
+
+\justify
+\alert{Strike} is the specified price at which holder of an option may buy the underlying asset.
+
+\justify
+\alert{Premium} is the amount which one needs to pay today to become holder of an option.
+
+\justify
+To \alert{write} an option is the same as selling an option.
+
+\justify
+\alert{Expiration date} is a date on which an option ceases to exist in case the holder did not exercise his right.
+
+\justify
+A \alert{European} option can only be exercised on the expiration date.
+
+\justify
+An \alert{American} option can be exercised on any day prior to the expiration date.
 \end{frame}
 
 
@@ -99,17 +109,18 @@ An example: a call option which allows to buy 1\,000 EUR for 1\,060 USD in 3 mon
 		\circlewithtext{0.5}{0}{Today};
 		\circlewithtext{2.5}{0}{\begin{tabular}{c}Spot \\ $-20$ USD\end{tabular}};
 		\circlewithtext{6.5}{0}{Expiration};
-		\circlewithtext{8.5}{0}{\begin{tabular}{c}Settlement \\ $+1\,000$ EUR\\ $-1\,060$ USD\end{tabular}};
+		\circlewithtext{8.5}{0}{\begin{tabular}{c}Settlement \\ $+1\,000$ EUR\\ $-1\,080$ USD\end{tabular}};
 	\end{tikzpicture}
 	
 \justify
-\begin{itemize}
-\justifying
-\item A buyer and a seller negotiate and sign a contract \alert{today}.
-\item The buyer pays the premium on the \alert{spot date} (usually T+2).
-\item The buyer has to inform the seller about exercising the option on the \alert{expiration date}.
-\item If the option is exercised, the currency exchange happens on the \alert{settlement date}.
-\end{itemize}
+
+1. A buyer and a seller negotiate and sign a contract \alert{today}.
+
+2. The buyer pays the premium on the \alert{spot date} (usually T+2).
+
+3. The buyer has to inform the seller about exercising the option on the \alert{expiration date}.
+
+4. If the option is exercised, the currency exchange happens on the \alert{settlement date}.
 
 \justify
 In this course we assume that the premium is paid today, and that settlement date is the same as expiation date.
@@ -125,7 +136,7 @@ European options are often called \alert{plain vanilla} options because vanilla 
 Russian state television about Societe General's losses (2008):
 
 \justify
-"A source within the bank, under the condition of anonymity, informed Reuters that the trader in question has been recently buying and selling contracts for the delivery of plain vanilla ---\alert{ the kind used in cooking}. However, it's worth noting that vanilla production worldwide doesn't reach 7 billion dollars annually. Essentially, this is a form of trading in thin air, though it's entirely legal and widely practiced."
+"A source within the bank, under the condition of anonymity, informed Reuters that the trader in question has been recently buying and selling contracts for the delivery of \alert{plain vanilla --- the kind used in cooking}. However, it's worth noting that vanilla production worldwide doesn't reach 7 billion dollars annually. Essentially, this is a form of trading in thin air, though it's entirely legal and widely practiced."
 
 \justify
 \url{https://www.newsru.com/russia/25Jan2008/vanilla.html}
@@ -135,14 +146,14 @@ Russian state television about Societe General's losses (2008):
 
 \begin{frame}{Example: call options}
 \justifying
-Owning a EURUSD call option to buy 100 EUR at strike 1.06.
+Owning a EURUSD call option to buy 100 EUR at strike 1.08.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-3, ymax=6,
@@ -158,7 +169,7 @@ Owning a EURUSD call option to buy 100 EUR at strike 1.06.
 			}
      ]
 		]
-  \addplot[Set1-A, very thick] {100*(\x > 1.06)*(\x - 1.06) + 0.05};
+  \addplot[Set1-A, very thick] {100*(\x > 1.08)*(\x - 1.08) + 0.05};
   
   \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 2, 0);
 \end{axis}
@@ -169,14 +180,14 @@ Owning a EURUSD call option to buy 100 EUR at strike 1.06.
 
 \begin{frame}{Buying call options}
 \justifying
-Buying 100 EURUSD call options: strike 1.06, premium 2 USD.
+Buying 100 EURUSD call options: strike 1.08, premium 2 USD.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-3, ymax=6,
@@ -192,7 +203,7 @@ Buying 100 EURUSD call options: strike 1.06, premium 2 USD.
 			}
      ]
 		]
-  \addplot[Set1-A, very thick] {100*(\x > 1.06)*(\x - 1.06) - 2};
+  \addplot[Set1-A, very thick] {100*(\x > 1.08)*(\x - 1.08) - 2};
   
   \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 2, 0);
 \end{axis}
@@ -203,14 +214,14 @@ Buying 100 EURUSD call options: strike 1.06, premium 2 USD.
 
 \begin{frame}{Buying put options}
 \justifying
-Buying 100 EURUSD put options: strike 1.06, premium 2 USD.
+Buying 100 EURUSD put options: strike 1.08, premium 2 USD.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-3, ymax=6,
@@ -226,7 +237,7 @@ Buying 100 EURUSD put options: strike 1.06, premium 2 USD.
 			}
      ]
 		]
-  \addplot[Set1-A, very thick] {100*(\x < 1.06)*(1.06 - \x ) - 2};
+  \addplot[Set1-A, very thick] {100*(\x < 1.08)*(1.08 - \x ) - 2};
   
   \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 2, 0);
 \end{axis}
@@ -237,14 +248,14 @@ Buying 100 EURUSD put options: strike 1.06, premium 2 USD.
 
 \begin{frame}{Selling call options}
 \justifying
-Selling 100 EURUSD call options: strike 1.06, premium 2 USD.
+Selling 100 EURUSD call options: strike 1.08, premium 2 USD.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-6, ymax=3,
@@ -260,7 +271,7 @@ Selling 100 EURUSD call options: strike 1.06, premium 2 USD.
 			}
      ]
 		]
-  \addplot[Set1-A, very thick] {-100*(\x > 1.06)*(\x - 1.06) + 2};
+  \addplot[Set1-A, very thick] {-100*(\x > 1.08)*(\x - 1.08) + 2};
   
   \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 2, 0);
 \end{axis}
@@ -271,14 +282,14 @@ Selling 100 EURUSD call options: strike 1.06, premium 2 USD.
 
 \begin{frame}{Selling put options}
 \justifying
-Selling 100 EURUSD put options: strike 1.06, premium 2 USD.
+Selling 100 EURUSD put options: strike 1.08, premium 2 USD.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-6, ymax=3,
@@ -294,7 +305,7 @@ Selling 100 EURUSD put options: strike 1.06, premium 2 USD.
 			}
      ]
 		]
-  \addplot[Set1-A, very thick] {-100*(\x < 1.06)*(1.06 - \x ) + 2};
+  \addplot[Set1-A, very thick] {-100*(\x < 1.08)*(1.08 - \x ) + 2};
   
   \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 2, 0);
 \end{axis}
@@ -305,13 +316,13 @@ Selling 100 EURUSD put options: strike 1.06, premium 2 USD.
 
 \begin{frame}{Hedging with call options}
 \justify
-In 3 months we will need 1\,000 EUR. Forward rate for the 3 months maturity is 1.06. We could buy a forward, but we wary about EUR possibly depreciating to 1.00. It will be a disappointment to buy EURUSD at 1.06 when the market will be trading at 1.00.
+In 3 months we will need 1\,000 EUR. Forward rate for the 3 months maturity is 1.08. We could buy a forward, but we wary about EUR possibly depreciating to 1.00. It will be a disappointment to buy EURUSD at 1.08 when the market will be trading at 1.00.
 
 \justify
-Solution: we can buy 1\,000 call options at the strike of 1.06 for the premium of 20 USD. In the event of EURUSD appreciation we can exercise our option and buy at 1.06. If the EUR suddenly weakens, we let the option expire and buy EURUSD at the prevailing market rate of 1.00.
+Solution: we can buy 1\,000 call options at the strike of 1.08 for the premium of 20 USD. In the event of EURUSD appreciation we can exercise our option and buy at 1.08. If the EUR suddenly weakens, we let the option expire and buy EURUSD at the prevailing market rate of 1.00.
 
 \justify
-Pros: we do not suffer from EURUSD depreciation. Cons: we have to pay a premium upfront. This option is our insurance against EURUSD rising higher than 1.06.
+Pros: we do not suffer from EURUSD depreciation. Cons: we have to pay a premium upfront. This option is our insurance against EURUSD rising higher than 1.08.
 \end{frame}
 
 
@@ -319,23 +330,23 @@ Pros: we do not suffer from EURUSD depreciation. Cons: we have to pay a premium 
 
 \begin{frame}{Hedging with put options}
 \justify
-In 3 months we will receive 1\,000 EUR. Forward rate for the 3 months maturity is 1.06. If we sell a forward we secure the exchange rate, but expose ourselves to the EUR appreciating to 1.12 or higher. We will have to sell EURUSD at 1.06 when everyone around will be happily trading at 1.12.
+In 3 months we will receive 1\,000 EUR. Forward rate for the 3 months maturity is 1.08. If we sell a forward we secure the exchange rate, but expose ourselves to the EUR appreciating to 1.15 or even higher. We will have to sell EURUSD at 1.08 when everyone around will be happily trading at 1.15.
 
 \justify
-Solution: we can buy 1\,000 put options at the strike of 1.06 for the premium of 20 USD. In case the EUR depreciates to 1.00 we exercise the option and sell at 1.06. In case EURUSD jumps to 1.12 we let the option expire and sell at the prevailing rate of 1.12
+Solution: we can buy 1\,000 put options at the strike of 1.08 for the premium of 20 USD. In case the EUR depreciates to 1.00 we exercise the option and sell at 1.08. In case EURUSD jumps to 1.15 we let the option expire and sell at the prevailing rate of 1.15
 
 \justify
-Pros: we will not be disappointed in the event of the EUR appreciation. Cons: we have to pay a premium upfront. The option protects us from the EURUSD dropping below 1.06.
+Pros: we will not be disappointed in the event of the EUR appreciation. Cons: we have to pay a premium upfront. The option protects us from the EURUSD dropping below 1.08.
 \end{frame}
 
 
 
 \begin{frame}{Speculating with call options}
 \justify
-A crystal ball shows that in 3 months EURUSD will significantly \alert{appreciate} from the current level of 1.06. We are willing to monetize this forecast. However \sout{the wife} shareholders in our hedge fund allocated the budget of just 20 USD.
+A crystal ball shows that in 3 months EURUSD will significantly \alert{appreciate} from the current level of 1.08. We are willing to monetize this forecast. However \sout{the wife} shareholders in our hedge fund allocated the budget of just 20 USD.
 
 \justify
-Solution: we can buy 1\,000 EURUSD \alert{call} options at the strike of 1.06 for the premium of 20 USD. In case EURUSD appreciates to 1.16 we can make $(1.16 - 1.06) \cdot 1\,000 - 20 = 80$ USD. If this does not happen we just lose our bet of 20 USD which is within our risk budget.
+Solution: we can buy 1\,000 EURUSD \alert{call} options at the strike of 1.08 for the premium of 20 USD. In case EURUSD appreciates to 1.18 we can make $(1.18 - 1.08) \cdot 1\,000 - 20 = 80$ USD. If this does not happen we just lose our bet of 20 USD which is within our risk budget.
 
 \justify
 An option acts as a leverage. It magnifies both the profit in positive scenarios (as if we had 1\,000 EUR to bet) and the loss in negative scenarios (we can lose the whole premium). Good news is that the loss is floored at the premium, but the gain is potentially unlimited.
@@ -345,10 +356,10 @@ An option acts as a leverage. It magnifies both the profit in positive scenarios
 
 \begin{frame}{Speculating with put options}
 \justify
-A crystal ball suggests that in 3 months EURUSD will \alert{depreciate} relative to the current forward rate of 1.06. Our shareholders allocated a budget of 20 USD to let us monetize this forecast.
+A crystal ball suggests that in 3 months EURUSD will \alert{depreciate} relative to the current forward rate of 1.08. Our shareholders allocated a budget of 20 USD to let us monetize this forecast.
 
 \justify
-Solution: we can buy 1\,000 EURUSD \alert{put} options at the strike of 1.06 for the premium of 20 USD. If we are right and EURUSD depreciates to 0.96 we can make $(1.06 - 0.96)\cdot1\,000 - 20 = 80$ USD. If this does not happen we simply lose the premium.
+Solution: we can buy 1\,000 EURUSD \alert{put} options at the strike of 1.08 for the premium of 20 USD. If we are right and EURUSD depreciates to 0.98 we can make $(1.08 - 0.98)\cdot1\,000 - 20 = 80$ USD. If this does not happen we simply lose the premium.
 
 \justify
 A put option allows betting on depreciation of the underlying asset (of the EUR).
@@ -360,12 +371,14 @@ A put option allows betting on depreciation of the underlying asset (of the EUR)
 \justify
 There are three standard terms for the \alert{moneyness} of call options:
 
-\begin{itemize}
-\justifying
-\item In the money, ITM --- current spot price of the underlying asset is higher than the strike (it would be profitable to exercise the option immediately).
-\item At the money, ATM --- current spot price is equal to the strike.
-\item Out of the money, OTM --- current spot price of the underlying asset is lower than the strike (it would be unprofitable to exercise the option immediately).
-\end{itemize}
+\justify
+1. In the money, ITM --- current spot price of the underlying asset is higher than the strike (it would be profitable to exercise the option immediately).
+
+\justify
+2. At the money, ATM --- current spot price is equal to the strike.
+
+\justify
+3. Out of the money, OTM --- current spot price of the underlying asset is lower than the strike (it would be unprofitable to exercise the option immediately).
 
 \justify
 There are symmetrical terms for put option.
@@ -381,8 +394,8 @@ A \alert{collar} consists of a sold put at a lower strike and a bought call at a
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-4, ymax=4,
@@ -398,9 +411,9 @@ A \alert{collar} consists of a sold put at a lower strike and a bought call at a
 			}
 		]
 	
-  \addplot[Set1-A, very thick, dashed] {-100*(\x < 1.04)*(1.04 - \x) + 0.5};
-  \addplot[Set1-B, very thick, dashed] {100*(\x > 1.08)*(\x - 1.08) - 0.5};
-  \addplot[Set1-C, very thick] {-100*(\x < 1.04)*(1.04 - \x) + 0.5 + 100*(\x > 1.08)*(\x - 1.08) - 0.5 + 0.05};	
+  \addplot[Set1-A, very thick, dashed] {-100*(\x < 1.06)*(1.06 - \x) + 0.5};
+  \addplot[Set1-B, very thick, dashed] {100*(\x > 1.10)*(\x - 1.10) - 0.5};
+  \addplot[Set1-C, very thick] {-100*(\x < 1.06)*(1.06 - \x) + 0.5 + 100*(\x > 1.10)*(\x - 1.10) - 0.5 + 0.05};	
 
   \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 1.12, 0);
 \end{axis}
@@ -417,8 +430,8 @@ A \alert{call spread} consists of a bought call at a lower strike and a sold cal
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-4, ymax=4,
@@ -434,9 +447,9 @@ A \alert{call spread} consists of a bought call at a lower strike and a sold cal
 			}
 		]
 		
-	  \addplot[Set1-A, very thick, dashed] {100*(\x > 1.04)*(\x - 1.04) - 1};
-  \addplot[Set1-B, very thick, dashed] {-100*(\x > 1.08)*(\x - 1.08) + 0.5};
-  \addplot[Set1-C, very thick] {100*(\x > 1.04)*(\x - 1.04) - 1 - 100*(\x > 1.08)*(\x - 1.08) + 0.5};
+	  \addplot[Set1-A, very thick, dashed] {100*(\x > 1.06)*(\x - 1.06) - 1};
+  \addplot[Set1-B, very thick, dashed] {-100*(\x > 1.10)*(\x - 1.10) + 0.5};
+  \addplot[Set1-C, very thick] {100*(\x > 1.06)*(\x - 1.06) - 1 - 100*(\x > 1.10)*(\x - 1.10) + 0.5};
   
   \draw[thick, color=black] (axis cs: 1, 0) -- (axis cs: 2, 0);
 \end{axis}
@@ -453,8 +466,8 @@ A \alert{straddle} is a bought call and a bought put at equal strikes.
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-4, ymax=4,
@@ -470,9 +483,9 @@ A \alert{straddle} is a bought call and a bought put at equal strikes.
 			}
 		]
 		
-	  \addplot[Set1-A, very thick, dashed] {100*(\x < 1.06)*(1.06 - \x) - 1};
-  \addplot[Set1-B, very thick, dashed] {100*(\x > 1.06)*(\x - 1.06) - 1};
-  \addplot[Set1-C, very thick] {100*(\x < 1.06)*(1.06- \x) - 1 + 100*(\x > 1.06)*(\x - 1.06) - 1};
+	  \addplot[Set1-A, very thick, dashed] {100*(\x < 1.08)*(1.08 - \x) - 1};
+  \addplot[Set1-B, very thick, dashed] {100*(\x > 1.08)*(\x - 1.08) - 1};
+  \addplot[Set1-C, very thick] {100*(\x < 1.08)*(1.08- \x) - 1 + 100*(\x > 1.08)*(\x - 1.08) - 1};
   
   \draw[thick, color=black] (axis cs: 1, 0) -- (axis cs: 2, 0);
 \end{axis}
@@ -489,8 +502,8 @@ Buying a call and selling a put at the same strike.
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-4, ymax=4,
@@ -506,9 +519,9 @@ Buying a call and selling a put at the same strike.
 			}
 		]
 		
-	\addplot[Set1-A, very thick, dashed] {100*(\x > 1.06)*(\x - 1.06) + 0.1};
-  	\addplot[Set1-B, very thick, dashed] {-100*(\x < 1.06)*(1.06-\x) - 0.1};
-  	\addplot[Set1-C, very thick] {100*(\x > 1.06)*(\x - 1.06) - 100*(\x < 1.06)*(1.06-\x) };
+	\addplot[Set1-A, very thick, dashed] {100*(\x > 1.08)*(\x - 1.08) + 0.1};
+  	\addplot[Set1-B, very thick, dashed] {-100*(\x < 1.08)*(1.08-\x) - 0.1};
+  	\addplot[Set1-C, very thick] {100*(\x > 1.08)*(\x - 1.08) - 100*(\x < 1.08)*(1.08-\x) };
  
    \draw[thick, color=black] (axis cs: 1, 0) -- (axis cs: 2, 0);
 \end{axis}
@@ -519,14 +532,14 @@ Buying a call and selling a put at the same strike.
 
 \begin{frame}{Combinations: underlying asset and debt}
 \justifying
-100 EUR on bank account and debt of 106 USD
+100 EUR on bank account and debt of 108 USD
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-4, ymax=4,
@@ -542,7 +555,7 @@ Buying a call and selling a put at the same strike.
 			}
 		]
 		
-  	\addplot[Set1-C, very thick] {100*(\x - 1.06)};
+  	\addplot[Set1-C, very thick] {100*(\x - 1.08)};
  
    \draw[thick, color=black] (axis cs: 1, 0) -- (axis cs: 2, 0);
 \end{axis}
@@ -554,11 +567,10 @@ Buying a call and selling a put at the same strike.
 \begin{frame}{Call-put parity}
 \justify
 The following two portfolios yield identical payoffs on the expiration date $T$:
-\begin{itemize}
-\justifying
-\item Bought call at strike $K$ and sold put at strike $K$.
-\item Underlying asset at price $S(T)$ and debt of $K$ units of cash.
-\end{itemize}
+
+1. Bought call at strike $K$ and sold put at strike $K$.
+
+2. Underlying asset at price $S(T)$ and debt of $K$ units of cash.
 
 \justify
 Consequently, on any day $t$ prior to the expiration date ($t<T$) these portfolios should be priced equally, taking the discount rate $r$ into account (*):
@@ -583,24 +595,24 @@ C_K(t) - P_K(t) = S(t)e^{-q(T-t)} - Ke^{-r(T-t)}
 A European \alert{digital call [put]} option is a contract that entitles the buyer receive a fixed payment in case the price of the underlying asset on the expiration date is higher [lower] than the specified strike.
 
 \justify
-An example: a European digital call option at strike of 1.06, expiration in 3 months, and notional amount of 100 USD. 
+An example: a European digital call option at strike of 1.08, expiration in 3 months, and notional amount of 100 USD. 
 
 \justify
-The buyer will receive 100 USD from the seller in 3 months if the prevailing EURUSD spot rate will be higher than 1.06.
+The buyer will receive 100 USD from the seller in 3 months if the prevailing EURUSD spot rate will be higher than 1.08.
 \end{frame}
 
 
 
 \begin{frame}{Buying a digital call option}
 \justifying
-Buying a digital call: strike is 1.06, notional amount is 1 USD.
+Buying a digital call: strike is 1.08, notional amount is 1 USD.
 
 \justifying
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-2, ymax=2,
@@ -616,8 +628,8 @@ Buying a digital call: strike is 1.06, notional amount is 1 USD.
 			}
 		]
 		
-	\addplot[Set1-A, very thick, domain=1.06:1.12] {1};
-	\addplot[Set1-A, very thick, domain=1:1.06] {0.02};
+	\addplot[Set1-A, very thick, domain=1.08:1.14] {1};
+	\addplot[Set1-A, very thick, domain=1.02:1.08] {0.02};
  
    \draw[thick, color=black] (axis cs: 1, 0) -- (axis cs: 2, 0);
 \end{axis}
@@ -628,14 +640,14 @@ Buying a digital call: strike is 1.06, notional amount is 1 USD.
 
 \begin{frame}{Buying a digital put option}
 \justifying
-Buying a digital put: strike is 1.06, notional amount is 1 USD.
+Buying a digital put: strike is 1.08, notional amount is 1 USD.
 
 \justifying
 \centering
 \begin{tikzpicture}
 		\begin{axis}[
-			domain=1:1.12,
-			xmin=1, xmax=1.12,			
+			domain=1.02:1.14,
+			xmin=1.02, xmax=1.14,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-2, ymax=2,
@@ -651,8 +663,8 @@ Buying a digital put: strike is 1.06, notional amount is 1 USD.
 			}
 		]
 		
-	\addplot[Set1-A, very thick, domain=1.00:1.06] {1};
-	\addplot[Set1-A, very thick, domain=1.06:1.12] {0.02};
+	\addplot[Set1-A, very thick, domain=1.00:1.08] {1};
+	\addplot[Set1-A, very thick, domain=1.08:1.14] {0.02};
  
    \draw[thick, color=black] (axis cs: 1, 0) -- (axis cs: 2, 0);
 \end{axis}
@@ -679,15 +691,15 @@ Is there a link between price of a digital option and price of European vanilla 
 
 \begin{frame}{A digital option and a call spread}
 \justifying
-\only<1>{Call spread: buy 100 calls-1.055, sell 100 calls-1.065}
-\only<2>{Call spread: buy 200 calls-1.0575, sell 200 calls-1.0625}
-\only<3>{Call spread: buy 1000 calls-1.0595, sell 1000 calls-1.0605}
+\only<1>{Call spread: buy 100 calls-1.075, sell 100 calls-1.085}
+\only<2>{Call spread: buy 200 calls-1.0775, sell 200 calls-1.0825}
+\only<3>{Call spread: buy 1000 calls-1.0795, sell 1000 calls-1.0805}
 
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1.04:1.08,
-			xmin=1.04, xmax=1.08,			
+			domain=1.06:1.10,
+			xmin=1.06, xmax=1.10,			
 			xtick distance = 0.01,
 			ymin=-1.5, ymax=1.5,
 			ytick distance = 0.5,
@@ -703,19 +715,19 @@ Is there a link between price of a digital option and price of European vanilla 
 		]
 
 \only<1>{
-	\addplot[Set1-A, very thick, dashed] {100*(\x > 1.055)*(\x - 1.055) - 0.03};
-  	\addplot[Set1-B, very thick, dashed] {-100*(\x > 1.065)*(\x - 1.065) + 0.06};
-  	\addplot[Set1-C, very thick] {100*(\x > 1.055)*(\x - 1.055) - 100*(\x > 1.065)*(\x - 1.065) + 0.03};
+	\addplot[Set1-A, very thick, dashed] {100*(\x > 1.075)*(\x - 1.075) - 0.03};
+  	\addplot[Set1-B, very thick, dashed] {-100*(\x > 1.085)*(\x - 1.085) + 0.06};
+  	\addplot[Set1-C, very thick] {100*(\x > 1.075)*(\x - 1.075) - 100*(\x > 1.085)*(\x - 1.085) + 0.03};
 }
 \only<2>{
-	\addplot[Set1-A, very thick, dashed, samples=100] {200*(\x > 1.0575)*(\x - 1.0575) - 0.03};
-  	\addplot[Set1-B, very thick, dashed, samples=100] {-200*(\x > 1.0625)*(\x - 1.0625) + 0.06};
-  	\addplot[Set1-C, very thick, samples=100] {200*(\x > 1.0575)*(\x - 1.0575) - 200*(\x > 1.0625)*(\x - 1.0625) + 0.03};
+	\addplot[Set1-A, very thick, dashed, samples=100] {200*(\x > 1.0775)*(\x - 1.0775) - 0.03};
+  	\addplot[Set1-B, very thick, dashed, samples=100] {-200*(\x > 1.0825)*(\x - 1.0825) + 0.06};
+  	\addplot[Set1-C, very thick, samples=100] {200*(\x > 1.0775)*(\x - 1.0775) - 200*(\x > 1.0825)*(\x - 1.0825) + 0.03};
 }
 \only<3>{
-	\addplot[Set1-A, very thick, dashed, samples=100] {1000*(\x > 1.0595)*(\x - 1.0595) - 0.03};
-  	\addplot[Set1-B, very thick, dashed, samples=100] {-1000*(\x > 1.0605)*(\x - 1.0605) + 0.06};
-  	\addplot[Set1-C, very thick, samples=100] {1000*(\x > 1.0595)*(\x - 1.0595) - 1000*(\x > 1.0605)*(\x - 1.0605) + 0.03};
+	\addplot[Set1-A, very thick, dashed, samples=100] {1000*(\x > 1.0795)*(\x - 1.0795) - 0.03};
+  	\addplot[Set1-B, very thick, dashed, samples=100] {-1000*(\x > 1.0805)*(\x - 1.0805) + 0.06};
+  	\addplot[Set1-C, very thick, samples=100] {1000*(\x > 1.0795)*(\x - 1.0795) - 1000*(\x > 1.0805)*(\x - 1.0805) + 0.03};
 }
  
    \draw[thick, color=black] (axis cs: 1, 0) -- (axis cs: 1.1, 0);
@@ -731,7 +743,7 @@ We can approximately replicate a digital call option at strike $K$ with a vanill
 \begin{align*}
 D(K) \approx nC\left(K - \dfrac{1}{2n}\right) - nC\left(K + \dfrac{1}{2n}\right)
 \end{align*}
-Here $C(K)$ is price of a European vanilla call at strike $K$, $D(K)$ is price of a digital call, $n$ is the number of vanilla calls in the call spread.
+Here $C(K)$ is price of a European vanilla call at strike $K$, $D(K)$ is price of a digital call, $n$ is the number of vanilla calls in the call spread, $\varepsilon=1/2n$.
 
 \justify
 Fun fact: price of a digital call is the first derivative of the price of a vanilla call w.r.t. the strike.
@@ -747,11 +759,10 @@ D(K) = \lim\limits_{\varepsilon\to 0}\dfrac{C(K-\varepsilon) - C(K+\varepsilon)}
 Consider a portfolio of a digital call and a digital put at the same strike:
 
 \justify
-\begin{itemize}
-\justifying
-\item The call pays 1 unit of a currency in case the price of the underlying asset is $\ge K$ (*).
-\item The put pays 1 unit of a currency in case the price of the underlying asset is $< K$.
-\end{itemize}
+1. The call pays 1 unit of a currency in case the price of the underlying asset is $\ge K$ (*).
+
+\justify
+2. The put pays 1 unit of a currency in case the price of the underlying asset is $< K$.
 
 \justify
 A portfolio of a digital put and a digital call always pays 1 unit of a currency. It is similar to a deposit at the risk-free rate $r$:
@@ -788,12 +799,12 @@ Usually investors add barriers to their options to make the options cheaper.
 
 \begin{frame}{European knock-out (EKO)}
 \justify
-A call at strike 1.06 with a European knock-out barrier at 1.10.
+A call at strike 1.08 with a European knock-out barrier at 1.12.
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1.00:1.14,
-			xmin=1.02, xmax=1.14,			
+			domain=1.04:1.16,
+			xmin=1.04, xmax=1.16,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-2, ymax=6,
@@ -808,8 +819,8 @@ A call at strike 1.06 with a European knock-out barrier at 1.10.
 				precision = 2
 			}
 		]
-  \addplot[Set1-A, very thick,domain=1:1.0999, samples=100] {100*(\x > 1.06)*(\x - 1.06) + 0.03};
-  \addplot[Set1-A, very thick,domain=1.10:1.14] {0.03};
+  \addplot[Set1-A, very thick,domain=1:1.1199, samples=100] {100*(\x > 1.08)*(\x - 1.08) + 0.03};
+  \addplot[Set1-A, very thick,domain=1.12:1.16] {0.03};
   
   \draw[thick, color=black] (axis cs: 1, 0) -- (axis cs: 1.2, 0);
 \end{axis}
@@ -829,22 +840,22 @@ Payoff of a European-style derivative depends only on the price of the underlyin
 2. Add a digital option at each point of discontinuity.
 
 \justify
-How do we replicate a European knock-out option at the strike at 1.06 with the barrier at 1.10?
+How do we replicate a European knock-out option at the strike of 1.08 with the barrier at 1.12?
 \end{frame}
 
 
 
 \begin{frame}{Replicating a European barrier}
 \justify
-Buy 100 vanilla calls-1.06
-\only<2->{, sell 100 vanilla calls-1.10}
-\only<3->{, sell 4 digital calls-1.10}
+Buy 100 vanilla calls-1.08
+\only<2->{, sell 100 vanilla calls-1.12}
+\only<3->{, sell 4 digital calls-1.12}
 \justify
 \centering
 	\begin{tikzpicture}
 		\begin{axis}[
-			domain=1.00:1.14,
-			xmin=1.02, xmax=1.14,			
+			domain=1.04:1.16,
+			xmin=1.04, xmax=1.16,			
 			xtick distance = 0.02,
 			minor x tick num=1,
 			ymin=-5, ymax=5,
@@ -859,23 +870,23 @@ Buy 100 vanilla calls-1.06
 				precision = 2
 			}
 		]
-  \addplot[Set1-A, very thick, dashed, samples=100] {100*(\x > 1.06)*(\x - 1.06) + 0.06};
+  \addplot[Set1-A, very thick, dashed, samples=100] {100*(\x > 1.08)*(\x - 1.08) + 0.06};
 \only<2->{
-  \addplot[Set1-B, very thick, dashed] {-100*(\x > 1.10)*(\x - 1.10) - 0.03};
+  \addplot[Set1-B, very thick, dashed] {-100*(\x > 1.12)*(\x - 1.12) - 0.03};
 }
 \only<2>{
-  \addplot[Set1-C, very thick, samples=200] {-100*(\x > 1.10)*(\x - 1.10) - 0.03 + 100*(\x > 1.06)*(\x - 1.06) + 0.06};
+  \addplot[Set1-C, very thick, samples=200] {-100*(\x > 1.12)*(\x - 1.12) - 0.03 + 100*(\x > 1.08)*(\x - 1.08) + 0.06};
 }
 \only<3->{
-	\addplot[Set1-E, very thick, dashed, domain=1:1.10] {-0.06};
-	\addplot[Set1-E, very thick, dashed, domain=1.10:1.14] {-4};
+	\addplot[Set1-E, very thick, dashed, domain=1:1.12] {-0.06};
+	\addplot[Set1-E, very thick, dashed, domain=1.12:1.16] {-4};
 }
 \only<3>{
-	\addplot[Set1-C, very thick, domain=1:1.10, samples=200] {-100*(\x > 1.10)*(\x - 1.10) - 0.03 + 100*(\x > 1.06)*(\x - 1.06) + 0.06};
-	\addplot[Set1-C, very thick, domain=1.10:1.14] {0.03};
+	\addplot[Set1-C, very thick, domain=1:1.10, samples=200] {-100*(\x > 1.12)*(\x - 1.12) - 0.03 + 100*(\x > 1.08)*(\x - 1.08) + 0.06};
+	\addplot[Set1-C, very thick, domain=1.12:1.16] {0.03};
 }
 
-  \draw[thick, color=black] (axis cs: 1, 0) -- (axis cs: 1.14, 0);
+  \draw[thick, color=black] (axis cs: 1, 0) -- (axis cs: 1.16, 0);
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -897,12 +908,13 @@ Who is selling options then? Who is ready to receive limited gain in exchange fo
 In the past several option strategies resulted in positive average return in the long run.
 
 \justify
-\begin{itemize}
-\justifying
-\item Covered call: buy a stock market index, sell a call option at a high strike.
-\item Short straddle: sell a straddle and delta-hedge it dynamically (later in this course).
-\item Short OTM put: sell a put on a stock market index at a low strike (sell insurance against the market crash).
-\end{itemize}
+1. Covered call: buy a stock market index, sell a call option at a high strike.
+
+\justify
+2. Short straddle: sell a straddle and delta-hedge it dynamically (later in this course).
+
+\justify
+3. Short OTM put: sell a put on a stock market index at a low strike (sell insurance against the market crash).
 
 \justify
 All three strategies are "selling the volatility". They bet that the market will not be fluctuating as much as option buyers anticipate. Options are similar to insurance. They are priced high enough so that sellers of the insurance may make money in the long run.
@@ -912,13 +924,13 @@ All three strategies are "selling the volatility". They bet that the market will
 
 \begin{frame}{Selling out-of-the money put}
 \justify
-S\&P\,500 index is currently at \$4\,120 (October 27, 2023). A put option at strike \$2\,700 which expires on December 15 is worth \$2 on Chicago Mercantile Exchange.
+S\&P\,500 index is currently at \$5\,810 (October 25, 2024). A put option at strike \$3\,500 which expires on December 20 is worth \$3.20 on Chicago Mercantile Exchange.
 
 \justify
-If you sell 1\,000 put options you collect the premium \$2\,000 with virtually no risk. Last time S\&P\,500 dropped by 35\% in 7 weeks in 1929 during the Great Depression.
+If you sell 1\,000 put options, you collect the premium \$3\,200 with virtually no risk. Last time S\&P\,500 dropped by 40\% in 8 weeks in 1929 during the Great Depression.
 
 \justify
-Caveat: if the Great Depression comes back and the index drops to \$2\,600 you lose \$100\,000.
+Caveat: if the Great Depression comes back and the index drops to \$3\,400 you lose \$96\,800.
 
 \justify
 Will you be brave enough to sell this insurance policy?
@@ -934,7 +946,7 @@ Could we do something less frightening?
 The Chicago Board of Option Exchange  (CBOE) S\&P\,500 PutWrite Index ("PUT") tracks the following investment strategy.
 
 \justify
-1. Sell (write) a 1 month at-the-money put option on S\&P\,500 index. E.g. sell at strike $K=\$4\,120$ in case current level is \$4\,120.
+1. Sell (write) a 1 month at-the-money put option on S\&P\,500 index. E.g. sell at strike $K=\$5\,810$ in case current level is \$5\,810.
 
 \justify
 2. Put aside $K$ dollars in risk-free one-month Treasury bills. Thus you will have cash at hand in case the index drops and the buyer exercises the option.
@@ -1013,14 +1025,14 @@ The Chicago Board of Option Exchange  (CBOE) S\&P\,500 PutWrite Index ("PUT") tr
 \centering
 \begin{tabular}{l|r|r|r}
 & PUT & S\&P\,500 & T-bill \\ \hline
-Geom. Mean & 9.3\% & 10.3\% & 2.9\% \\
-Excess Return & 6.3\% & 7.2\% & 0.0\% \\
-Std. Dev & 11.1\% & 16.2\% & 0.0\% \\
-Share Ratio & 0.56 & 0.45 & 0.0 \\
-Monthly Beta & 0.48 & 1.00 & 0.00
+Geom. Mean & 9.5\% & 10.6\% & 2.9\% \\
+Excess Return & 6.3\% & 7.4\% & 0.0\% \\
+Std. Dev & 11.0\% & 16.0\% & 0.0\% \\
+Share Ratio & 0.58 & 0.46 & 0.0 \\
+Monthly Beta & 0.47 & 1.00 & 0.00
 \end{tabular}
 
-\small Sample period: 1987--2022. All figures except Beta are annualized.
+\small Sample period: 1987--2023. All figures except Beta are annualized.
 
 \justify
 PUT has better return to risk ratio (the Sharpe ratio). Insuring others from a stock market crash seems to be a better strategy than investing in the stock market.
@@ -1168,14 +1180,19 @@ The answer is independent of the probabilities 90\% and 10\%! We eliminated any 
 
 \justify
 If the option trades at \$18 there is an arbitrage opportunity.
-\begin{itemize}
-\item Sell (write) an option for \$18.
-\item Borrow \$32.
-\item Buy 0.5 of the stock for \$50.
-\item Wait till tomorrow.
-\item If the stock is worth \$80, sell 0.5 of the stock for \$40, repay the debt \$32. Profit: \$8.
-\item If the stock is worth \$120, buy 0.5 of the stock for \$60, deliver it to the option buyer for \$100, repay the debt \$32. Profit: \$8.
-\end{itemize}
+
+\justify
+1. Sell (write) an option for \$18.
+
+2. Borrow \$32.
+
+3. Buy 0.5 of the stock for \$50.
+
+4. Wait till tomorrow.
+
+5. If the stock is worth \$80, sell 0.5 of the stock for \$40, repay the debt \$32. Profit: \$8.
+
+6. If the stock is worth \$120, buy 0.5 of the stock for \$60, deliver it to the option buyer for \$100, repay the debt \$32. Profit: \$8.
 \end{frame}
 
 
@@ -1196,12 +1213,16 @@ If the option trades at \$18 there is an arbitrage opportunity.
 \end{tikzpicture}
 
 \justify
-\begin{itemize}
-\item Current stock price is $S_0$.
-\item Stock price can either increase to $S_0\cdot u$ (u>1) or drop to $S_0 \cdot d$ (d<1).
-\item Single period of $\tau$ years, risk-free interest rate is $r$, such that $d < 1+r\tau < u$.
-\item A derivative pays off (has the value of) either $V_u$ or $V_d$ depending on the stock price moving up or down.
-\end{itemize}
+Current stock price is $S_0$.
+
+\justify
+Stock price can either increase to $S_0\cdot u$ (u>1) or drop to $S_0 \cdot d$ (d<1).
+
+\justify
+Single period of $\tau$ years, risk-free interest rate is $r$, such that $d < 1+r\tau < u$.
+
+\justify
+A derivative pays off (has the value of) either $V_u$ or $V_d$ depending on the stock price moving up or down.
 \end{frame}
 
 

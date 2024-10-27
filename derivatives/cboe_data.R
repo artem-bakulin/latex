@@ -319,8 +319,8 @@ sp500_data %>%
     date = as.Date(date, tz="UTC"),
     sp500 = close
   ) %>% 
-  mutate(return_35 = sp500 / lag(sp500, 35) - 1) %>% 
-  arrange(return_35)
+  mutate(return_40 = sp500 / lag(sp500, 40) - 1) %>% 
+  arrange(return_40)
 
 sp500_data %>% 
   as_tibble() %>% 
