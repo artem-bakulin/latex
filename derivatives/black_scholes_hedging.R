@@ -20,6 +20,13 @@ black_scholes_price <- function(S, K, T, sigma, r, q) {
   S*exp(-q*T)*pnorm(d1) - K*exp(-r*T)*pnorm(d2)
 }
 
+black_scholes_expected_payoff <- function(S, K, T, sigma, r, mu) {
+  # https://quant.stackexchange.com/questions/2841/how-to-obtain-true-probabilities-from-black-scholes
+  d1 <- black_scholes_d1(S, K, T, sigma, mu, 0)
+  d2 <- black_scholes_d2(S, K, T, sigma, mu, 0)
+  S*exp((mu-r)*T)*pnorm(d1) - K*exp(-r*T)*pnorm(d2)
+}
+
 black_scholes_delta <- function(S, K, T, sigma, r, q) {
   
   pnorm(black_scholes_d1(S, K, T, sigma, r, q))
@@ -44,7 +51,7 @@ simulate_stock_and_call <- function(S_0, mu, sigma, K, T, n_steps, n_scenarios, 
     mutate(
       t = step / n_steps,
       dt = t - lag(t, default=0),
-      log_increment = (mu - sigma^2/2) * dt + realized_sigma * random_norm * sqrt(dt),
+      log_increment = (mu - realized_sigma^2/2) * dt + realized_sigma * random_norm * sqrt(dt),
       S = S_0 * exp(cumsum(log_increment)),
       bs_delta = black_scholes_delta(S, K, T - t, sigma, r, q),
       step_delta_pnl = if_else(step != 0, lag(bs_delta) * (S - lag(S)), 0),
@@ -86,6 +93,16 @@ simulate_stock_and_call(S_0, mu, sigma, K, T, 365*4, 200) %>%
   filter(step == max(step)) %>% 
   select(scenario, t, S, bs_delta, balance) %>% 
   write_csv("black_scholes_hedging_1420.csv")
+
+simulate_stock_and_call(S_0, mu, sigma, K, T, 365*4, 200) %>%
+  filter(step == max(step)) %>% 
+  select(scenario, t, S, bs_delta, balance) %>% 
+  summarise(
+    mean(balance),
+    sum(if_else(S < K, 1, 0)) / n()
+  )
+black_scholes_expected_payoff(S_0, K, T, sigma, 0, mu) - black_scholes_price(S_0, K, T, sigma, 0, 0)
+1 - pnorm(black_scholes_d2(S_0, K, T, sigma, mu, 0))
 
 simulate_stock_and_call(S_0, mu, sigma, K, T, 364*4, 200, realized_sigma=0.25) %>% 
   filter(step == max(step)) %>% 
