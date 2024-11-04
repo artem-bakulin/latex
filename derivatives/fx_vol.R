@@ -71,6 +71,7 @@ get_central_bank_fx_rate("USD", 2012, 2024) %>%
   group_by(mid_month = make_date(year(date), month(date), 15)) %>% 
   summarise(realized_vol = sd(log_return) * sqrt(250)) %>% 
   filter(!is.na(realized_vol)) %>% 
+  filter(mid_month != max(mid_month)) %>% 
   write_csv("USDRUB_realized_vol.csv")
 
 

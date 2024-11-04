@@ -1044,7 +1044,7 @@ Black-Scholes price is \alert{\$7.97}. Average expected payoff of the call optio
 \$7.97 is merely price of replicating the option. The fact that you can replicate the option for just \$7.97 does not mean that you actually would be willing to.
 
 \justify
-The option is much riskier than investing in the underlying stock. There is \alert{44\%} chance that the option will expire out of the money and the owner will lose the whole premium (return on investment of $-100\%$).
+The option is much riskier than investing in the underlying stock. There is 44\% chance that the option will expire out of the money and the owner will lose the whole premium (return on investment of $-100\%$).
 
 \justify
 To compare apples to apples, consider an investment of \$100. Buying a stock has expected return of $\approx 5\%$.  Buying one option and investing the rest into a risk-free deposit is expected to yield \$3.02 or $\approx 3\%$.
@@ -1105,7 +1105,7 @@ In order to convert the daily volatility to percentage points per annum, we need
 %  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
   xticklabel={\year},
   xmin=2012-01-01,
-  xmax=2024-01-01,
+  xmax=2025-01-01,
   ymin=20,
   ymax=130,
   grid=both,
@@ -1145,7 +1145,7 @@ In order to convert the daily volatility to percentage points per annum, we need
 %  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
   xticklabel={\year},
   xmin=2012-01-01,
-  xmax=2024-01-01,
+  xmax=2025-01-01,
   ymin=0,
   ymax=0.9,
   grid=both,
@@ -1205,7 +1205,7 @@ Suppose that market participants are using the Black-Scholes model. Which volati
 
 \begin{frame}{Implied volatility - 2}
 \justify
-USDRUB options: expiration date 21.12.2023, data as of 01.11.2023.
+USDRUB options: expiration date 19.12.2024, data as of 04.11.2024.
 
 \centering
 \begin{tikzpicture}
@@ -1215,8 +1215,8 @@ USDRUB options: expiration date 21.12.2023, data as of 01.11.2023.
 			%domain=70:130,
 			xtick distance=5,
 			ytick distance=5,
-			xmin=70, xmax=120,
-			ymin=0, ymax=25,
+			xmin=80, xmax=115,
+			ymin=0, ymax=20,
 			grid = major,
 			xlabel={Strike ($K$)},
 			ylabel={Option price, RUB}
@@ -1247,7 +1247,7 @@ USDRUB options: expiration date 21.12.2023, data as of 01.11.2023.
 
 \begin{frame}{Implied volatility - 3}
 \justify
-USDRUB options: expiration date 21.12.2023, data as of 01.11.2023.
+USDRUB options: expiration date 19.12.2024, data as of 04.11.2024.
 
 \centering
 \begin{tikzpicture}
@@ -1257,8 +1257,8 @@ USDRUB options: expiration date 21.12.2023, data as of 01.11.2023.
 			%domain=60:84,
 			xtick distance=5,
 			ytick distance=0.05,
-			xmin=70, xmax=120,
-			ymin=0.15, ymax=0.40,
+			xmin=80, xmax=115,
+			ymin=0.1, ymax=0.30,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
 			grid = major,
 			xlabel={Strike ($K$)},
@@ -1361,10 +1361,11 @@ S\&P\,500 options: expiration date 15.12.2023, as of 01.11.2023.
 \justify
 Most markets display a dependency between implied volatility and option strike. Out-of-the-money options are priced higher (in terms of volatility) than one could expect from a Black Scholes model.
 
-\begin{itemize}
-\item Volatility "smile" is typical for FX.
-\item Volatility "skew" or "smirk" is often observed on the stock market.
-\end{itemize}
+\justify
+Volatility \alert{smile} is typical for FX.
+
+\justify
+Volatility \alert{skew} or \alert{smirk} is often observed on the stock market.
 
 \justify
 Is it plausible that the underlying asset behaves differently, depending on which option the market participants are pricing at this moment? No!
@@ -1380,12 +1381,13 @@ Either all the market participants have gone mad, or the Black-Scholes model doe
 If market participants are not assuming the log-normal distribution, then what is that distribution which they assume?
 
 \justify
-Consider a combination called a butterfly:
-\begin{itemize}
-\item Buy a call at strike $K - \delta$.
-\item Sell two calls at strike $K$.
-\item Buy a call at strike $K + \delta$.
-\end{itemize}
+Consider a combination called a \alert{butterfly}:
+
+1. Buy a call at strike $K - \delta$.
+
+2. Sell two calls at strike $K$.
+
+3. Buy a call at strike $K + \delta$.
 
 \justify
 The two bought options are called "wings" and two sold options are the "belly".
@@ -1474,8 +1476,8 @@ USDRUB butterflies at strikes $K-1$, $K$ and $K+1$..
 			%domain=60:84,
 			xtick distance=5,
 			ytick distance=0.01,
-			xmin=70, xmax=120,
-			ymin=0, ymax=0.09,
+			xmin=80, xmax=115,
+			ymin=0, ymax=0.1,
 			scaled y ticks = false,
 			yticklabel={\pgfmathprintnumber[fixed, fixed zerofill, precision=2]{\tick}},
 			grid = major,
@@ -1506,8 +1508,8 @@ USDRUB butterflies at strikes $K-1$, $K$ and $K+1$..
 			height = \textheight - 2cm,
 			xtick distance=5,
 			ytick distance=0.01,
-			xmin=70, xmax=120,
-			ymin=0, ymax=0.09,
+			xmin=80, xmax=115,
+			ymin=0, ymax=0.10,
 			scaled y ticks = false,
 			yticklabel={\pgfmathprintnumber[fixed, fixed zerofill, precision=2]{\tick}},
 			grid = major,
@@ -1546,14 +1548,39 @@ USDRUB butterflies at strikes $K-1$, $K$ and $K+1$..
 
 \begin{frame}{Implied distribution - 2}
 \justify
+Price of a butterfly $B(K)$ is similar to numerical second derivative of a call price $C(K)$ w.r.t. strike $K$:
+\begin{align*}
+f''(x) &\approx \dfrac{f(x - h) - 2f(x) + f(x+h)}{h^2} \\
+B(K) &= C(K-\delta) - 2C(K) + C(K+\delta)
+\end{align*}
+
+\justify
+Recall that price of a digital call is equal to the first derivative $-\partial C/\partial K$. It defines probability of an option ending up higher than the strike, i.e. the \alert{cumulative distribution function (CDF)}.
+\begin{equation*}
+D_C(K) = e^{-rT}\mathbb{P}(S \ge K) = e^{-rT}\Big(1 - \mathbb{P}(S < K)\Big) = -\dfrac{\partial C}{\partial K} \Rightarrow
+\end{equation*}
+\begin{equation*}
+\mathbb{P}(S < K) = e^{rT}\dfrac{\partial C}{\partial K} + 1
+\end{equation*}
+
+\justify
+A butterfly is proportional to the second derivative $\partial^2C/\partial K^2$. It defines the \alert{probability density function (PDF)}. This link between option prices and implied probability distribution does not depend on the Black-Scholes assumptions.
+\end{frame}
+
+
+
+\begin{frame}{Implied distribution - 3}
+\justify
 Usually option prices imply a distribution that is different from the log-normal distribution. Quite often we observe fat tails and skewness to the left or to the right.
 
 \justify
 There are two probable explanations to this fact:
-\begin{itemize}
-\item Market participants correctly anticipate higher probability of extreme outcomes.
-\item Market participants are so scared of extreme outcomes that they are willing to pay for insurance. Risk-averse investors create additional demand for insurance and pull option premiums higher than the "fundamentally fair"\ level.
-\end{itemize}
+
+\justify
+1. Market participants correctly anticipate higher probability of extreme outcomes.
+
+\justify
+2. Market participants are so scared of extreme outcomes that they are willing to pay for insurance. Risk-averse investors create additional demand for insurance and pull option premiums higher than the "fundamentally fair"\ level.
 
 \justify
 As long as we can trade in liquid options to hedge more complex illiquid derivatives, we don't need to know which explanation is correct.
@@ -1566,13 +1593,15 @@ As long as we can trade in liquid options to hedge more complex illiquid derivat
 The existence of volatility smiles refutes the hypothesis of geometric Brownian motion with constant volatility. How should we change the model so that it explains the smile, i.e. yields the same premiums that we observe in the market?
 
 \justify
-\begin{itemize}
-\item Local volatility.
-\item Stochastic volatility.
-\item Stochastic local volatility.
-\item Stochastic local volatility with jumps.
-\item ...
-\end{itemize}
+1. Local volatility.
+
+2. Stochastic volatility.
+
+3. Stochastic local volatility.
+
+4. Stochastic local volatility with jumps.
+
+5. ...
 \end{frame}
 
 
@@ -1694,13 +1723,13 @@ VIX has a twin named RVOL, which measures realized volatility.
   height=\textheight - 1cm,
   date coordinates in=x,
   date ZERO=2012-01-01,
-  xtick={2002-01-01, 2005-01-01, 2010-01-01, 2015-01-01, 2020-01-01},
-  minor xtick={2003-01-01, 2004-01-01, 2006-01-01, 2007-01-01, 2008-01-01, 2009-01-01, 2011-01-01, 2012-01-01, 2013-01-01, 2014-01-01, 2016-01-01, 2017-01-01, 2018-01-01, 2019-01-01, 2021-01-01, 2022-01-01, 2023-01-01},
+  xtick={2002-01-01, 2005-01-01, 2010-01-01, 2015-01-01, 2020-01-01,2025-01-01},
+  minor xtick={2003-01-01, 2004-01-01, 2006-01-01, 2007-01-01, 2008-01-01, 2009-01-01, 2011-01-01, 2012-01-01, 2013-01-01, 2014-01-01, 2016-01-01, 2017-01-01, 2018-01-01, 2019-01-01, 2021-01-01, 2022-01-01, 2023-01-01,2024-01-01},
   ytick={10, 20, ..., 100},
 %  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
   xticklabel={\year},
   xmin=2002-01-01,
-  xmax=2024-01-01,
+  xmax=2025-01-01,
   ymin=0,  ymax=100,
   grid=both,
   yticklabel={\pgfmathprintnumber{\tick}\%},
