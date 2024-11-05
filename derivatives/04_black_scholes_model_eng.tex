@@ -1465,9 +1465,9 @@ As we reduce the distance between the wings, the butterfly becomes closer to a b
 
 
 
-\begin{frame}{Butterfly - 4}
+\begin{frame}{Butterflies: USDRUB}
 \justify
-USDRUB butterflies at strikes $K-1$, $K$ and $K+1$..
+USDRUB butterflies at strikes $K-1$, $K$ and $K+1$.
 
 \centering
 \begin{tikzpicture}
@@ -1501,7 +1501,7 @@ USDRUB butterflies at strikes $K-1$, $K$ and $K+1$..
 
 
 
-\begin{frame}{Implied distribution}
+\begin{frame}{Implied distribution: USDRUB}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
@@ -1547,7 +1547,88 @@ USDRUB butterflies at strikes $K-1$, $K$ and $K+1$..
 
 
 
-\begin{frame}{Implied distribution - 2}
+\begin{frame}{Butterflies: S\&P\,500}
+\justify
+S\&P\,500 butterflies at strikes $K-50$, $K$, $K+50$.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			xtick distance=200,
+			ytick distance=1,
+			xmin=4800, xmax=6600,
+			ymin=0, ymax=5,
+			grid = major,
+			xlabel={Strike ($K$)},
+			ylabel={Butterfly price, USD},
+			xticklabel={\pgfmathprintnumber[precision=0, 1000 sep={}]{\tick}}
+]
+
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=fly,
+		col sep=comma
+	]
+	{sp500_fly.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Data: barchart.com.
+\end{frame}
+
+
+
+\begin{frame}{Implied distribution: S\&P\,500}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth-0.5cm,
+			height = \textheight - 2cm,
+			xtick distance=200,
+			ytick distance=0.0005,
+			xmin=4600, xmax=6600,
+			ymin=0, ymax=0.002,
+			scaled y ticks = false,
+			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[fixed, precision=2]{\pgfmathresult}},
+			xticklabel={\pgfmathprintnumber[precision=0, 1000 sep={}]{\tick}},
+			grid = major,
+			xlabel={Strike ($K$)},
+			ylabel={Probability density (\%)},
+			legend entries = {
+				\small Implied,
+				\small Log-normal
+			},
+  			legend cell align={left},
+ 		 	legend style={at={(0.03,0.97)},anchor=north west}
+]
+
+	\addplot[color = Set1-B, mark = none, thick]
+	table[
+		x=strike,
+		y=implied_density,
+		col sep=comma
+	]
+	{sp500_implied_density.csv};
+	
+	\addplot[color = Set1-A, mark = none, dashed, thick]
+	table[
+		x=strike,
+		y=lognormal_density,
+		col sep=comma
+	]
+	{sp500_implied_density.csv};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Data: barchart.com.
+\end{frame}
+
+
+
+\begin{frame}{Implied distribution}
 \justify
 Price of a butterfly $B(K)$ is similar to numerical second derivative of a call price $C(K)$ w.r.t. strike $K$:
 \begin{align*}
@@ -1570,7 +1651,7 @@ A butterfly is proportional to the second derivative $\partial^2C/\partial K^2$.
 
 
 
-\begin{frame}{Implied distribution - 3}
+\begin{frame}{Implied distribution - 2}
 \justify
 Usually option prices imply a distribution that is different from the log-normal distribution. Quite often we observe fat tails and skewness to the left or to the right.
 
