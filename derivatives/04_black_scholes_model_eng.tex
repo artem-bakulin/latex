@@ -1022,16 +1022,6 @@ What if we will rebalance the portfolio 4 times a day ($4 \cdot 365$ times a yea
 
 
 
-\begin{frame}{Dynamic hedging: summary}
-\justify
-A mechanistic trading strategy, which regularly buys or sells the underlying asset, can lead to the same result (final payoff) as a "true"\ European call option.
-
-\justify
-Investment banks could be selling well-configured trading robots instead of "true"\ options. If you want to buy a European option, you configure a trading robot and send it to the market to engage in delta hedging. In a world of zero transaction costs and perfectly liquid markets, "true" options would be redundant.
-
-\end{frame}
-
-
 
 \begin{frame}{Option price and expected payoff}
 %\justify
@@ -1048,6 +1038,17 @@ The option is much riskier than investing in the underlying stock. There is 44\%
 
 \justify
 To compare apples to apples, consider an investment of \$100. Buying a stock has expected return of $\approx 5\%$.  Buying one option and investing the rest into a risk-free deposit is expected to yield \$3.02 or $\approx 3\%$.
+\end{frame}
+
+
+
+\begin{frame}{Dynamic hedging: summary}
+\justify
+A mechanistic trading strategy, which regularly buys or sells the underlying asset, can lead to the same result (final payoff) as a "true"\ European call option.
+
+\justify
+Investment banks could be selling well-configured trading robots instead of "true"\ options. If you want to buy a European option, you configure a trading robot and send it to the market to engage in delta hedging. In a world of zero transaction costs and perfectly liquid markets, "true" options would be redundant.
+
 \end{frame}
 
 
@@ -1282,7 +1283,7 @@ USDRUB options: expiration date 19.12.2024, data as of 04.11.2024.
 
 \begin{frame}{Implied volatility - 4}
 \justify
-S\&P\,500 options: expiration date 15.12.2023, as of 01.11.2023.
+S\&P\,500 options: expiration date 20.12.2024, as of 05.11.2024.
 
 \centering
 \begin{tikzpicture}
@@ -1290,8 +1291,8 @@ S\&P\,500 options: expiration date 15.12.2023, as of 01.11.2023.
 			width = \textwidth,
 			height = \textheight - 2cm,
 			xtick distance=100,
-			ytick={50,100,...,600},
-			xmin=3700, xmax=4700,
+			ytick distance=50,
+			xmin=5300, xmax=6300,
 			ymin=0, ymax=500,
 			grid = major,
 			xlabel={Strike ($K$)},
@@ -1324,7 +1325,7 @@ S\&P\,500 options: expiration date 15.12.2023, as of 01.11.2023.
 
 \begin{frame}{Implied volatility - 5}
 \justify
-S\&P\,500 options: expiration date 15.12.2023, as of 01.11.2023.
+S\&P\,500 options: expiration date 20.12.2024, as of 05.11.2024.
 
 \centering
 \begin{tikzpicture}
@@ -1332,8 +1333,8 @@ S\&P\,500 options: expiration date 15.12.2023, as of 01.11.2023.
 			width = \textwidth,
 			height = \textheight - 2cm,
 			xtick distance=100,
-			ytick={0.05,0.10,...,0.30},
-			xmin=3700, xmax=4700,
+			ytick distance=0.05,
+			xmin=5300, xmax=6300,
 			ymin=0, ymax=0.25,
 			grid = major,
 			xlabel={Strike ($K$)},
