@@ -37,7 +37,7 @@
 
 \title{Present Value, Risk and Greeks}
 \author{Artem Bakulin}
-\date{November 9, 2023}
+\date{November 12, 2024}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -76,12 +76,12 @@ Recent quarterly report by a major Frankfurt-based investment bank:
 \justify
 Assets (billions):
 
-\en{Positive market values from derivative financial instruments}: \EUR{287.6}
+\en{Positive market values from derivative financial instruments}: \EUR{243.4}
 
 \justify
 Liabilities (billions):
 
-\en{Negative market values from derivative financial instruments}: \EUR{271.3}
+\en{Negative market values from derivative financial instruments}: \EUR{231.6}
 
 \justify
 According to IFRS, the change in the present value (PV) of the derivative portfolio should be accounted for in the profits (or losses) of the current year, even if the payments on derivatives are scheduled to occur 100 years from now.
@@ -239,7 +239,7 @@ There are standard sensitivities or the Greeks:
 
 \begin{frame}{Delta}
 \justify
-Delta is sensitivity of the portfolio present value $V$ to changes in the price of the underlying asset (for example, the currency spot rate) S$.$
+\alert{Delta} is sensitivity of the portfolio present value $V$ to changes in the price of the underlying asset (for example, the currency spot rate) S$.$
 \begin{align*}
 \Delta = \frac{\partial V}{\partial S}
 \end{align*}
@@ -1227,6 +1227,110 @@ If the realized volatility turns out to be higher than implied, the option selle
 \justify
 On average, in the long run, it is more profitable to be selling Gamma (sell options, essentially selling crisis insurance to others). Sometimes this strategy fails: the market movement is so large that the losses on Gamma exceed the received premium.
 \end{frame}
+
+
+\begin{frame}{Bonus: GAMMA index}
+\justify
+Chicago Board of Option Exchange computes an index called \alert{GAMMA} that tracks the following trading strategy.
+
+\justify
+1. Buy at-the-money S\&P\,500 straddles that expire during the nearest 5 trading days. For example, suppose that today is Monday. The strategy is buying 5 pairs of at-the-money calls and puts that expire on Tuesday to Friday and on the following Monday.
+
+\justify
+2. Hedge the Delta using the shortest S\&P\,500 futures.
+
+\justify
+3. On the following day, when the shortest straddle expires, buy another one (e.g. one that expires on the following Tuesday). Adjust the Delta hedge.
+
+\justify
+The strategy is making money during large market fluctuations, when the realized volatility exceeds the implied volatility anticipated by those selling the straddles.
+\end{frame}
+
+
+
+\begin{frame}{Bonus: GAMMA index - 2}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+ 	width=\textwidth,
+	height=\textheight - 1cm,
+	date coordinates in=x,
+	date ZERO=2012-01-01,
+  	xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01, 2023-01-01, 2025-01-01},
+  	minor xtick={2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01,2024-01-01},
+  	xticklabel={\year},
+  	xmin=2012-05-31,
+  	xmax=2025-01-01,
+	 ymode = log,
+ 	grid=both,
+   	log ticks with fixed point,
+  	ylabel={\small{Growth of \$1 investment}},
+  	xlabel near ticks,
+  	ylabel near ticks,
+	legend entries = {
+		S\&P\,500 Total Return,
+		CBOE Gamma (inverted),
+		T-bills
+	},
+	legend pos=north east,
+	legend style={font=\tiny},
+	legend cell align={left}
+]
+
+\addplot[color = Set1-A, mark = none, very thick]
+	table[
+		x=month,
+		y=sp500_growth,
+		col sep=comma
+	]
+	{cboe_gamma.csv};
+
+\addplot[color = Set1-B, mark = none, very thick]
+	table[
+		x=month,
+		y=inv_gamma_growth,
+		col sep=comma
+	]
+	{cboe_gamma.csv};
+
+\addplot[color = Set1-C, mark = none, very thick, dashed]
+	table[
+		x=month,
+		y=rf_growth,
+		col sep=comma
+	]
+	{cboe_gamma.csv};
+
+   \draw[thick, color=black] (axis cs: 1985-01-01, 1) -- (axis cs: 2025-01-01, 1);
+\end{axis}
+\end{tikzpicture}
+
+\small Data: CBOE, Yahoo Finance, Kenneth French.
+\end{frame}
+
+
+
+\begin{frame}{Bonus: GAMMA index - 3}
+\centering
+\begin{tabular}{l|r|r|r}
+& Inv. GAMMA & S\&P\,500 & T-bills \\ \hline
+Geom. mean & 12.8\% & 13.7\% & 1.1\% \\
+Excess return & 11.6\% & 12.5\% & 0.0\% \\
+Std. dev. & 60.1\% & 16.0\% & 0.0\% \\
+Share ratio & 0.19 & 0.79 & 0.0 \\
+Monthly Beta & 0.94 & 1.00 & 0.00
+\end{tabular}
+
+\small{Period: 2013--2023. All measures, except Beta, are annualized.}
+
+\justify
+GAMMA index had negative performance in the past. It was the inverse strategy that was making money, i.e. selling straddles (rather than buying).
+
+\justify
+Selling the Gamma (selling protection against extreme market volatility) was a profitable strategy during last decade.
+\end{frame}
+\end{document}
+
 
 \end{document}
 

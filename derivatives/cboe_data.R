@@ -355,7 +355,7 @@ gamma_data <- gamma_data %>%
 
 # Gamma goes back to 2012 -> we can use SP500 total return from Yahoo Finance rather than from Shiller's website
 sp500_tr_index <- yahoofinancer::Index$new("^SP500TR")
-sp500_tr_data <- sp500_tr_index$get_history(start="2012-05-31", end="2024-03-29", interval="1d") %>%
+sp500_tr_data <- sp500_tr_index$get_history(start="2012-05-31", end="2024-11-07", interval="1d") %>%
   as_tibble() %>% 
   transmute(
     date = as.Date(date, tz="UTC"),
