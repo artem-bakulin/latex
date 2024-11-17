@@ -87,6 +87,46 @@
 
 \inserttitleframe
 
+\begin{frame}{Reminder: bonds}
+\justify
+A \alert{bond} is a debt security that entitles the holder (the lender) to receive pre-determined cash flows (interest coupons and principal amount) from the issuer (the borrower).
+
+\justify
+\alert{Yield to maturity (YTM)} is the discount rate at which total present value of all the bond's future cash flows is equal to the current market price of this bond.
+
+\justify
+Consider a 3-year bond that pays 5\% coupon annually and has a principal amount (i.e. face value) of \$1\,000. Its current market price is \$980 (98\% of the face value).
+\begin{equation*}
+\$980 = \frac{\$50}{1+y} + \frac{\$50}{(1+y)^2} + \frac{\$1\,000 + \$50}{(1+y)^3}  \quad  \Leftrightarrow \quad y \approx 5.745\%
+\end{equation*}
+
+\justify
+Lower the market price of a bond, higher the yield to maturity. Yields are just a more convenient way of measuring the same observable reality and comparing different bonds.
+\end{frame}
+
+
+
+\begin{frame}{Reminder: credit spread}
+\justify
+\alert{Credit spread} is a difference between yields of a corporate bond and a comparable government bond (assuming matching maturity and currency).
+\begin{align*}
+CreditSpread &= CorpYield - GovtYield \\
+ CorpYield &= GovtYield + CreditSpread
+\end{align*}
+
+\justify
+Suppose you invest in a corporate bond. You lose money in case the bond price falls and the bond yield rises. The bond yield may raise due to two reasons:
+
+1. Increase in the government bond yield due to general macro-economic reasons (e.g. inflation, central bank policy).
+
+2. Widening of the credit spread due to issuer-specific reasons (e.g. poor production results).
+
+\justify
+Can we decouple our results from the uncontrollable generic macro-economic factors? 
+\end{frame}
+
+
+
 \begin{frame}{Credit default swap}
 \justify
 A \alert{credit default swap (CDS)} is a financial derivative that allows buying or selling insurance against default on bonds or other debts.
@@ -739,11 +779,13 @@ Suppose that we know the probability of default, recovery rate, and discount fac
 Expected discounted cashflows of the buyer and the seller should match.
 
 \justify
-We compute two values for each future date.
-\begin{itemize}
-\item Probability of the reference entity surviving till this date, $S(T)$.
-\item Probability of the reference entity defaulting precisely on this day, $D(T) - D(T - 1 \text{ day})$.
-\end{itemize}
+We compute two values for each future date:
+
+\justify
+1. Probability of the reference entity surviving till this date, $S(T)$.
+
+\justify
+2.Probability of the reference entity defaulting precisely on this day, $D(T) - D(T - 1 \text{ day})$.
 \end{frame}
 
 
@@ -777,15 +819,23 @@ With probability $D(T) - D(T - 1 \text{day})$, the buyer pays the accrued intere
 \justify
 Find fair price (coupon) for a credit default swap under following assumptions.
 
-\begin{itemize}
-\justifying
-\item Term is 1 year.
-\item Quarterly coupons (every 1/4th of a year).
-\item Recovery rate is 40\%.
-\item Probability of default is given by a exponential distribution with hazard rate of $\lambda = 2\%$.
-\item In case of a default, the notional amount will be paid on the following coupon date. The swap is cash-settled.
-\item Neglect the discounting.
-\end{itemize}
+\justify
+1. Term is 1 year.
+
+\justify
+2.Quarterly coupons (every 1/4th of a year).
+
+\justify
+3. Recovery rate is 40\%.
+
+\justify
+4. Probability of default is given by a exponential distribution with hazard rate of $\lambda = 2\%$.
+
+\justify
+5. In case of a default, the notional amount will be paid on the following coupon date. The swap is cash-settled.
+
+\justify
+6. Neglect the discounting.
 \end{frame}
 
 
@@ -969,7 +1019,7 @@ If you are promised 10\% yield in Acme LLC's bonds, remember that probably just 
 		xmin = 1986-10-31,
 		xmax = 2024-12-31,
 		ymin = 0.9,
-		ymax = 16,
+		ymax = 20,
 		grid = both,
 		legend entries = {
 			BofA High Yield Index,
@@ -1012,12 +1062,13 @@ If you are promised 10\% yield in Acme LLC's bonds, remember that probably just 
 Probability of default and recovery rate are necessary to pick the right combination of ingredients in a replicating portfolio that mimics a credit default swap.
 
 \justify
-\begin{itemize}
-\justifying
-\item Lend cash to someone at take a corporate bond as collateral.
-\item Sell the bond on the market.
-\item Buy a risk-free bond or enter an asset swap.
-\end{itemize}
+1. Lend cash to someone and take a corporate bond as collateral.
+
+\justify
+2. Sell the bond on the market.
+
+\justify
+3. Buy a risk-free bond or enter an asset swap.
 
 \justify
 If the model allows building a replicating portfolio, then it is not a tragedy that it relies on the "incorrect"\ implied probability of default.
@@ -1027,12 +1078,12 @@ If the model allows building a replicating portfolio, then it is not a tragedy t
 
 \begin{frame}{Risk-neutral probability and bookmakers}
 \justify
-Bookmakers' odds for AC Milan vs Dortmund:
+Bookmakers' odds for Liverpool vs Real Madrid next week:
 
 \centering
 \begin{tabular}{c|c|c}
-AC Milan & Draw & Dortmund \\
-2.11 & 3.82 & 3.77
+Liverpool & Draw & Real Madrid \\
+2.09 & 3.92 & 3.76
 \end{tabular}
 
 \justify
@@ -1040,15 +1091,18 @@ If the odds are denoted by $k$, then $1/k$ is "probability"\ of an outcome.
 
 \centering
 \begin{tabular}{c|c|c}
-AC Milan & Draw & Dortmund \\
-47.3\% & 26.2\% & 26.5\%
+Liverpool & Draw & Real Madrid \\
+47.9\% & 25.5\% & 26.6\%
 \end{tabular}
 
 \justify
-Suppose that gamblers have bet \$100 million, including \$26.2 for a draw. In case of a draw, the winners will collect $\$26.2 \cdot 3.82 = \$100$ million, i.e. they win the entire pool.
+Suppose that gamblers have bet \$100 million, including \$25.5 for a draw. In case of a draw, the winners will collect $\$25.5 \cdot 3.92 = \$100$ million, i.e. they win the entire pot.
 
 \justify
-Is the bookmaker concerned about making the odds reflect true real-world probability? No! Their priority is to ensure that the losing bets are sufficient to pay the winners, regardless of the outcome. More bets on an outcome result in lower odds and higher implied probability.
+Is the bookmaker concerned about making the odds reflect true real-world probability? No! Their priority is to ensure that the losing bets are sufficient to pay the winners, regardless of the outcome.
+
+\justify
+More bets on an outcome result in lower odds and higher implied probability.
 \end{frame}
 
 
@@ -1057,12 +1111,14 @@ Is the bookmaker concerned about making the odds reflect true real-world probabi
 \justify
 At the beginning of 2009, regulators carried out a reform of the credit derivatives market to prevent a recurrence of the 2008 crisis
 
-\begin{itemize}
-\justifying
-\item Mandatory centralized clearing.
-\item 4 standard coupon payment dates: March 20, June 20, September 20, December 20.
-\item Fixed coupons are either 1\% (investment-grade bonds) or 5\% (speculative bonds)..
-\end{itemize}
+\justify
+1. Mandatory centralized clearing.
+
+\justify
+2. 4 standard coupon payment dates: March 20, June 20, September 20, December 20.
+
+\justify
+3. Fixed coupons are either 1\% (investment-grade bonds) or 5\% (speculative bonds)..
 
 \justify
 CDS are still quoted in terms of spreads, e.g 2.40\%/2.41\%. However actual coupons will be either 1\% or 5\%. One of the parties pays the other an upfront payment that compensates for the difference between quoted coupon (2.40\%) and the fixed coupon (1\%).
@@ -1074,11 +1130,10 @@ CDS are still quoted in terms of spreads, e.g 2.40\%/2.41\%. However actual coup
 \begin{frame}{CDS-Bond basis}
 \justify
 If we had an ideal liquid market, these two strategies would be equivalent.
-\begin{itemize}
-\justifying
-\item Buy a risky bond yielding 5\% and buy a CDS at 3\%.
-\item Buy a risk-free bond yielding 2\%.
-\end{itemize}
+
+1. Buy a risky bond yielding 5\% and buy a CDS at 3\%.
+
+2. Buy a risk-free bond yielding 2\%.
 
 \justify
 In practice, there is non-zero CDS-Bond basis:
@@ -1088,24 +1143,25 @@ In practice, there is non-zero CDS-Bond basis:
 
 \justify
 Some factors that affect the basis:
-\begin{itemize}
-\justifying
-\item Liquidity.
-\item Coupons are not perfectly matched.
-\item Coupon that accrued by the time of default.
-\item Options that are embedded into bonds.
-\end{itemize}
+
+1. Liquidity.
+
+2. Coupons are not perfectly matched.
+
+3. Coupon that accrued by the time of default.
+
+4. Options that are embedded into bonds.
 \end{frame}
 
 
 
 \begin{frame}{Wrong Way CDS}
 \justify
-What would you tell about these trades
-\begin{itemize}
-\item Buy a CDS referencing Germany from Deutsche Bank.
-\item Buy a CDS referencing Deutsche Bank from your lecturer.
-\end{itemize}
+What would you tell about these trades?
+
+1. Buy a CDS referencing Germany from Deutsche Bank.
+
+2. Buy a CDS referencing Deutsche Bank from your lecturer.
 
 \justify
 Any insurance is reliable to the extent that its seller is reliable. It makes sense to ensure that there is no correlation between creditworthiness of the reference entity and the CDS seller.
@@ -1119,18 +1175,22 @@ Puzzle: who is buying U.S. government CDS and who is selling them?
 \begin{frame}{If this is not enough}
 \justify
 Index credit default swap:
-\begin{itemize}
-\item 100 reference entities.
-\item Initial notional amount is \$10\,000\,000.
-\item After each individual default the seller pays \$100\,000 to the buyer (and subsequent coupon payments are reduced).
-\end{itemize}
 
+1. 100 reference entities.
+
+2. Initial notional amount is \$10\,000\,000.
+
+3. After each individual default the seller pays \$100\,000 to the buyer (and subsequent coupon payments are reduced).
+
+\justify
 Nth-to-default CDS:
-\begin{itemize}
-\item 100 reference entities.
-\item Notional amount is \$10\,000\,000.
-\item After the first $N$ default the seller pays full notional amount to the buyer.
-\end{itemize}
+
+1. 100 reference entities.
+
+2. Notional amount is \$10\,000\,000.
+
+3. After the first $N$ default the seller pays full notional amount to the buyer.
+
 \justify
 Pricing of complex swaps depends on correlations between reference entities. See Hull's book.
 \end{frame}
@@ -1140,10 +1200,12 @@ Pricing of complex swaps depends on correlations between reference entities. See
 \begin{frame}{Why?}
 \justify
 Credit derivatives are an input to pricing other derivatives:
-\begin{itemize}
-\item Credit valuation adjustment (CVA)
-\item Debt valuation adjustment (DVA)
-\end{itemize}
+
+\justify
+1. Credit valuation adjustment (CVA)
+
+\justify
+2. Debt valuation adjustment (DVA)
 \end{frame}
 
 \end{document}
