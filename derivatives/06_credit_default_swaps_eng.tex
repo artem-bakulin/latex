@@ -36,7 +36,7 @@
 
 \title{Credit Default Swaps}
 \author{Artem Bakulin}
-\date{November 16, 2023}
+\date{November 19, 2024}
 
 
 	\usetheme{Warsaw}
@@ -93,13 +93,18 @@ A \alert{credit default swap (CDS)} is a financial derivative that allows buying
 
 \justify
 Key parameters of a swap:
-\begin{itemize}
-\justifying
-\item Reference entity: the entity whose default is covered by the insurance. E.g. FooBar LLC. It is neither buyer nor seller of the swap, it does not take part in the contract
-\item Notional amount or insured amount. E.g. \$10\,000\,000.
-\item Coverage period. E.g. starting today and ending in a year.
-\item Fixed coupon (spread): percentage of the notional amount which the buyer pays to the seller. E.g. 2\% annually.
-\end{itemize}
+
+\justify
+1. Reference entity: the entity whose default is covered by the insurance. E.g. FooBar LLC. It is neither buyer nor seller of the swap, it does not take part in the contract
+
+\justify
+2. Notional amount or insured amount. E.g. \$10\,000\,000.
+
+\justify
+3, Coverage period. E.g. starting today and ending in a year.
+
+\justify
+4, Fixed coupon (spread): percentage of the notional amount which the buyer pays to the seller. E.g. 2\% annually.
 
 \justify
 Buying a CDS means agreeing to pay fixed coupons in exchange for insurance. 
@@ -196,26 +201,22 @@ The reference entity announced bankruptcy in 8 months.
 \begin{frame}{Deliverable and cash-settled swaps}
 \justify
 Suppose that a default has happened
-\begin{itemize}
-\justifying
-\item Insured notional amount \$10\,000\,000.
-\item Market price of the defaulted bond is \$4\,000\,000.
-\end{itemize}
+
+1. Insured notional amount \$10\,000\,000.
+
+2. Market price of the defaulted bond is \$4\,000\,000.
 
 \justify
 \alert{Deliverable} credit default swap:
-\begin{itemize}
-\justifying
-\item The buyer hands over defaulted bonds to the seller.
-\item The seller pays the buyer full notional amount (\$10\,000\,000).
-\end{itemize}
+
+1. The buyer hands over defaulted bonds to the seller.
+
+2. The seller pays the buyer full notional amount (\$10\,000\,000).
 
 \justify
 \alert{Cash-settled} credit default swap:
-\begin{itemize}
-\justifying
-\item The seller pays the buyer the difference between notional amount and market value of the bonds  (\$6\,000\,000).
-\end{itemize}
+
+1. The seller pays the buyer the difference between notional amount and market value of the bonds  (\$6\,000\,000).
 
 \end{frame}
 
@@ -224,10 +225,10 @@ Suppose that a default has happened
 \begin{frame}{Hedging credit risk}
 \justify
 Suppose we own a corporate bond. Negative news has been announced, and now we are concerned that the probability of default has increased. We have two options:
-\begin{itemize}
-\item Sell the bond on the market.
-\item Buy insurance, i.e. buy a credit default swap.
-\end{itemize}
+
+1. Sell the bond on the market.
+
+2. Buy insurance, i.e. buy a credit default swap.
 
 \justify
 In theory, if there was an ideal perfectly liquid market for bonds, we would sell the bond immediately at zero bid/ask spread. In practice, it may take weeks to find a buyer for an illiquid security..
@@ -245,11 +246,10 @@ Credit default swaps are particularly useful for hedging non-traded debts, such 
 
 \justify
 We have a view that creditworthiness of a reference entity will deteriorate in future. Our options are:
-\begin{itemize}
-\justifying
-\item Sell short the risky bond and buy a risk-free government bond (to eliminate the general interest rate risk).
-\item Buy a credit default swap.
-\end{itemize}
+
+1. Sell short the risky bond and buy a risk-free government bond (to eliminate the general interest rate risk).
+
+2. Buy a credit default swap.
 
 \justify
 Do you have to own a bond  to buy a CDS? No! This position would be called a naked CDS (*).
@@ -325,11 +325,12 @@ We have bought a swap from company A at 2\%, and managed to a sell similar swap 
 \begin{frame}{Speculating on credit risk - 3}
 \justify
 We have a view that creditworthiness of a reference entity will improve in future. We have two options: 
-\begin{itemize}
-\justifying
-\item Buy the risky bond and sell short a risk-free government bond (to eliminate the general interest rate risk).
-\item Sell a credit default swap.
-\end{itemize}
+
+\justify
+1. Buy the risky bond and sell short a risk-free government bond (to eliminate the general interest rate risk).
+
+\justify
+2. Sell a credit default swap.
 
 \justify
 If we sold a swap to company A at 3\%, and bought s similar swap from company B at 2\%, then we will be making 1\% per annum until a default happens or until maturity of the swaps.
@@ -340,12 +341,15 @@ If we sold a swap to company A at 3\%, and bought s similar swap from company B 
 \begin{frame}{Factors affecting a CDS price}
 \justify
 A few factors affect fair price of a CDS.
-\begin{itemize}
-\justifying
-\item Probability of default. It can be estimated from other CDS quotes or from market prices for this entity's bonds.
-\item Recovery rate is residual value of a bond in case of default. Usually it is estimated from historical data for particular jurisdiction, economy sector, credit rating.
-\item Discounting interest rate for future cash flows.
-\end{itemize}
+
+\justify
+1. Probability of default. It can be estimated from other CDS quotes or from market prices for this entity's bonds.
+
+\justify
+2. Recovery rate is residual value of a bond in case of default. Usually it is estimated from historical data for particular jurisdiction, economy sector, credit rating.
+
+\justify
+3. Discounting interest rate for future cash flows.
 \end{frame}
 
 
@@ -428,7 +432,7 @@ Ratings reflect relative riskiness rather than absolute probability.
 		ymin = 0,
 		ymax = 13,
 		xmin = 1981,
-		xmax = 2021,
+		xmax = 2024,
 		grid = major,
 		xticklabel = {\pgfmathprintnumber[precision=0, 1000 sep=]{\tick}},
 		yticklabel = {\pgfmathprintnumber[precision=0]{\tick}\%},
