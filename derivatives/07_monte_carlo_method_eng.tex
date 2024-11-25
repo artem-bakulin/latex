@@ -40,7 +40,7 @@
 
 \title{Monte Carlo Method}
 \author{Artem Bakulin}
-\date{November 23, 2023}
+\date{November 26, 2024}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -124,13 +124,16 @@
 \end{tikzpicture}
 
 \justify
-\begin{itemize}
-\justifying
-\item Current stock price is $S_0$.
-\item Stock price can either increase to $S_0\cdot u$ (u>1) or drop to $S_0 \cdot d$ (d<1).
-\item Single period of $\tau$ years, risk-free interest rate is $r$, such that $d < 1+r\tau < u$.
-\item An option pays off (has the value of) either $V_u$ or $V_d$ depending on the stock price moving up or down.
-\end{itemize}
+Current stock price is $S_0$.
+
+\justify
+Stock price can either increase to $S_0\cdot u$ (u>1) or drop to $S_0 \cdot d$ (d<1).
+
+\justify
+Single period of $\tau$ years, risk-free interest rate is $r$, such that $d < 1+r\tau < u$.
+
+\justify
+An option pays off (has the value of) either $V_u$ or $V_d$ depending on the stock price moving up or down.
 \end{frame}
 
 
@@ -182,6 +185,36 @@ This magic parameter $q$ is called the "risk-neutral probability".
 
 
 
+\begin{frame}{Recap: binomial model - 4}
+\centering
+\begin{tikzpicture}
+	\drawStockNode{$\$100$} {?}{0}{ 0}{S0_node}
+	\drawStockNode{$\$120$}{$\$20$}{4}{0.5}{Su_node}
+	\drawStockNode{$\$80$}{$\$0$}{4}{-0.5}{Sd_node}
+	
+	\drawStockLink{S0_node}{Su_node}{$90\%$}{south}	
+	\drawStockLink{S0_node}{Sd_node}{$10\%$}{north}
+\end{tikzpicture}
+
+\justify
+A stock price $\$100$ may either increase to $\$120$ ($u=1.2$) or drop to $\$80$ ($d=0.8$). Risk-free rate is $r=0\%$. What is fair value of a call at strike $\$100$?
+
+\justify
+Risk-neutral probability:
+\begin{align*}
+q = \frac{1 + rT - d}{u - d} = \frac{1 - 0.8}{1.2 - 0.8} = 0.5
+\end{align*}
+
+\justify
+Option premium:
+\begin{align*}
+V = \frac{qV_u + (1-q)V_d}{1 + rT} = 0.5\cdot\$20 + 0.5\cdot\$0 = \$10
+\end{align*}
+\end{frame}
+
+
+
+
 \renewcommand{\drawStockLink}[2]{
 
 	\draw[
@@ -215,7 +248,7 @@ This magic parameter $q$ is called the "risk-neutral probability".
 \newcommand{\nodeVerticalStep}{0.7}
 \newcommand{\nodeHorizontalStep}{2.75}
 
-\begin{frame}{Recap: binomial model - 4}
+\begin{frame}{Recap: binomial model - 5}
 \centering
 \begin{tikzpicture}
 \drawStockNode{$\$100$}{\only<1-7>{?}\only<8->{\$14.8}}{0}{0}{S0_node}
@@ -570,12 +603,16 @@ Here $\phi(x)$ is probability density function of the standard normal distributi
 What if the stochastic process and/or the payoff function are so complex that it is not feasible to compute the risk-neutral expected value explicitly?
 
 \justify
-Numerical procedures come to rescue
-\begin{itemize}
-\item Binomial trees.
-\item Finite difference methods.
-\item Monte Carlo method.
-\end{itemize}
+Numerical procedures come to rescue:
+
+\justify
+1, Binomial trees.
+
+\justify
+2. Finite difference methods.
+
+\justify
+3. Monte Carlo method.
 \end{frame}
 
 
@@ -677,10 +714,10 @@ Most modern processors have a hardware random numbers generator. For example, RD
 
 \justify
 Drawbacks:
-\begin{itemize}
-\item Performance (450 ticks on a Core i7-7700).
-\item Unreproducible results.
-\end{itemize}
+
+1. Performance (450 ticks on a Core i7-7700).
+
+2. Unreproducible results.
 
 \justify
 We need a fast algorithm for producing numbers that are "almost"\ random.
@@ -1072,11 +1109,12 @@ Our pseudo-random sequence of $\mathcal{N}(0,1)$ variables is not perfect and ma
 
 \justify
 Other more complex methods for variance reduction:
-\begin{itemize}
-\item  Stratified sampling, importance sampling
-\item Orthogonal array sampling
-\item Sobol numbers
-\end{itemize}
+
+1. Stratified sampling, importance sampling
+
+2. Orthogonal array sampling
+
+3. Sobol numbers
 \end{frame}
 
 
@@ -1212,7 +1250,10 @@ Bombardier hedged its exposure with a market-maker Enron. This is an example of 
 
 \begin{frame}{Conclusion: Chicken McNuggets}
 \justify
-In 1980s McDonald's were launching a new product: Chicken McNuggets. They demanded a fixed price agreement  with chicken producers. Producers were not willing to agree on a fixed price due to high volatility of their costs.
+In 1980s McDonald's were launching a new product: Chicken McNuggets. They demanded a fixed price agreement  with chicken producers.
+
+\justify
+Producers were not willing to agree on a fixed price due to high volatility of their costs.
 
 \justify
 A financial expert (namely, Ray Dalio) advised that chicken producers could hedge their costs using corn and soybean futures, because feed prices were the most significant and the most volatile component of the cost.
@@ -1238,7 +1279,7 @@ Derivatives cannot eliminate the uncertainty of the future and the associated ri
 
 \begin{frame}{Conclusion}
 \justify
-We had 14 sessions, 350 slides, 4 home assignments, and a whole galaxy of multi-colored Excel spreadsheets... Also, a basket of exotics, some indices, a variance swap, a couple of CDS'es, and two dozen vanillas. Not that we needed all that for the work, but once you get locked into studying derivatives, the tendency is to push it as far as you can. The only thing that really worried me was the Monte Carlo. There is nothing in the world more helpless and irresponsible and depraved than a quant who is crunching vanillas with the Monte Carlo, and I knew we'd get into that rotten stuff pretty soon.
+We had 14 sessions, 350 slides, and a whole galaxy of multi-colored Excel spreadsheets... Also, a basket of exotics, some indices, a variance swap, a couple of CDS'es, and two dozen vanillas. Not that we needed all that for the work, but once you get locked into studying derivatives, the tendency is to push it as far as you can. The only thing that really worried me was the Monte Carlo. There is nothing in the world more helpless and irresponsible and depraved than a quant who is crunching vanillas with the Monte Carlo, and I knew we'd get into that rotten stuff pretty soon.
 \end{frame}
 \end{document}
 
