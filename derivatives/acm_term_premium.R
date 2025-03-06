@@ -28,7 +28,7 @@ acm_data %>%
   write_csv("acm_term_premium.csv")
 
 acm_data %>%
-  filter(date >= '1990-01-01', date <= '2023-12-31') %>%
+  filter(date >= '1990-01-01', date <= '2024-12-31') %>%
   summarise(
     acmtp02 = mean(acmtp02),
     acmtp05 = mean(acmtp05),
