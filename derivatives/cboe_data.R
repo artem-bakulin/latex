@@ -136,7 +136,7 @@ download_from_cboe <- function(index_name) {
 
 download_shiller_data <- function() {
   
-  full_url <- "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/ie_data.xls"
+  full_url <- "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/34a1781b-f073-448f-b9f9-6230becb2e49/ie_data.xls?ver=1741185530815"
   curl_download(full_url, "ie_data.xls")
   raw_data <- xlsx::read.xlsx("ie_data.xls", sheetName="Data", startRow=8)
   file.remove("ie_data.xls")
@@ -217,7 +217,7 @@ merged_data %>% write_csv("cboe_puty.csv", na="nan")
 
 merged_data %>% 
   tail(-1) %>% 
-  filter(month >= "1987-01-01", month <= "2023-12-31") %>% 
+  filter(month >= "1987-01-01", month <= "2024-12-31") %>% 
   lm(put_return - rf_return ~ sp500_return - rf_return, data=.) %>% 
   summary()
 
@@ -259,7 +259,7 @@ merged_data %>%
   group_by(
     year = year(month)
   ) %>% 
-  filter(year >= 1987, year <= 2023) %>% 
+  filter(year >= 1987, year <= 2024) %>% 
   summarise(
     sp500 = prod(1 + sp500_return) - 1,
     put = prod(1 + put_return) - 1,
@@ -311,7 +311,7 @@ merged_data %>%
   )
 
 sp500_index <- yahoofinancer::Index$new("^GSPC")
-sp500_data <- sp500_index$get_history(start="1927-12-30", end="2023-10-27", interval="1d")
+sp500_data <- sp500_index$get_history(start="1927-12-30", end="2025-03-10", interval="1d")
 
 sp500_data %>% 
   as_tibble() %>% 
