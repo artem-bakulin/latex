@@ -65,7 +65,7 @@ get_central_bank_fx_rate <- function(ccy, from_year, to_year) {
   data
 }
 
-get_central_bank_fx_rate("USD", 2012, 2024) %>% 
+get_central_bank_fx_rate("USD", 2012, 2025) %>% 
   mutate(log_return = log(fx_rate / lag(fx_rate))) %>% 
   filter(!is.na(log_return)) %>% 
   group_by(mid_month = make_date(year(date), month(date), 15)) %>% 
