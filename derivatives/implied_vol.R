@@ -75,6 +75,24 @@ get_central_bank_fx_rate("USD", 2012, 2025) %>%
   write_csv("USDRUB_realized_vol.csv")
 
 
+get_moex_usdrub_options <- function(underlying, expiration_date) {
+  
+  URL_PATTERN <- "https://www.moex.com/en/derivatives/optionsdesk-csv.aspx?code=%s&marg=0&delivery=%s&type=2&sid=1"
+  url <- sprintf(URL_PATTERN, underlying, format(expiration_date, "%d-%m-%y"))
+  temp_file_name <- tempfile(tmpdir = ".")
+  curl_download(url, temp_file_name)
+  data <- readr::read_delim(temp_file_name, delim=";", )
+  file.remove(temp_file_name)
+  
+  data%>% 
+    transmute(
+      strike = Strike / 1e6,
+      iv = IV / 1e4,
+      call = `...7` / 1e7,
+      put = `...12` / 1e7
+    )
+}
+
 compute_fly_spreads <- function(call_prices, strike_step=1) {
   
   call_prices %>% 
@@ -130,6 +148,9 @@ compute_implied_probability_density <- function(fly_spreads, strike_step=1) {
     )
 }
 
+get_moex_usdrub_options("Si-6.25", make_date(2025, 6, 19)) %>% 
+  write_csv("usdrub_implied_vol.csv")
+
 usdrub_fly_spreads <- read_csv("usdrub_implied_vol.csv") %>% 
   compute_fly_spreads()
 
@@ -140,13 +161,31 @@ usdrub_fly_spreads %>%
   compute_implied_probability_density() %>% 
   write_csv("usdrub_implied_density.csv")
 
+sp500_strike_step <- 100
+read_csv("spx-volatility-greeks-exp-2025-06-20-show-all-03-18-2025.csv") %>% 
+  transmute(
+    strike = as.numeric(gsub(",", "", Strike)),
+    pv = `Theor.`,
+    iv = as.numeric(gsub("%", "", IV)) / 100,
+    type = tolower(Type)
+  ) %>% 
+  filter(!is.na(strike)) %>% 
+  pivot_wider(names_from="type", values_from=c("pv", "iv")) %>% 
+  transmute(
+    strike,
+    call = if_else(pv_call != 0, pv_call, NA),
+    put = if_else(pv_put != 0, pv_put, NA),
+    iv = iv_call
+  ) %>% 
+  filter(strike %% sp500_strike_step == 0, strike >= 4000, strike <= 7200, call > 0) %>% 
+  write_csv("sp500_implied_vol.csv", na="NaN")
+
 sp500_fly_spreads <- read_csv("sp500_implied_vol.csv") %>%
-  filter(strike >= 4500, strike <= 7000) %>% 
-  compute_fly_spreads(strike_step=50)
+  compute_fly_spreads(strike_step=sp500_strike_step)
 
 sp500_fly_spreads %>% 
-  write_csv("sp500_fly.csv")
+  write_csv("sp500_fly.csv", na="NaN")
 
 sp500_fly_spreads %>% 
-  compute_implied_probability_density(strike_step=50) %>% 
-  write_csv("sp500_implied_density.csv")
+  compute_implied_probability_density(strike_step=sp500_strike_step) %>% 
+  write_csv("sp500_implied_density.csv", na="NaN")
