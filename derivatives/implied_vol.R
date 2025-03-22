@@ -16,10 +16,10 @@ download_central_bank_fx_rates <- function(ccy, from_date, to_date) {
   
   CURRENCY_CODES = c("USD" = "R01235", "EUR" = "R01239")
   URL_PATTERN = "http://cbr.ru/Queries/UniDbQuery/DownloadExcel/98956?Posted=True&mode=1&VAL_NM_RQ=%s&From=%s&To=%s&FromDate=%s&ToDate=%s"
-  from_date_1 = as.character.Date(from_date, format="%d.%m.%Y")
-  from_date_2 = as.character.Date(from_date, format="%d/%m/%Y")
-  to_date_1 = as.character.Date(to_date, format="%d.%m.%Y")
-  to_date_2 = as.character.Date(to_date, format="%d/%m/%Y")
+  from_date_1 = format(from_date, format="%d.%m.%Y")
+  from_date_2 = format(from_date, format="%d/%m/%Y")
+  to_date_1 = format(to_date, format="%d.%m.%Y")
+  to_date_2 = format(to_date, format="%d/%m/%Y")
   
   if (!ccy %in% names(CURRENCY_CODES)) {
     stop(sprtinf("Unknown currency code %s", ccy))
@@ -161,8 +161,8 @@ usdrub_fly_spreads %>%
   compute_implied_probability_density() %>% 
   write_csv("usdrub_implied_density.csv")
 
-sp500_strike_step <- 100
-read_csv("spx-volatility-greeks-exp-2025-06-20-show-all-03-18-2025.csv") %>% 
+sp500_strike_step <- 50
+read_csv("spx-volatility-greeks-exp-2025-06-20-show-all-03-22-2025.csv") %>% 
   transmute(
     strike = as.numeric(gsub(",", "", Strike)),
     pv = `Theor.`,
@@ -177,11 +177,12 @@ read_csv("spx-volatility-greeks-exp-2025-06-20-show-all-03-18-2025.csv") %>%
     put = if_else(pv_put != 0, pv_put, NA),
     iv = iv_call
   ) %>% 
-  filter(strike %% sp500_strike_step == 0, strike >= 4000, strike <= 7200, call > 0) %>% 
+  filter(strike %% sp500_strike_step == 0, strike >= 4500, strike <= 7200, call > 0) %>% 
   write_csv("sp500_implied_vol.csv", na="NaN")
 
 sp500_fly_spreads <- read_csv("sp500_implied_vol.csv") %>%
-  compute_fly_spreads(strike_step=sp500_strike_step)
+  filter(!strike %in% c(5000)) %>% 
+  compute_fly_spreads(strike_step=sp500_strike_step) 
 
 sp500_fly_spreads %>% 
   write_csv("sp500_fly.csv", na="NaN")
