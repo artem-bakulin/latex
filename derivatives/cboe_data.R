@@ -355,7 +355,7 @@ gamma_data <- gamma_data %>%
 
 # Gamma goes back to 2012 -> we can use SP500 total return from Yahoo Finance rather than from Shiller's website
 sp500_tr_index <- yahoofinancer::Index$new("^SP500TR")
-sp500_tr_data <- sp500_tr_index$get_history(start="2012-05-31", end="2024-11-07", interval="1d") %>%
+sp500_tr_data <- sp500_tr_index$get_history(start="2012-05-31", end="2025-03-26", interval="1d") %>%
   as_tibble() %>% 
   transmute(
     date = as.Date(date, tz="UTC"),
@@ -380,7 +380,7 @@ merged_gamma_data <- gamma_data %>%
 merged_gamma_data %>%
   write_csv("cboe_gamma.csv", na="nan")
 
-merged_gamma_data <- merged_gamma_data %>% filter(month >= '2013-01-01', month<='2023-12-31')
+merged_gamma_data <- merged_gamma_data %>% filter(month >= '2013-01-01', month<='2024-12-31')
 
 merged_gamma_data %>%
   group_by(
@@ -406,3 +406,5 @@ merged_gamma_data %>%
     sp500_sharpe = sp500_excess_mean / sp500_std,
     inv_gamma_sharpe = inv_gamma_excess_mean / inv_gamma_std
   )
+
+merged_gamma_data %>% lm(inv_gamma_return - rf_return ~ sp500_return - rf_return, data=.) %>% summary()

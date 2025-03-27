@@ -37,7 +37,7 @@
 
 \title{Текущая стоимость, риск и греки}
 \author{Артём Бакулин}
-\date{1 апреля 2024 г.}
+\date{31 марта 2025 г.}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -78,12 +78,12 @@
 \justify
 Assets (billions):
 
-\en{Positive market values from derivative financial instruments}: \EUR{251.9}
+\en{Positive market values from derivative financial instruments}: \EUR{291.8}
 
 \justify
 Liabilities (billions):
 
-\en{Negative market values from derivative financial instruments}: \EUR{238.3}
+\en{Negative market values from derivative financial instruments}: \EUR{276.4}
 
 \justify
 Согласно МСФО, изменение PV портфеля деривативов должно быть учтено в прибыли (или убытках) текущего года, даже если выплаты по деривативам случатся через 100 лет.
@@ -187,10 +187,10 @@ $NS_0$ рублей стоят $NS_0/S$ евро.
 
 \justify
 PV нашей позиции +10 евро.
-\begin{itemize}
-\item Проданный опцион: $-90$ евро.
-\item Полученная премия: 100 евро.
-\end{itemize}
+
+1. Проданный опцион: $-90$ евро.
+
+2. Полученная премия: 100 евро.
 
 \justify
 На идеальном ликвидном рынке остальные участники будут готовы заплатить за наш портфель 
@@ -210,15 +210,20 @@ PV нашей позиции +10 евро.
 
 \justify
 Нельзя заработать что-то большее, чем безрисковая процентная ставка, если ничем не рисковать. Финансовые компании осознанно берут на себя множество рисков:
-\begin{itemize}
-\item Рыночный
-\item Кредитный
-\item Ликвидности
-\item Регуляторный
-\item Технический
-\item Юридический
-\item Политический
-\end{itemize}
+
+- Рыночный
+
+- Кредитный
+
+- Ликвидности
+
+- Регуляторный
+
+- Технический
+
+- Юридический
+
+- Политический
 \end{frame}
 
 
@@ -232,13 +237,16 @@ PV нашей позиции +10 евро.
 
 \justify
 Стандартные обозначения --- греки (greeks):
-\begin{itemize}
-\item Дельта ($\Delta$) --- чувствительность к цене базового актива.
-\item Вега ($\mathcal{V}$) --- чувствительность к implied волатильности.
-\item Ро ($\rho$) --- чувствительность к процентным ставкам.
-\item Тета ($\Theta$) --- чувствительность к течению времени.
-\item Гамма ($\Gamma$) --- чувствительность дельты к цене базового актива.
-\end{itemize}
+
+Дельта ($\Delta$) --- чувствительность к цене базового актива.
+
+Вега ($\mathcal{V}$) --- чувствительность к implied волатильности.
+
+Ро ($\rho$) --- чувствительность к процентным ставкам.
+
+Тета ($\Theta$) --- чувствительность к течению времени.
+
+Гамма ($\Gamma$) --- чувствительность дельты к цене базового актива.
 \end{frame}
 
 
@@ -323,8 +331,8 @@ dV \approx \Delta \cdot dS = \frac{N}{S_0}dS = \frac{\EUR{1\,000\,000}}{100}\cdo
 			xmin=94, xmax=106,
 			ymin=0, ymax=6,
 			grid = major,
-			xlabel={Курс сегодня ($S_0$)},
-			ylabel={Цена опциона}
+			xlabel={Цена базового актива $S$},
+			ylabel={Цена опциона $C(S)$}
 ]
 	
 	\addplot[color = Set1-A, mark = none, thick]
@@ -342,6 +350,99 @@ dV \approx \Delta \cdot dS = \frac{N}{S_0}dS = \frac{\EUR{1\,000\,000}}{100}\cdo
 	\addplot[color=Set1-A, dashed, thick] {0.6083 * \x - 58.1936};
 	
 	\node[anchor=south west] at (axis cs: 96.5, 0) {$\Delta = 0.61$};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Дельта ванильного колла - 3}
+\justify
+Когда цена актива меняется на $dS$, цена опциона меняется примерно на $\Delta \cdot dS$.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			domain=99:101,
+			xtick distance=0.5,
+			ytick distance=0.5,
+			xmin=99, xmax=101,
+			ymin=2, ymax=3.5,
+			grid = major,
+			xlabel={Цена базового актива $S$},
+			ylabel={Цена опциона $C(S)$}
+]
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=S,
+		y=C_10,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	%\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
+
+\only<1>{	
+	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 100, 2.6648) {};
+	\node[anchor=south east] at (axis cs: 100, 2.6648) {$C(100)=2.665$};
+}
+\only<2>{
+	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 100.5, 2.9785) {};
+	\node[anchor=south east] at (axis cs: 100.5, 2.9785) {$C(100.5)=2.979$};
+
+	\draw[-triangle 45, thick] (axis cs: 100, 2.6648) --  (axis cs: 100.5, 2.6648) node [pos=0.5, below] {$dS=0.5$};
+	\draw[-triangle 45, thick] (axis cs: 100.5, 2.6648) -- (axis cs: 100.5, 2.9785) node [pos=0.5, right] {\begin{tabular}{l}$\Delta \cdot dS$\\ $=0.304$\end{tabular}};
+
+	\draw[-triangle 45, thick] (axis cs: 100, 2.6648) -- (axis cs: 100, 2.9785) node [pos=0.5, left] {$dC = 0.314$};
+	\draw[thick, dashed] (axis cs: 100, 2.9785) -- (axis cs: 100.5, 2.9785);
+}
+	\addplot[color=Set1-A, dashed, thick] {0.6083 * \x - 58.16936};
+	
+	\node[anchor=south west] at (axis cs: 99.1, 2) {$\Delta(100) = 0.608$};
+\end{axis}
+\end{tikzpicture}
+\end{frame}
+
+
+
+\begin{frame}{Дельта и реплицирующий портфель}
+\justify
+Сколько единиц базового актива и долга реплицируют опцион? В окрестности текущей цены $S$ справедливо, что $C(S) \approx \Delta \cdot S + L$, где $L$ --- размер долга.
+
+\justify
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			height = \textheight - 2cm,
+			domain=92:108,
+			xtick={100},
+			xticklabels={$S_0$},
+			ytick={-2.23, 0},
+			yticklabels={$L$, 0},
+			xmin=92, xmax=108,
+			ymin=-3, ymax=6,
+			xlabel={Цена базового актива $S$},
+			ylabel={Цена опциона $C(S)$}
+]
+	
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=S,
+		y=C_10,
+		col sep=comma
+	]
+	{call_price.csv};
+	
+	%\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
+	
+	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 100, 2.6648) {};
+	
+	\addplot[color=Set1-A, dashed, thick] {0.6083 * \x - 58.1936};
+	
+   \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 200, 0);
+	
+	\node[anchor=south west] at (axis cs: 96.5, 0) {$\Delta$};
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -416,49 +517,6 @@ C - P = S - Ke^{-rT}
 
 
 
-\begin{frame}{Дельта и реплицирующий портфель}
-\justify
-Сколько актива и долга нужно для репликации опциона?
-
-$C(S_0) \approx \Delta \cdot S_0 + L$
-
-\justify
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-						domain=92:108,
-			xtick=\empty,
-			ytick={-2.23, 0},
-			yticklabels={$L$, 0},
-			xmin=92, xmax=108,
-			ymin=-3, ymax=6,
-			xlabel={Курс сегодня ($S_0$)},
-			ylabel={Цена опциона ($C(S_0)$)}
-]
-	
-	\addplot[color = Set1-A, mark = none, thick]
-	table[
-		x=S,
-		y=C_10,
-		col sep=comma
-	]
-	{call_price.csv};
-	
-	%\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
-	
-	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 100, 2.6648) {};
-	
-	\addplot[color=Set1-A, dashed, thick] {0.6083 * \x - 58.1936};
-	
-   \draw[thick, color=black] (axis cs: 0, 0) -- (axis cs: 200, 0);
-	
-	\node[anchor=south west] at (axis cs: 96.5, 0) {$\Delta$};
-\end{axis}
-\end{tikzpicture}
-\end{frame}
-
-
-
 \begin{frame}{Котирование опционов}
 \justify
 Несмотря на то, что модель Блэка-Шоулза не работает (не описывает реальность), все продолжают её использовать, чтобы договариваться о ценах опционов. В разговоре удобнее оперировать волатильностью, чем премиями, чтобы понимать, что дорого, а что дёшево.
@@ -522,16 +580,22 @@ $C(S_0) \approx \Delta \cdot S_0 + L$
 
 \begin{frame}{Дельта и страйки - 2}
 \justify
-Так как улыбка волатильности следует за движениями спота, нужно очень быстро договариваться о сделках. Сейчас страйку 68 соответствует волатильность 10\%, а через полминуты из-за движения спота --- уже 11\%.
+Так как улыбка волатильности следует за движениями спота, нужно очень быстро договариваться о сделках. Сейчас страйку 98 соответствует волатильность 10\%, а через полминуты из-за движения спота --- уже 11\%.
 
 \justify
 На внебиржевом рынке принято оперировать следующим страйками, которые привязаны к дельтам:
-\begin{itemize}
-\item DN (delta neutral) --- такой страйк $K_{DN}$, что стрэддл из колла и пута имеет дельту 0.
-\item 25C --- такой страйк $K_{25C}$, что колл имеет дельту 0.25.
-\item 25P --- такой страйк $K_{25P}$, что пут имеет дельту $-0.25$.
-\item 10C, 10P --- аналогично 25C и 25P.
-\end{itemize}
+
+\justify
+DN (delta neutral) --- такой страйк $K_{DN}$, что стрэддл из колла и пута имеет дельту 0.
+
+\justify
+25C --- такой страйк $K_{25C}$, что колл имеет дельту 0.25.
+
+\justify
+25P --- такой страйк $K_{25P}$, что пут имеет дельту $-0.25$.
+
+\justify
+10C, 10P --- аналогично 25C и 25P.
 
 \justify
 Эмпирически, implied волатильность таких страйков более стабильная (эффект sticky delta).
@@ -586,13 +650,13 @@ $C(S_0) \approx \Delta \cdot S_0 + L$
 Волатильности опционов со страйками 10P, 25P, DN, 25C и 10C хорошо описывают форму улыбки волатильности, но с ними тоже есть неудобство. Когда волатильность на рынке повышается, более-менее равномерно повышаются все пять волатильностей (<<прилив поднимает все лодки>>).
 
 \justify
-Риск-реверсал (\en{risk-reversal, risky}): RR25 --- купленный колл 25C и проданный пут 25P.
+\alert{Риск-реверсал} (\en{risk-reversal, risky}): RR25 --- купленный колл 25C и проданный пут 25P.
 \begin{align*}
 \sigma_{RR25} = \sigma_{25C} - \sigma_{25P}
 \end{align*}
 
 \justify
-Бабочка (\en{butterfly, fly}): FLY25 --- купленные колл 25C и пут 25P, проданные колл и пут $DN$
+\alert{Бабочка} (\en{butterfly, fly}): FLY25 --- купленные колл 25C и пут 25P, проданные колл и пут $DN$
 \begin{align*}
 \sigma_{FLY25} = 0.5\cdot(\sigma_{25P} - 2\sigma_{DN} + \sigma_{25C})
 \end{align*}
@@ -951,14 +1015,14 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-			domain=92:110,
+			domain=92:114,
 			xtick distance=2,
 			ytick distance=1,
-			xmin=94, xmax=110,
-			ymin=0, ymax=10,
+			xmin=94, xmax=114,
+			ymin=0, ymax=12,
 			grid = major,
-			xlabel={Курс сегодня ($S$)},
-			ylabel={Цена опциона}
+			xlabel={Цена базового актива $S$},
+			ylabel={Цена опциона $C(S)$}
 ]
 	
 	\addplot[color = Set1-A, mark = none, thick]
@@ -969,17 +1033,26 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 	]
 	{call_price.csv};
 	
-	%\addplot[Set1-D, very thick, dashed] {(\x >= 72)*(\x - 72) + 0.05};
-	
+\only<1>{	
 	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 100, 2.6648) {};
-	
+	\node[anchor=west] at (axis cs: 100, 2.6648) {$C(100)=2.66$};
+}
+\only<2>{
 	\node[inner sep=2pt, circle, fill, color=Set1-A] at (axis cs: 108, 9.3179) {};
+	\node[anchor=south east] at (axis cs: 108, 9.3179) {$C(108)=9.32$};
+
+	\draw[-triangle 45, thick] (axis cs: 100, 2.6648) --  (axis cs: 108, 2.6648) node [pos=0.5, below] {$dS=8$};
+	\draw[-triangle 45, thick] (axis cs: 108, 2.6648) -- (axis cs: 108, 7.538) node [pos=0.5, right] {\begin{tabular}{l}$\Delta \cdot dS$\\ $=4.86$\end{tabular}};
+
+	\draw[-triangle 45, thick] (axis cs: 100, 2.6648) -- (axis cs: 100, 9.3179) node [pos=0.5, left] {$dC = 6.65$};
+	\draw[thick, dashed] (axis cs: 100, 9.3179) -- (axis cs: 108, 9.3179);
+
+	\draw[<->, >= triangle 45, thick] (108, 9.3179) -- (108, 7.5028) node[pos=0.5, right] {$1.79$};
+}
 	
-	\addplot[color=Set1-A, dashed, thick] {0.6083 * \x - 58.1936};
+	\addplot[color=Set1-A, dashed, thick] {0.6083 * \x - 58.16936};
 	
-	\node[anchor=south west] at (axis cs: 96.5, 0) {$\Delta = 0.61$};
-	
-	\draw[<->, >= triangle 45, thick] (108, 9.3179) -- (108, 7.5028);
+	\node[anchor=south west] at (axis cs: 96.5, 0) {$\Delta(100) = 0.608$};
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -1144,7 +1217,7 @@ N'(x) &= \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}
 В некотором смысле обе производные показывают нашу зависимость от разброса будущих значений $S$.
 
 \justify
-Гамма --- главный риск для коротких опционов ($\sqrt{T}$ в знаменателе), вега --- для длинных ($\sqrt{T}$ в числителе). 
+Гамма --- главный риск для коротких опционов ($\sqrt{T}$ в знаменателе), вега --- для длинных ($\sqrt{T}$ в числителе). Гамма убивает мгновенно, вега --- медленно и мучительно.
 \end{frame}
 
 
@@ -1281,10 +1354,10 @@ $\sigma=20\%$. Безрисковая ставка $r=0\%$.
 	date coordinates in=x,
 	date ZERO=2012-01-01,
   	xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01, 2023-01-01, 2025-01-01},
-  	minor xtick={2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01,2024-01-01},
+  	minor xtick={2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01,2024-01-01,2026-01-01},
   	xticklabel={\year},
   	xmin=2012-05-31,
-  	xmax=2025-01-01,
+  	xmax=2026-01-01,
 	 ymode = log,
  	grid=both,
    	log ticks with fixed point,
@@ -1325,7 +1398,7 @@ $\sigma=20\%$. Безрисковая ставка $r=0\%$.
 	]
 	{cboe_gamma.csv};
 
-   \draw[thick, color=black] (axis cs: 1985-01-01, 1) -- (axis cs: 2025-01-01, 1);
+   \draw[thick, color=black] (axis cs: 1985-01-01, 1) -- (axis cs: 2026-01-01, 1);
 \end{axis}
 \end{tikzpicture}
 
@@ -1338,14 +1411,14 @@ $\sigma=20\%$. Безрисковая ставка $r=0\%$.
 \centering
 \begin{tabular}{l|r|r|r}
 & Inv. GAMMA & S\&P\,500 & T-bills \\ \hline
-Геом. среднее & 12.8\% & 13.7\% & 1.1\% \\
-Избыт. дох-ть & 11.6\% & 12.5\% & 0.0\% \\
-Ст. откл. & 60.1\% & 16.0\% & 0.0\% \\
-Отн. Шарпа & 0.19 & 0.79 & 0.0 \\
-Мес. бета & 0.94 & 1.00 & 0.00
+Геом. среднее & 7.9\% & 14.6\% & 1.4\% \\
+Избыт. дох-ть & 6.4\% & 13.1\% & 0.0\% \\
+Ст. откл. & 60.1\% & 15.3\% & 0.0\% \\
+Отн. Шарпа & 0.11 & 0.85 & 0.0 \\
+Мес. бета & 0.96& 1.00 & 0.00
 \end{tabular}
 
-\small{Период: 2013--2023. Все метрики, кроме беты, в годовом выражении.}
+\small{Период: 2013--2024. Все метрики, кроме беты, в годовом выражении.}
 
 \justify
 Индекс \en{GAMMA}\ показывал отрицательную среднюю доходность. Положительную доходность показывала обратная стратегия --- продавать (а не покупать) стрэддлы.
