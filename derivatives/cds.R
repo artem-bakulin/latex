@@ -34,3 +34,10 @@ corp_data %>%
     high_yield_growth = cumprod(1 + high_yield_return)
   ) %>% 
   write_csv("bofa_bond_indices.csv")
+
+read_csv("bofa_bond_indices.csv") %>% 
+  tail(-1) %>% 
+  summarise(
+    corp_sr = mean(corp_return) / sd(corp_return),
+    hy_sr = mean(high_yield_return)/sd(high_yield_return)
+  )
