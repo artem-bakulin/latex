@@ -34,10 +34,12 @@ euribor_6m <- download_from_bundesbank(
   "6m"
 )
 
-eonia <- download_from_bundesbank(
-  "https://api.statistiken.bundesbank.de/rest/download/BBK01/ST0304?format=csv&lang=en",
-  "eonia"
-)
+# This link does not work as of 2026, so I use a file which I had downloaded earlier
+#eonia <- download_from_bundesbank(
+#  "https://api.statistiken.bundesbank.de/rest/download/BBK01/ST0304?format=csv&lang=en",
+#  "eonia"
+#)
+eonia <- read_csv("eonia.csv")
 
 ester <- download_from_bundesbank(
   "https://api.statistiken.bundesbank.de/rest/download/BBMMB/D.EU000A2X2A25.WT?format=csv&lang=en",
