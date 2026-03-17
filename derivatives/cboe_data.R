@@ -136,7 +136,7 @@ download_from_cboe <- function(index_name) {
 
 download_shiller_data <- function() {
   
-  full_url <- "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/34a1781b-f073-448f-b9f9-6230becb2e49/ie_data.xls?ver=1741185530815"
+  full_url <- "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/3228b83a-7bad-4e69-b405-71e3a1ca6351/ie_data.xls?ver=1772737019751"
   curl_download(full_url, "ie_data.xls")
   raw_data <- xlsx::read.xlsx("ie_data.xls", sheetName="Data", startRow=8)
   file.remove("ie_data.xls")
@@ -217,7 +217,7 @@ merged_data %>% write_csv("cboe_puty.csv", na="nan")
 
 merged_data %>% 
   tail(-1) %>% 
-  filter(month >= "1987-01-01", month <= "2024-12-31") %>% 
+  filter(month >= "1987-01-01", month <= "2025-12-31") %>% 
   lm(put_return - rf_return ~ sp500_return - rf_return, data=.) %>% 
   summary()
 
@@ -259,7 +259,7 @@ merged_data %>%
   group_by(
     year = year(month)
   ) %>% 
-  filter(year >= 1987, year <= 2024) %>% 
+  filter(year >= 1987, year <= 2025) %>% 
   summarise(
     sp500 = prod(1 + sp500_return) - 1,
     put = prod(1 + put_return) - 1,
@@ -319,7 +319,7 @@ sp500_data %>%
     date = as.Date(date, tz="UTC"),
     sp500 = close
   ) %>% 
-  mutate(return_40 = sp500 / lag(sp500, 40) - 1) %>% 
+  mutate(return_40 = sp500 / lag(sp500, 35) - 1) %>% 
   arrange(return_40)
 
 sp500_data %>% 
