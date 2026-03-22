@@ -39,7 +39,7 @@
 
 \title{Модель Блэка-Шоулза}
 \author{Артём Бакулин}
-\date{24 марта 2025 г.}
+\date{30 марта 2026 г.}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -1100,12 +1100,12 @@ r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
   date coordinates in=x,
   date ZERO=2012-01-01,
   xtick={2012-01-01, 2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01, 2024-01-01, 2026-01-01},
-  minor xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01, 2023-01-01, 2025-01-01},
+  minor xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01, 2023-01-01, 2025-01-01,2027-01-01},
   ytick={30, 40, ..., 120},
 %  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
   xticklabel={\year},
   xmin=2012-01-01,
-  xmax=2026-01-01,
+  xmax=2027-01-01,
   ymin=20,
   ymax=130,
   grid=both,
@@ -1121,7 +1121,7 @@ r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
 		y=fx_rate,
 		col sep=comma
 	]
-	{cbr.USD.2012.2025.csv};
+	{cbr.USD.2012.2026.csv};
 
 \end{axis}
 \end{tikzpicture}
@@ -1140,12 +1140,12 @@ r_i &= \ln \left( \dfrac{S_{i}}{S_{i-1}} \right) \\
   date coordinates in=x,
   date ZERO=2012-01-01,
   xtick={2012-01-01, 2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01, 2024-01-01, 2026-01-01},
-  minor xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01, 2023-01-01,2025-01-01},
+  minor xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01, 2023-01-01,2025-01-01,2027-01-01},
   ytick={0.1, 0.2, ..., 1},
 %  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
   xticklabel={\year},
   xmin=2012-01-01,
-  xmax=2026-01-01,
+  xmax=2027-01-01,
   ymin=0,
   ymax=0.9,
   grid=both,
@@ -1203,17 +1203,17 @@ C_K = F(S_0, T, K, \sigma, r, q)
 
 
 
-\begin{frame}{<<Ожидаемая>> волатильность -2}
+\begin{frame}{<<Ожидаемая>> волатильность - 2}
 \justify
-Опционы на USDRUB с датой исполнения 19.06.2025.
+Опционы на USDRUB с датой исполнения 18.06.2026.
 
 \centering
 \begin{tikzpicture}
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			xmin=70, xmax=115,
-			ymin=0, ymax=25,
+			xmin=65, xmax=100,
+			ymin=0, ymax=20,
 			xtick distance=5,
 			ytick distance=5,
 			grid = major,
@@ -1246,17 +1246,17 @@ C_K = F(S_0, T, K, \sigma, r, q)
 
 \begin{frame}{<<Ожидаемая>> волатильность - 3}
 \justify
-Опционы на USDRUB с датой исполнения 19.06.2025.
+Опционы на USDRUB с датой исполнения 18.06.2026.
 
 \centering
 \begin{tikzpicture}
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			xmin=70, xmax=115,
-			ymin=0.20, ymax=0.3,
+			xmin=65, xmax=100,
+			ymin=0.15, ymax=0.3,
 			xtick distance=5,
-			ytick distance=0.01,
+			ytick distance=0.05,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[precision=0]{\pgfmathresult}\%},
 			grid = major,
 			xlabel={Страйк ($K$)},
@@ -1460,9 +1460,61 @@ C_K = F(S_0, T, K, \sigma, r, q)
 
 
 
+
+\newcommand{\drawCallNode}[4] {
+
+	\node[
+		circle,
+		color=Set1-A,
+		fill,
+		inner sep=2pt
+	] at (#1, #2) {};
+	
+	\node[anchor=#3] at (#1, #2) {$C(#1)=#2$};
+}
+
 \begin{frame}{Опционные бабочки: USDRUB}
 \justify
-Бабочки со страйками $K-1$, $K$ и $K+1$. Экспирация  19.06.2025.
+Опционы на USDRUB с датой исполнения 18.06.2026.
+
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+			width = \textwidth,
+			height = \textheight - 2cm,
+			xmin=77, xmax=83,
+			ymin=3, ymax=8,
+			xtick distance=1,
+			ytick distance=1,
+			grid = major,
+			xlabel={Страйк ($K$)},
+			ylabel={Цена опциона, руб.}
+]
+
+	\addplot[color = Set1-A, mark = none, thick]
+	table[
+		x=strike,
+		y=call,
+		col sep=comma
+	]
+	{usdrub_implied_vol.csv};
+
+	\drawCallNode{79}{5.851}{north east};
+	\drawCallNode{80}{5.142}{north east};
+	\drawCallNode{81}{4.488}{north east};
+
+	\node[anchor=south west] at (80, 5.142) {\begin{tabular}{l}$Fly(80) =$\\ $5.851 - 2 \cdot 5.142 + 4.488$\\$= 0.055$\end{tabular}};
+\end{axis}
+\end{tikzpicture}
+
+\scriptsize Данные: Московская биржа.
+\end{frame}
+
+
+
+\begin{frame}{Опционные бабочки: USDRUB - 2}
+\justify
+Бабочки со страйками $K-1$, $K$ и $K+1$. Экспирация  18.06.2026.
 
 \centering
 \begin{tikzpicture}
@@ -1470,8 +1522,8 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			width = \textwidth,
 			height = \textheight - 2cm,
 			%domain=60:84,
-			xmin=70, xmax=115,
-			ymin=0, ymax=0.05,
+			xmin=65, xmax=100,
+			ymin=0, ymax=0.07,
 			xtick distance=5,
 			ytick distance=0.01,
 			scaled y ticks = false,
@@ -1502,8 +1554,8 @@ C_K = F(S_0, T, K, \sigma, r, q)
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			xmin=70, xmax=115,
-			ymin=0, ymax=0.05,
+			xmin=65, xmax=100,
+			ymin=0, ymax=0.07,
 			xtick distance=5,
 			ytick distance=0.01,
 			scaled y ticks = false,
@@ -1793,7 +1845,7 @@ F &= Se^{rT}
 Индекс \en{VIX} часто называют <<индексом страха>>. Когда инвесторы паникуют, они бросаются покупать страховки от кризиса. Рыночные цены опционов растут, и вместе с ними растёт индекс \en{VIX}.
 
 \justify
-У индекса \en{VIX}\ есть брат-близнец \en{RVOL}, который измеряет реализованную волатильность индекса \en{S\&P\,500}.
+До 2025 года у индекса \en{VIX}\ был брат-близнец \en{RVOL}, который измерял реализованную волатильность индекса \en{S\&P\,500}. Теперь этот индекс приходится считать руками.
 \end{frame}
 
 
@@ -1807,12 +1859,12 @@ F &= Se^{rT}
   date coordinates in=x,
   date ZERO=2012-01-01,
   xtick={2002-01-01, 2005-01-01, 2010-01-01, 2015-01-01, 2020-01-01, 2025-01-01},
-  minor xtick={2003-01-01, 2004-01-01, 2006-01-01, 2007-01-01, 2008-01-01, 2009-01-01, 2011-01-01, 2012-01-01, 2013-01-01, 2014-01-01, 2016-01-01, 2017-01-01, 2018-01-01, 2019-01-01, 2021-01-01, 2022-01-01, 2023-01-01, 2024-01-01},
+  minor xtick={2003-01-01, 2004-01-01, 2006-01-01, 2007-01-01, 2008-01-01, 2009-01-01, 2011-01-01, 2012-01-01, 2013-01-01, 2014-01-01, 2016-01-01, 2017-01-01, 2018-01-01, 2019-01-01, 2021-01-01, 2022-01-01, 2023-01-01, 2024-01-01,2026-01-01},
   ytick={10, 20, ..., 100},
 %  minor ytick={-0.75, -0.25, 0.25, 0.75, 1.25},
   xticklabel={\year},
   xmin=2002-01-01,
-  xmax=2026-01-01,
+  xmax=2027-01-01,
   ymin=0,  ymax=100,
   grid=both,
   yticklabel={\pgfmathprintnumber{\tick}\%},
@@ -1843,7 +1895,7 @@ legend entries = {
 	{vix_and_rvol.csv};
 \end{axis}
 \end{tikzpicture}
-\small Данные: \en{CBOE}
+\small Данные: \en{CBOE, Yahoo Finance}
 \end{frame}
 
 

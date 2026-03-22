@@ -65,7 +65,7 @@ get_central_bank_fx_rate <- function(ccy, from_year, to_year) {
   data
 }
 
-get_central_bank_fx_rate("USD", 2012, 2025) %>% 
+get_central_bank_fx_rate("USD", 2012, 2026) %>% 
   mutate(log_return = log(fx_rate / lag(fx_rate))) %>% 
   filter(!is.na(log_return)) %>% 
   group_by(mid_month = make_date(year(date), month(date), 15)) %>% 
@@ -148,7 +148,7 @@ compute_implied_probability_density <- function(fly_spreads, strike_step=1) {
     )
 }
 
-get_moex_usdrub_options("Si-6.25", make_date(2025, 6, 19)) %>% 
+get_moex_usdrub_options("Si-6.26", make_date(2026, 6, 18)) %>% 
   write_csv("usdrub_implied_vol.csv")
 
 usdrub_fly_spreads <- read_csv("usdrub_implied_vol.csv") %>% 
