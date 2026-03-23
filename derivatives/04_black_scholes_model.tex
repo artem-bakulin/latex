@@ -1280,17 +1280,17 @@ C_K = F(S_0, T, K, \sigma, r, q)
 
 \begin{frame}{<<Ожидаемая>> волатильность - 4}
 \justify
-Опционы на S\&P\,500 с датой исполнения 20.06.2025.
+Опционы на S\&P\,500 с датой исполнения 18.06.2026.
 
 \centering
 \begin{tikzpicture}
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			xmin=5200, xmax=6200,
-			ymin=0, ymax=500,
-			xtick distance=100,
-			ytick distance=50,
+			xmin=5500, xmax=7500,
+			ymin=0, ymax=1000,
+			xtick distance=250,
+			ytick distance=100,
 			grid = major,
 			xlabel={Страйк ($K$)},
 			ylabel={Цена опциона, \$},
@@ -1322,17 +1322,17 @@ C_K = F(S_0, T, K, \sigma, r, q)
 
 \begin{frame}{<<Ожидаемая>> волатильность - 5}
 \justify
-Опционы на S\&P\,500 с датой исполнения 20.06.2025.
+Опционы на S\&P\,500 с датой исполнения 18.06.2026.
 
 \centering
 \begin{tikzpicture}
 \begin{axis}[
 			width = \textwidth,
 			height = \textheight - 2cm,
-			xmin=5200, xmax=6200,
-			ymin=0.1, ymax=0.22,
-			xtick distance=100,
-			ytick distance=0.02,
+			xmin=5500, xmax=7500,
+			ymin=0.1, ymax=0.35,
+			xtick distance=250,
+			ytick distance=0.05,
 			grid = major,
 			xlabel={Страйк ($K$)},
 			ylabel={Волатильность ($\sigma$)},
@@ -1604,9 +1604,9 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			width = \textwidth,
 			height = \textheight - 2cm,
 			xtick distance=500,
-			ytick distance=2,
-			xmin=4500, xmax=7000,
-			ymin=0, ymax=4,
+			ytick distance=1,
+			xmin=5000, xmax=8000,
+			ymin=0, ymax=3,
 			grid = major,
 			xlabel={Страйк ($K$)},
 			ylabel={Цена бабочки, USD},
@@ -1636,8 +1636,8 @@ C_K = F(S_0, T, K, \sigma, r, q)
 			height = \textheight - 2cm,
 			xtick distance=500,
 			ytick distance=0.0001,
-			xmin=4500, xmax=7000,
-			ymin=0, ymax=0.0012,
+			xmin=5000, xmax=8000,
+			ymin=0, ymax=0.001,
 			scaled y ticks = false,
 			yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber[fixed, precision=2]{\pgfmathresult}},
 			xticklabel={\pgfmathprintnumber[precision=0, 1000 sep={}]{\tick}},

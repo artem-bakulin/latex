@@ -162,7 +162,7 @@ usdrub_fly_spreads %>%
   write_csv("usdrub_implied_density.csv")
 
 sp500_strike_step <- 50
-read_csv("spx-volatility-greeks-exp-2025-06-20-show-all-03-22-2025.csv") %>% 
+read_csv("spx-volatility-greeks-exp-2026-06-18-show-all-03-23-2026.txt") %>% 
   transmute(
     strike = as.numeric(gsub(",", "", Strike)),
     pv = `Theor.`,
@@ -177,11 +177,10 @@ read_csv("spx-volatility-greeks-exp-2025-06-20-show-all-03-22-2025.csv") %>%
     put = if_else(pv_put != 0, pv_put, NA),
     iv = iv_call
   ) %>% 
-  filter(strike %% sp500_strike_step == 0, strike >= 4500, strike <= 7200, call > 0) %>% 
+  filter(strike %% sp500_strike_step == 0, strike >= 4500, strike <= 9000, call > 0) %>% 
   write_csv("sp500_implied_vol.csv", na="NaN")
 
 sp500_fly_spreads <- read_csv("sp500_implied_vol.csv") %>%
-  filter(!strike %in% c(5000)) %>% 
   compute_fly_spreads(strike_step=sp500_strike_step) 
 
 sp500_fly_spreads %>% 
