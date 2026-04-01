@@ -1236,6 +1236,18 @@ C_K = F(S_0, T, K, \sigma, r, q)
 		col sep=comma
 	]
 	{usdrub_implied_vol.csv};
+
+
+\only<2>{
+	\node[
+		circle,
+		color=Set1-A,
+		fill,
+		inner sep=2pt
+	] at (90, 1.22) {};
+	
+	\node[anchor=south west] at (90, 1.22) {$C(90)=1.22$};
+}
 \end{axis}
 \end{tikzpicture}
 
@@ -1270,6 +1282,15 @@ C_K = F(S_0, T, K, \sigma, r, q)
 		col sep=comma
 	]
 	{usdrub_implied_vol.csv};
+
+	\node[
+		circle,
+		color=Set1-B,
+		fill,
+		inner sep=2pt
+	] at (90, 0.1999) {};
+	
+	\node[anchor=north west] at (90, 0.1999) {$\sigma(90)=20.0\%$};
 \end{axis}
 \end{tikzpicture}
 

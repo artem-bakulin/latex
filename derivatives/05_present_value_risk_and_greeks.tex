@@ -37,7 +37,7 @@
 
 \title{Текущая стоимость, риск и греки}
 \author{Артём Бакулин}
-\date{31 марта 2025 г.}
+\date{6 апреля 2026 г.}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -1353,11 +1353,11 @@ $\sigma=20\%$. Безрисковая ставка $r=0\%$.
 	height=\textheight - 1cm,
 	date coordinates in=x,
 	date ZERO=2012-01-01,
-  	xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01, 2023-01-01, 2025-01-01},
+  	xtick={2013-01-01, 2015-01-01, 2017-01-01, 2019-01-01, 2021-01-01, 2023-01-01, 2025-01-01,2027-01-01},
   	minor xtick={2014-01-01, 2016-01-01, 2018-01-01, 2020-01-01, 2022-01-01,2024-01-01,2026-01-01},
   	xticklabel={\year},
   	xmin=2012-05-31,
-  	xmax=2026-01-01,
+  	xmax=2027-01-01,
 	 ymode = log,
  	grid=both,
    	log ticks with fixed point,
@@ -1366,8 +1366,7 @@ $\sigma=20\%$. Безрисковая ставка $r=0\%$.
   	ylabel near ticks,
 	legend entries = {
 		S\&P\,500 Total Return,
-		CBOE Gamma (inverted),
-		T-bills
+		CBOE Gamma (inverted)
 	},
 	legend pos=north east,
 	legend style={font=\tiny},
@@ -1390,15 +1389,7 @@ $\sigma=20\%$. Безрисковая ставка $r=0\%$.
 	]
 	{cboe_gamma.csv};
 
-\addplot[color = Set1-C, mark = none, very thick, dashed]
-	table[
-		x=month,
-		y=rf_growth,
-		col sep=comma
-	]
-	{cboe_gamma.csv};
-
-   \draw[thick, color=black] (axis cs: 1985-01-01, 1) -- (axis cs: 2026-01-01, 1);
+   \draw[thick, color=black] (axis cs: 1985-01-01, 1) -- (axis cs: 2027-01-01, 1);
 \end{axis}
 \end{tikzpicture}
 
@@ -1411,14 +1402,14 @@ $\sigma=20\%$. Безрисковая ставка $r=0\%$.
 \centering
 \begin{tabular}{l|r|r|r}
 & Inv. GAMMA & S\&P\,500 & T-bills \\ \hline
-Геом. среднее & 7.9\% & 14.6\% & 1.4\% \\
-Избыт. дох-ть & 6.4\% & 13.1\% & 0.0\% \\
-Ст. откл. & 60.1\% & 15.3\% & 0.0\% \\
-Отн. Шарпа & 0.11 & 0.85 & 0.0 \\
+Геом. среднее & 10.1\% & 14.9\% & 1.6\% \\
+Избыт. дох-ть & 8.3\% & 13.1\% & 0.0\% \\
+Ст. откл. & 57.7\% & 14.6\% & 0.0\% \\
+Отн. Шарпа & 0.14 & 0.89 & 0.0 \\
 Мес. бета & 0.96& 1.00 & 0.00
 \end{tabular}
 
-\small{Период: 2013--2024. Все метрики, кроме беты, в годовом выражении.}
+\small{Период: 2013--2025. Все метрики, кроме беты, в годовом выражении.}
 
 \justify
 Индекс \en{GAMMA}\ показывал отрицательную среднюю доходность. Положительную доходность показывала обратная стратегия --- продавать (а не покупать) стрэддлы.
