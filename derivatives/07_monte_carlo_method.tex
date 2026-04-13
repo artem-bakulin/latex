@@ -40,7 +40,7 @@
 
 \title{Метод Монте-Карло}
 \author{Артём Бакулин}
-\date{15 апреля 2024 г.}
+\date{20 апреля 2026 г.}
 
 \usetheme{Warsaw}
 \usecolortheme{beaver}
@@ -600,11 +600,16 @@ C = e^{-rT} \int\limits_{-\infty}^{+\infty}f\Big(S_T(x)\Big)\phi(x)dx
 
 \justify
 На помощь приходят численные методы:
-\begin{itemize}
-\item Биномиальные деревья.
-\item Разностные схемы.
-\item Метод Монте-Карло.
-\end{itemize}
+
+\justify
+1. Биномиальные деревья.
+
+\justify
+2. Разностные схемы.
+
+\justify
+3. Метод Монте-Карло.
+
 \end{frame}
 
 
@@ -705,10 +710,10 @@ $\mathcal{N}(0, 1)$ --- стандартное нормальное распре
 
 \justify
 Недостатки:
-\begin{itemize}
-\item Быстродействие (450 тактов на Core i7-7700).
-\item Невоспроизводимость результатов.
-\end{itemize}
+
+- Быстродействие (450 тактов на Core i7-7700).
+
+- Невоспроизводимость результатов.
 
 \justify
 Нужен быстрый алгоритм получения <<почти>> случайных чисел.
@@ -977,10 +982,10 @@ S_{i,j} &= S_{i,j-1} \exp\left[\left(r - q - \frac{\sigma^2}{2}\right)(t_j - t_{
 
 \centering
 \begin{tabular}{l|l}
-EURUSD & 1.1050 \\
-GBPUSD & 1.2530 \\
-JPYUSD & 0.00754 \\
-CADUSD & 0.7490
+EURUSD & 1.1750 \\
+GBPUSD & 1.3510 \\
+JPYUSD & 0.00626 \\
+CADUSD & 0.7230
 \end{tabular}
 
 \justify
@@ -1101,11 +1106,12 @@ S_{T,i}(\psi_i) = S_{0,i}\exp\left[\left(r - q_i - \frac{\sigma_i^2}{2}\right)T 
 
 \justify
 Другие более сложные методы снижения дисперсии метода Монте-Карло:
-\begin{itemize}
-\item Stratified sampling, importance sampling
-\item Orthogonal array sampling
-\item Sobol numbers
-\end{itemize}
+
+1. Stratified sampling, importance sampling
+
+2. Orthogonal array sampling
+
+3. Sobol numbers
 \end{frame}
 
 
